@@ -84,6 +84,30 @@ const theme = createTheme({
   },
 });
 
+if (theme.components) {
+  theme.components.MuiTypography = {
+    defaultProps: {
+      variantMapping: {
+        Display1: "h1",
+        Display2: "h1",
+        Title1: "h1",
+        Title2: "h2",
+        Title3: "h2",
+        Heading1: "h3",
+        Heading2: "h3",
+        Headline1: "h4",
+        Headline2: "h4",
+        Body1: "p",
+        Body2: "p",
+        Label1: "span",
+        Label2: "span",
+        Caption1: "span",
+        Caption2: "span",
+      },
+    },
+  };
+}
+
 if (theme.typography) {
   theme.typography.fontFamily = "Pretendard Variable, sans-serif";
 
