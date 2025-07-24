@@ -13,6 +13,64 @@ declare module "@mui/material/styles" {
   }
 }
 
+declare module "@mui/material/styles" {
+  interface TypographyVariants {
+    Display1: React.CSSProperties;
+    Display2: React.CSSProperties;
+    Title1: React.CSSProperties;
+    Title2: React.CSSProperties;
+    Title3: React.CSSProperties;
+    Heading1: React.CSSProperties;
+    Heading2: React.CSSProperties;
+    Headline1: React.CSSProperties;
+    Headline2: React.CSSProperties;
+    Body1: React.CSSProperties;
+    Body2: React.CSSProperties;
+    Label1: React.CSSProperties;
+    Label2: React.CSSProperties;
+    Caption1: React.CSSProperties;
+    Caption2: React.CSSProperties;
+  }
+
+  interface TypographyVariantsOptions {
+    Display1?: React.CSSProperties;
+    Display2?: React.CSSProperties;
+    Title1?: React.CSSProperties;
+    Title2?: React.CSSProperties;
+    Title3?: React.CSSProperties;
+    Heading1?: React.CSSProperties;
+    Heading2?: React.CSSProperties;
+    Headline1?: React.CSSProperties;
+    Headline2?: React.CSSProperties;
+    Body1?: React.CSSProperties;
+    Body2?: React.CSSProperties;
+    Label1?: React.CSSProperties;
+    Label2?: React.CSSProperties;
+    Caption1?: React.CSSProperties;
+    Caption2?: React.CSSProperties;
+  }
+}
+
+declare module "@mui/material/Typography" {
+  interface TypographyPropsVariantOverrides {
+    Display1: true;
+    Display2: true;
+    Title1: true;
+    Title2: true;
+    Title3: true;
+    Heading1: true;
+    Heading2: true;
+    Headline1: true;
+    Headline2: true;
+    Body1: true;
+    Body2: true;
+    Label1: true;
+    Label2: true;
+    Caption1: true;
+    Caption2: true;
+  }
+}
+
 const theme = createTheme({
   typography: {
     fontFamily: '"Pretendard Variable", sans-serif',
@@ -25,5 +83,136 @@ const theme = createTheme({
     },
   },
 });
+
+if (theme.typography) {
+  theme.typography.fontFamily = "Pretendard Variable, sans-serif";
+
+  theme.typography.Display1 = {
+    fontFamily: theme.typography.fontFamily,
+    fontWeight: 700,
+    fontSize: "56px",
+    lineHeight: "72px",
+    letterSpacing: "-1%",
+    color: theme.palette.text.primary,
+  };
+  theme.typography.Display2 = {
+    fontFamily: theme.typography.fontFamily,
+    fontWeight: 700,
+    fontSize: "40px",
+    lineHeight: "48px",
+    letterSpacing: "-0.1%",
+    color: theme.palette.text.primary,
+  };
+
+  theme.typography.Title1 = {
+    fontFamily: theme.typography.fontFamily,
+    fontWeight: 700,
+    fontSize: "36px",
+    lineHeight: "44px",
+    letterSpacing: "-0.05%",
+    color: theme.palette.text.primary,
+  };
+  theme.typography.Title2 = {
+    fontFamily: theme.typography.fontFamily,
+    fontWeight: 700,
+    fontSize: "28px",
+    lineHeight: "34px",
+    letterSpacing: "-0.05%",
+    color: theme.palette.text.primary,
+  };
+  theme.typography.Title3 = {
+    fontFamily: theme.typography.fontFamily,
+    fontWeight: 700,
+    fontSize: "24px",
+    lineHeight: "32px",
+    letterSpacing: "0%",
+    color: theme.palette.text.primary,
+  };
+
+  theme.typography.Heading1 = {
+    fontFamily: theme.typography.fontFamily,
+    fontWeight: 600,
+    fontSize: "22px",
+    lineHeight: "28px",
+    letterSpacing: "-0.05%",
+    color: theme.palette.text.primary,
+  };
+  theme.typography.Heading2 = {
+    fontFamily: theme.typography.fontFamily,
+    fontWeight: 600,
+    fontSize: "20px",
+    lineHeight: "28px",
+    letterSpacing: "-0.08%",
+    color: theme.palette.text.primary,
+  };
+
+  theme.typography.Headline1 = {
+    fontFamily: theme.typography.fontFamily,
+    fontWeight: 600,
+    fontSize: "18px",
+    lineHeight: "24px",
+    letterSpacing: "-1%",
+    color: theme.palette.text.primary,
+  };
+  theme.typography.Headline2 = {
+    fontFamily: theme.typography.fontFamily,
+    fontWeight: 600,
+    fontSize: "17px",
+    lineHeight: "24px",
+    letterSpacing: "-0.05%",
+    color: theme.palette.text.primary,
+  };
+
+  theme.typography.Body1 = {
+    fontFamily: theme.typography.fontFamily,
+    fontWeight: 400,
+    fontSize: "16px",
+    lineHeight: "24px",
+    letterSpacing: "-0.05%",
+    color: theme.palette.text.primary,
+  };
+  theme.typography.Body2 = {
+    fontFamily: theme.typography.fontFamily,
+    fontWeight: 400,
+    fontSize: "15px",
+    lineHeight: "20px",
+    letterSpacing: "-0.05%",
+    color: theme.palette.text.primary,
+  };
+
+  theme.typography.Label1 = {
+    fontFamily: theme.typography.fontFamily,
+    fontWeight: 600,
+    fontSize: "14px",
+    lineHeight: "20px",
+    letterSpacing: "-0.03%",
+    color: theme.palette.text.primary,
+  };
+  theme.typography.Label2 = {
+    fontFamily: theme.typography.fontFamily,
+    fontWeight: 400,
+    fontSize: "13px",
+    lineHeight: "18px",
+    letterSpacing: "-0.03%",
+    color: theme.palette.text.primary,
+  };
+
+  theme.typography.Caption1 = {
+    fontFamily: theme.typography.fontFamily,
+    fontWeight: 400,
+    fontSize: "12px",
+    lineHeight: "16px",
+    letterSpacing: "-0.03%",
+    color: theme.palette.text.primary,
+  };
+  theme.typography.Caption2 = {
+    fontFamily: theme.typography.fontFamily,
+    fontWeight: 400,
+    fontSize: "11px",
+    lineHeight: "14px",
+    letterSpacing: "-0.05%",
+    color: theme.palette.text.primary,
+  };
+}
 
 export { theme };
