@@ -4,6 +4,7 @@ import React from "react";
 const InfoCard = ({ title, content }: { title: string; content: string }) => {
   return (
     <Stack
+      component={"section"}
       direction="column"
       spacing={1}
       sx={{

@@ -1,17 +1,23 @@
-import { Button, Divider, Stack, Typography } from "@mui/material";
+import { Button, Divider, Grid, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import React from "react";
 
 const Member = ({ name, age, grade, gender }: IMember) => {
   return (
-    <Stack direction={"row"} spacing={3}>
-      <Typography>{name}</Typography>
-      <Stack direction={"row"} spacing={1}>
+    <>
+      <Grid>
+        <Typography>{name}</Typography>
+      </Grid>
+      <Grid>
         <Typography>{age}세</Typography>
+      </Grid>
+      <Grid>
         <Typography>{grade}</Typography>
+      </Grid>
+      <Grid>
         <Typography>{gender} </Typography>
-      </Stack>
-    </Stack>
+      </Grid>
+    </>
   );
 };
 
@@ -24,6 +30,7 @@ const MemberInfoCard = ({
 }) => {
   return (
     <Stack
+      component={"section"}
       sx={{
         bgcolor: "lightgray",
         borderRadius: 1,
@@ -50,11 +57,11 @@ const MemberInfoCard = ({
         </Button>
       </Stack>
       <Divider sx={{ width: "50%" }} />
-      <Stack spacing={2}>
+      <Grid container spacing={2}>
         {members.map((member) => (
           <Member key={member.id} {...member} />
         ))}
-      </Stack>
+      </Grid>
     </Stack>
   );
 };
