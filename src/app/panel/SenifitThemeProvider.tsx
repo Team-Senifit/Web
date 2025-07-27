@@ -1,4 +1,5 @@
-import { createTheme } from "@mui/material";
+"use client";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 
 declare module "@mui/material/styles" {
   interface BreakpointOverrides {
@@ -115,7 +116,7 @@ if (theme.typography) {
     fontWeight: 700,
     fontSize: "3.5rem", // 56px
     lineHeight: "4.5rem", // 72px
-    letterSpacing: "-1%",
+    letterSpacing: "-0.01em", // -1%
     color: theme.palette.text.primary,
   };
 
@@ -124,7 +125,7 @@ if (theme.typography) {
     fontWeight: 700,
     fontSize: "2.5rem", // 40px
     lineHeight: "3rem", // 48px
-    letterSpacing: "-0.1%",
+    letterSpacing: "-0.001em", // -0.1%
     color: theme.palette.text.primary,
   };
 
@@ -133,7 +134,7 @@ if (theme.typography) {
     fontWeight: 700,
     fontSize: "2.25rem", // 36px
     lineHeight: "2.75rem", // 44px
-    letterSpacing: "-0.05%",
+    letterSpacing: "-0.0005em", // -0.05%
     color: theme.palette.text.primary,
   };
 
@@ -142,7 +143,7 @@ if (theme.typography) {
     fontWeight: 700,
     fontSize: "1.75rem", // 28px
     lineHeight: "2.125rem", // 34px
-    letterSpacing: "-0.05%",
+    letterSpacing: "-0.0005em", // -0.05%
     color: theme.palette.text.primary,
   };
 
@@ -151,7 +152,7 @@ if (theme.typography) {
     fontWeight: 700,
     fontSize: "1.5rem", // 24px
     lineHeight: "2rem", // 32px
-    letterSpacing: "0%",
+    letterSpacing: "0em", // 0%
     color: theme.palette.text.primary,
   };
 
@@ -160,7 +161,7 @@ if (theme.typography) {
     fontWeight: 600,
     fontSize: "1.375rem", // 22px
     lineHeight: "1.75rem", // 28px
-    letterSpacing: "-0.05%",
+    letterSpacing: "-0.0005em",
     color: theme.palette.text.primary,
   };
 
@@ -169,7 +170,7 @@ if (theme.typography) {
     fontWeight: 600,
     fontSize: "1.25rem", // 20px
     lineHeight: "1.75rem", // 28px
-    letterSpacing: "-0.08%",
+    letterSpacing: "-0.0008em",
     color: theme.palette.text.primary,
   };
 
@@ -178,7 +179,7 @@ if (theme.typography) {
     fontWeight: 600,
     fontSize: "1.125rem", // 18px
     lineHeight: "1.5rem", // 24px
-    letterSpacing: "-1%",
+    letterSpacing: "-0.01em",
     color: theme.palette.text.primary,
   };
 
@@ -187,7 +188,7 @@ if (theme.typography) {
     fontWeight: 600,
     fontSize: "1.0625rem", // 17px
     lineHeight: "1.5rem", // 24px
-    letterSpacing: "-0.05%",
+    letterSpacing: "-0.0005em",
     color: theme.palette.text.primary,
   };
 
@@ -196,7 +197,7 @@ if (theme.typography) {
     fontWeight: 400,
     fontSize: "1rem", // 16px
     lineHeight: "1.5rem", // 24px
-    letterSpacing: "-0.05%",
+    letterSpacing: "-0.0005em",
     color: theme.palette.text.primary,
   };
 
@@ -205,7 +206,7 @@ if (theme.typography) {
     fontWeight: 400,
     fontSize: "0.9375rem", // 15px
     lineHeight: "1.25rem", // 20px
-    letterSpacing: "-0.05%",
+    letterSpacing: "-0.0005em",
     color: theme.palette.text.primary,
   };
 
@@ -214,7 +215,7 @@ if (theme.typography) {
     fontWeight: 600,
     fontSize: "0.875rem", // 14px
     lineHeight: "1.25rem", // 20px
-    letterSpacing: "-0.03%",
+    letterSpacing: "-0.0003em",
     color: theme.palette.text.primary,
   };
 
@@ -223,7 +224,7 @@ if (theme.typography) {
     fontWeight: 400,
     fontSize: "0.8125rem", // 13px
     lineHeight: "1.125rem", // 18px
-    letterSpacing: "-0.03%",
+    letterSpacing: "-0.0003em",
     color: theme.palette.text.primary,
   };
 
@@ -232,7 +233,7 @@ if (theme.typography) {
     fontWeight: 400,
     fontSize: "0.75rem", // 12px
     lineHeight: "1rem", // 16px
-    letterSpacing: "-0.03%",
+    letterSpacing: "-0.0003em",
     color: theme.palette.text.primary,
   };
 
@@ -241,9 +242,18 @@ if (theme.typography) {
     fontWeight: 400,
     fontSize: "0.6875rem", // 11px
     lineHeight: "0.875rem", // 14px
-    letterSpacing: "-0.05%",
+    letterSpacing: "-0.0005em",
     color: theme.palette.text.primary,
   };
 }
 
-export { theme };
+const SenifitThemeProvider = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      {children}
+    </ThemeProvider>
+  );
+};
+
+export default SenifitThemeProvider;

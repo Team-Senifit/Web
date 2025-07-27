@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ThemeProvider } from "@emotion/react";
-import { theme } from "./panel/theme";
-import { CssBaseline, GlobalStyles } from "@mui/material";
+import SenifitThemeProvider from "./panel/SenifitThemeProvider";
 
 export const metadata: Metadata = {
   title: "시니핏",
@@ -17,10 +15,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <ThemeProvider theme={theme}>
-          <CssBaseline /> {/* normalize.css 같은 거 */}
-          {children}
-        </ThemeProvider>
+        <SenifitThemeProvider>{children}</SenifitThemeProvider>
       </body>
     </html>
   );
