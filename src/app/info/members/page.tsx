@@ -2,6 +2,7 @@ import { Button, Container, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import React from "react";
 import MemberList from "./MemberList";
+import Link from "next/link";
 
 const memberData: Array<IMember> = [
   {
@@ -30,16 +31,31 @@ const memberData: Array<IMember> = [
 
 const Page = () => {
   return (
-    <Container>
+    <Container component={Stack} spacing={2}>
       <Stack
         direction={"row"}
         justifyContent="space-between"
         alignItems="center"
       >
         <Typography>{"등록 어르신 관리하기"}</Typography>
-        <Button startIcon={<AddIcon />}>{"등록하기"}</Button>
+        <Button
+          variant="contained"
+          href="/info/members/add"
+          component={Link}
+          startIcon={<AddIcon />}
+        >
+          {"어르신 추가하기"}
+        </Button>
       </Stack>
       <MemberList members={memberData} />
+      <Button
+        variant="contained"
+        href="/info"
+        component={Link}
+        sx={{ width: "fit-content" }}
+      >
+        <Typography>{"돌아가기"}</Typography>
+      </Button>
     </Container>
   );
 };

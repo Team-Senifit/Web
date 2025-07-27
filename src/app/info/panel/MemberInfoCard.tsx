@@ -5,16 +5,16 @@ import React from "react";
 const Member = ({ name, age, grade, gender }: IMember) => {
   return (
     <>
-      <Grid>
+      <Grid size={4}>
         <Typography>{name}</Typography>
       </Grid>
-      <Grid>
+      <Grid size={2}>
         <Typography>{age}세</Typography>
       </Grid>
-      <Grid>
+      <Grid size={2}>
         <Typography>{grade}</Typography>
       </Grid>
-      <Grid>
+      <Grid size={2}>
         <Typography>{gender} </Typography>
       </Grid>
     </>
