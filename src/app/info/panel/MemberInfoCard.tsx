@@ -1,4 +1,5 @@
 import { Button, Divider, Stack, Typography } from "@mui/material";
+import Link from "next/link";
 import React from "react";
 
 const Member = ({ name, age, grade, gender }: IMember) => {
@@ -44,7 +45,7 @@ const MemberInfoCard = ({
             {"입니다."}
           </Typography>
         </Stack>
-        <Button variant="contained">
+        <Button variant="contained" component={Link} href="/info/members">
           <Typography>{"관리하기"}</Typography>
         </Button>
       </Stack>

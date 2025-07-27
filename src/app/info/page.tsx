@@ -1,6 +1,6 @@
 import React from "react";
 import InfoCard from "./panel/InfoCard";
-import { Stack } from "@mui/material";
+import { Container, Stack, Typography } from "@mui/material";
 import MemberInfoCard from "./panel/MemberInfoCard";
 
 const memberData: Array<IMember> = [
@@ -31,13 +31,17 @@ const memberData: Array<IMember> = [
 // grid로 처리해도 되지만, 모바일, 테블릿에서 어떻게 나올지 몰라서 Stack으로 임시 처리
 const Page = () => {
   return (
-    <Stack spacing={2} direction={"row"}>
-      <Stack spacing={2} direction={"column"}>
-        <InfoCard title={"센터명"} content={"시니데이케어센터"} />
-        <InfoCard title={"센터 위치"} content={"서울시 강남구"} />
+    <Container>
+      <Typography>{"안녕하세요."}</Typography>
+      <Typography>{"센터 정보를 관리해보세요!"}</Typography>
+      <Stack spacing={2} direction={"row"}>
+        <Stack spacing={2} direction={"column"}>
+          <InfoCard title={"센터명"} content={"시니데이케어센터"} />
+          <InfoCard title={"센터 위치"} content={"서울시 강남구"} />
+        </Stack>
+        <MemberInfoCard count={memberData.length} members={memberData} />
       </Stack>
-      <MemberInfoCard count={memberData.length} members={memberData} />
-    </Stack>
+    </Container>
   );
 };
 
