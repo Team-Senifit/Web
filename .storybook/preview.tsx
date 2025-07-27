@@ -3,6 +3,7 @@ import type { Preview } from "@storybook/nextjs";
 import { theme } from "../src/app/panel/theme";
 
 const preview: Preview = {
+  tags: ["autodocs"],
   parameters: {
     controls: {
       matchers: {
