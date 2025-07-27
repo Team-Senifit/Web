@@ -110,20 +110,20 @@ if (theme.components) {
 
 if (theme.typography) {
   theme.typography.fontFamily = "Pretendard Variable, sans-serif";
-
   theme.typography.Display1 = {
     fontFamily: theme.typography.fontFamily,
     fontWeight: 700,
-    fontSize: "56px",
-    lineHeight: "72px",
+    fontSize: "3.5rem", // 56px
+    lineHeight: "4.5rem", // 72px
     letterSpacing: "-1%",
     color: theme.palette.text.primary,
   };
+
   theme.typography.Display2 = {
     fontFamily: theme.typography.fontFamily,
     fontWeight: 700,
-    fontSize: "40px",
-    lineHeight: "48px",
+    fontSize: "2.5rem", // 40px
+    lineHeight: "3rem", // 48px
     letterSpacing: "-0.1%",
     color: theme.palette.text.primary,
   };
@@ -131,24 +131,26 @@ if (theme.typography) {
   theme.typography.Title1 = {
     fontFamily: theme.typography.fontFamily,
     fontWeight: 700,
-    fontSize: "36px",
-    lineHeight: "44px",
+    fontSize: "2.25rem", // 36px
+    lineHeight: "2.75rem", // 44px
     letterSpacing: "-0.05%",
     color: theme.palette.text.primary,
   };
+
   theme.typography.Title2 = {
     fontFamily: theme.typography.fontFamily,
     fontWeight: 700,
-    fontSize: "28px",
-    lineHeight: "34px",
+    fontSize: "1.75rem", // 28px
+    lineHeight: "2.125rem", // 34px
     letterSpacing: "-0.05%",
     color: theme.palette.text.primary,
   };
+
   theme.typography.Title3 = {
     fontFamily: theme.typography.fontFamily,
     fontWeight: 700,
-    fontSize: "24px",
-    lineHeight: "32px",
+    fontSize: "1.5rem", // 24px
+    lineHeight: "2rem", // 32px
     letterSpacing: "0%",
     color: theme.palette.text.primary,
   };
@@ -156,16 +158,17 @@ if (theme.typography) {
   theme.typography.Heading1 = {
     fontFamily: theme.typography.fontFamily,
     fontWeight: 600,
-    fontSize: "22px",
-    lineHeight: "28px",
+    fontSize: "1.375rem", // 22px
+    lineHeight: "1.75rem", // 28px
     letterSpacing: "-0.05%",
     color: theme.palette.text.primary,
   };
+
   theme.typography.Heading2 = {
     fontFamily: theme.typography.fontFamily,
     fontWeight: 600,
-    fontSize: "20px",
-    lineHeight: "28px",
+    fontSize: "1.25rem", // 20px
+    lineHeight: "1.75rem", // 28px
     letterSpacing: "-0.08%",
     color: theme.palette.text.primary,
   };
@@ -173,16 +176,17 @@ if (theme.typography) {
   theme.typography.Headline1 = {
     fontFamily: theme.typography.fontFamily,
     fontWeight: 600,
-    fontSize: "18px",
-    lineHeight: "24px",
+    fontSize: "1.125rem", // 18px
+    lineHeight: "1.5rem", // 24px
     letterSpacing: "-1%",
     color: theme.palette.text.primary,
   };
+
   theme.typography.Headline2 = {
     fontFamily: theme.typography.fontFamily,
     fontWeight: 600,
-    fontSize: "17px",
-    lineHeight: "24px",
+    fontSize: "1.0625rem", // 17px
+    lineHeight: "1.5rem", // 24px
     letterSpacing: "-0.05%",
     color: theme.palette.text.primary,
   };
@@ -190,16 +194,17 @@ if (theme.typography) {
   theme.typography.Body1 = {
     fontFamily: theme.typography.fontFamily,
     fontWeight: 400,
-    fontSize: "16px",
-    lineHeight: "24px",
+    fontSize: "1rem", // 16px
+    lineHeight: "1.5rem", // 24px
     letterSpacing: "-0.05%",
     color: theme.palette.text.primary,
   };
+
   theme.typography.Body2 = {
     fontFamily: theme.typography.fontFamily,
     fontWeight: 400,
-    fontSize: "15px",
-    lineHeight: "20px",
+    fontSize: "0.9375rem", // 15px
+    lineHeight: "1.25rem", // 20px
     letterSpacing: "-0.05%",
     color: theme.palette.text.primary,
   };
@@ -207,16 +212,17 @@ if (theme.typography) {
   theme.typography.Label1 = {
     fontFamily: theme.typography.fontFamily,
     fontWeight: 600,
-    fontSize: "14px",
-    lineHeight: "20px",
+    fontSize: "0.875rem", // 14px
+    lineHeight: "1.25rem", // 20px
     letterSpacing: "-0.03%",
     color: theme.palette.text.primary,
   };
+
   theme.typography.Label2 = {
     fontFamily: theme.typography.fontFamily,
     fontWeight: 400,
-    fontSize: "13px",
-    lineHeight: "18px",
+    fontSize: "0.8125rem", // 13px
+    lineHeight: "1.125rem", // 18px
     letterSpacing: "-0.03%",
     color: theme.palette.text.primary,
   };
@@ -224,16 +230,17 @@ if (theme.typography) {
   theme.typography.Caption1 = {
     fontFamily: theme.typography.fontFamily,
     fontWeight: 400,
-    fontSize: "12px",
-    lineHeight: "16px",
+    fontSize: "0.75rem", // 12px
+    lineHeight: "1rem", // 16px
     letterSpacing: "-0.03%",
     color: theme.palette.text.primary,
   };
+
   theme.typography.Caption2 = {
     fontFamily: theme.typography.fontFamily,
     fontWeight: 400,
-    fontSize: "11px",
-    lineHeight: "14px",
+    fontSize: "0.6875rem", // 11px
+    lineHeight: "0.875rem", // 14px
     letterSpacing: "-0.05%",
     color: theme.palette.text.primary,
   };
