@@ -1,6 +1,6 @@
 import { ThemeProvider } from "@mui/material";
-import type { Preview } from "@storybook/nextjs";
-import { theme } from "../src/app/panel/theme";
+import type { Preview } from "@storybook/react";
+import SenifitThemeProvider from "../src/app/panel/SenifitThemeProvider.tsx";
 
 const preview: Preview = {
   tags: ["autodocs"],
@@ -14,9 +14,9 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <ThemeProvider theme={theme}>
+      <SenifitThemeProvider>
         <Story />
-      </ThemeProvider>
+      </SenifitThemeProvider>
     ),
   ],
 };
