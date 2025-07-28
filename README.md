@@ -67,3 +67,11 @@ $ git config --global core.editor "vim" # vim 사용 시
 1. 코드를 꼼꼼히 읽고 궁금한 점이나 제안사항이 있다면 코멘드로 단다.
 2. 문제가 없다면 Approve를 선택하여 submit한다.
 3. 문제가 있다면 Request changes를 선택하여 submit한다.
+
+### Storybook에 관하여
+
+공용컴포넌트의 쉬운 관리를 위해 스토리북을 도입하였습니다. 다음의 명령어를 통해 `localhost:6006`로 확인할 수 있으니 참고부탁드리겠습니다.
+
+```shell
+$ npm run storybook
+```
