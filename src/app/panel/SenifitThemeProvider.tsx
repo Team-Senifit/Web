@@ -85,8 +85,9 @@ const theme = createTheme({
   },
 });
 
-if (theme.components) {
-  theme.components.MuiTypography = {
+theme.components = {
+  ...theme.components,
+  MuiTypography: {
     defaultProps: {
       variantMapping: {
         Display1: "h1",
@@ -106,142 +107,118 @@ if (theme.components) {
         Caption2: "span",
       },
     },
-  };
-}
-
-theme.typography.Display1 = {
-  fontFamily: theme.typography.fontFamily,
-  fontWeight: 700,
-  fontSize: "3.5rem", // 56px
-  lineHeight: "4.5rem", // 72px
-  letterSpacing: "-0.01em", // -1%
-  color: theme.palette.text.primary,
+  },
 };
 
-theme.typography.Display2 = {
-  fontFamily: theme.typography.fontFamily,
-  fontWeight: 700,
-  fontSize: "2.5rem", // 40px
-  lineHeight: "3rem", // 48px
-  letterSpacing: "-0.001em", // -0.1%
-  color: theme.palette.text.primary,
-};
+const fontColor = theme.palette.text.primary;
 
-theme.typography.Title1 = {
-  fontFamily: theme.typography.fontFamily,
-  fontWeight: 700,
-  fontSize: "2.25rem", // 36px
-  lineHeight: "2.75rem", // 44px
-  letterSpacing: "-0.0005em", // -0.05%
-  color: theme.palette.text.primary,
-};
-
-theme.typography.Title2 = {
-  fontFamily: theme.typography.fontFamily,
-  fontWeight: 700,
-  fontSize: "1.75rem", // 28px
-  lineHeight: "2.125rem", // 34px
-  letterSpacing: "-0.0005em", // -0.05%
-  color: theme.palette.text.primary,
-};
-
-theme.typography.Title3 = {
-  fontFamily: theme.typography.fontFamily,
-  fontWeight: 700,
-  fontSize: "1.5rem", // 24px
-  lineHeight: "2rem", // 32px
-  letterSpacing: "0em", // 0%
-  color: theme.palette.text.primary,
-};
-
-theme.typography.Heading1 = {
-  fontFamily: theme.typography.fontFamily,
-  fontWeight: 600,
-  fontSize: "1.375rem", // 22px
-  lineHeight: "1.75rem", // 28px
-  letterSpacing: "-0.0005em",
-  color: theme.palette.text.primary,
-};
-
-theme.typography.Heading2 = {
-  fontFamily: theme.typography.fontFamily,
-  fontWeight: 600,
-  fontSize: "1.25rem", // 20px
-  lineHeight: "1.75rem", // 28px
-  letterSpacing: "-0.0008em",
-  color: theme.palette.text.primary,
-};
-
-theme.typography.Headline1 = {
-  fontFamily: theme.typography.fontFamily,
-  fontWeight: 600,
-  fontSize: "1.125rem", // 18px
-  lineHeight: "1.5rem", // 24px
-  letterSpacing: "-0.01em",
-  color: theme.palette.text.primary,
-};
-
-theme.typography.Headline2 = {
-  fontFamily: theme.typography.fontFamily,
-  fontWeight: 600,
-  fontSize: "1.0625rem", // 17px
-  lineHeight: "1.5rem", // 24px
-  letterSpacing: "-0.0005em",
-  color: theme.palette.text.primary,
-};
-
-theme.typography.Body1 = {
-  fontFamily: theme.typography.fontFamily,
-  fontWeight: 400,
-  fontSize: "1rem", // 16px
-  lineHeight: "1.5rem", // 24px
-  letterSpacing: "-0.0005em",
-  color: theme.palette.text.primary,
-};
-
-theme.typography.Body2 = {
-  fontFamily: theme.typography.fontFamily,
-  fontWeight: 400,
-  fontSize: "0.9375rem", // 15px
-  lineHeight: "1.25rem", // 20px
-  letterSpacing: "-0.0005em",
-  color: theme.palette.text.primary,
-};
-
-theme.typography.Label1 = {
-  fontFamily: theme.typography.fontFamily,
-  fontWeight: 600,
-  fontSize: "0.875rem", // 14px
-  lineHeight: "1.25rem", // 20px
-  letterSpacing: "-0.0003em",
-  color: theme.palette.text.primary,
-};
-
-theme.typography.Label2 = {
-  fontFamily: theme.typography.fontFamily,
-  fontWeight: 400,
-  fontSize: "0.8125rem", // 13px
-  lineHeight: "1.125rem", // 18px
-  letterSpacing: "-0.0003em",
-  color: theme.palette.text.primary,
-};
-
-theme.typography.Caption1 = {
-  fontFamily: theme.typography.fontFamily,
-  fontWeight: 400,
-  fontSize: "0.75rem", // 12px
-  lineHeight: "1rem", // 16px
-  letterSpacing: "-0.0003em",
-  color: theme.palette.text.primary,
-};
-
-theme.typography.Caption2 = {
-  fontFamily: theme.typography.fontFamily,
-  fontWeight: 400,
-  fontSize: "0.6875rem", // 11px
-  lineHeight: "0.875rem", // 14px
-  letterSpacing: "-0.0005em",
-  color: theme.palette.text.primary,
+theme.typography = {
+  ...theme.typography,
+  Display1: {
+    fontWeight: 700,
+    fontSize: "3.5rem",
+    lineHeight: "4.5rem",
+    letterSpacing: "-0.01em",
+    color: fontColor,
+  },
+  Display2: {
+    fontWeight: 700,
+    fontSize: "2.5rem",
+    lineHeight: "3rem",
+    letterSpacing: "-0.001em",
+    color: fontColor,
+  },
+  Title1: {
+    fontWeight: 700,
+    fontSize: "2.25rem",
+    lineHeight: "2.75rem",
+    letterSpacing: "-0.0005em",
+    color: fontColor,
+  },
+  Title2: {
+    fontWeight: 700,
+    fontSize: "1.75rem",
+    lineHeight: "2.125rem",
+    letterSpacing: "-0.0005em",
+    color: fontColor,
+  },
+  Title3: {
+    fontWeight: 700,
+    fontSize: "1.5rem",
+    lineHeight: "2rem",
+    letterSpacing: "0em",
+    color: fontColor,
+  },
+  Heading1: {
+    fontWeight: 600,
+    fontSize: "1.375rem",
+    lineHeight: "1.75rem",
+    letterSpacing: "-0.0005em",
+    color: fontColor,
+  },
+  Heading2: {
+    fontWeight: 600,
+    fontSize: "1.25rem",
+    lineHeight: "1.75rem",
+    letterSpacing: "-0.0008em",
+    color: fontColor,
+  },
+  Headline1: {
+    fontWeight: 600,
+    fontSize: "1.125rem",
+    lineHeight: "1.5rem",
+    letterSpacing: "-0.01em",
+    color: fontColor,
+  },
+  Headline2: {
+    fontWeight: 600,
+    fontSize: "1.0625rem",
+    lineHeight: "1.5rem",
+    letterSpacing: "-0.0005em",
+    color: fontColor,
+  },
+  Body1: {
+    fontWeight: 400,
+    fontSize: "1rem",
+    lineHeight: "1.5rem",
+    letterSpacing: "-0.0005em",
+    color: fontColor,
+  },
+  Body2: {
+    fontWeight: 400,
+    fontSize: "0.9375rem",
+    lineHeight: "1.25rem",
+    letterSpacing: "-0.0005em",
+    color: fontColor,
+  },
+  Label1: {
+    fontWeight: 600,
+    fontSize: "0.875rem",
+    lineHeight: "1.25rem",
+    letterSpacing: "-0.0003em",
+    color: fontColor,
+  },
+  Label2: {
+    fontWeight: 400,
+    fontSize: "0.8125rem",
+    lineHeight: "1.125rem",
+    letterSpacing: "-0.0003em",
+    color: fontColor,
+  },
+  Caption1: {
+    fontWeight: 400,
+    fontSize: "0.75rem",
+    lineHeight: "1rem",
+    letterSpacing: "-0.0003em",
+    color: fontColor,
+  },
+  Caption2: {
+    fontWeight: 400,
+    fontSize: "0.6875rem",
+    lineHeight: "0.875rem",
+    letterSpacing: "-0.0005em",
+    color: fontColor,
+  },
 };
 
 const SenifitThemeProvider = ({ children }: { children: React.ReactNode }) => {
