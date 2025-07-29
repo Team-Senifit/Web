@@ -1,6 +1,6 @@
 "use client";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import { CSSProperties } from "node_modules/@mui/material";
+import { CSSProperties } from "react";
 import type { PaletteOptions as MuiPaletteOptions } from "@mui/material/styles";
 declare module "@mui/material/styles" {
   // Breakpoints
