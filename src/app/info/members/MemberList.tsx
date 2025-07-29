@@ -8,25 +8,27 @@ const Member = ({ id, name, age, grade, gender }: IMember) => {
       <Grid size={2}>
         <Typography>{name}</Typography>
       </Grid>
-      <Grid size={1}>
-        <Typography>{age}세</Typography>
+      <Grid container size={6}>
+        <Grid size={2}>
+          <Typography>{age}세</Typography>
+        </Grid>
+        <Grid size={2}>
+          <Typography>{gender} </Typography>
+        </Grid>
+        <Grid size={2}>
+          <Typography>{grade}</Typography>
+        </Grid>
       </Grid>
-      <Grid size={1}>
-        <Typography>{grade}</Typography>
-      </Grid>
-      <Grid size={5}>
-        <Typography>{gender} </Typography>
-      </Grid>
-      <Grid size={1}>
+      <Grid size={2}>
         <Button
           variant="contained"
           component={Link}
-          href={`/info/members/edit?id=${id}`}
+          href={`/info/members/edit/${id}`}
         >
           {"수정"}
         </Button>
       </Grid>
-      <Grid size={1}>
+      <Grid size={2}>
         <Button variant="contained">{"삭제"}</Button>
       </Grid>
     </>
