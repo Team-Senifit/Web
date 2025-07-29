@@ -7,7 +7,10 @@ type TProps<T extends FieldValues> = TextFieldProps & TControl<T>;
 const SenifitTextField = <T extends FieldValues>(props: TProps<T>) => {
   const { name, control, rules, onChange, onBlur, ...textFieldProps } = props;
 
-  const { field } = useController({
+  const {
+    field,
+    fieldState: { error },
+  } = useController({
     name,
     control,
     rules,
@@ -27,6 +30,8 @@ const SenifitTextField = <T extends FieldValues>(props: TProps<T>) => {
         field.onBlur();
         onBlur?.(e);
       }}
+      error={!!error}
+      helperText={error?.message}
     />
   );
 };
