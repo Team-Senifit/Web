@@ -1,7 +1,9 @@
 "use client";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-
+import { CSSProperties } from "node_modules/@mui/material";
+import type { PaletteOptions as MuiPaletteOptions } from "@mui/material/styles";
 declare module "@mui/material/styles" {
+  // Breakpoints
   interface BreakpointOverrides {
     xs: false;
     sm: false;
@@ -12,43 +14,156 @@ declare module "@mui/material/styles" {
     tablet: true;
     desktop: true;
   }
-}
 
-declare module "@mui/material/styles" {
+  // Typography variants
   interface TypographyVariants {
-    Display1: React.CSSProperties;
-    Display2: React.CSSProperties;
-    Title1: React.CSSProperties;
-    Title2: React.CSSProperties;
-    Title3: React.CSSProperties;
-    Heading1: React.CSSProperties;
-    Heading2: React.CSSProperties;
-    Headline1: React.CSSProperties;
-    Headline2: React.CSSProperties;
-    Body1: React.CSSProperties;
-    Body2: React.CSSProperties;
-    Label1: React.CSSProperties;
-    Label2: React.CSSProperties;
-    Caption1: React.CSSProperties;
-    Caption2: React.CSSProperties;
+    Display1: CSSProperties;
+    Display2: CSSProperties;
+    Title1: CSSProperties;
+    Title2: CSSProperties;
+    Title3: CSSProperties;
+    Heading1: CSSProperties;
+    Heading2: CSSProperties;
+    Headline1: CSSProperties;
+    Headline2: CSSProperties;
+    Body1: CSSProperties;
+    Body2: CSSProperties;
+    Label1: CSSProperties;
+    Label2: CSSProperties;
+    Caption1: CSSProperties;
+    Caption2: CSSProperties;
+  }
+  interface TypographyVariantsOptions {
+    Display1?: CSSProperties;
+    Display2?: CSSProperties;
+    Title1?: CSSProperties;
+    Title2?: CSSProperties;
+    Title3?: CSSProperties;
+    Heading1?: CSSProperties;
+    Heading2?: CSSProperties;
+    Headline1?: CSSProperties;
+    Headline2?: CSSProperties;
+    Body1?: CSSProperties;
+    Body2?: CSSProperties;
+    Label1?: CSSProperties;
+    Label2?: CSSProperties;
+    Caption1?: CSSProperties;
+    Caption2?: CSSProperties;
   }
 
-  interface TypographyVariantsOptions {
-    Display1?: React.CSSProperties;
-    Display2?: React.CSSProperties;
-    Title1?: React.CSSProperties;
-    Title2?: React.CSSProperties;
-    Title3?: React.CSSProperties;
-    Heading1?: React.CSSProperties;
-    Heading2?: React.CSSProperties;
-    Headline1?: React.CSSProperties;
-    Headline2?: React.CSSProperties;
-    Body1?: React.CSSProperties;
-    Body2?: React.CSSProperties;
-    Label1?: React.CSSProperties;
-    Label2?: React.CSSProperties;
-    Caption1?: React.CSSProperties;
-    Caption2?: React.CSSProperties;
+  // Palette 확장
+  interface Palette {
+    static: {
+      white: string;
+      black: string;
+    };
+    primaryVariants: {
+      default: string;
+      pressed: string;
+      disabled: string;
+    };
+    label: {
+      strong: string;
+      normal: string;
+      neutral: string;
+      alternative: string;
+      disabled: string;
+    };
+    bg: {
+      normal: string;
+      alternative: string;
+      colored: string;
+    };
+    interaction: {
+      inactive: string;
+      disabled: string;
+    };
+    statusVariants: {
+      positive: string;
+      cautionary: string;
+      negative: string;
+    };
+    fillVariants: {
+      normal: string;
+      strong: string;
+      alternative: string;
+      colored: string;
+      negative: string;
+      positive: string;
+    };
+    borderVariants: {
+      normal: string;
+      strong: string;
+    };
+    material: {
+      dimmer: string;
+    };
+  }
+
+  interface PaletteOptions
+    extends Pick<
+      MuiPaletteOptions,
+      | "common"
+      | "primary"
+      | "secondary"
+      | "error"
+      | "warning"
+      | "info"
+      | "success"
+      | "mode"
+      | "contrastThreshold"
+      | "tonalOffset"
+      | "divider"
+      | "background"
+      | "text"
+      | "action"
+      | "grey"
+    > {
+    static?: {
+      white?: string;
+      black?: string;
+    };
+    primaryVariants?: {
+      default?: string;
+      pressed?: string;
+      disabled?: string;
+    };
+    label?: {
+      strong?: string;
+      normal?: string;
+      neutral?: string;
+      alternative?: string;
+      disabled?: string;
+    };
+    bg?: {
+      normal?: string;
+      alternative?: string;
+      colored?: string;
+    };
+    interaction?: {
+      inactive?: string;
+      disabled?: string;
+    };
+    statusVariants?: {
+      positive?: string;
+      cautionary?: string;
+      negative?: string;
+    };
+    fillVariants?: {
+      normal?: string;
+      strong?: string;
+      alternative?: string;
+      colored?: string;
+      negative?: string;
+      positive?: string;
+    };
+    borderVariants?: {
+      normal?: string;
+      strong?: string;
+    };
+    material?: {
+      dimmer?: string;
+    };
   }
 }
 
@@ -83,11 +198,91 @@ const theme = createTheme({
       desktop: 1200,
     },
   },
+  palette: {
+    /** ─── MUI 기본 키 매핑 ───────────────────────────────────────────────── */
+    common: {
+      white: "#FFFFFF",
+      black: "#000000",
+    },
+    primary: {
+      main: "#F15B04", // default
+      dark: "#C94C03", // pressed
+      light: "#FEDFCD", // disabled
+    },
+    text: {
+      primary: "#0C0D0D", // label-strong
+      secondary: "#19191A", // label-normal
+      disabled: "#CBCBCD", // label-disabled
+    },
+    grey: {
+      600: "#646568", // label-neutral
+      500: "#97989B", // label-alternative & border-strong
+    },
+    background: {
+      default: "#FFFFFF", // bg-normal
+      paper: "#F5F5F5", // bg-alternative
+    },
+    action: {
+      active: "#7D7E82", // interaction-inactive
+      disabled: "#F5F5F5", // interaction-disabled
+    },
+    success: { main: "#0AC254" }, // status-positive
+    warning: { main: "#FF8A00" }, // status-cautionary
+    error: { main: "#E21304" }, // status-negative
+    divider: "#CBCBCD", // border-normal
+
+    /** ─── 이미지 토큰 이름 그대로 노출 ───────────────────────────────────────── */
+    static: {
+      white: "#FFFFFF",
+      black: "#000000",
+    },
+    primaryVariants: {
+      default: "#F15B04",
+      pressed: "#C94C03",
+      disabled: "#FEDFCD",
+    },
+    label: {
+      strong: "#0C0D0D",
+      normal: "#19191A",
+      neutral: "#646568",
+      alternative: "#97989B",
+      disabled: "#CBCBCD",
+    },
+    bg: {
+      normal: "#FFFFFF",
+      alternative: "#F5F5F5",
+      colored: "#FFF9F5",
+    },
+    interaction: {
+      inactive: "#7D7E82",
+      disabled: "#F5F5F5",
+    },
+    statusVariants: {
+      positive: "#0AC254",
+      cautionary: "#FF8A00",
+      negative: "#E21304",
+    },
+    fillVariants: {
+      normal: "#F5F5F5",
+      strong: "#CBCBCD",
+      alternative: "#FAFAFA",
+      colored: "#FFF5F0",
+      negative: "#FFF6F5",
+      positive: "#F5FEF9",
+    },
+    borderVariants: {
+      normal: "#CBCBCD",
+      strong: "#97989B",
+    },
+    material: {
+      // #0C0D0D 50% 투명도
+      dimmer: "rgba(12,13,13,0.5)",
+    },
+  },
 });
 
-theme.components = {
-  ...theme.components,
-  MuiTypography: {
+if (theme.components) {
+  theme.components.MuiTypography = {
     defaultProps: {
       variantMapping: {
         Display1: "h1",
@@ -107,118 +302,142 @@ theme.components = {
         Caption2: "span",
       },
     },
-  },
+  };
+}
+
+theme.typography.Display1 = {
+  fontFamily: theme.typography.fontFamily,
+  fontWeight: 700,
+  fontSize: "3.5rem", // 56px
+  lineHeight: "4.5rem", // 72px
+  letterSpacing: "-0.01em", // -1%
+  color: theme.palette.text.primary,
 };
 
-const fontColor = theme.palette.text.primary;
+theme.typography.Display2 = {
+  fontFamily: theme.typography.fontFamily,
+  fontWeight: 700,
+  fontSize: "2.5rem", // 40px
+  lineHeight: "3rem", // 48px
+  letterSpacing: "-0.001em", // -0.1%
+  color: theme.palette.text.primary,
+};
 
-theme.typography = {
-  ...theme.typography,
-  Display1: {
-    fontWeight: 700,
-    fontSize: "3.5rem",
-    lineHeight: "4.5rem",
-    letterSpacing: "-0.01em",
-    color: fontColor,
-  },
-  Display2: {
-    fontWeight: 700,
-    fontSize: "2.5rem",
-    lineHeight: "3rem",
-    letterSpacing: "-0.001em",
-    color: fontColor,
-  },
-  Title1: {
-    fontWeight: 700,
-    fontSize: "2.25rem",
-    lineHeight: "2.75rem",
-    letterSpacing: "-0.0005em",
-    color: fontColor,
-  },
-  Title2: {
-    fontWeight: 700,
-    fontSize: "1.75rem",
-    lineHeight: "2.125rem",
-    letterSpacing: "-0.0005em",
-    color: fontColor,
-  },
-  Title3: {
-    fontWeight: 700,
-    fontSize: "1.5rem",
-    lineHeight: "2rem",
-    letterSpacing: "0em",
-    color: fontColor,
-  },
-  Heading1: {
-    fontWeight: 600,
-    fontSize: "1.375rem",
-    lineHeight: "1.75rem",
-    letterSpacing: "-0.0005em",
-    color: fontColor,
-  },
-  Heading2: {
-    fontWeight: 600,
-    fontSize: "1.25rem",
-    lineHeight: "1.75rem",
-    letterSpacing: "-0.0008em",
-    color: fontColor,
-  },
-  Headline1: {
-    fontWeight: 600,
-    fontSize: "1.125rem",
-    lineHeight: "1.5rem",
-    letterSpacing: "-0.01em",
-    color: fontColor,
-  },
-  Headline2: {
-    fontWeight: 600,
-    fontSize: "1.0625rem",
-    lineHeight: "1.5rem",
-    letterSpacing: "-0.0005em",
-    color: fontColor,
-  },
-  Body1: {
-    fontWeight: 400,
-    fontSize: "1rem",
-    lineHeight: "1.5rem",
-    letterSpacing: "-0.0005em",
-    color: fontColor,
-  },
-  Body2: {
-    fontWeight: 400,
-    fontSize: "0.9375rem",
-    lineHeight: "1.25rem",
-    letterSpacing: "-0.0005em",
-    color: fontColor,
-  },
-  Label1: {
-    fontWeight: 600,
-    fontSize: "0.875rem",
-    lineHeight: "1.25rem",
-    letterSpacing: "-0.0003em",
-    color: fontColor,
-  },
-  Label2: {
-    fontWeight: 400,
-    fontSize: "0.8125rem",
-    lineHeight: "1.125rem",
-    letterSpacing: "-0.0003em",
-    color: fontColor,
-  },
-  Caption1: {
-    fontWeight: 400,
-    fontSize: "0.75rem",
-    lineHeight: "1rem",
-    letterSpacing: "-0.0003em",
-    color: fontColor,
-  },
-  Caption2: {
-    fontWeight: 400,
-    fontSize: "0.6875rem",
-    lineHeight: "0.875rem",
-    letterSpacing: "-0.0005em",
-    color: fontColor,
-  },
+theme.typography.Title1 = {
+  fontFamily: theme.typography.fontFamily,
+  fontWeight: 700,
+  fontSize: "2.25rem", // 36px
+  lineHeight: "2.75rem", // 44px
+  letterSpacing: "-0.0005em", // -0.05%
+  color: theme.palette.text.primary,
+};
+
+theme.typography.Title2 = {
+  fontFamily: theme.typography.fontFamily,
+  fontWeight: 700,
+  fontSize: "1.75rem", // 28px
+  lineHeight: "2.125rem", // 34px
+  letterSpacing: "-0.0005em", // -0.05%
+  color: theme.palette.text.primary,
+};
+
+theme.typography.Title3 = {
+  fontFamily: theme.typography.fontFamily,
+  fontWeight: 700,
+  fontSize: "1.5rem", // 24px
+  lineHeight: "2rem", // 32px
+  letterSpacing: "0em", // 0%
+  color: theme.palette.text.primary,
+};
+
+theme.typography.Heading1 = {
+  fontFamily: theme.typography.fontFamily,
+  fontWeight: 600,
+  fontSize: "1.375rem", // 22px
+  lineHeight: "1.75rem", // 28px
+  letterSpacing: "-0.0005em",
+  color: theme.palette.text.primary,
+};
+
+theme.typography.Heading2 = {
+  fontFamily: theme.typography.fontFamily,
+  fontWeight: 600,
+  fontSize: "1.25rem", // 20px
+  lineHeight: "1.75rem", // 28px
+  letterSpacing: "-0.0008em",
+  color: theme.palette.text.primary,
+};
+
+theme.typography.Headline1 = {
+  fontFamily: theme.typography.fontFamily,
+  fontWeight: 600,
+  fontSize: "1.125rem", // 18px
+  lineHeight: "1.5rem", // 24px
+  letterSpacing: "-0.01em",
+  color: theme.palette.text.primary,
+};
+
+theme.typography.Headline2 = {
+  fontFamily: theme.typography.fontFamily,
+  fontWeight: 600,
+  fontSize: "1.0625rem", // 17px
+  lineHeight: "1.5rem", // 24px
+  letterSpacing: "-0.0005em",
+  color: theme.palette.text.primary,
+};
+
+theme.typography.Body1 = {
+  fontFamily: theme.typography.fontFamily,
+  fontWeight: 400,
+  fontSize: "1rem", // 16px
+  lineHeight: "1.5rem", // 24px
+  letterSpacing: "-0.0005em",
+  color: theme.palette.text.primary,
+};
+
+theme.typography.Body2 = {
+  fontFamily: theme.typography.fontFamily,
+  fontWeight: 400,
+  fontSize: "0.9375rem", // 15px
+  lineHeight: "1.25rem", // 20px
+  letterSpacing: "-0.0005em",
+  color: theme.palette.text.primary,
+};
+
+theme.typography.Label1 = {
+  fontFamily: theme.typography.fontFamily,
+  fontWeight: 600,
+  fontSize: "0.875rem", // 14px
+  lineHeight: "1.25rem", // 20px
+  letterSpacing: "-0.0003em",
+  color: theme.palette.text.primary,
+};
+
+theme.typography.Label2 = {
+  fontFamily: theme.typography.fontFamily,
+  fontWeight: 400,
+  fontSize: "0.8125rem", // 13px
+  lineHeight: "1.125rem", // 18px
+  letterSpacing: "-0.0003em",
+  color: theme.palette.text.primary,
+};
+
+theme.typography.Caption1 = {
+  fontFamily: theme.typography.fontFamily,
+  fontWeight: 400,
+  fontSize: "0.75rem", // 12px
+  lineHeight: "1rem", // 16px
+  letterSpacing: "-0.0003em",
+  color: theme.palette.text.primary,
+};
+
+theme.typography.Caption2 = {
+  fontFamily: theme.typography.fontFamily,
+  fontWeight: 400,
+  fontSize: "0.6875rem", // 11px
+  lineHeight: "0.875rem", // 14px
+  letterSpacing: "-0.0005em",
+  color: theme.palette.text.primary,
 };
 
 const SenifitThemeProvider = ({ children }: { children: React.ReactNode }) => {
