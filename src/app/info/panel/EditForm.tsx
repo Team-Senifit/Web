@@ -29,7 +29,6 @@ const EditForm = ({
         name="name"
         label="이름"
         placeholder="이름을 입력하세요"
-        fullWidth
         rules={{ required: "이름은 필수입니다" }}
       />
       <SenifitRadioButtonGroup
@@ -38,8 +37,8 @@ const EditForm = ({
         label="성별"
         row
         options={[
-          { value: "male", label: "남성" },
-          { value: "female", label: "여성" },
+          { value: "남성", label: "남성" },
+          { value: "여성", label: "여성" },
         ]}
         rules={{ required: "성별을 선택해주세요" }}
       />
@@ -49,11 +48,11 @@ const EditForm = ({
         label="등급"
         row
         options={[
-          { value: "1", label: "1등급" },
-          { value: "2", label: "2등급" },
-          { value: "3", label: "3등급" },
-          { value: "4", label: "4등급" },
-          { value: "5", label: "5등급" },
+          { value: "1등급", label: "1등급" },
+          { value: "2등급", label: "2등급" },
+          { value: "3등급", label: "3등급" },
+          { value: "4등급", label: "4등급" },
+          { value: "5등급", label: "5등급" },
           { value: "인지지원등급", label: "인지지원등급" },
           { value: "등급외", label: "등급외" },
         ]}
