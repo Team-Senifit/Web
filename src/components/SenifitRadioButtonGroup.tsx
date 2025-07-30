@@ -9,7 +9,7 @@ import {
 import { FieldValues, useController } from "react-hook-form";
 import type { TControl } from "@/types/TControl";
 
-type Option = {
+export type Option = {
   label: React.ReactNode;
   value: string;
 };
