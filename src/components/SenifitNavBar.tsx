@@ -11,6 +11,7 @@ import {
 import { ClipBoardIcon, HouseIcon, HumanIcon } from "./icons";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import useMedia from "@/hooks/useMedia";
 
 interface NavActionProps extends BottomNavigationActionProps {
   href: string;
@@ -19,6 +20,11 @@ interface NavActionProps extends BottomNavigationActionProps {
 const NavAction = ({ ...props }: NavActionProps) => {
   return (
     <BottomNavigationAction
+      sx={{
+        ...props.sx,
+        width: "100%",
+        maxWidth: "100%",
+      }}
       component={Link}
       slots={{
         label: (labelProps) => (
@@ -30,8 +36,9 @@ const NavAction = ({ ...props }: NavActionProps) => {
   );
 };
 
-const SenifitNavBar = ({ isStorybook = false }: { isStorybook?: boolean }) => {
+const SenifitNavBar = () => {
   const params = useParams();
+  const { isDesktop } = useMedia();
 
   const getCurrentPathValue = () => {
     if (params?.toString().startsWith("my-center")) {
@@ -48,12 +55,9 @@ const SenifitNavBar = ({ isStorybook = false }: { isStorybook?: boolean }) => {
     pb: "3px",
   };
 
-  let positionNav: React.CSSProperties = {
-    position: "fixed",
-    bottom: 0,
-    left: 0,
-    right: 0,
-  };
+  if (isDesktop) {
+    return null; // Do not render on desktop
+  }
 
   return (
     <Box
@@ -67,7 +71,10 @@ const SenifitNavBar = ({ isStorybook = false }: { isStorybook?: boolean }) => {
           color: "interaction.inactive",
         },
         boxShadow: "0 0 8px 0 rgba(12, 13, 13, 0.05)",
-        ...(!isStorybook && positionNav),
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        right: 0,
       }}
     >
       <BottomNavigation showLabels value={getCurrentPathValue()}>
