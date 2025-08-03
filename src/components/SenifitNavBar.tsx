@@ -20,7 +20,9 @@ const NavAction = ({ ...props }: NavActionProps) => {
         height: "100%",
       }}
       slots={{
-        label: (labelProps) => <Typography variant="Label1" {...labelProps} />,
+        label: (labelProps) => (
+          <Typography variant={["Label1", "Headline1"]} {...labelProps} />
+        ),
       }}
       {...props}
     />
@@ -30,7 +32,11 @@ const NavAction = ({ ...props }: NavActionProps) => {
 const SenifitNavBar = () => {
   const [value, setValue] = React.useState(0);
 
-  const navActionStyle = { width: 24, pb: "3px" };
+  const navActionStyle = {
+    width: ["1.5rem", "2rem"],
+    height: ["1.5rem", "2rem"],
+    pb: "3px",
+  };
 
   return (
     <BottomNavigation
@@ -40,7 +46,7 @@ const SenifitNavBar = () => {
         bottom: 0,
         left: 0,
         right: 0,
-        height: ["5.5rem"],
+        height: ["5.5rem", "6rem"],
         p: 3,
         pt: 2,
         ".MuiBottomNavigationAction-root": {
