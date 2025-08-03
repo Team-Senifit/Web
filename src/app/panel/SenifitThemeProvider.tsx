@@ -220,7 +220,7 @@ const theme = createTheme({
     },
     background: {
       default: "#FFFFFF", // bg-normal
-      paper: "#F5F5F5", // bg-alternative
+      paper: "#FFFFFF", // bg-alternative
     },
     action: {
       active: "#7D7E82", // interaction-inactive
