@@ -1,13 +1,11 @@
 import * as React from "react";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import {
   BottomNavigation,
   BottomNavigationAction,
   BottomNavigationActionProps,
   Typography,
 } from "@mui/material";
-import { HumanIcon } from "./icons";
+import { ClipBoardIcon, HouseIcon, HumanIcon } from "./icons";
 import Link from "next/link";
 
 interface NavActionProps extends BottomNavigationActionProps {
@@ -31,6 +29,8 @@ const NavAction = ({ ...props }: NavActionProps) => {
 
 const SenifitNavBar = () => {
   const [value, setValue] = React.useState(0);
+
+  const navActionStyle = { width: 24, pb: "3px" };
 
   return (
     <BottomNavigation
@@ -56,13 +56,17 @@ const SenifitNavBar = () => {
     >
       <NavAction
         label="운동"
-        icon={<HumanIcon sx={{ width: 24, pb: "3px" }} />}
+        icon={<HumanIcon sx={navActionStyle} />}
         href="/"
       />
-      <NavAction label="기록" icon={<FavoriteIcon />} href="/record" />
+      <NavAction
+        label="기록"
+        icon={<ClipBoardIcon sx={navActionStyle} />}
+        href="/record"
+      />
       <NavAction
         label="나의 센터"
-        icon={<LocationOnIcon />}
+        icon={<HouseIcon sx={navActionStyle} />}
         href="/my-center"
       />
     </BottomNavigation>
