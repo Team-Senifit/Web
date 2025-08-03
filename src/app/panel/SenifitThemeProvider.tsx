@@ -311,7 +311,6 @@ theme.typography.Display1 = {
   fontSize: "3.5rem", // 56px
   lineHeight: "4.5rem", // 72px
   letterSpacing: "-0.01em", // -1%
-  color: theme.palette.text.primary,
 };
 
 theme.typography.Display2 = {
@@ -320,7 +319,6 @@ theme.typography.Display2 = {
   fontSize: "2.5rem", // 40px
   lineHeight: "3rem", // 48px
   letterSpacing: "-0.001em", // -0.1%
-  color: theme.palette.text.primary,
 };
 
 theme.typography.Title1 = {
@@ -329,7 +327,6 @@ theme.typography.Title1 = {
   fontSize: "2.25rem", // 36px
   lineHeight: "2.75rem", // 44px
   letterSpacing: "-0.0005em", // -0.05%
-  color: theme.palette.text.primary,
 };
 
 theme.typography.Title2 = {
@@ -338,7 +335,6 @@ theme.typography.Title2 = {
   fontSize: "1.75rem", // 28px
   lineHeight: "2.125rem", // 34px
   letterSpacing: "-0.0005em", // -0.05%
-  color: theme.palette.text.primary,
 };
 
 theme.typography.Title3 = {
@@ -347,7 +343,6 @@ theme.typography.Title3 = {
   fontSize: "1.5rem", // 24px
   lineHeight: "2rem", // 32px
   letterSpacing: "0em", // 0%
-  color: theme.palette.text.primary,
 };
 
 theme.typography.Heading1 = {
@@ -356,7 +351,6 @@ theme.typography.Heading1 = {
   fontSize: "1.375rem", // 22px
   lineHeight: "1.75rem", // 28px
   letterSpacing: "-0.0005em",
-  color: theme.palette.text.primary,
 };
 
 theme.typography.Heading2 = {
@@ -365,7 +359,6 @@ theme.typography.Heading2 = {
   fontSize: "1.25rem", // 20px
   lineHeight: "1.75rem", // 28px
   letterSpacing: "-0.0008em",
-  color: theme.palette.text.primary,
 };
 
 theme.typography.Headline1 = {
@@ -374,7 +367,6 @@ theme.typography.Headline1 = {
   fontSize: "1.125rem", // 18px
   lineHeight: "1.5rem", // 24px
   letterSpacing: "-0.01em",
-  color: theme.palette.text.primary,
 };
 
 theme.typography.Headline2 = {
@@ -383,7 +375,6 @@ theme.typography.Headline2 = {
   fontSize: "1.0625rem", // 17px
   lineHeight: "1.5rem", // 24px
   letterSpacing: "-0.0005em",
-  color: theme.palette.text.primary,
 };
 
 theme.typography.Body1 = {
@@ -392,7 +383,6 @@ theme.typography.Body1 = {
   fontSize: "1rem", // 16px
   lineHeight: "1.5rem", // 24px
   letterSpacing: "-0.0005em",
-  color: theme.palette.text.primary,
 };
 
 theme.typography.Body2 = {
@@ -401,7 +391,6 @@ theme.typography.Body2 = {
   fontSize: "0.9375rem", // 15px
   lineHeight: "1.25rem", // 20px
   letterSpacing: "-0.0005em",
-  color: theme.palette.text.primary,
 };
 
 theme.typography.Label1 = {
@@ -410,7 +399,6 @@ theme.typography.Label1 = {
   fontSize: "0.875rem", // 14px
   lineHeight: "1.25rem", // 20px
   letterSpacing: "-0.0003em",
-  color: theme.palette.text.primary,
 };
 
 theme.typography.Label2 = {
@@ -419,7 +407,6 @@ theme.typography.Label2 = {
   fontSize: "0.8125rem", // 13px
   lineHeight: "1.125rem", // 18px
   letterSpacing: "-0.0003em",
-  color: theme.palette.text.primary,
 };
 
 theme.typography.Caption1 = {
@@ -428,7 +415,6 @@ theme.typography.Caption1 = {
   fontSize: "0.75rem", // 12px
   lineHeight: "1rem", // 16px
   letterSpacing: "-0.0003em",
-  color: theme.palette.text.primary,
 };
 
 theme.typography.Caption2 = {
@@ -437,7 +423,6 @@ theme.typography.Caption2 = {
   fontSize: "0.6875rem", // 11px
   lineHeight: "0.875rem", // 14px
   letterSpacing: "-0.0005em",
-  color: theme.palette.text.primary,
 };
 
 const SenifitThemeProvider = ({ children }: { children: React.ReactNode }) => {
