@@ -8,7 +8,7 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-import { ClipBoardIcon, HouseIcon, HumanIcon } from "./icons";
+import { ClipboardIcon, HouseIcon, HumanIcon } from "./icons";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import useMedia from "@/hooks/useMedia";
@@ -85,7 +85,7 @@ const SenifitNavBar = () => {
         />
         <NavAction
           label="기록"
-          icon={<ClipBoardIcon sx={navActionStyle} />}
+          icon={<ClipboardIcon sx={navActionStyle} />}
           href="/record"
         />
         <NavAction
