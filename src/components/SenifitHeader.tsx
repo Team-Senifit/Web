@@ -7,7 +7,7 @@ import Logo from "@/assets/logo/senifit-logo.svg";
 import Image from "next/image";
 import { ClipboardIcon, HouseIcon, HumanIcon } from "./icons";
 import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 interface IPCNavTabProps extends TabProps {
   href: string;
