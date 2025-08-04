@@ -62,10 +62,10 @@ export const HumanIconWithSize: Story = {
   },
 };
 
-export const ClipBoardIcon: Story = {
+export const ClipboardIcon: Story = {
   render: Template as any,
   args: {
-    component: Icons.ClipBoardIcon,
+    component: Icons.ClipboardIcon,
     color: "secondary",
   },
 };
