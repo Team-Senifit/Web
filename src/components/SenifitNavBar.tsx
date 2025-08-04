@@ -90,7 +90,7 @@ const SenifitNavBar = () => {
           href="/record"
         />
         <NavAction
-          label="나의 센터"
+          label="우리 센터"
           icon={<HouseIcon sx={navActionStyle} />}
           href="/my-center"
         />

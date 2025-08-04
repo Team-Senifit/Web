@@ -78,7 +78,7 @@ const PCNav = () => {
       />
       <PCNavTab
         component={Link}
-        label="나의 센터"
+        label="우리 센터"
         iconPosition="start"
         icon={<HouseIcon sx={tabIconStyle} />}
         href="/my-center"
