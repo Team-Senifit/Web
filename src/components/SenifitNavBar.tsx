@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { ClipboardIcon, HouseIcon, HumanIcon } from "./icons";
 import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import useMedia from "@/hooks/useMedia";
 
 interface NavActionProps extends BottomNavigationActionProps {
