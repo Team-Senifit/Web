@@ -7,7 +7,7 @@ import Logo from "@/assets/logo/senifit-logo.svg";
 import Image from "next/image";
 import { ClipboardIcon, HouseIcon, HumanIcon } from "./icons";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 
 interface IPCNavTabProps extends TabProps {
   href: string;
@@ -29,12 +29,12 @@ const PCNavTab = (props: IPCNavTabProps) => {
 
 const PCNav = () => {
   const { isDesktop } = useMedia();
-  const params = useParams();
+  const pathname = usePathname();
 
   const getCurrentPathValue = () => {
-    if (params?.toString().startsWith("my-center")) {
+    if (pathname.startsWith("/my-center")) {
       return 2;
-    } else if (params?.toString().startsWith("record")) {
+    } else if (pathname.startsWith("/record")) {
       return 1;
     }
     return 0;

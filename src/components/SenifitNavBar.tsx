@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { ClipboardIcon, HouseIcon, HumanIcon } from "./icons";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import useMedia from "@/hooks/useMedia";
 
 interface NavActionProps extends BottomNavigationActionProps {
@@ -37,13 +37,13 @@ const NavAction = ({ ...props }: NavActionProps) => {
 };
 
 const SenifitNavBar = () => {
-  const params = useParams();
   const { isDesktop } = useMedia();
+  const pathname = usePathname();
 
   const getCurrentPathValue = () => {
-    if (params?.toString().startsWith("my-center")) {
+    if (pathname.startsWith("/my-center")) {
       return 2;
-    } else if (params?.toString().startsWith("record")) {
+    } else if (pathname.startsWith("/record")) {
       return 1;
     }
     return 0;
