@@ -1,6 +1,6 @@
 import { createSvgIcon } from "@mui/material";
 
-const ClipBoardIcon = createSvgIcon(
+const ClipboardIcon = createSvgIcon(
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="25"
@@ -23,7 +23,7 @@ const ClipBoardIcon = createSvgIcon(
       strokeLinejoin="round"
     />
   </svg>,
-  "ClipBoardIcon"
+  "ClipboardIcon"
 );
 
-export default ClipBoardIcon;
+export default ClipboardIcon;
