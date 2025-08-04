@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import SenifitThemeProvider from "./panel/SenifitThemeProvider";
 import SenifitNavBar from "@/components/SenifitNavBar";
+import SenifitHeader from "@/components/SenifitHeader";
 
 export const metadata: Metadata = {
   title: "시니핏",
@@ -17,6 +18,7 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <SenifitThemeProvider>
+          <SenifitHeader />
           {children}
           <SenifitNavBar />
         </SenifitThemeProvider>
