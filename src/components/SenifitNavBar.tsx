@@ -62,7 +62,7 @@ const SenifitNavBar = () => {
   return (
     <Box
       sx={{
-        bgcolor: "background.default",
+        bgcolor: "background.paper",
         width: "100%",
         height: ["5.5rem", "6rem"],
         p: 3,

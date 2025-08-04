@@ -2,9 +2,90 @@
 
 import React from "react";
 import useMedia from "@/hooks/useMedia";
-import { Box, Paper, Stack } from "@mui/material";
+import { Stack, SxProps, Tab, TabProps, Tabs, Typography } from "@mui/material";
 import Logo from "@/assets/logo/senifit-logo.svg";
 import Image from "next/image";
+import { ClipboardIcon, HouseIcon, HumanIcon } from "./icons";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+
+interface IPCNavTabProps extends TabProps {
+  href: string;
+}
+
+const PCNavTab = (props: IPCNavTabProps) => {
+  return (
+    <Tab
+      component={Link}
+      label={<Typography variant="Heading1">{props.label}</Typography>}
+      {...props}
+      sx={{
+        height: "100%",
+        minWidth: "15rem",
+      }}
+    />
+  );
+};
+
+const PCNav = () => {
+  const { isDesktop } = useMedia();
+  const params = useParams();
+
+  const getCurrentPathValue = () => {
+    if (params?.toString().startsWith("my-center")) {
+      return 2;
+    } else if (params?.toString().startsWith("record")) {
+      return 1;
+    }
+    return 0;
+  };
+
+  const tabIconStyle: SxProps = {
+    width: "1.875rem",
+    height: "1.875rem",
+    pr: 1,
+  };
+
+  if (!isDesktop) {
+    return null;
+  }
+
+  return (
+    <Tabs
+      value={getCurrentPathValue()}
+      sx={{
+        height: "100%",
+        "& .MuiTabs-flexContainer": {
+          height: "100%",
+          alignItems: "center",
+          gap: "0.625rem",
+        },
+      }}
+    >
+      <PCNavTab
+        component={Link}
+        label="운동"
+        iconPosition="start"
+        icon={<HumanIcon sx={tabIconStyle} />}
+        href="/"
+      />
+      <PCNavTab
+        component={Link}
+        label="기록"
+        iconPosition="start"
+        icon={<ClipboardIcon sx={tabIconStyle} />}
+        href="/record"
+      />
+      <PCNavTab
+        component={Link}
+        label="나의 센터"
+        iconPosition="start"
+        icon={<HouseIcon sx={tabIconStyle} />}
+        href="/my-center"
+      />
+    </Tabs>
+  );
+};
 
 const SenifitHeader = () => {
   const { isPhone } = useMedia();
@@ -27,9 +108,11 @@ const SenifitHeader = () => {
         left: 0,
         right: 0,
         zIndex: 1000,
+        boxShadow: "0 0 8px 0 rgba(12, 13, 13, 0.05)",
       }}
     >
       <Image src={Logo} alt="시니핏 로고" />
+      <PCNav />
     </Stack>
   );
 };
