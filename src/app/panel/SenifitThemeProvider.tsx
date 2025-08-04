@@ -219,8 +219,8 @@ const theme = createTheme({
       500: "#97989B", // label-alternative & border-strong
     },
     background: {
-      default: "#FFFFFF", // bg-normal
-      paper: "#FFFFFF", // bg-alternative
+      default: "#F5F5F5", // bg-alternative
+      paper: "#FFFFFF", // bg-normal
     },
     action: {
       active: "#7D7E82", // interaction-inactive
