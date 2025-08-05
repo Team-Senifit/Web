@@ -41,7 +41,6 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj<any>;
 
-// 공통 템플릿 - JavaScript 스타일 유지
 const Template = (args: any) => <args.component {...args} />;
 
 export const HumanIcon: Story = {
