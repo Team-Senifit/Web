@@ -3,10 +3,10 @@ import { createSvgIcon } from "@mui/material";
 const ClipboardIcon = createSvgIcon(
   <svg
     xmlns="http://www.w3.org/2000/svg"
+    fill="none"
     width="25"
     height="24"
     viewBox="0 0 25 24"
-    fill="none"
   >
     <path
       d="M15.5 2H9.5C8.94772 2 8.5 2.44772 8.5 3V5C8.5 5.55228 8.94772 6 9.5 6H15.5C16.0523 6 16.5 5.55228 16.5 5V3C16.5 2.44772 16.0523 2 15.5 2Z"
