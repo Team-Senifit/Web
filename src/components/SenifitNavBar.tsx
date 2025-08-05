@@ -41,9 +41,9 @@ const SenifitNavBar = () => {
   const pathname = usePathname();
 
   const getCurrentPathValue = () => {
-    if (pathname.startsWith("/my-center")) {
+    if (pathname?.startsWith("/my-center")) {
       return 2;
-    } else if (pathname.startsWith("/record")) {
+    } else if (pathname?.startsWith("/record")) {
       return 1;
     }
     return 0;
