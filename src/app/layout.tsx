@@ -20,7 +20,7 @@ export default function RootLayout({
       <body>
         <SenifitThemeProvider>
           <SenifitHeader />
-          <Box sx={{ pt: [0, 9, 14] }}>{children}</Box>
+          <Box sx={{ pt: [9, 9, 14] }}>{children}</Box>
           <SenifitNavBar />
         </SenifitThemeProvider>
       </body>

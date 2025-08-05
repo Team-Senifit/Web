@@ -88,11 +88,6 @@ const PCNav = () => {
 };
 
 const SenifitHeader = () => {
-  const { isPhone } = useMedia();
-
-  if (isPhone) {
-    return null;
-  }
   return (
     <Stack
       direction={"row"}
@@ -100,8 +95,8 @@ const SenifitHeader = () => {
       alignItems={"center"}
       sx={{
         bgcolor: "background.paper",
-        px: [0, 3, 18],
-        py: [0, 2, 0],
+        px: [3, 3, 18],
+        py: [2, 2, 0],
         height: ["3.5rem", "4rem", "7rem"],
         position: "fixed",
         top: 0,
