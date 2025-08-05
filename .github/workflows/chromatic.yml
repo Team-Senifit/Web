@@ -1,6 +1,6 @@
 name: 'Chromatic Deployment'
 
-on: 
+on:
   push
 
 jobs:
@@ -15,11 +15,15 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        # CI 환경에서 패키지 잠금 파일을 엄격히 재현하려면 아래로 대체하세요.
-        # run: npm ci
+        # run: npm ci  # 잠금 파일을 엄격히 재현하려면
 
-      - name: Run Chromatic
+      - name: Run Chromatic Action
         uses: chromaui/action@latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           token:       ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish Chromatic patch
+        run: npx chromatic \
+          --project-token=${{ secrets.CHROMATIC_PROJECT_TOKEN }} \
+          --patch-build=${{ github.ref_name }}...develop
