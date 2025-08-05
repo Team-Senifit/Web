@@ -276,7 +276,7 @@ const theme = createTheme({
     },
     material: {
       // #0C0D0D 50% 투명도
-      dimmer: "rgba(12,13,13,0.5)",
+      dimmer: "rgba(12,13,13,0.8)",
     },
   },
 });
