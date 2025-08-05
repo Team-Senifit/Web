@@ -24,6 +24,8 @@ jobs:
           token:       ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish Chromatic patch
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
         run: npx chromatic \
-          --project-token=${{ secrets.CHROMATIC_PROJECT_TOKEN }} \
           --patch-build=${{ github.ref_name }}...develop
+
