@@ -1,11 +1,6 @@
 import axios from "axios";
 
-export interface LoginPayload {
-  id: string;
-  password: string;
-}
-
-export const login = async ({ id, password }: LoginPayload) => {
+export const login = async ({ id, password }: ILoginPayload) => {
   // const params = new URLSearchParams();
   // params.append("id", id);
   // params.append("password", password);
