@@ -11,9 +11,9 @@ import {
   DialogActions,
   Snackbar,
 } from "@mui/material";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { login } from "@/apis/auth";
-import SenifitTextField from "../../components/SenifitTextField";
+import SenifitTextField from "../../../components/SenifitTextField";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -23,7 +23,7 @@ type LoginFormValues = {
 };
 
 export default function LoginForm() {
-  const methods = useForm<LoginFormValues>({ mode: "onBlur" });
+  const methods = useForm<LoginFormValues>({ mode: "onSubmit" });
   const { handleSubmit, control, formState: { errors } } = methods;
 
   const router = useRouter();
@@ -35,7 +35,7 @@ export default function LoginForm() {
       await login(data);
       setShowSnackbar(true);
       setTimeout(() => {
-        router.push("/exercise");
+        router.push("/");
       }, 1000);
     } catch (error) {
       setShowDialog(true);
@@ -43,7 +43,7 @@ export default function LoginForm() {
   };
 
   return (
-    <FormProvider {...methods}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Box
         display="flex"
         justifyContent="center"
@@ -66,16 +66,7 @@ export default function LoginForm() {
           </Box>
 
           {/* 로그인 폼 */}
-          <Box
-            component="form"
-            onSubmit={handleSubmit(onSubmit)}
-            noValidate
-            autoComplete="off"
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            gap={2}
-          >
+          <Box>
             <Typography variant="Title2" mb={2}>
               로그인
             </Typography>
@@ -86,7 +77,6 @@ export default function LoginForm() {
               rules={{ required: "아이디를 입력해주세요." }}
               control={control}
               sx={{ width: 350, height: 55 }}
-              InputProps={{ sx: { height: 55 } }}
             />
 
             <SenifitTextField
@@ -96,7 +86,6 @@ export default function LoginForm() {
               rules={{ required: "비밀번호를 입력해주세요." }}
               control={control}
               sx={{ width: 350, height: 55, mt: 2 }}
-              InputProps={{ sx: { height: 55 } }}
             />
 
             <Button
@@ -161,6 +150,6 @@ export default function LoginForm() {
           message="로그인 성공! 오늘도 즐거운 시니핏 하세요!"
         />
       </Box>
-    </FormProvider>
+    </form>
   );
 }
