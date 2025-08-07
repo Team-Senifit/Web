@@ -1,0 +1,33 @@
+name: 'Chromatic Deployment'
+
+on:
+  push
+
+jobs:
+  chromatic:
+    name: 'Run Chromatic'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: npm install
+        # run: npm ci  # 잠금 파일을 엄격히 재현하려면
+
+      - name: Run Chromatic Action
+        uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          token:       ${{ secrets.GITHUB_TOKEN }}
+          exitOnceUploaded: true
+
+      - name: Publish Chromatic patch
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+        run: |
+          npx chromatic \
+            --patch-build=${{ github.ref_name }}...develop \
+            --exit-zero-on-changes
