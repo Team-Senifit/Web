@@ -40,7 +40,7 @@ const Page = () => {
         <Typography>{"등록 어르신 관리하기"}</Typography>
         <Button
           variant="contained"
-          href="/info/members/add"
+          href="/my-center/members/add"
           component={Link}
           startIcon={<AddIcon />}
         >
@@ -50,7 +50,7 @@ const Page = () => {
       <MemberList members={memberData} />
       <Button
         variant="contained"
-        href="/info"
+        href="/my-center"
         component={Link}
         sx={{ width: "fit-content" }}
       >

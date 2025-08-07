@@ -52,7 +52,7 @@ const MemberInfoCard = ({
             {"입니다."}
           </Typography>
         </Stack>
-        <Button variant="contained" component={Link} href="/info/members">
+        <Button variant="contained" component={Link} href="/my-center/members">
           <Typography>{"관리하기"}</Typography>
         </Button>
       </Stack>

@@ -23,7 +23,7 @@ const Member = ({ id, name, age, grade, gender }: IMember) => {
         <Button
           variant="contained"
           component={Link}
-          href={`/info/members/edit/${id}`}
+          href={`/my-center/members/edit/${id}`}
         >
           {"수정"}
         </Button>
