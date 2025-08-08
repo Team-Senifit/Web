@@ -1,3 +1,5 @@
+"use client";
+
 import { createSvgIcon } from "@mui/material";
 
 const HumanIcon = createSvgIcon(
