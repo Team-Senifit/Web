@@ -75,3 +75,11 @@ export const HouseIcon: Story = {
     color: "error",
   },
 };
+
+export const MapPinHouseIcon: Story = {
+  render: Template as any,
+  args: {
+    component: Icons.MapPinHouseIcon,
+    color: "info",
+  },
+};
