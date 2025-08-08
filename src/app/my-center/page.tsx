@@ -1,6 +1,6 @@
 import React from "react";
 import InfoCard from "./panel/InfoCard";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import MemberInfoCard from "./panel/MemberInfoCard";
 import PageInfoCard from "./panel/PageInfoCard";
 import { HouseIcon, MapPinHouseIcon } from "@/components/icons";
@@ -34,7 +34,7 @@ const Page = () => {
   return (
     <Box>
       <PageInfoCard />
-      <Stack spacing={2} direction={"row"}>
+      <Stack spacing={2} direction={"column"}>
         <Stack spacing={2} direction={"column"}>
           <InfoCard
             icon={<HouseIcon sx={{ width: 24, height: 24 }} strokeWidth={2} />}
