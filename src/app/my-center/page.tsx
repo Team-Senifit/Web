@@ -2,8 +2,8 @@ import React from "react";
 import InfoCard from "./panel/InfoCard";
 import { Box, Stack, Typography } from "@mui/material";
 import MemberInfoCard from "./panel/MemberInfoCard";
-import useMedia from "@/hooks/useMedia";
 import PageInfoCard from "./panel/PageInfoCard";
+import { HouseIcon, MapPinHouseIcon } from "@/components/icons";
 
 const memberData: Array<IMember> = [
   {
@@ -36,8 +36,18 @@ const Page = () => {
       <PageInfoCard />
       <Stack spacing={2} direction={"row"}>
         <Stack spacing={2} direction={"column"}>
-          <InfoCard title={"센터명"} content={"시니데이케어센터"} />
-          <InfoCard title={"센터 위치"} content={"서울시 강남구"} />
+          <InfoCard
+            icon={<HouseIcon sx={{ width: 24, height: 24 }} strokeWidth={2} />}
+            title={"센터명"}
+            content={"시니데이케어센터"}
+          />
+          <InfoCard
+            icon={
+              <MapPinHouseIcon sx={{ width: 24, height: 24 }} strokeWidth={2} />
+            }
+            title={"센터 위치"}
+            content={"서울시 강남구"}
+          />
         </Stack>
         <MemberInfoCard count={memberData.length} members={memberData} />
       </Stack>
