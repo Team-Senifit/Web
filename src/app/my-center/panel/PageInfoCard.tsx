@@ -19,6 +19,7 @@ const PageInfoCard = () => {
         borderRadius: [0, "0.75rem"],
         background:
           "linear-gradient(270deg, var(--RedOrange-60, #FC7F36) 0%, #FF8A00 100%)",
+        mb: 3,
       }}
     >
       <Typography

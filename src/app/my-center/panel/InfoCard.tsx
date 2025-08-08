@@ -22,7 +22,7 @@ const InfoCard = ({
       alignItems={"start"}
       sx={{
         bgcolor: "background.paper",
-        borderRadius: 1, // mui 기준 8px
+        borderRadius: [0, "0.75rem"],
         padding: 2,
         width: 1, // width, height에서는 1이 100%를 의미
         minHeight: ["11rem", "12.75rem", "13.25rem"],

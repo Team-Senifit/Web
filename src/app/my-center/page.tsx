@@ -1,6 +1,6 @@
 import React from "react";
 import InfoCard from "./panel/InfoCard";
-import { Box, Stack } from "@mui/material";
+import { Box, Grid, Stack } from "@mui/material";
 import MemberInfoCard from "./panel/MemberInfoCard";
 import PageInfoCard from "./panel/PageInfoCard";
 import { HouseIcon, MapPinHouseIcon } from "@/components/icons";
@@ -34,23 +34,54 @@ const Page = () => {
   return (
     <Box>
       <PageInfoCard />
-      <Stack spacing={2} direction={"column"}>
-        <Stack spacing={2} direction={"column"}>
-          <InfoCard
-            icon={<HouseIcon sx={{ width: 24, height: 24 }} strokeWidth={2} />}
-            title={"센터명"}
-            content={"시니데이케어센터"}
-          />
-          <InfoCard
-            icon={
-              <MapPinHouseIcon sx={{ width: 24, height: 24 }} strokeWidth={2} />
-            }
-            title={"센터 위치"}
-            content={"서울시 강남구"}
-          />
-        </Stack>
-        <MemberInfoCard count={memberData.length} members={memberData} />
-      </Stack>
+      <Grid container spacing={[2, 3]} columns={14}>
+        <Grid
+          container
+          size={{ phone: 14, desktop: 4 }}
+          spacing={3}
+          columns={14}
+        >
+          <Grid
+            size={{
+              phone: 14,
+              tablet: 7,
+              desktop: 14,
+            }}
+          >
+            <InfoCard
+              icon={
+                <HouseIcon
+                  sx={{ width: 24, height: 24, color: "label.neutral" }}
+                  strokeWidth={2}
+                />
+              }
+              title={"센터명"}
+              content={"시니데이케어센터"}
+            />
+          </Grid>
+          <Grid
+            size={{
+              phone: 14,
+              tablet: 7,
+              desktop: 14,
+            }}
+          >
+            <InfoCard
+              icon={
+                <MapPinHouseIcon
+                  sx={{ width: 24, height: 24, color: "label.neutral" }}
+                  strokeWidth={2}
+                />
+              }
+              title={"센터 위치"}
+              content={"서울시 강남구"}
+            />
+          </Grid>
+        </Grid>
+        <Grid size={{ phone: 14, desktop: 10 }}>
+          <MemberInfoCard count={memberData.length} members={memberData} />
+        </Grid>
+      </Grid>
     </Box>
   );
 };
