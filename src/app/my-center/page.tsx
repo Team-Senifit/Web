@@ -1,7 +1,9 @@
 import React from "react";
 import InfoCard from "./panel/InfoCard";
-import { Container, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import MemberInfoCard from "./panel/MemberInfoCard";
+import useMedia from "@/hooks/useMedia";
+import PageInfoCard from "./panel/PageInfoCard";
 
 const memberData: Array<IMember> = [
   {
@@ -18,7 +20,6 @@ const memberData: Array<IMember> = [
     grade: "1등급",
     gender: "여성",
   },
-
   {
     id: 3,
     name: "이철수",
@@ -31,9 +32,8 @@ const memberData: Array<IMember> = [
 // grid로 처리해도 되지만, 모바일, 테블릿에서 어떻게 나올지 몰라서 Stack으로 임시 처리
 const Page = () => {
   return (
-    <Container>
-      <Typography>{"안녕하세요."}</Typography>
-      <Typography>{"센터 정보를 관리해보세요!"}</Typography>
+    <Box>
+      <PageInfoCard />
       <Stack spacing={2} direction={"row"}>
         <Stack spacing={2} direction={"column"}>
           <InfoCard title={"센터명"} content={"시니데이케어센터"} />
@@ -41,7 +41,7 @@ const Page = () => {
         </Stack>
         <MemberInfoCard count={memberData.length} members={memberData} />
       </Stack>
-    </Container>
+    </Box>
   );
 };
 
