@@ -3,7 +3,7 @@ import "./globals.css";
 import SenifitThemeProvider from "./panel/SenifitThemeProvider";
 import SenifitNavBar from "@/components/SenifitNavBar";
 import SenifitHeader from "@/components/SenifitHeader";
-import { Box } from "@mui/material";
+import { Container } from "@mui/material";
 
 export const metadata: Metadata = {
   title: "시니핏",
@@ -20,7 +20,12 @@ export default function RootLayout({
       <body>
         <SenifitThemeProvider>
           <SenifitHeader />
-          <Box sx={{ pt: [9, 9, 14] }}>{children}</Box>
+          <Container
+            maxWidth={"desktop"}
+            sx={{ pt: [9, 9, 14], px: [0, 3], boxSizing: "border-box" }}
+          >
+            {children}
+          </Container>
           <SenifitNavBar />
         </SenifitThemeProvider>
       </body>

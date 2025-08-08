@@ -18,6 +18,7 @@ interface NavActionProps extends BottomNavigationActionProps {
 }
 
 const NavAction = ({ ...props }: NavActionProps) => {
+  const { isTablet } = useMedia();
   return (
     <BottomNavigationAction
       sx={{
@@ -28,7 +29,10 @@ const NavAction = ({ ...props }: NavActionProps) => {
       component={Link}
       slots={{
         label: (labelProps) => (
-          <Typography variant={["Label1", "Headline1"]} {...labelProps} />
+          <Typography
+            {...labelProps}
+            variant={isTablet ? "Headline1" : "Label1"}
+          />
         ),
       }}
       {...props}
