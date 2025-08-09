@@ -74,7 +74,7 @@ const Page = () => {
                 />
               }
               title={"센터 위치"}
-              content={"서울시 강남구"}
+              content={"서울 광진구 능동로 123 2층"}
             />
           </Grid>
         </Grid>
