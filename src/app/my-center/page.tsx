@@ -1,9 +1,10 @@
 import React from "react";
 import InfoCard from "./panel/InfoCard";
-import { Box, Grid, Stack } from "@mui/material";
+import { Box, Button, Grid, Stack } from "@mui/material";
 import MemberInfoCard from "./panel/MemberInfoCard";
 import PageInfoCard from "./panel/PageInfoCard";
 import { HouseIcon, MapPinHouseIcon } from "@/components/icons";
+import Link from "next/link";
 
 const memberData: Array<IMember> = [
   {
@@ -95,6 +96,22 @@ const Page = () => {
         <Grid size={{ phone: 14, desktop: 10 }}>
           <MemberInfoCard count={memberData.length} members={memberData} />
         </Grid>
+        {/* <Grid size={{ phone: 14, desktop: 10 }}>
+          <Button
+            variant="text"
+            fullWidth={isPhone}
+            component={Link}
+            href={"/my-center/members"}
+            sx={{
+              bgcolor: "fillVariants.colored",
+              py: 2,
+              px: 8,
+              borderRadius: "0.75rem",
+            }}
+          >
+            <Typography variant={"Heading1"}>관리하기</Typography>
+          </Button> */}
+        {/* </Grid> */}
       </Grid>
     </Box>
   );
