@@ -27,6 +27,20 @@ const memberData: Array<IMember> = [
     grade: "2등급",
     gender: "남성",
   },
+  {
+    id: 4,
+    name: "박지영",
+    age: 68,
+    grade: "인지지원등급",
+    gender: "여성",
+  },
+  {
+    id: 5,
+    name: "최민수",
+    age: 75,
+    grade: "3등급",
+    gender: "남성",
+  },
 ];
 
 // grid로 처리해도 되지만, 모바일, 테블릿에서 어떻게 나올지 몰라서 Stack으로 임시 처리

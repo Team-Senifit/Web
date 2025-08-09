@@ -2,26 +2,48 @@
 
 import { SquareUserRoundIcon } from "@/components/icons";
 import useMedia from "@/hooks/useMedia";
-import { Button, Divider, Grid, Stack, Typography } from "@mui/material";
+import { Button, Grid, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import React from "react";
 
+const MemberEditButton = () => {
+  const { isPhone } = useMedia();
+  return (
+    <Button
+      variant="text"
+      fullWidth={isPhone}
+      component={Link}
+      href={"/my-center/members"}
+      sx={{
+        bgcolor: "fillVariants.colored",
+        py: 2,
+        px: 8,
+        borderRadius: "0.75rem",
+      }}
+    >
+      <Typography variant={"Heading1"}>관리하기</Typography>
+    </Button>
+  );
+};
+
 const Member = ({ name, age, grade, gender }: IMember) => {
   return (
-    <>
-      <Grid size={4}>
-        <Typography>{name}</Typography>
-      </Grid>
-      <Grid size={2}>
-        <Typography>{age}세</Typography>
-      </Grid>
-      <Grid size={2}>
-        <Typography>{grade}</Typography>
-      </Grid>
-      <Grid size={2}>
-        <Typography>{gender} </Typography>
-      </Grid>
-    </>
+    <Stack direction="row" spacing={[1, 2]} alignItems="center">
+      <Typography variant="Heading1" sx={{ width: ["8rem", "8.25rem"] }}>
+        {name}
+      </Typography>
+      <Stack direction="row" spacing={[2, 9]} alignItems="center">
+        <Typography variant="Heading1" sx={{ width: ["3rem", "3.5rem"] }}>
+          {age}세
+        </Typography>
+        <Typography variant="Heading1" sx={{ width: ["3rem", "3.5rem"] }}>
+          {gender}
+        </Typography>
+        <Typography variant="Heading1" sx={{ width: ["6rem", "8rem"] }}>
+          {grade}
+        </Typography>
+      </Stack>
+    </Stack>
   );
 };
 
@@ -36,58 +58,71 @@ const MemberInfoCard = ({
   return (
     <Stack
       component={"section"}
-      spacing={2}
+      spacing={[2, 0]}
       direction="column"
+      justifyContent={["start", "space-between"]}
       alignItems={"start"}
       sx={{
         bgcolor: "background.paper",
         width: 1,
-        minHeight: ["16.25rem", "28rem"],
+        height: ["16.25rem", "28rem"],
         borderRadius: [0, "0.75rem"],
         px: [3, 6],
         py: [3, 4.5],
       }}
     >
-      <Stack
-        direction={"column"}
-        spacing={1}
-        sx={{
-          alignItems: "start",
-          justifyContent: "center",
-        }}
-      >
-        <SquareUserRoundIcon
-          sx={{ width: 24, height: 24, color: "label.neutral" }}
-          strokeWidth={2}
-        />
+      <Stack direction="column" spacing={4} width={1}>
+        <Stack
+          direction="row"
+          justifyContent={"space-between"}
+          alignItems="center"
+          width={1}
+        >
+          <Stack
+            direction={"column"}
+            spacing={1}
+            alignItems={"start"}
+            justifyContent={"center"}
+          >
+            <SquareUserRoundIcon
+              sx={{ width: 24, height: 24, color: "label.neutral" }}
+              strokeWidth={2}
+            />
+            <Typography
+              variant={isPhone ? "Headline1" : "Heading1"}
+              sx={{ color: "label.neutral" }}
+            >
+              {"센터인원"}
+            </Typography>
+          </Stack>
+          {!isPhone && <MemberEditButton />}
+        </Stack>
+
         <Typography
           variant={isPhone ? "Headline1" : "Heading1"}
-          sx={{ color: "label.neutral" }}
+          sx={{ color: "label.normal", whiteSpace: "pre-line" }}
         >
-          {"센터인원"}
+          {"현재 등록된 어르신은\n"}
+          <Typography
+            component="span"
+            variant={isPhone ? "Headline1" : "Heading1"}
+            sx={{ color: "primaryVariants.default" }}
+          >{`${count}명 `}</Typography>
+          {"입니다."}
         </Typography>
       </Stack>
-      <Typography
-        variant={isPhone ? "Headline1" : "Heading1"}
-        sx={{ color: "label.normal", whiteSpace: "pre-line", pt: 2 }}
-      >
-        {"현재 등록된 어르신은\n"}
-        <Typography
-          component="span"
-          variant={isPhone ? "Headline1" : "Heading1"}
-          sx={{ color: "primaryVariants.default" }}
-        >{`${count}명 `}</Typography>
-        {"입니다."}
-      </Typography>
-      <Button
-        variant="text"
-        fullWidth
-        component={Link}
-        href={"/my-center/members"}
-        sx={{ bgcolor: "fillVariants.colored", py: 2, px: 2 }}
-      >
-        <Typography variant={"Heading1"}>관리하기</Typography>
-      </Button>
+
+      {isPhone ? (
+        <MemberEditButton />
+      ) : (
+        members.length !== 0 && (
+          <Stack direction="column" spacing={[2, 1.5]}>
+            {members.map((member, index) => (
+              <Member {...member} />
+            ))}
+          </Stack>
+        )
+      )}
     </Stack>
   );
 };
