@@ -41,10 +41,11 @@ const MemberInfoCard = ({
       alignItems={"start"}
       sx={{
         bgcolor: "background.paper",
-        padding: 2,
-        width: 1, // width, height에서는 1이 100%를 의미
+        width: 1,
         minHeight: ["16.25rem", "28rem"],
         borderRadius: [0, "0.75rem"],
+        px: [3, 6],
+        py: [3, 4.5],
       }}
     >
       <Stack
