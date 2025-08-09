@@ -1,5 +1,6 @@
 "use client";
 
+import CTAButton from "@/components/CTAButton";
 import { SquareUserRoundIcon } from "@/components/icons";
 import useMedia from "@/hooks/useMedia";
 import { Button, Grid, Stack, Typography } from "@mui/material";
@@ -9,20 +10,15 @@ import React from "react";
 const MemberEditButton = () => {
   const { isPhone } = useMedia();
   return (
-    <Button
-      variant="text"
+    <CTAButton
       fullWidth={isPhone}
       component={Link}
       href={"/my-center/members"}
       sx={{
         bgcolor: "fillVariants.colored",
-        py: 2,
-        px: 8,
-        borderRadius: "0.75rem",
       }}
-    >
-      <Typography variant={"Heading1"}>관리하기</Typography>
-    </Button>
+      text="관리하기"
+    />
   );
 };
 
