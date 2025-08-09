@@ -5,6 +5,7 @@ import MemberInfoCard from "./panel/MemberInfoCard";
 import PageInfoCard from "./panel/PageInfoCard";
 import { HouseIcon, MapPinHouseIcon } from "@/components/icons";
 import Link from "next/link";
+import CTAButton from "@/components/CTAButton";
 
 const memberData: Array<IMember> = [
   {
@@ -96,22 +97,24 @@ const Page = () => {
         <Grid size={{ phone: 14, desktop: 10 }}>
           <MemberInfoCard count={memberData.length} members={memberData} />
         </Grid>
-        {/* <Grid size={{ phone: 14, desktop: 10 }}>
-          <Button
-            variant="text"
-            fullWidth={isPhone}
-            component={Link}
-            href={"/my-center/members"}
-            sx={{
-              bgcolor: "fillVariants.colored",
-              py: 2,
-              px: 8,
-              borderRadius: "0.75rem",
-            }}
-          >
-            <Typography variant={"Heading1"}>관리하기</Typography>
-          </Button> */}
-        {/* </Grid> */}
+        <Grid
+          size={{ phone: 14 }}
+          sx={{
+            px: [3, 0],
+            justifyContent: "flex-end",
+          }}
+        >
+          <Stack direction={"row"} justifyContent={"flex-end"}>
+            <CTAButton
+              text={"로그아웃"}
+              sx={{
+                width: ["100%", "fit-content"],
+                bgcolor: "fillVariants.negative",
+                color: "error.main",
+              }}
+            />
+          </Stack>
+        </Grid>
       </Grid>
     </Box>
   );
