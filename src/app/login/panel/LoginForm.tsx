@@ -6,21 +6,21 @@ import {
   Typography,
   Avatar,
   Snackbar,
-  useMediaQuery,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { login } from "@/apis/auth";
 import SenifitTextField from "../../../components/SenifitTextField";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useTheme } from "@mui/material/styles";
+// import { useTheme } from "@mui/material/styles";
+import useMedia from "@/hooks/useMedia";
 import CustomFailDialog from "./CustomFailDialog";
 
 type LoginFormValues = { id: string; password: string };
 
 export default function LoginForm() {
-  const theme = useTheme();
-  const isPhone = useMediaQuery(theme.breakpoints.down("tablet"));
+  // const theme = useTheme();
+  const { isPhone } = useMedia();
 
   const methods = useForm<LoginFormValues>({ mode: "onSubmit" });
   const { handleSubmit, control } = methods;
@@ -50,7 +50,7 @@ export default function LoginForm() {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      bgcolor={theme.palette.static.white}
+      bgcolor="static.white"
     >
       {/* 로고 자리 (추후에 이미지 삽입) */}
       <Avatar
@@ -70,7 +70,7 @@ export default function LoginForm() {
       >
         누구나 진행할 수 있는, <br />
         검증된 노인 운동 콘텐츠{" "}
-        <span style={{ color: theme.palette.primaryVariants.default }}>시니핏</span>
+        <span style={{ color: "primaryVariants.default" }}>시니핏</span>
       </Typography>
 
       {/* 입력폼 */}
@@ -99,7 +99,7 @@ export default function LoginForm() {
           width: { phone: "calc(100% - 40px)", tablet: 1, desktop: 1 },
           maxWidth: 472,
           height: 56,
-          bgcolor: theme.palette.primaryVariants.default,
+          bgcolor: "primaryVariants.default",
           borderRadius: 2,
           boxShadow: "none",
           mb: 1.5,
@@ -119,13 +119,12 @@ export default function LoginForm() {
           width: 166,
           height: 32,
           p: "4px 8px",
-          bgcolor: theme.palette.fillVariants.colored,
-          color: theme.palette.primaryVariants.default,
+          bgcolor: "fillVariants.colored",
           borderRadius: 2,
           mx: "auto",
         }}
       >
-        <Typography variant="Headline2" fontWeight={600} color={theme.palette.primaryVariants.default}>
+        <Typography variant="Headline2" color="primaryVariants.default" >
           로그인이 되지 않나요?
         </Typography>
       </Button>
@@ -140,7 +139,7 @@ export default function LoginForm() {
         justifyContent="center"
         alignItems="center"
         minHeight="100vh"
-        bgcolor={isPhone ? "transparent" : theme.palette.static.black}
+        bgcolor={isPhone ? "transparent" : "static.black"}
       >
         {LoginContent}
       </Box>

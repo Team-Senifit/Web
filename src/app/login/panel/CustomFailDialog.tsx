@@ -1,6 +1,6 @@
 import { Box, Dialog, DialogContent, Typography, Button } from "@mui/material";
 import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
-import { useTheme } from "@mui/material/styles";
+// import { useTheme } from "@mui/material/styles";
 
 interface ICustomFailDialogProps {
   open: boolean;
@@ -13,7 +13,7 @@ export default function CustomFailDialog({
   onClose,
   main
 }: ICustomFailDialogProps) {
-  const theme = useTheme();
+  // const theme = useTheme();
   const mainText = main ? "아이디 혹은 비밀번호가\n일치하지 않습니다." : "로그인이 되지 않나요?"
   const subText = "로그인 정보에 대한 자세한 문의는\nSGEE 협회로 문의해주시기 바랍니다.";
 
@@ -32,13 +32,13 @@ export default function CustomFailDialog({
           padding={3}
           gap={2}
         >
-          <WarningAmberRoundedIcon sx={{ color: theme.palette.primaryVariants.default, fontSize: 48 }} />
+          <WarningAmberRoundedIcon sx={{ color: "primaryVariants.default", fontSize: 48 }} />
 
           <Typography
             variant="Headline1"
             align="center"
             fontWeight={600}
-            color={theme.palette.text.primary}
+            color="text.primary"
             whiteSpace="pre-line"
           >
             {mainText}
@@ -68,15 +68,14 @@ export default function CustomFailDialog({
             onClick={onClose}
             fullWidth
             sx={{
-              bgcolor: theme.palette.primaryVariants.default,
-              color: theme.palette.static.white,
+              bgcolor: "primaryVariants.default",
               borderRadius: 2,
-              height: 60,
-              fontWeight: 600,
-              fontSize: theme.typography.Heading1.fontSize
+              height: 60
             }}
           >
-            다시 시도하기
+            <Typography variant="Heading1" color="static.white">
+              다시 시도하기
+            </Typography>
           </Button>
           
           {/* 문의하기 버튼 */}
@@ -84,16 +83,14 @@ export default function CustomFailDialog({
             onClick={() => window.open("http://pf.kakao.com/_rXiVn", "_blank")}
             fullWidth
             sx={{
-              bgcolor: theme.palette.fillVariants.colored,
-              color: theme.palette.primaryVariants.default,
+              bgcolor: "fillVariants.colored",
               borderRadius: 2,
-              height: 60,
-              fontWeight: 600,
-              fontSize: theme.typography.Heading1.fontSize,
-              boxShadow: "none"
+              height: 60
             }}
           >
-            문의하기
+            <Typography variant="Heading1" color="primaryVariants.default">
+              문의하기
+            </Typography>
           </Button>
         </Box>
       </DialogContent>
