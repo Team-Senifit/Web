@@ -1,0 +1,37 @@
+name: Chromatic — PR patch build
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+concurrency:
+  group: chromatic-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  chromatic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # PR 이벤트에선 head 리비전으로 체크아웃+환경변수 설정이 권장됨
+          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+
+      # Chromatic CLI로 patch build 실행
+      - name: Run Chromatic (patch build)
+        run: >
+          npx chromatic
+          --project-token "${{ secrets.CHROMATIC_PROJECT_TOKEN }}"
+          --patch-build "${{ github.event.pull_request.head.ref }}...${{ github.event.pull_request.base.ref }}"
+          --only-changed
+          --exit-zero-on-changes
+        env:
+          # PR 이벤트에서의 베이스라인 꼬임 방지를 위해 권장 세팅
+          CHROMATIC_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          CHROMATIC_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          CHROMATIC_SLUG: ${{ github.repository }}

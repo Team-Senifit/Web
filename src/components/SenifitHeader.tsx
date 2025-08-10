@@ -2,7 +2,16 @@
 
 import React from "react";
 import useMedia from "@/hooks/useMedia";
-import { Stack, SxProps, Tab, TabProps, Tabs, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  Stack,
+  SxProps,
+  Tab,
+  TabProps,
+  Tabs,
+  Typography,
+} from "@mui/material";
 import Logo from "@/assets/logo/senifit-logo.svg";
 import Image from "next/image";
 import { ClipboardIcon, HouseIcon, HumanIcon } from "./icons";
@@ -88,27 +97,47 @@ const PCNav = () => {
 };
 
 const SenifitHeader = () => {
+  // 헤더 없는 페이지들
+  const noHeaderPages = ["/login"];
+
+  const pathname = usePathname();
+
+  // 헤더가 필요 없는 페이지인지 확인
+  if (noHeaderPages.includes(pathname)) {
+    return null;
+  }
+
   return (
-    <Stack
-      direction={"row"}
-      justifyContent={"space-between"}
-      alignItems={"center"}
+    <Box
       sx={{
-        bgcolor: "background.paper",
-        px: [3, 3, 18],
-        py: [2, 2, 0],
-        height: ["3.5rem", "4rem", "7rem"],
+        width: "100%",
         position: "fixed",
         top: 0,
         left: 0,
         right: 0,
         zIndex: 1000,
         boxShadow: "0 0 8px 0 rgba(12, 13, 13, 0.05)",
+        bgcolor: "background.paper",
       }}
     >
-      <Image src={Logo} alt="시니핏 로고" />
-      <PCNav />
-    </Stack>
+      <Container
+        maxWidth={"desktop"}
+        component={Stack}
+        direction={"row"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        sx={{
+          bgcolor: "background.paper",
+          px: 3,
+          py: [2, 2, 0],
+          height: ["4.5rem", "4.5rem", "7rem"],
+          boxSizing: "border-box",
+        }}
+      >
+        <Image src={Logo} alt="시니핏 로고" />
+        <PCNav />
+      </Container>
+    </Box>
   );
 };
 
