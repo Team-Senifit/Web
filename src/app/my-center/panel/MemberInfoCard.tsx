@@ -114,7 +114,7 @@ const MemberInfoCard = ({
         members.length !== 0 && (
           <Stack direction="column" spacing={[2, 1.5]}>
             {members.map((member, index) => (
-              <Member {...member} />
+              <Member {...member} key={index} />
             ))}
           </Stack>
         )
