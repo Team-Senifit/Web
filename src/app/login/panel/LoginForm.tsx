@@ -5,10 +5,6 @@ import {
   Button,
   Typography,
   Avatar,
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
   Snackbar,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
@@ -16,140 +12,147 @@ import { login } from "@/apis/auth";
 import SenifitTextField from "../../../components/SenifitTextField";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+// import { useTheme } from "@mui/material/styles";
+import useMedia from "@/hooks/useMedia";
+import CustomFailDialog from "./CustomFailDialog";
 
-type LoginFormValues = {
-  id: string;
-  password: string;
-};
+type LoginFormValues = { id: string; password: string };
 
 export default function LoginForm() {
+  // const theme = useTheme();
+  const { isPhone } = useMedia();
+
   const methods = useForm<LoginFormValues>({ mode: "onSubmit" });
-  const { handleSubmit, control, formState: { errors } } = methods;
+  const { handleSubmit, control } = methods;
 
   const router = useRouter();
   const [showSnackbar, setShowSnackbar] = useState(false);
-  const [showDialog, setShowDialog] = useState(false);
+  const [failDialogOpen, setFailDialogOpen] = useState(false);
+  const [inquiryDialogOpen, setInquiryDialogOpen] = useState(false);
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
       await login(data);
       setShowSnackbar(true);
-      setTimeout(() => {
-        router.push("/");
-      }, 1000);
-    } catch (error) {
-      setShowDialog(true);
+      setTimeout(() => router.push("/"), 1000);
+    } catch {
+      setFailDialogOpen(true);
     }
   };
 
+  const LoginContent = (
+    <Box
+      width={{ phone: "100%", tablet: 552, desktop: 552 }}
+      px={{ phone: 2.5, tablet: 5, desktop: 5 }}
+      py={{ phone: 4, tablet: 5, desktop: 5 }}
+      borderRadius={1.5}
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      bgcolor="static.white"
+    >
+      {/* 로고 자리 (추후에 이미지 삽입) */}
+      <Avatar
+        sx={{ width: 96, height: 96, bgcolor: "grey.300", mb: 2 }}
+        variant="rounded"
+      >
+        <Typography variant="Caption1" color="grey.700">
+          senifit
+        </Typography>
+      </Avatar>
+
+      <Typography
+        variant={isPhone ? "Headline1" : "Heading1"}
+        color="text.primary"
+        mb={5}
+        textAlign="center"
+      >
+        누구나 진행할 수 있는, <br />
+        검증된 노인 운동 콘텐츠{" "}
+        <span style={{ color: "primaryVariants.default" }}>시니핏</span>
+      </Typography>
+
+      {/* 입력폼 */}
+      <Box mb={3} width="100%" maxWidth={472}>
+        <SenifitTextField
+          name="id"
+          label="아이디를 입력하세요."
+          rules={{ required: "아이디를 입력해주세요." }}
+          control={control}
+          sx={{ width: 1, height: 55, mb: 1 }}
+        />
+        <SenifitTextField
+          name="password"
+          type="password"
+          label="비밀번호를 입력하세요."
+          rules={{ required: "비밀번호를 입력해주세요." }}
+          control={control}
+          sx={{ width: 1, height: 55 }}
+        />
+      </Box>
+
+      <Button
+        type="submit"
+        variant="contained"
+        sx={{
+          width: { phone: "calc(100% - 40px)", tablet: 1, desktop: 1 },
+          maxWidth: 472,
+          height: 56,
+          bgcolor: "primaryVariants.default",
+          borderRadius: 2,
+          boxShadow: "none",
+          mb: 1.5,
+          mx: { phone: "20px", tablet: "auto", desktop: "auto" },
+        }}
+      >
+        <Typography variant="Heading1" color="static.white">
+          로그인
+        </Typography>
+      </Button>
+
+      <Button
+        onClick={() => setInquiryDialogOpen(true)}
+        disableElevation
+        sx={{
+          mt: 0,
+          width: 166,
+          height: 32,
+          p: "4px 8px",
+          bgcolor: "fillVariants.colored",
+          borderRadius: 2,
+          mx: "auto",
+        }}
+      >
+        <Typography variant="Headline2" color="primaryVariants.default" >
+          로그인이 되지 않나요?
+        </Typography>
+      </Button>
+    </Box>
+  );
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      
       <Box
         display="flex"
         justifyContent="center"
         alignItems="center"
         minHeight="100vh"
-        bgcolor="#fff"
+        bgcolor={isPhone ? "transparent" : "static.black"}
       >
-        <Box sx={{ padding: 4, width: 600 }}>
-          {/* 로고 + 안내문구 */}
-          <Box display="flex" flexDirection="column" alignItems="center" mb={10}>
-            <Avatar
-              sx={{ width: 80, height: 80, bgcolor: "grey.300", mb: 2 }}
-              variant="rounded"
-            >
-              <Typography variant="Caption1">시니핏 로고</Typography>
-            </Avatar>
-            <Typography variant="Heading2">
-              어르신들을 위한 노인 맞춤 운동, 시니핏
-            </Typography>
-          </Box>
-
-          {/* 로그인 폼 */}
-          <Box>
-            <Typography variant="Title2" mb={2}>
-              로그인
-            </Typography>
-
-            <SenifitTextField
-              name="id"
-              label="아이디"
-              rules={{ required: "아이디를 입력해주세요." }}
-              control={control}
-              sx={{ width: 350, height: 55 }}
-            />
-
-            <SenifitTextField
-              name="password"
-              type="password"
-              label="비밀번호"
-              rules={{ required: "비밀번호를 입력해주세요." }}
-              control={control}
-              sx={{ width: 350, height: 55, mt: 2 }}
-            />
-
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              sx={{
-                width: 150,
-                height: 60,
-                mt: 3,
-                fontSize: "1.5rem",
-                fontWeight: 700,
-              }}
-            >
-              로그인
-            </Button>
-          </Box>
-        </Box>
-
-        {/* 실패 팝업 */}
-        <Dialog
-          open={showDialog}
-          onClose={() => setShowDialog(false)}
-          PaperProps={{
-            sx: {
-              border: "1px solid #ccc",
-              borderRadius: "12px",
-            },
-          }}
-        >
-          <DialogContent sx={{ p: 4 }}>
-            <DialogContentText>
-              아이디 혹은 비밀번호가 일치하지 않습니다.
-              <br />
-              <br />
-              로그인 정보에 대한 자세한 문의는
-              <br />
-              SGEE 협회로 문의해주시기 바랍니다.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions sx={{ px: 3, pb: 3 }}>
-            <Button
-              variant="outlined"
-              onClick={() => window.open("http://pf.kakao.com/_rXiVn", "_blank")}
-            >
-              문의하기
-            </Button>
-            <Button
-              variant="contained"
-              onClick={() => setShowDialog(false)}
-              sx={{ bgcolor: "#666", color: "#fff", "&:hover": { bgcolor: "#555" } }}
-            >
-              닫기
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        {/* 성공 알림 */}
-        <Snackbar
-          open={showSnackbar}
-          autoHideDuration={1500}
-          message="로그인 성공! 오늘도 즐거운 시니핏 하세요!"
-        />
+        {LoginContent}
       </Box>
+
+      {/* 로그인 실패 다이얼로그 */}
+      <CustomFailDialog open={failDialogOpen} onClose={() => setFailDialogOpen(false)} main={true} />
+
+      {/* 도움말 다이얼로그 */}
+      <CustomFailDialog open={inquiryDialogOpen} onClose={() => setInquiryDialogOpen(false)} main={false} />
+
+      {/* 성공 알림 */}
+      <Snackbar open={showSnackbar} autoHideDuration={1500} message="로그인 성공! 오늘도 즐거운 시니핏 하세요!" />
+
     </form>
   );
 }
