@@ -44,6 +44,7 @@ const Page = () => {
           width: 1,
           bgcolor: "background.paper",
           p: [3, 6],
+          borderRadius: [0, "0.75rem"],
         }}
       >
         <PageInfoCard />
