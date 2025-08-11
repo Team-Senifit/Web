@@ -7,8 +7,8 @@ const ReturnButton = () => {
   return (
     <Box
       sx={{
-        pt: "1.5rem",
-        px: "1.5rem",
+        pt: ["1.5rem", 0],
+        px: ["1.5rem", 0],
       }}
     >
       <Button
@@ -25,10 +25,11 @@ const ReturnButton = () => {
           />
         }
         sx={{
-          width: [1, "fit-content"],
+          width: [1, "205px"],
           py: [2],
-          px: [8],
+          px: [8, 0],
           bgcolor: "background.paper",
+          borderRadius: "0.75rem",
         }}
       >
         <Typography
