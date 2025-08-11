@@ -38,17 +38,20 @@ const Page = () => {
       <Stack
         direction={"column"}
         justifyContent="start"
-        alignItems="center"
+        alignItems="start"
+        spacing={[2, 3]}
         sx={{
           width: 1,
           bgcolor: "background.paper",
-          p: [3],
+          p: [3, 6],
         }}
       >
         <PageInfoCard />
-        <Divider sx={{ borderColor: "#f2f2f2" }} />
+        <Divider
+          sx={{ borderColor: "#f2f2f2", borderBottomWidth: "2px", width: 1 }}
+        />
+        <MemberList members={memberData} />
       </Stack>
-      <MemberList members={memberData} />
     </Stack>
   );
 };
