@@ -11,8 +11,9 @@ const Member = ({
   age,
   grade,
   gender,
+  isTablet,
   isDesktop,
-}: IMember & { isDesktop: boolean }) => {
+}: IMember & { isDesktop: boolean; isTablet: boolean }) => {
   return (
     <Stack
       direction={{ phone: "column", tablet: "row" }}
@@ -81,9 +82,12 @@ const Member = ({
             px: 2,
             width: [1, "fit-content"],
             borderRadius: "9999px",
+            wordBreak: "keep-all",
           }}
         >
-          수정하기
+          <Typography variant={isTablet ? "Heading1" : "Headline1"}>
+            수정하기
+          </Typography>
         </Button>
         <Button
           variant="text"
@@ -94,9 +98,12 @@ const Member = ({
             px: 2,
             width: [1, "fit-content"],
             borderRadius: "9999px",
+            wordBreak: "keep-all",
           }}
         >
-          삭제하기
+          <Typography variant={isTablet ? "Heading1" : "Headline1"}>
+            삭제하기
+          </Typography>
         </Button>
       </Stack>
     </Stack>
@@ -104,11 +111,16 @@ const Member = ({
 };
 
 const MemberList = ({ members }: { members: Array<IMember> }) => {
-  const { isDesktop } = useMedia();
+  const { isTablet, isDesktop } = useMedia();
   return (
     <>
       {members.map((member) => (
-        <Member key={member.id} isDesktop={isDesktop} {...member} />
+        <Member
+          key={member.id}
+          isDesktop={isDesktop}
+          isTablet={isTablet}
+          {...member}
+        />
       ))}
     </>
   );
