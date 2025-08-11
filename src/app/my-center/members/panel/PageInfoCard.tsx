@@ -4,6 +4,7 @@ import { SquareUserRoundIcon } from "@/components/icons";
 import useMedia from "@/hooks/useMedia";
 import { Button, Stack, Typography } from "@mui/material";
 import React from "react";
+import AddMemberButton from "./AddMemberButton";
 
 const InfoCard = () => {
   const { isPhone, isDesktop } = useMedia();
@@ -31,13 +32,7 @@ const InfoCard = () => {
           {"등록 어르신 관리하기"}
         </Typography>
       </Stack>
-      {isDesktop && (
-        <Button>
-          <Typography variant="Heading1" sx={{ color: "label.normal" }}>
-            {"어르신 등록하기"}
-          </Typography>
-        </Button>
-      )}
+      {isDesktop && <AddMemberButton />}
     </Stack>
   );
 };
