@@ -1,8 +1,10 @@
-import { Button, Container, Stack, Typography } from "@mui/material";
+import { Button, Divider, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import React from "react";
-import MemberList from "./MemberList";
+import MemberList from "./panel/MemberList";
 import Link from "next/link";
+import ReturnButton from "./panel/ReturnButton";
+import PageInfoCard from "./panel/PageInfoCard";
 
 const memberData: Array<IMember> = [
   {
@@ -31,32 +33,23 @@ const memberData: Array<IMember> = [
 
 const Page = () => {
   return (
-    <Container component={Stack} spacing={2}>
+    <Stack spacing={2} sx={{ width: "100%", height: "100%" }}>
+      <ReturnButton />
       <Stack
-        direction={"row"}
-        justifyContent="space-between"
+        direction={"column"}
+        justifyContent="start"
         alignItems="center"
+        sx={{
+          width: 1,
+          bgcolor: "background.paper",
+          p: [3],
+        }}
       >
-        <Typography>{"등록 어르신 관리하기"}</Typography>
-        <Button
-          variant="contained"
-          href="/my-center/members/add"
-          component={Link}
-          startIcon={<AddIcon />}
-        >
-          {"어르신 추가하기"}
-        </Button>
+        <PageInfoCard />
+        <Divider sx={{ borderColor: "#f2f2f2" }} />
       </Stack>
       <MemberList members={memberData} />
-      <Button
-        variant="contained"
-        href="/my-center"
-        component={Link}
-        sx={{ width: "fit-content" }}
-      >
-        <Typography>{"돌아가기"}</Typography>
-      </Button>
-    </Container>
+    </Stack>
   );
 };
 
