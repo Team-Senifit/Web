@@ -1,12 +1,16 @@
 "use client";
 
-import { SquareUserRoundIcon } from "@/components/icons";
 import useMedia from "@/hooks/useMedia";
-import { Button, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import React from "react";
-import AddMemberButton from "./AddMemberButton";
 
-const InfoCard = () => {
+export interface IPageInfoCardProps {
+  icon: React.ReactNode;
+  title: string;
+  endAction?: React.ReactNode;
+}
+
+const PageInfoCard = ({ icon, title, endAction }: IPageInfoCardProps) => {
   const { isPhone, isDesktop } = useMedia();
   return (
     <Stack
@@ -24,17 +28,17 @@ const InfoCard = () => {
         alignItems={"start"}
         justifyContent={"center"}
       >
-        <SquareUserRoundIcon strokeWidth={2} sx={{ color: "label.neutral" }} />
+        {icon}
         <Typography
           variant={isPhone ? "Headline1" : "Heading1"}
           sx={{ color: "label.neutral" }}
         >
-          {"등록 어르신 관리하기"}
+          {title}
         </Typography>
       </Stack>
-      {isDesktop && <AddMemberButton />}
+      {isDesktop && endAction}
     </Stack>
   );
 };
 
-export default InfoCard;
+export default PageInfoCard;
