@@ -1,10 +1,12 @@
-import { Button, Divider, Stack, Typography } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+"use client";
+
+import { Box, Divider, Stack } from "@mui/material";
 import React from "react";
 import MemberList from "./panel/MemberList";
-import Link from "next/link";
 import ReturnButton from "./panel/ReturnButton";
 import PageInfoCard from "./panel/PageInfoCard";
+import AddMemberButton from "./panel/AddMemberButton";
+import useMedia from "@/hooks/useMedia";
 
 const memberData: Array<IMember> = [
   {
@@ -32,8 +34,9 @@ const memberData: Array<IMember> = [
 ];
 
 const Page = () => {
+  const { isDesktop } = useMedia();
   return (
-    <Stack spacing={2} sx={{ width: "100%", height: "100%" }}>
+    <Stack spacing={[2, 3]} sx={{ width: "100%", height: "100%" }}>
       <ReturnButton />
       <Stack
         direction={"column"}
@@ -53,6 +56,15 @@ const Page = () => {
         />
         <MemberList members={memberData} />
       </Stack>
+      {!isDesktop && (
+        <Box
+          sx={{
+            px: ["1.5rem", 0],
+          }}
+        >
+          <AddMemberButton />
+        </Box>
+      )}
     </Stack>
   );
 };
