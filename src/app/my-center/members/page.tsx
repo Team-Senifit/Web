@@ -38,7 +38,7 @@ const Page = () => {
   const { isDesktop } = useMedia();
   return (
     <Stack spacing={[2, 3]} sx={{ width: "100%", height: "100%" }}>
-      <ReturnButton />
+      <ReturnButton href="/my-center" />
       <Stack
         direction={"column"}
         justifyContent="start"
