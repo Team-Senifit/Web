@@ -4,3 +4,5 @@ export { default as HouseIcon } from "./HouseIcon";
 export { default as MapPinHouseIcon } from "./MapPinHouseIcon";
 export { default as SquareUserRoundIcon } from "./SquareUserRoundIcon";
 export { default as UndoIcon } from "./UndoIcon";
+export { default as CalendarIcon } from "./CalendarIcon";
+export { default as CrossIcon } from "./CrossIcon";
