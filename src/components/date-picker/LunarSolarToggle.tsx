@@ -1,9 +1,8 @@
 import React from "react";
-import SenifitToggleButtonGroup, {
-  ISenifitToggleOption,
-} from "../SenifitToggleButtonGroup";
+import SenifitToggleButtonGroup from "../SenifitToggleButtonGroup";
 import { Box, Typography } from "@mui/material";
 import useMedia from "@/hooks/useMedia";
+import { ISenifitToggleOption } from "@/types/IToggleButton";
 
 type CalendarType = "lunar" | "solar";
 

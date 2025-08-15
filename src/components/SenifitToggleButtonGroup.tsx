@@ -8,6 +8,11 @@ import {
   type ToggleButtonProps,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import {
+  IExclusiveProps,
+  IMultiProps,
+  ISenifitToggleButtonGroupRootProps,
+} from "@/types/IToggleButton";
 
 /** ───────────────── Styled primitives ───────────────── */
 
@@ -68,11 +73,6 @@ const SenifitToggleButton = styled(ToggleButton, {
   };
 });
 
-export interface ISenifitToggleButtonGroupRootProps
-  extends ToggleButtonGroupProps {
-  gap?: number; // theme.spacing 배수
-}
-
 const SenifitToggleButtonGroupRoot = styled(ToggleButtonGroup, {
   shouldForwardProp: (prop) =>
     prop !== "gap" && prop !== "paddingX" && prop !== "paddingTop",
@@ -83,39 +83,6 @@ const SenifitToggleButtonGroupRoot = styled(ToggleButtonGroup, {
   w: 1,
   "& .MuiToggleButtonGroup-grouped": { margin: 0, border: 0 },
 }));
-
-/** ───────────────── Public API ───────────────── */
-
-export interface ISenifitToggleOption<T extends string | number> {
-  value: T;
-  label: React.ReactNode;
-  disabled?: boolean;
-  buttonProps?: Omit<ISenifitToggleButtonProps, "value">;
-}
-
-export interface IBaseProps<T extends string | number> {
-  options: ISenifitToggleOption<T>[];
-  sizeVariant?: SizeVariant;
-  fullWidth?: boolean; // 각 버튼 flex:1
-  groupProps?: Omit<
-    ISenifitToggleButtonGroupRootProps,
-    "value" | "onChange" | "exclusive"
-  >;
-  buttonProps?: Omit<ISenifitToggleButtonProps, "value">;
-}
-
-export interface IExclusiveProps<T extends string | number>
-  extends IBaseProps<T> {
-  exclusive?: true;
-  value: T | null;
-  onChange: (v: T) => void;
-}
-
-export interface IMultiProps<T extends string | number> extends IBaseProps<T> {
-  exclusive: false;
-  value: T[];
-  onChange: (v: T[]) => void;
-}
 
 export function SenifitToggleButtonGroup<T extends string | number>(
   props: IExclusiveProps<T> | IMultiProps<T>
