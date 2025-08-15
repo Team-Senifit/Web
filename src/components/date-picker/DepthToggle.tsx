@@ -17,17 +17,17 @@ const DepthLabel = ({
 }) => <Typography variant={variant}>{text}</Typography>;
 
 const DepthToggle = ({
-  depth,
+  depth = "year",
   setDepth,
   year,
   month,
   day,
 }: {
-  depth: Depth | null;
-  setDepth: (depth: Depth | null) => void;
-  year: number;
-  month: number;
-  day: number;
+  depth: Depth;
+  setDepth: (depth: Depth) => void;
+  year: number | null;
+  month: number | null;
+  day: number | null;
 }) => {
   const { isPhone } = useMedia();
 
@@ -37,17 +37,14 @@ const DepthToggle = ({
     {
       value: "year",
       label: (
-        <DepthLabel
-          text={year > 0 ? `${year}년` : "생년"}
-          variant={textVariant}
-        />
+        <DepthLabel text={year ? `${year}년` : "생년"} variant={textVariant} />
       ),
     },
     {
       value: "month",
       label: (
         <DepthLabel
-          text={month > 0 ? `${month}월` : "생월"}
+          text={month ? `${month}월` : "생월"}
           variant={textVariant}
         />
       ),
@@ -55,10 +52,7 @@ const DepthToggle = ({
     {
       value: "day",
       label: (
-        <DepthLabel
-          text={day > 0 ? `${day}일` : "생일"}
-          variant={textVariant}
-        />
+        <DepthLabel text={day ? `${day}일` : "생일"} variant={textVariant} />
       ),
     },
   ] as ISenifitToggleOption<Depth>[];
