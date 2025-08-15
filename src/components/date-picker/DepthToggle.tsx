@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import SenifitRadioButtonGroup from "../SenifitRadioButtonGroup";
 import SenifitToggleButtonGroup, {
   ISenifitToggleOption,
 } from "../SenifitToggleButtonGroup";
@@ -18,7 +17,7 @@ const DepthLabel = ({
   variant: "Headline1" | "Heading2";
 }) => <Typography variant={variant}>{text}</Typography>;
 
-const DepthButtonGroup = ({
+const DepthToggle = ({
   depth,
   setDepth,
   year,
@@ -82,4 +81,4 @@ const DepthButtonGroup = ({
   );
 };
 
-export default DepthButtonGroup;
+export default DepthToggle;

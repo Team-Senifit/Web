@@ -6,8 +6,8 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import type { Dayjs } from "dayjs";
 import { CalendarIcon } from "./icons";
 import { Button, Modal, Paper, Stack, Typography } from "@mui/material";
-import { Title, DepthButtonGroup } from "./date-picker";
-import { Depth } from "./date-picker/DepthButtonGroup";
+import { LunarSolarToggle, Title } from "./date-picker";
+import DepthToggle, { Depth } from "./date-picker/DepthToggle";
 
 // 예시 코드. 실제 디자인 된 이후 예시로만 쓰고 실제로는 안 쓸 가능성이 높습니다.
 export default function YearMonthDayPicker() {
@@ -55,13 +55,15 @@ export default function YearMonthDayPicker() {
           }}
         >
           <Title closeDatePicker={() => setIsOpen(false)} />
-          <DepthButtonGroup
+          <DepthToggle
             depth={depth}
             setDepth={setDepth}
             year={0}
             month={0}
             day={0}
           />
+          {/* RHF 연결 이후 처리 */}
+          <LunarSolarToggle calendarType={"solar"} setCalendarType={() => {}} />
           <LocalizationProvider
             dateAdapter={AdapterDayjs}
           ></LocalizationProvider>
