@@ -4,6 +4,15 @@ import SenifitThemeProvider from "./panel/SenifitThemeProvider";
 import SenifitNavBar from "@/components/SenifitNavBar";
 import SenifitHeader from "@/components/SenifitHeader";
 import { Container } from "@mui/material";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+// dayjs locale 설정, time zone 설정
+dayjs.locale("ko");
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault("Asia/Seoul");
 
 export const metadata: Metadata = {
   title: "시니핏",

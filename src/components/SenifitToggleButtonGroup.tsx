@@ -54,9 +54,6 @@ const SenifitToggleButton = styled(ToggleButton, {
       borderColor: borderNormal,
       backgroundColor: bgAlt,
       textTransform: "none",
-      // display: "inline-flex",
-      // alignItems: "center",
-      // justifyContent: "center",
 
       "&:hover": {
         borderColor: selectedColor,

@@ -2,17 +2,21 @@
 import { useState } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import type { Dayjs } from "dayjs";
 import { CalendarIcon } from "./icons";
 import { Button, Modal, Paper, Stack, Typography } from "@mui/material";
 import { LunarSolarToggle, Title } from "./date-picker";
 import DepthToggle, { Depth } from "./date-picker/DepthToggle";
+import { DateCalendar, MonthCalendar, YearCalendar } from "@mui/x-date-pickers";
+import DecadeCalendar from "./date-picker/DecadeCalendar";
+import dayjs from "dayjs";
 
 // 예시 코드. 실제 디자인 된 이후 예시로만 쓰고 실제로는 안 쓸 가능성이 높습니다.
 export default function YearMonthDayPicker() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [depth, setDepth] = useState<Depth | null>(null);
+  const [depth, setDepth] = useState<Depth>("year");
+
+  // 임시 처리
+  const [year, setYear] = useState<number | null>(null);
 
   return (
     <>
@@ -51,22 +55,34 @@ export default function YearMonthDayPicker() {
         <Paper
           sx={{
             width: [1],
-            height: ["22.5rem"],
+            height: ["36rem"],
           }}
         >
           <Title closeDatePicker={() => setIsOpen(false)} />
           <DepthToggle
             depth={depth}
             setDepth={setDepth}
-            year={0}
+            year={year}
             month={0}
             day={0}
           />
           {/* RHF 연결 이후 처리 */}
           <LunarSolarToggle calendarType={"solar"} setCalendarType={() => {}} />
-          <LocalizationProvider
-            dateAdapter={AdapterDayjs}
-          ></LocalizationProvider>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            {depth === "day" ? (
+              <DateCalendar />
+            ) : depth === "month" ? (
+              <MonthCalendar />
+            ) : (
+              <DecadeCalendar
+                value={year ? dayjs(`${year}-01-01`) : null}
+                onChange={(value) => {
+                  setYear(value ? value.year() : null);
+                  setDepth("month");
+                }}
+              />
+            )}
+          </LocalizationProvider>
         </Paper>
       </Modal>
     </>
