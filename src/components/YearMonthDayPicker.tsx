@@ -1,7 +1,5 @@
 "use client";
 import { useState } from "react";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { CalendarIcon } from "./icons";
 import { Box, Button, Modal, Paper, Stack, Typography } from "@mui/material";
 import { LunarSolarToggle, Title } from "./date-picker";
@@ -9,7 +7,8 @@ import DepthToggle, { Depth } from "./date-picker/DepthToggle";
 import { DateCalendar, MonthCalendar, YearCalendar } from "@mui/x-date-pickers";
 import DecadeCalendar from "./date-picker/DecadeCalendar";
 import dayjs from "dayjs";
-import CalendarButton from "./date-picker/CalendarButton";
+import MonthCalendarWidthYear from "./date-picker/MonthCalendarWidthYear";
+import DateCalendarWithTitle from "./date-picker/DateCalendarWithTitle";
 
 // 예시 코드. 실제 디자인 된 이후 예시로만 쓰고 실제로는 안 쓸 가능성이 높습니다.
 export default function YearMonthDayPicker() {
@@ -18,6 +17,8 @@ export default function YearMonthDayPicker() {
 
   // 임시 처리
   const [year, setYear] = useState<number | null>(null);
+  const [month, setMonth] = useState<number | null>(null);
+  const [day, setDay] = useState<number | null>(null);
 
   return (
     <>
@@ -64,52 +65,39 @@ export default function YearMonthDayPicker() {
             depth={depth}
             setDepth={setDepth}
             year={year}
-            month={0}
-            day={0}
+            month={month}
+            day={day}
           />
           {/* RHF 연결 이후 처리 */}
           <LunarSolarToggle calendarType={"solar"} setCalendarType={() => {}} />
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            {depth === "day" ? (
-              <DateCalendar />
-            ) : depth === "month" ? (
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Box
-                  sx={{
-                    "& .MuiMonthCalendar-root": {
-                      width: 1,
-                      display: "grid",
-                      gridTemplateColumns: `repeat(${3}, minmax(0, 1fr))`,
-                      p: 1.5,
-                      gap: 1, // theme.spacing(1)
-                    },
-                    "& .MuiPickersMonth-root": {
-                      display: "contents",
-                      minWidth: 0,
-                    },
-                    "& .MuiPickersMonth-monthButton": {
-                      width: "100%",
-                      boxSizing: "border-box",
-                    },
-                  }}
-                >
-                  <MonthCalendar
-                    slots={{
-                      monthButton: CalendarButton,
-                    }}
-                  />
-                </Box>
-              </LocalizationProvider>
-            ) : (
-              <DecadeCalendar
-                value={year ? dayjs(`${year}-01-01`) : null}
-                onChange={(value) => {
-                  setYear(value ? value.year() : null);
-                  setDepth("month");
-                }}
-              />
-            )}
-          </LocalizationProvider>
+          {depth === "day" ? (
+            <DateCalendarWithTitle
+              value={dayjs(`${year}-${month}-${day ? day : 1}`)}
+              onChange={(newValue) => {
+                setYear(newValue ? newValue.year() : null);
+                setMonth(newValue ? newValue.month() + 1 : null);
+                setDay(newValue ? newValue.date() : null);
+              }}
+            />
+          ) : depth === "month" ? (
+            <MonthCalendarWidthYear
+              year={year}
+              setYear={setYear}
+              month={month}
+              setMonth={(value) => {
+                setMonth(value);
+                setDepth("day");
+              }}
+            />
+          ) : (
+            <DecadeCalendar
+              value={year ? dayjs(`${year}-01-01`) : null}
+              onChange={(value) => {
+                setYear(value ? value.year() : null);
+                setDepth("month");
+              }}
+            />
+          )}
         </Paper>
       </Modal>
     </>
