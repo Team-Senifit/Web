@@ -18,9 +18,8 @@ type TProps<T extends FieldValues> =
       hintText?: React.ReactNode;
       /** 바깥 FormControl에 전달할 props */
       formControlProps?: FormControlProps;
-      /** 체이닝용 핸들러 (InputBase와 동일 타입) */
-      onChange?: NonNullable<InputBaseProps["onChange"]>;
-      onBlur?: NonNullable<InputBaseProps["onBlur"]>;
+      /** HelperText 비활성화 */
+      disableHelperText?: boolean;
     };
 
 const SenifitTextField = <T extends FieldValues>(props: TProps<T>) => {
@@ -32,6 +31,7 @@ const SenifitTextField = <T extends FieldValues>(props: TProps<T>) => {
     formControlProps,
     onChange,
     onBlur,
+    disableHelperText = false, // default는 false
     sx,
     ...inputBaseProps
   } = props;

@@ -21,12 +21,14 @@ export default function YearMonthDayPicker() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [depth, setDepth] = useState<Depth>("year");
 
-  // 임시 처리
-  const [year, setYear] = useState<number | null>(null);
-  const [month, setMonth] = useState<number | null>(null);
-  const [day, setDay] = useState<number | null>(null);
+  // // 임시 처리
+  // const [year, setYear] = useState<number | null>(null);
+  // const [month, setMonth] = useState<number | null>(null);
+  // const [day, setDay] = useState<number | null>(null);
 
-  const { control } = useForm<IFormValue>();
+  const { control, getValues, setValue } = useForm<IFormValue>();
+
+  const { year, month, day } = getValues();
 
   return (
     <>
@@ -87,18 +89,18 @@ export default function YearMonthDayPicker() {
               month={month}
               day={day}
               onChange={(newValue) => {
-                setYear(newValue ? newValue.year() : null);
-                setMonth(newValue ? newValue.month() + 1 : null);
-                setDay(newValue ? newValue.date() : null);
+                setValue("day", newValue ? newValue.date() : null);
+                setValue("month", newValue ? newValue.month() : null);
+                setValue("year", newValue ? newValue.year() : null);
               }}
             />
           ) : depth === "month" ? (
             <MonthCalendarWidthYear
               year={year}
-              setYear={setYear}
+              setYear={(value) => setValue("year", value)}
               month={month}
               setMonth={(value) => {
-                setMonth(value);
+                setValue("month", value);
                 setDepth("day");
               }}
             />
@@ -106,7 +108,7 @@ export default function YearMonthDayPicker() {
             <DecadeCalendar
               value={year ? dayjs(`${year}-01-01`) : null}
               onChange={(value) => {
-                setYear(value ? value.year() : null);
+                setValue("year", value ? value.year() : null);
                 setDepth("month");
               }}
             />
