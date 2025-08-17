@@ -24,6 +24,7 @@ const MonthCalendarWidthYear = ({
   month: number | null;
   setMonth: React.Dispatch<React.SetStateAction<number | null>>;
 }) => {
+  if (year === null) return null;
   return (
     <Stack>
       <CalendarTitle

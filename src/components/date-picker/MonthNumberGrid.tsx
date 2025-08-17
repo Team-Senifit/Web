@@ -8,6 +8,7 @@ import useMedia from "@/hooks/useMedia";
 type MonthNumberGridProps = {
   year: number; // 2025
   month: number; // 1~12
+  day: number | null;
   value?: Dayjs | null; // 선택된 날짜
   onChange?: (date: Dayjs) => void;
   minDate?: Dayjs;
@@ -50,6 +51,7 @@ const baseDaySx: SxProps = {
 export function MonthNumberGrid({
   year,
   month, // 1~12
+  day,
   value,
   onChange,
   minDate,
@@ -88,7 +90,7 @@ export function MonthNumberGrid({
       {Array.from({ length: daysInMonth }, (_, i) => {
         const dayNum = i + 1;
         const date = monthStart.date(dayNum);
-        const selected = value ? date.isSame(value, "day") : false;
+        const selected = day ? date.isSame(day, "day") : false;
 
         return (
           <Button
