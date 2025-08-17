@@ -3,12 +3,13 @@ import { useState } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { CalendarIcon } from "./icons";
-import { Button, Modal, Paper, Stack, Typography } from "@mui/material";
+import { Box, Button, Modal, Paper, Stack, Typography } from "@mui/material";
 import { LunarSolarToggle, Title } from "./date-picker";
 import DepthToggle, { Depth } from "./date-picker/DepthToggle";
 import { DateCalendar, MonthCalendar, YearCalendar } from "@mui/x-date-pickers";
 import DecadeCalendar from "./date-picker/DecadeCalendar";
 import dayjs from "dayjs";
+import CalendarButton from "./date-picker/CalendarButton";
 
 // 예시 코드. 실제 디자인 된 이후 예시로만 쓰고 실제로는 안 쓸 가능성이 높습니다.
 export default function YearMonthDayPicker() {
@@ -72,7 +73,33 @@ export default function YearMonthDayPicker() {
             {depth === "day" ? (
               <DateCalendar />
             ) : depth === "month" ? (
-              <MonthCalendar />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Box
+                  sx={{
+                    "& .MuiMonthCalendar-root": {
+                      width: 1,
+                      display: "grid",
+                      gridTemplateColumns: `repeat(${3}, minmax(0, 1fr))`,
+                      p: 1.5,
+                      gap: 1, // theme.spacing(1)
+                    },
+                    "& .MuiPickersMonth-root": {
+                      display: "contents",
+                      minWidth: 0,
+                    },
+                    "& .MuiPickersMonth-monthButton": {
+                      width: "100%",
+                      boxSizing: "border-box",
+                    },
+                  }}
+                >
+                  <MonthCalendar
+                    slots={{
+                      monthButton: CalendarButton,
+                    }}
+                  />
+                </Box>
+              </LocalizationProvider>
             ) : (
               <DecadeCalendar
                 value={year ? dayjs(`${year}-01-01`) : null}

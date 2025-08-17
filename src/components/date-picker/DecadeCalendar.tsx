@@ -15,6 +15,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { YearCalendar } from "@mui/x-date-pickers/YearCalendar";
 import dayjs, { Dayjs } from "dayjs";
+import CalendarButton from "./CalendarButton";
 
 /** ───────────────── 타입 ─────────────────
  *  - 주석은 한글로 작성
@@ -149,33 +150,8 @@ const DecadeCalendar = ({
             maxDate={maxDate}
             yearsPerRow={3} // 12년 => 3x4 그리드가 딱 맞음
             yearsOrder="asc"
-            slotProps={{
-              yearButton: {
-                sx: {
-                  width: "100%",
-                  height: "3.5rem",
-                  maxHeight: "3.5rem",
-                  minHeight: "3.5rem",
-                  color: "interaction.inactive",
-                  borderRadius: "0.75rem",
-                  borderWidth: 2,
-                  borderStyle: "solid",
-                  borderColor: "borderVariants.normal",
-                  backgroundColor: "bg.alternative",
-                  textTransform: "none",
-                  "&:hover": {
-                    borderColor: "primary.main",
-                    backgroundColor: "fillVariants.colored",
-                    color: "primary.main",
-                  },
-                  "&&.Mui-selected": {
-                    color: "primary.main",
-                    borderColor: "primary.main",
-                    backgroundColor: "fillVariants.colored",
-                    "&:hover": { backgroundColor: "fillVariants.colored" },
-                  },
-                },
-              },
+            slots={{
+              yearButton: CalendarButton,
             }}
           />
         </Box>
