@@ -11,6 +11,15 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    backgrounds: {
+      options: {
+        default: { name: "default", value: "#F5F7FA" },
+        paper: { name: "paper", value: "#FFFFFF" },
+      },
+    },
+    initialGlobals: {
+      backgrounds: { value: "default" },
+    },
   },
   decorators: [
     (Story) => (
