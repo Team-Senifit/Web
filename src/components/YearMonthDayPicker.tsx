@@ -49,14 +49,17 @@ export default function YearMonthDayPicker() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "flex-end",
+          justifyContent: ["flex-end", "center"],
         }}
         aria-labelledby="year-month-day-picker-title"
       >
         <Paper
           sx={{
-            width: [1],
-            height: ["36rem"],
+            width: [1, "34.5rem"],
+            height: ["36.25rem"],
+            borderRadius: "0.75rem",
+            borderBottomRightRadius: [0, "0.75rem"],
+            borderBottomLeftRadius: [0, "0.75rem"],
           }}
         >
           <Title closeDatePicker={() => setIsOpen(false)} />
