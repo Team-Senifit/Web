@@ -1,16 +1,22 @@
 "use client";
 import { useState } from "react";
 import { CalendarIcon } from "./icons";
-import { Box, Button, Modal, Paper, Stack, Typography } from "@mui/material";
+import { Button, Modal, Paper, Typography } from "@mui/material";
 import { LunarSolarToggle, Title } from "./date-picker";
 import DepthToggle, { Depth } from "./date-picker/DepthToggle";
-import { DateCalendar, MonthCalendar, YearCalendar } from "@mui/x-date-pickers";
 import DecadeCalendar from "./date-picker/DecadeCalendar";
 import dayjs from "dayjs";
 import MonthCalendarWidthYear from "./date-picker/MonthCalendarWidthYear";
 import DateCalendarWithTitle from "./date-picker/DateCalendarWithTitle";
+import BirthDateField from "./date-picker/BirthDateField";
+import { useForm } from "react-hook-form";
 
-// 예시 코드. 실제 디자인 된 이후 예시로만 쓰고 실제로는 안 쓸 가능성이 높습니다.
+interface IFormValue {
+  year: number | null;
+  month: number | null;
+  day: number | null;
+}
+
 export default function YearMonthDayPicker() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [depth, setDepth] = useState<Depth>("year");
@@ -20,8 +26,11 @@ export default function YearMonthDayPicker() {
   const [month, setMonth] = useState<number | null>(null);
   const [day, setDay] = useState<number | null>(null);
 
+  const { control } = useForm<IFormValue>();
+
   return (
     <>
+      <BirthDateField control={control} />
       <Button
         onClick={() => setIsOpen(true)}
         sx={{
