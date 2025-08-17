@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import SenifitToggleButtonGroup from "../SenifitToggleButtonGroup";
 import { Box, Typography } from "@mui/material";
 import useMedia from "@/hooks/useMedia";

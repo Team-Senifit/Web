@@ -1,18 +1,23 @@
 import React from "react";
 import KoLocalizationProvider from "./KoLocalizationProvider";
 import { Box, Stack } from "@mui/material";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { MonthNumberGrid } from "./MonthNumberGrid";
 import CalendarTitle from "./CalendarTitle";
 
 const DateCalendarWithTitle = ({
-  value,
+  year,
+  month,
+  day,
   onChange,
 }: {
-  value: Dayjs | null;
+  year: number | null;
+  month: number | null;
+  day: number | null;
   onChange: (newValue: Dayjs | null) => void;
 }) => {
-  if (value === null) return null;
+  if (year === null || month === null) return null;
+  const value = dayjs(`${year}-${month}-${day || 1}`);
   return (
     <Stack>
       <CalendarTitle
@@ -54,6 +59,7 @@ const DateCalendarWithTitle = ({
           <MonthNumberGrid
             year={value?.year()}
             month={value?.month()}
+            day={day}
             value={value}
             onChange={(newValue) => {
               onChange(newValue);

@@ -52,7 +52,6 @@ export default function YearMonthDayPicker() {
           justifyContent: "flex-end",
         }}
         aria-labelledby="year-month-day-picker-title"
-        aria-describedby="year-month-day-picker-description"
       >
         <Paper
           sx={{
@@ -72,7 +71,9 @@ export default function YearMonthDayPicker() {
           <LunarSolarToggle calendarType={"solar"} setCalendarType={() => {}} />
           {depth === "day" ? (
             <DateCalendarWithTitle
-              value={dayjs(`${year}-${month}-${day ? day : 1}`)}
+              year={year}
+              month={month}
+              day={day}
               onChange={(newValue) => {
                 setYear(newValue ? newValue.year() : null);
                 setMonth(newValue ? newValue.month() + 1 : null);

@@ -4,7 +4,6 @@ import * as React from "react";
 import {
   ToggleButton,
   ToggleButtonGroup,
-  type ToggleButtonGroupProps,
   type ToggleButtonProps,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
