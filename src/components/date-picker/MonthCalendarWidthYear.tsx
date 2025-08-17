@@ -20,9 +20,9 @@ const MonthCalendarWidthYear = ({
   setMonth,
 }: {
   year: number | null;
-  setYear: React.Dispatch<React.SetStateAction<number | null>>;
+  setYear: (value: number | null) => void;
   month: number | null;
-  setMonth: React.Dispatch<React.SetStateAction<number | null>>;
+  setMonth: (value: number | null) => void;
 }) => {
   if (year === null) return null;
   return (
@@ -31,8 +31,8 @@ const MonthCalendarWidthYear = ({
         title={`${year}년`}
         leftAriaLabel="이전 연도"
         rightAriaLabel="다음 연도"
-        onLeftArrowClick={() => setYear((prev) => (prev ? prev - 1 : null))}
-        onRightArrowClick={() => setYear((prev) => (prev ? prev + 1 : null))}
+        onLeftArrowClick={() => setYear(year - 1)}
+        onRightArrowClick={() => setYear(year + 1)}
         prevDisabled={year === null || year <= 1900}
         nextDisabled={year === null || year >= 2099}
       />
