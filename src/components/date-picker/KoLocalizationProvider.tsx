@@ -3,7 +3,6 @@
 import "dayjs/locale/ko"; // ← dayjs에 KO 로케일 로드
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { MonthCalendar } from "@mui/x-date-pickers/MonthCalendar";
 import { koKR } from "@mui/x-date-pickers/locales";
 
 const KoLocalizationProvider = ({

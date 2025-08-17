@@ -11,11 +11,11 @@ import {
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { YearCalendar } from "@mui/x-date-pickers/YearCalendar";
 import dayjs, { Dayjs } from "dayjs";
 import CalendarButton from "./CalendarButton";
+import KoLocalizationProvider from "./KoLocalizationProvider";
+import CalendarTitle from "./CalendarTitle";
 
 /** ───────────────── 타입 ─────────────────
  *  - 주석은 한글로 작성
@@ -39,12 +39,6 @@ export interface IDecadeCalendarProps {
 
 /** 주어진 연도가 속한 10년 구간의 시작 연도(예: 2017 -> 2010) */
 const startOfDecade = (year: number) => Math.floor(year / 10) * 10;
-
-const ChevronIconStyle: SxProps<Theme> = {
-  width: "1.5rem",
-  height: "1.5rem",
-  color: "label.strong",
-};
 
 const DecadeCalendar = ({
   value = null,
@@ -91,72 +85,50 @@ const DecadeCalendar = ({
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Stack spacing={2}>
-        {/* ───── 헤더: 12년 창, 10년 단위 내비게이션 ───── */}
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          sx={{ py: 1, px: 3 }}
-        >
-          <IconButton
-            aria-label="이전 10년"
-            onClick={() => setCursorYear(windowStart - 1)} // → 10년 이전으로 스냅
-            disabled={prevDisabled}
-            sx={ChevronIconStyle}
-          >
-            <ChevronLeftIcon />
-          </IconButton>
+    <KoLocalizationProvider>
+      <CalendarTitle
+        title={`${windowStart}년 ~ ${windowEnd}년`}
+        leftAriaLabel="이전 10년"
+        rightAriaLabel="다음 10년"
+        onLeftArrowClick={() => setCursorYear(windowStart - 1)} // → 10년 이전으로 스냅
+        onRightArrowClick={() => setCursorYear(windowEnd + 1)} // → 10년 다음으로 스냅
+        prevDisabled={prevDisabled}
+        nextDisabled={nextDisabled}
+      />
 
-          <Typography variant={"Headline1"} fontWeight={600}>
-            {`${windowStart}년 ~ ${windowEnd}년`}
-          </Typography>
-
-          <IconButton
-            aria-label="다음 10년"
-            onClick={() => setCursorYear(windowEnd + 1)} // → 10년 다음으로 스냅
-            disabled={nextDisabled}
-            sx={ChevronIconStyle}
-          >
-            <ChevronRightIcon />
-          </IconButton>
-        </Stack>
-
-        {/* ───── 본문: 해당 12년의 연도 그리드 ───── */}
-        <Box
-          sx={{
-            "& .MuiYearCalendar-root": {
-              width: 1,
-              display: "grid",
-              gridTemplateColumns: `repeat(${3}, minmax(0, 1fr))`, // yearsPerRow 반영
-              p: 1.5,
-              gap: 1, // theme.spacing(1)
-            },
-            "& .MuiPickersYear-root": {
-              display: "contents",
-              minWidth: 0,
-            },
-            "& .MuiPickersYear-yearButton": {
-              width: "100%",
-              boxSizing: "border-box",
-            },
+      {/* ───── 본문: 해당 12년의 연도 그리드 ───── */}
+      <Box
+        sx={{
+          "& .MuiYearCalendar-root": {
+            width: 1,
+            display: "grid",
+            gridTemplateColumns: `repeat(${3}, minmax(0, 1fr))`, // yearsPerRow 반영
+            p: 1.5,
+            gap: 1, // theme.spacing(1)
+          },
+          "& .MuiPickersYear-root": {
+            display: "contents",
+            minWidth: 0,
+          },
+          "& .MuiPickersYear-yearButton": {
+            width: "100%",
+            boxSizing: "border-box",
+          },
+        }}
+      >
+        <YearCalendar
+          value={value ?? undefined}
+          onChange={handleSelect}
+          minDate={minDate}
+          maxDate={maxDate}
+          yearsPerRow={3} // 12년 => 3x4 그리드가 딱 맞음
+          yearsOrder="asc"
+          slots={{
+            yearButton: CalendarButton,
           }}
-        >
-          <YearCalendar
-            value={value ?? undefined}
-            onChange={handleSelect}
-            minDate={minDate}
-            maxDate={maxDate}
-            yearsPerRow={3} // 12년 => 3x4 그리드가 딱 맞음
-            yearsOrder="asc"
-            slots={{
-              yearButton: CalendarButton,
-            }}
-          />
-        </Box>
-      </Stack>
-    </LocalizationProvider>
+        />
+      </Box>
+    </KoLocalizationProvider>
   );
 };
 
