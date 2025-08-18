@@ -1,5 +1,5 @@
 import React from "react";
-import EditForm from "../../panel/EditForm";
+import EditForm from "../panel/EditForm";
 
 const Page = () => {
   return (

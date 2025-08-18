@@ -1,4 +1,4 @@
-import EditForm from "@/app/my-center/panel/EditForm";
+import EditForm from "@/app/my-center/members/panel/EditForm";
 import React from "react";
 
 const Page = ({ params: { id } }: { params: { id: string } }) => {
