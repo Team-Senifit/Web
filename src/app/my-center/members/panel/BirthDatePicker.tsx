@@ -11,6 +11,7 @@ import DateCalendarWithTitle from "./birth-date-picker/DateCalendarWithTitle";
 import BirthDateField from "./birth-date-picker/BirthDateField";
 import { useFormContext } from "react-hook-form";
 import { IMemberEditFormValue } from "@/types/IMemberEdit";
+import { calculateAge } from "@/utils/calculateAge";
 
 const BirthDatePicker = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -22,10 +23,15 @@ const BirthDatePicker = () => {
   const month = watch("month");
   const day = watch("day");
 
+  const age =
+    year && month && day
+      ? calculateAge(dayjs(`${year}-${month ? month - 1 : 0}-${day}`))
+      : 0;
+
   return (
     <>
-      <Stack>
-        {year && month && day && <BirthDateField control={control} />}
+      <Stack direction={"column"} spacing={1.5}>
+        {year && month && day && <BirthDateField control={control} age={age} />}
         <Button
           onClick={() => setIsOpen(true)}
           sx={{
