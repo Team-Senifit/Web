@@ -1,20 +1,14 @@
 import { TextField } from "@mui/material";
 import React from "react";
 import SenifitTextField from "../SenifitTextField";
-import { Control, useController } from "react-hook-form";
+import { Control } from "react-hook-form";
+import { IMemberEditFormValue } from "@/types/IMemberEdit";
 
-interface IFormValue {
-  year: number | null;
-  month: number | null;
-  day: number | null;
-}
-
-const BirthDateField = ({ control }: { control: Control<IFormValue> }) => {
-  // // useController로 year, month, day 값 가져오기
-  // const { field: yearField } = useController({ name: "year", control });
-  // const { field: monthField } = useController({ name: "month", control });
-  // const { field: dayField } = useController({ name: "day", control });
-
+const BirthDateField = ({
+  control,
+}: {
+  control: Control<IMemberEditFormValue>;
+}) => {
   return (
     <>
       <SenifitTextField

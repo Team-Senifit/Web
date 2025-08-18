@@ -9,7 +9,6 @@ type MonthNumberGridProps = {
   year: number; // 2025
   month: number; // 1~12
   day: number | null;
-  value?: Dayjs | null; // 선택된 날짜
   onChange?: (date: Dayjs) => void;
   minDate?: Dayjs;
   maxDate?: Dayjs;
@@ -52,7 +51,6 @@ export function MonthNumberGrid({
   year,
   month, // 1~12
   day,
-  value,
   onChange,
   minDate,
   maxDate,
@@ -63,6 +61,8 @@ export function MonthNumberGrid({
   daySx,
 }: MonthNumberGridProps) {
   const { isPhone } = useMedia();
+
+  console.log("MonthNumberGrid", year, month, day);
 
   const monthStart = dayjs().year(year).month(month).date(1);
   const today = dayjs().startOf("day");
@@ -90,7 +90,9 @@ export function MonthNumberGrid({
       {Array.from({ length: daysInMonth }, (_, i) => {
         const dayNum = i + 1;
         const date = monthStart.date(dayNum);
-        const selected = day ? date.isSame(day, "day") : false;
+        const selected = day
+          ? date.isSame(monthStart.date(dayNum), "day")
+          : false;
 
         return (
           <Button
