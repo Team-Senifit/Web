@@ -1,11 +1,24 @@
 "use client";
 import SenifitRadioButtonGroup from "@/components/SenifitRadioButtonGroup";
 import SenifitTextField from "@/components/SenifitTextField";
-import { Button, Typography } from "@mui/material";
+import { Button, Divider, Stack, Typography } from "@mui/material";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import BirthDatePicker from "./BirthDatePicker";
-import { IMemberEditFormValue } from "@/types/IMemberEdit";
+import { Gender, IMemberEditFormValue, MemberRank } from "@/types/IMemberEdit";
+import { SquareUserRoundIcon } from "@/components/icons";
+import PageInfoCard from "@/components/PageInfoCard";
+import useMedia from "@/hooks/useMedia";
+import SenifitToggleButtonGroup from "@/components/SenifitToggleButtonGroup";
+import { ISenifitToggleOption } from "@/types/IToggleButton";
+
+const RequiredField = () => {
+  return (
+    <Typography component={"span"} sx={{ color: "primary.main" }}>
+      {" *"}
+    </Typography>
+  );
+};
 
 const EditForm = ({
   isEdit = false,
@@ -14,52 +27,115 @@ const EditForm = ({
   isEdit?: boolean;
   defaultValues?: Partial<IMemberEditFormValue>;
 }) => {
+  const { isDesktop } = useMedia();
+
   const methods = useForm<IMemberEditFormValue>({
     defaultValues,
   });
 
-  const { handleSubmit, control } = methods;
+  const { handleSubmit, control, watch, setValue } = methods;
 
   const onSubmit = (data: IMemberEditFormValue) => {
     console.log("Submitted data:", data);
     // api 요청 로직 추가
   };
 
+  const genderOptions = [
+    { value: 1, label: <Typography variant="Headline1">여성</Typography> },
+    { value: 0, label: <Typography variant="Headline1">남성</Typography> },
+  ] as ISenifitToggleOption<Gender>[];
+
+  const gender = watch("gender");
+
+  const memberRankOptions = [
+    {
+      value: 1,
+      label: <Typography variant="Headline1">1등급</Typography>,
+    },
+    {
+      value: 2,
+      label: <Typography variant="Headline1">2등급</Typography>,
+    },
+    {
+      value: 3,
+      label: <Typography variant="Headline1">3등급</Typography>,
+    },
+    {
+      value: 4,
+      label: <Typography variant="Headline1">4등급</Typography>,
+    },
+    {
+      value: 5,
+      label: <Typography variant="Headline1">5등급</Typography>,
+    },
+    {
+      value: 6,
+      label: <Typography variant="Headline1">인지지원등급</Typography>,
+    },
+    {
+      value: 0,
+      label: <Typography variant="Headline1">등급외</Typography>,
+    },
+  ] as ISenifitToggleOption<MemberRank>[];
+
+  const memberRank = watch("memberRank");
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Typography>{`등록 어르신 ${isEdit ? "수정" : "추가"}`}</Typography>
+    <Stack
+      direction="column"
+      spacing={2}
+      component="form"
+      onSubmit={handleSubmit(onSubmit)}
+      sx={{
+        bgcolor: "background.paper",
+        p: 3,
+      }}
+    >
+      <PageInfoCard
+        title={`어르신 ${isEdit ? "수정하기" : "등록하기"}`}
+        icon={
+          <SquareUserRoundIcon
+            stroke="2"
+            sx={{ color: "label.neutral", w: 3, h: 3 }}
+          />
+        }
+      />
+      <Divider sx={{ w: 1 }} />
+      <Typography
+        component={"label"}
+        htmlFor="name"
+        variant={isDesktop ? "Title3" : "Headline1"}
+      >
+        {"성함"}
+        <RequiredField />
+      </Typography>
       <SenifitTextField
         control={control}
         name="name"
-        placeholder="이름을 입력하세요"
-        rules={{ required: "이름은 필수입니다" }}
+        autoComplete="off"
+        placeholder="성함을 입력하세요"
+        rules={{ required: "" }}
       />
-      <SenifitRadioButtonGroup
-        control={control}
-        name="gender"
-        label="성별"
-        row
-        options={[
-          { value: "남성", label: "남성" },
-          { value: "여성", label: "여성" },
-        ]}
-        rules={{ required: "성별을 선택해주세요" }}
+      <SenifitToggleButtonGroup<Gender>
+        value={gender}
+        onChange={(newValue) => {
+          setValue("gender", newValue);
+        }}
+        exclusive
+        options={genderOptions}
       />
-      <SenifitRadioButtonGroup
-        control={control}
-        name="memberRank"
-        label="등급"
-        row
-        options={[
-          { value: "1등급", label: "1등급" },
-          { value: "2등급", label: "2등급" },
-          { value: "3등급", label: "3등급" },
-          { value: "4등급", label: "4등급" },
-          { value: "5등급", label: "5등급" },
-          { value: "인지지원등급", label: "인지지원등급" },
-          { value: "등급외", label: "등급외" },
-        ]}
-        rules={{ required: "등급을 선택해주세요" }}
+      <SenifitToggleButtonGroup<MemberRank>
+        // sx={{
+        //   "& .MuiToggleButtonGroup-root": {
+        //     flexWrap: "wrap",
+        //   },
+        // }}
+        value={memberRank}
+        onChange={(newValue) => {
+          setValue("memberRank", newValue);
+        }}
+        exclusive
+        options={memberRankOptions}
       />
       <FormProvider {...methods}>
         <BirthDatePicker />
@@ -67,7 +143,7 @@ const EditForm = ({
       <Button type="submit" variant="contained" color="primary">
         <Typography>{isEdit ? "수정완료" : "추가"}</Typography>
       </Button>
-    </form>
+    </Stack>
   );
 };
 
