@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CalendarIcon } from "./icons";
 import { Button, Modal, Paper, Typography } from "@mui/material";
 import { LunarSolarToggle, Title } from "./date-picker";
@@ -9,26 +9,26 @@ import dayjs from "dayjs";
 import MonthCalendarWidthYear from "./date-picker/MonthCalendarWidthYear";
 import DateCalendarWithTitle from "./date-picker/DateCalendarWithTitle";
 import BirthDateField from "./date-picker/BirthDateField";
-import { useForm } from "react-hook-form";
+import { Control, useFormContext } from "react-hook-form";
+import { IMemberEditFormValue } from "@/types/IMemberEdit";
 
-interface IFormValue {
-  year: number | null;
-  month: number | null;
-  day: number | null;
-}
-
-export default function YearMonthDayPicker() {
+export default function YearMonthDayPicker({
+  control,
+}: {
+  control: Control<IMemberEditFormValue>;
+}) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [depth, setDepth] = useState<Depth>("year");
 
-  // // 임시 처리
-  // const [year, setYear] = useState<number | null>(null);
-  // const [month, setMonth] = useState<number | null>(null);
-  // const [day, setDay] = useState<number | null>(null);
-
-  const { control, getValues, setValue } = useForm<IFormValue>();
+  const { getValues, setValue } = useFormContext<IMemberEditFormValue>();
 
   const { year, month, day } = getValues();
+
+  useEffect(() => {
+    console.log("YearMonthDayPicker", year, month, day);
+
+    return () => {};
+  }, [day, month]);
 
   return (
     <>
@@ -89,6 +89,7 @@ export default function YearMonthDayPicker() {
               month={month}
               day={day}
               onChange={(newValue) => {
+                console.log(newValue?.format("YYYY-MM-DD"));
                 setValue("day", newValue ? newValue.date() : null);
                 setValue("month", newValue ? newValue.month() : null);
                 setValue("year", newValue ? newValue.year() : null);

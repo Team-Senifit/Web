@@ -38,7 +38,6 @@ const DateCalendarWithTitle = ({
             "& .MuiDayCalendar-monthContainer": {
               width: "100%",
             },
-            // date calendar로 바꾸기
             "& .MuiDayCalendar-weekContainer": {
               width: "100%",
               display: "grid",
@@ -60,7 +59,6 @@ const DateCalendarWithTitle = ({
             year={value?.year()}
             month={value?.month()}
             day={day}
-            value={value}
             onChange={(newValue) => {
               onChange(newValue);
             }}
