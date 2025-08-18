@@ -90,9 +90,7 @@ export function MonthNumberGrid({
       {Array.from({ length: daysInMonth }, (_, i) => {
         const dayNum = i + 1;
         const date = monthStart.date(dayNum);
-        const selected = day
-          ? date.isSame(monthStart.date(dayNum), "day")
-          : false;
+        const selected = day === dayNum;
 
         return (
           <Button

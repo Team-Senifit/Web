@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { CalendarIcon } from "../../../../components/icons";
-import { Button, Modal, Paper, Typography } from "@mui/material";
+import { Button, Modal, Paper, Stack, Typography } from "@mui/material";
 import { LunarSolarToggle, Title } from "./birth-date-picker";
 import DepthToggle, { Depth } from "./birth-date-picker/DepthToggle";
 import DecadeCalendar from "./birth-date-picker/DecadeCalendar";
@@ -9,41 +9,45 @@ import dayjs from "dayjs";
 import MonthCalendarWidthYear from "./birth-date-picker/MonthCalendarWidthYear";
 import DateCalendarWithTitle from "./birth-date-picker/DateCalendarWithTitle";
 import BirthDateField from "./birth-date-picker/BirthDateField";
-import { Control, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { IMemberEditFormValue } from "@/types/IMemberEdit";
 
 const BirthDatePicker = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [depth, setDepth] = useState<Depth>("year");
 
-  const { getValues, setValue, control } =
-    useFormContext<IMemberEditFormValue>();
+  const { watch, setValue, control } = useFormContext<IMemberEditFormValue>();
 
-  const { year, month, day } = getValues();
+  const year = watch("year");
+  const month = watch("month");
+  const day = watch("day");
 
   return (
     <>
-      <BirthDateField control={control} />
-      <Button
-        onClick={() => setIsOpen(true)}
-        sx={{
-          bgcolor: "fillVariants.colored",
-          width: "16rem",
-          py: 2,
-          px: 6,
-          borderRadius: "0.75rem",
-        }}
-        startIcon={
-          <CalendarIcon
-            sx={{ width: "1.5rem", height: "1.5rem" }}
-            strokeWidth={2}
-          />
-        }
-      >
-        <Typography variant="Headline1" sx={{ color: "primary.main" }}>
-          생년월일 수정하기
-        </Typography>
-      </Button>
+      <Stack>
+        {year && month && day && <BirthDateField control={control} />}
+        <Button
+          onClick={() => setIsOpen(true)}
+          sx={{
+            bgcolor: "fillVariants.colored",
+            width: "16rem",
+            py: 2,
+            px: 6,
+            borderRadius: "0.75rem",
+          }}
+          startIcon={
+            <CalendarIcon
+              sx={{ width: "1.5rem", height: "1.5rem" }}
+              strokeWidth={2}
+            />
+          }
+        >
+          <Typography variant="Headline1" sx={{ color: "primary.main" }}>
+            생년월일 수정하기
+          </Typography>
+        </Button>
+      </Stack>
+
       <Modal
         open={isOpen}
         onClose={() => setIsOpen(false)}
@@ -80,10 +84,15 @@ const BirthDatePicker = () => {
               month={month}
               day={day}
               onChange={(newValue) => {
-                console.log(newValue?.format("YYYY-MM-DD"));
-                setValue("day", newValue ? newValue.date() : null);
-                setValue("month", newValue ? newValue.month() : null);
-                setValue("year", newValue ? newValue.year() : null);
+                setValue("day", newValue ? newValue.date() : null, {
+                  shouldDirty: true,
+                });
+                setValue("month", newValue ? newValue.month() + 1 : null, {
+                  shouldDirty: true,
+                });
+                setValue("year", newValue ? newValue.year() : null, {
+                  shouldDirty: true,
+                });
               }}
             />
           ) : depth === "month" ? (
