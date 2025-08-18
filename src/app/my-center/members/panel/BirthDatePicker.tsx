@@ -12,15 +12,12 @@ import BirthDateField from "./birth-date-picker/BirthDateField";
 import { Control, useFormContext } from "react-hook-form";
 import { IMemberEditFormValue } from "@/types/IMemberEdit";
 
-const BirthDatePicker = ({
-  control,
-}: {
-  control: Control<IMemberEditFormValue>;
-}) => {
+const BirthDatePicker = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [depth, setDepth] = useState<Depth>("year");
 
-  const { getValues, setValue } = useFormContext<IMemberEditFormValue>();
+  const { getValues, setValue, control } =
+    useFormContext<IMemberEditFormValue>();
 
   const { year, month, day } = getValues();
 
