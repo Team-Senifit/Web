@@ -3,20 +3,24 @@ import SenifitRadioButtonGroup from "@/components/SenifitRadioButtonGroup";
 import SenifitTextField from "@/components/SenifitTextField";
 import { Button, Typography } from "@mui/material";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
+import BirthDatePicker from "./BirthDatePicker";
+import { IMemberEditFormValue } from "@/types/IMemberEdit";
 
 const EditForm = ({
   isEdit = false,
   defaultValues,
 }: {
   isEdit?: boolean;
-  defaultValues?: Partial<IMember>;
+  defaultValues?: Partial<IMemberEditFormValue>;
 }) => {
-  const { handleSubmit, control } = useForm<Omit<IMember, "id">>({
+  const methods = useForm<IMemberEditFormValue>({
     defaultValues,
   });
 
-  const onSubmit = (data: Omit<IMember, "id">) => {
+  const { handleSubmit, control } = methods;
+
+  const onSubmit = (data: IMemberEditFormValue) => {
     console.log("Submitted data:", data);
     // api 요청 로직 추가
   };
@@ -27,7 +31,6 @@ const EditForm = ({
       <SenifitTextField
         control={control}
         name="name"
-        label="이름"
         placeholder="이름을 입력하세요"
         rules={{ required: "이름은 필수입니다" }}
       />
@@ -44,7 +47,7 @@ const EditForm = ({
       />
       <SenifitRadioButtonGroup
         control={control}
-        name="grade"
+        name="memberRank"
         label="등급"
         row
         options={[
@@ -58,6 +61,9 @@ const EditForm = ({
         ]}
         rules={{ required: "등급을 선택해주세요" }}
       />
+      <FormProvider {...methods}>
+        <BirthDatePicker />
+      </FormProvider>
       <Button type="submit" variant="contained" color="primary">
         <Typography>{isEdit ? "수정완료" : "추가"}</Typography>
       </Button>
