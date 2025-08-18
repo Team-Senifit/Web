@@ -1,34 +1,28 @@
 "use client";
 import { useEffect, useState } from "react";
-import { CalendarIcon } from "./icons";
+import { CalendarIcon } from "../../../../components/icons";
 import { Button, Modal, Paper, Typography } from "@mui/material";
-import { LunarSolarToggle, Title } from "./date-picker";
-import DepthToggle, { Depth } from "./date-picker/DepthToggle";
-import DecadeCalendar from "./date-picker/DecadeCalendar";
+import { LunarSolarToggle, Title } from "./birth-date-picker";
+import DepthToggle, { Depth } from "./birth-date-picker/DepthToggle";
+import DecadeCalendar from "./birth-date-picker/DecadeCalendar";
 import dayjs from "dayjs";
-import MonthCalendarWidthYear from "./date-picker/MonthCalendarWidthYear";
-import DateCalendarWithTitle from "./date-picker/DateCalendarWithTitle";
-import BirthDateField from "./date-picker/BirthDateField";
+import MonthCalendarWidthYear from "./birth-date-picker/MonthCalendarWidthYear";
+import DateCalendarWithTitle from "./birth-date-picker/DateCalendarWithTitle";
+import BirthDateField from "./birth-date-picker/BirthDateField";
 import { Control, useFormContext } from "react-hook-form";
 import { IMemberEditFormValue } from "@/types/IMemberEdit";
 
-export default function YearMonthDayPicker({
+const BirthDatePicker = ({
   control,
 }: {
   control: Control<IMemberEditFormValue>;
-}) {
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [depth, setDepth] = useState<Depth>("year");
 
   const { getValues, setValue } = useFormContext<IMemberEditFormValue>();
 
   const { year, month, day } = getValues();
-
-  useEffect(() => {
-    console.log("YearMonthDayPicker", year, month, day);
-
-    return () => {};
-  }, [day, month]);
 
   return (
     <>
@@ -118,4 +112,6 @@ export default function YearMonthDayPicker({
       </Modal>
     </>
   );
-}
+};
+
+export default BirthDatePicker;
