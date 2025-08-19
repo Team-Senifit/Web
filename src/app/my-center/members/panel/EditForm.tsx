@@ -16,24 +16,41 @@ const Field = ({
   label,
   id,
   children,
+  tabletDirection = "row",
 }: {
   label: string;
   id: string;
   children: React.ReactNode;
+  tabletDirection?: "column" | "row";
 }) => {
   const { isDesktop } = useMedia();
   return (
-    <Stack direction={"column"} spacing={1}>
-      <Typography
-        component={"label"}
-        htmlFor={id}
-        variant={isDesktop ? "Title3" : "Headline1"}
-      >
-        {label}
+    <Stack
+      direction={{
+        phone: "column",
+        tablet: tabletDirection,
+        desktop: "row",
+      }}
+      spacing={{
+        phone: 1,
+        tablet: 4,
+      }}
+      width={1}
+    >
+      <Stack direction={"row"} spacing={0.5} pt={[0, 2]}>
+        <Typography
+          component={"label"}
+          htmlFor={id}
+          variant={isDesktop ? "Title3" : "Headline1"}
+          sx={{ color: "label.normal", wordBreak: "keep-all" }}
+        >
+          {label}
+        </Typography>
         <Typography component={"span"} sx={{ color: "primary.main" }}>
           {" *"}
         </Typography>
-      </Typography>
+      </Stack>
+
       {children}
     </Stack>
   );
@@ -100,7 +117,7 @@ const EditForm = ({
   return (
     <Stack
       direction="column"
-      spacing={2}
+      spacing={[2, 2, 3]}
       component="form"
       onSubmit={handleSubmit(onSubmit)}
       sx={{
@@ -127,7 +144,7 @@ const EditForm = ({
           placeholder="성함을 입력하세요"
         />
       </Field>
-      <Field label="생년월일" id="birthDate">
+      <Field label="나이" id="birthDate" tabletDirection="column">
         <FormProvider {...methods}>
           <BirthDatePicker isEdit={isEdit} />
         </FormProvider>
