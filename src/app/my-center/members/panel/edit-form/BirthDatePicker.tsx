@@ -30,7 +30,7 @@ const BirthDatePicker = () => {
 
   return (
     <>
-      <Stack direction={"column"} spacing={1.5}>
+      <Stack direction={"column"} spacing={1.5} id="birthDate">
         {year && month && day && <BirthDateField control={control} age={age} />}
         <Button
           onClick={() => setIsOpen(true)}

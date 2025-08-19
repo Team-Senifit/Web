@@ -1,7 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { Select, MenuItem, type SelectChangeEvent } from "@mui/material";
+import {
+  Select,
+  MenuItem,
+  Typography,
+  type SelectChangeEvent,
+} from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
 import KeyboardArrowDownRounded from "@mui/icons-material/KeyboardArrowDownRounded";
 import { Controller, type FieldValues } from "react-hook-form";
@@ -29,15 +34,18 @@ const SenifitSelectRoot = styled(Select, {
     minWidth: 224,
     backgroundColor: active
       ? theme.palette.fillVariants.colored
-      : theme.palette.background.paper,
+      : theme.palette.fillVariants.alternative,
     "& .MuiOutlinedInput-notchedOutline": {
       borderWidth: 2,
-      borderColor: active ? theme.palette.primary.main : theme.palette.divider,
+      borderColor: active
+        ? theme.palette.primary.main
+        : theme.palette.borderVariants.normal,
     },
     "&:hover .MuiOutlinedInput-notchedOutline": {
       borderColor: theme.palette.primary.main,
     },
     "& .MuiMenuItem-root": {
+      ...theme.typography.Headline1,
       "& .Mui-selected": {
         bgcolor: "background.paper",
       },
@@ -45,16 +53,20 @@ const SenifitSelectRoot = styled(Select, {
     "& .MuiSelect-select": {
       display: "flex",
       alignItems: "center",
-      fontWeight: 700,
-      paddingTop: 12,
-      paddingBottom: 12,
+      ...theme.typography.Headline1,
+      paddingTop: 16,
+      paddingBottom: 16,
       paddingLeft: 16,
       paddingRight: 40, // 아이콘 공간
-      color: active ? theme.palette.primary.main : theme.palette.text.primary,
+      color: active
+        ? theme.palette.primary.main
+        : theme.palette.interaction.inactive,
     },
     "& .MuiSelect-icon": {
-      right: 12,
-      color: theme.palette.primary.main,
+      right: 16,
+      color: active
+        ? theme.palette.primary.main
+        : theme.palette.interaction.inactive,
     },
   };
 });
@@ -93,41 +105,60 @@ export function SenifitSelect<T extends TOptionValue>(
     if (multiple) onChange((e.target.value as T[]) ?? []);
     else onChange((e.target.value as T) ?? "");
   };
+  const renderPlaceholder = () => {
+    // 문자열이면 연하게, 이미 ReactNode면 그대로
+    if (typeof placeholder === "string") {
+      return (
+        <Typography
+          variant={"Headline1"}
+          sx={{
+            color: "interaction.inactive",
+          }}
+        >
+          {placeholder}
+        </Typography>
+      );
+    }
+    return (
+      placeholder ?? (
+        <Typography
+          variant={"Headline1"}
+          sx={{
+            color: "interaction.inactive",
+          }}
+        >
+          선택
+        </Typography>
+      )
+    );
+  };
 
   const renderValue = (val: any) => {
     if (multiple) {
       const arr: T[] = Array.isArray(val) ? val : [];
-      if (!arr.length)
-        return (
-          placeholder ?? (
-            <span style={{ color: "var(--mui-palette-text-secondary)" }}>
-              선택
-            </span>
-          )
-        );
+      if (!arr.length) return renderPlaceholder();
+
       return (
         <span style={{ display: "inline-flex", gap: 8, flexWrap: "wrap" }}>
           {arr.map((v) => (
-            <span key={String(v)}>{labelMap.get(v)}</span>
+            <span key={String(v)}>{labelMap.get(v) ?? String(v)}</span>
           ))}
         </span>
       );
     }
-    if (val === "" || val === undefined || val === null)
-      return (
-        placeholder ?? (
-          <span style={{ color: "var(--mui-palette-text-secondary)" }}>
-            선택
-          </span>
-        )
-      );
-    return <>{labelMap.get(val as T)}</>;
+
+    // ⬇️ 단일 선택 처리
+    const isEmpty = val === "" || val === undefined || val === null;
+    if (isEmpty) return renderPlaceholder();
+
+    return <>{labelMap.get(val as T) ?? String(val)}</>;
   };
 
   return (
     <SenifitSelectRoot
       $open={open}
       $filled={filled}
+      displayEmpty
       open={open}
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
@@ -155,18 +186,18 @@ export function SenifitSelect<T extends TOptionValue>(
             "& .MuiMenuItem-root": {
               py: 1.5,
               px: 2,
-              color: "text.secondary",
+              color: "interaction.inactive",
               "&:not(:last-of-type)": {
                 borderBottom: "1px solid",
                 borderColor: "divider",
               },
               "&.Mui-selected": {
                 bgcolor: "background.paper",
-                color: "text.primary",
+                color: "interaction.inactive",
               },
               "&.Mui-selected:hover": {
                 bgcolor: "action.hover",
-                color: "text.primary",
+                color: "interaction.inactive",
               },
             },
             ...(rest as any)?.menuListSx,
@@ -176,6 +207,7 @@ export function SenifitSelect<T extends TOptionValue>(
       sx={{
         "&:hover": {
           bgcolor: "fillVariants.colored",
+          color: "primary.main",
         },
         ...sx,
       }}

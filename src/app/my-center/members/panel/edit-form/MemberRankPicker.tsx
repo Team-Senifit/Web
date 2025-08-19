@@ -26,6 +26,7 @@ const MemberRankPicker = ({
         control={control}
         name={"memberRank"}
         options={memberRankOptions}
+        placeholder="등급 선택"
         sx={{
           width: "10rem",
           height: "3.5rem",
