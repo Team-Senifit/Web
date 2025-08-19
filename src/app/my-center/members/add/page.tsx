@@ -5,7 +5,7 @@ import { Stack } from "@mui/material";
 
 const Page = () => {
   return (
-    <Stack spacing={1.5}>
+    <Stack spacing={1.5} pb={3}>
       <ReturnButton href="/my-center/members" />
       <EditForm />
     </Stack>
