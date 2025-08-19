@@ -17,7 +17,10 @@ const DateCalendarWithTitle = ({
   onChange: (newValue: Dayjs | null) => void;
 }) => {
   if (year === null || month === null) return null;
-  const value = dayjs(`${year}-${month}-${day || 1}`);
+  const value = dayjs()
+    .year(year!)
+    .month(month! - 1)
+    .date(day || 1);
   return (
     <Stack>
       <CalendarTitle
