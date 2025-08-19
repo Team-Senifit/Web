@@ -39,6 +39,7 @@ const MemberRankPicker = ({
         sx: {
           flexWrap: "wrap",
           gap: 2,
+          maxWidth: "50rem",
         },
       }}
       buttonProps={{
