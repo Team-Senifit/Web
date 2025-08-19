@@ -10,6 +10,7 @@ import PageInfoCard from "@/components/PageInfoCard";
 import useMedia from "@/hooks/useMedia";
 import SenifitToggleButtonGroup from "@/components/SenifitToggleButtonGroup";
 import { ISenifitToggleOption } from "@/types/IToggleButton";
+import MemberRankPicker from "./edit-form/MemberRankPicker";
 
 const RequiredField = () => {
   return (
@@ -116,39 +117,28 @@ const EditForm = ({
         rules={{ required: "" }}
       />
       <SenifitToggleButtonGroup<Gender>
-        fullWidth
         value={gender}
         onChange={(newValue) => {
           setValue("gender", newValue);
         }}
         exclusive
         options={genderOptions}
-      />
-      <SenifitToggleButtonGroup<MemberRank>
         groupProps={{
           sx: {
-            flexWrap: "wrap",
-            rowGap: 1.5,
-            columnGap: 1.5,
-            width: "100%",
+            gap: 2,
           },
         }}
         buttonProps={{
           sx: {
             minWidth: "8.5rem",
-            flex: "unset",
-            flexGrow: "unset",
-            width: "fit-content !important",
-            px: 6,
-            wordBreak: "keep-all",
           },
         }}
-        value={memberRank}
-        onChange={(newValue) => {
-          setValue("memberRank", newValue);
-        }}
-        exclusive
-        options={memberRankOptions}
+      />
+      <MemberRankPicker
+        memberRank={memberRank}
+        setValue={setValue}
+        memberRankOptions={memberRankOptions}
+        control={control}
       />
       <FormProvider {...methods}>
         <BirthDatePicker />

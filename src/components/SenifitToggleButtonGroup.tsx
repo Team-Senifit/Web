@@ -47,7 +47,6 @@ const SenifitToggleButton = styled(ToggleButton, {
       minHeight: h,
       color: inactive,
       borderRadius: "0.75rem",
-      borderWidth: 2,
       borderStyle: "solid",
       borderColor: borderNormal,
       backgroundColor: bgAlt,
@@ -63,6 +62,9 @@ const SenifitToggleButton = styled(ToggleButton, {
         borderColor: selectedColor,
         backgroundColor: selectedBg,
         "&:hover": { backgroundColor: selectedBg },
+      },
+      "&& ": {
+        borderWidth: "2px !important",
       },
     },
   };
