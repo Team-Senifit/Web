@@ -31,7 +31,12 @@ export default function RootLayout({
           <SenifitHeader />
           <Container
             maxWidth={"desktop"}
-            sx={{ pt: [9, 12, 20.75], px: [0, 3], boxSizing: "border-box" }}
+            sx={{
+              pt: [9, 12, 20.75],
+              px: [0, 3],
+              pb: [11, 12, 0],
+              boxSizing: "border-box",
+            }}
           >
             {children}
           </Container>
