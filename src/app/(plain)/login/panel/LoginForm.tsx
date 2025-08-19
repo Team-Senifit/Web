@@ -1,15 +1,9 @@
 "use client";
 
-import {
-  Box,
-  Button,
-  Typography,
-  Avatar,
-  Snackbar,
-} from "@mui/material";
+import { Box, Button, Typography, Avatar, Snackbar } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { login } from "@/apis/auth";
-import SenifitTextField from "../../../components/SenifitTextField";
+import SenifitTextField from "../../../../components/SenifitTextField";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 // import { useTheme } from "@mui/material/styles";
@@ -77,7 +71,6 @@ export default function LoginForm() {
       <Box mb={3} width="100%" maxWidth={472}>
         <SenifitTextField
           name="id"
-          label="아이디를 입력하세요."
           rules={{ required: "아이디를 입력해주세요." }}
           control={control}
           sx={{ width: 1, height: 55, mb: 1 }}
@@ -85,7 +78,6 @@ export default function LoginForm() {
         <SenifitTextField
           name="password"
           type="password"
-          label="비밀번호를 입력하세요."
           rules={{ required: "비밀번호를 입력해주세요." }}
           control={control}
           sx={{ width: 1, height: 55 }}
@@ -124,7 +116,7 @@ export default function LoginForm() {
           mx: "auto",
         }}
       >
-        <Typography variant="Headline2" color="primaryVariants.default" >
+        <Typography variant="Headline2" color="primaryVariants.default">
           로그인이 되지 않나요?
         </Typography>
       </Button>
@@ -133,7 +125,6 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      
       <Box
         display="flex"
         justifyContent="center"
@@ -145,14 +136,25 @@ export default function LoginForm() {
       </Box>
 
       {/* 로그인 실패 다이얼로그 */}
-      <CustomFailDialog open={failDialogOpen} onClose={() => setFailDialogOpen(false)} main={true} />
+      <CustomFailDialog
+        open={failDialogOpen}
+        onClose={() => setFailDialogOpen(false)}
+        main={true}
+      />
 
       {/* 도움말 다이얼로그 */}
-      <CustomFailDialog open={inquiryDialogOpen} onClose={() => setInquiryDialogOpen(false)} main={false} />
+      <CustomFailDialog
+        open={inquiryDialogOpen}
+        onClose={() => setInquiryDialogOpen(false)}
+        main={false}
+      />
 
       {/* 성공 알림 */}
-      <Snackbar open={showSnackbar} autoHideDuration={1500} message="로그인 성공! 오늘도 즐거운 시니핏 하세요!" />
-
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={1500}
+        message="로그인 성공! 오늘도 즐거운 시니핏 하세요!"
+      />
     </form>
   );
 }
