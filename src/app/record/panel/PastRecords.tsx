@@ -10,54 +10,42 @@ import {
   Button,
   Box,
 } from "@mui/material";
+import { useEffect, useMemo, useState } from "react";
+import {
+  getRecords,
+  dateString,
+  participantString,
+  exerciseString,
+  RecordItem,
+} from "@/app/record/utils/recordUtils";
 
-type Item = {
-  id: string;
-  title: string; // 날짜/시간
-  headcount: number;
-  desc: string;
-  cta: "작성하기" | "자세히보기";
-  href: string;
-};
+export default function PastRecords({ records }: { records?: RecordItem[] }) {
+  const [list, setList] = useState<RecordItem[] | null>(records ?? null);
+  const [loading, setLoading] = useState(!records);
 
-export default function PastRecords() {
-  // 연동 전 임시 아이템
-  const items: Item[] = [
-    {
-      id: "1",
-      title: "2025년 07월 07일 13:00~14:01",
-      headcount: 15,
-      desc: "맞춤형 루틴 : 60분 / 태권도+태권체조 포함 / 튜닝밴드 / 등",
-      cta: "작성하기",
-      href: "/record/1/edit",
-    },
-    {
-      id: "2",
-      title: "2025년 07월 07일 13:00~14:01",
-      headcount: 15,
-      desc: "인기 루틴 : 하체 완벽 루틴",
-      cta: "자세히보기",
-      href: "/record/2",
-    },
-    {
-      id: "3",
-      title: "2025년 07월 07일 13:00~14:01",
-      headcount: 15,
-      desc: "구분별 루틴 : 팔어깨",
-      cta: "자세히보기",
-      href: "/record/3",
-    },
-  ];
+  // 🔹 props가 없으면 API 호출
+  useEffect(() => {
+    if (records) return;
+    let mounted = true;
+    (async () => {
+      const data = await getRecords();
+      if (mounted) setList(data);
+      setLoading(false);
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [records]);
+
+  const isEmpty = useMemo(
+    () => !loading && (!list || list.length === 0),
+    [loading, list]
+  );
 
   return (
     <Card variant="outlined">
       <CardContent sx={{ pb: 1 }}>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          mb={1.5}
-        >
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={1.5}>
           <Typography variant="h6" fontWeight={700}>
             지난 수업 보기
           </Typography>
@@ -68,40 +56,52 @@ export default function PastRecords() {
 
         <Divider />
 
-        <Stack divider={<Divider />} sx={{ mt: 1 }}>
-          {items.map((it) => (
-            <Box key={it.id} sx={{ py: 2 }}>
-              <Stack
-                direction={{ xs: "column", md: "row" }}
-                alignItems={{ md: "center" }}
-                justifyContent="space-between"
-                spacing={1}
-              >
-                <Stack spacing={0.5}>
-                  <Typography variant="subtitle1" fontWeight={600}>
-                    {it.title}
-                  </Typography>
-                  <Typography variant="body2">
-                    참여인원 {it.headcount}명
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {it.desc}
-                  </Typography>
-                </Stack>
+        {isEmpty ? (
+          <Box
+            sx={{
+              py: 6,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 2,
+            }}
+          >
+            <Typography variant="body1">아직 진행한 수업이 없어요!</Typography>
+            <Button component={Link} href="/record/new" variant="outlined" size="small">
+              운동하러 가기
+            </Button>
+          </Box>
+        ) : (
+          <Stack divider={<Divider />} sx={{ mt: 1 }}>
+            {(list ?? []).map((it) => {
+              const title = `${dateString(it.startTime, it.endTime)}  |  참여인원 ${participantString(it)}명`;
+              const desc = exerciseString(it);
+              const cta = it.surveysExist ? "자세히보기" : "작성하기";
+              const href = it.surveysExist
+                ? `/record/${it.recordId}/detail`
+                : `/record/${it.recordId}/write`;
 
-                <Button
-                  component={Link}
-                  href={it.href}
-                  variant="outlined"
-                  size="small"
-                  sx={{ alignSelf: { xs: "flex-start", md: "initial" }, mt: { xs: 1, md: 0 } }}
-                >
-                  {it.cta}
-                </Button>
-              </Stack>
-            </Box>
-          ))}
-        </Stack>
+              return (
+                <Box key={it.recordId} sx={{ py: 2 }}>
+                  <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
+                    <Stack spacing={0.5} sx={{ minWidth: 0 }}>
+                      <Typography variant="subtitle1" fontWeight={600} noWrap>
+                        {title}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" noWrap>
+                        {desc}
+                      </Typography>
+                    </Stack>
+
+                    <Button component={Link} href={href} variant="outlined" size="small">
+                      {cta}
+                    </Button>
+                  </Stack>
+                </Box>
+              );
+            })}
+          </Stack>
+        )}
       </CardContent>
     </Card>
   );
