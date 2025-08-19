@@ -45,7 +45,6 @@ const SenifitToggleButton = styled(ToggleButton, {
       height: h,
       maxHeight: h,
       minHeight: h,
-      flex: 1,
       color: inactive,
       borderRadius: "0.75rem",
       borderWidth: 2,
@@ -53,7 +52,7 @@ const SenifitToggleButton = styled(ToggleButton, {
       borderColor: borderNormal,
       backgroundColor: bgAlt,
       textTransform: "none",
-
+      flex: fullWidth ? "1 1 0" : "0 0 auto",
       "&:hover": {
         borderColor: selectedColor,
         backgroundColor: selectedBg,
@@ -76,17 +75,17 @@ const SenifitToggleButtonGroupRoot = styled(ToggleButtonGroup, {
   display: "flex",
   flexDirection: "row",
   gap: theme.spacing(gap),
-  w: 1,
-  "& .MuiToggleButtonGroup-grouped": { margin: 0, border: 0 },
+  width: "100%",
+  "& .MuiToggleButtonGroup-grouped": { margin: 0 },
 }));
 
-export function SenifitToggleButtonGroup<T extends string | number>(
+function SenifitToggleButtonGroup<T extends string | number>(
   props: IExclusiveProps<T> | IMultiProps<T>
 ) {
   const {
     options,
     sizeVariant = "md",
-    fullWidth = true,
+    fullWidth = false,
     groupProps,
     buttonProps,
   } = props;

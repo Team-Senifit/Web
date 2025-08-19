@@ -1,5 +1,4 @@
 "use client";
-import SenifitRadioButtonGroup from "@/components/SenifitRadioButtonGroup";
 import SenifitTextField from "@/components/SenifitTextField";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import React from "react";
@@ -41,8 +40,8 @@ const EditForm = ({
   };
 
   const genderOptions = [
-    { value: 1, label: <Typography variant="Headline1">여성</Typography> },
-    { value: 0, label: <Typography variant="Headline1">남성</Typography> },
+    { value: 2, label: <Typography variant="Headline1">여성</Typography> },
+    { value: 1, label: <Typography variant="Headline1">남성</Typography> },
   ] as ISenifitToggleOption<Gender>[];
 
   const gender = watch("gender");
@@ -88,7 +87,7 @@ const EditForm = ({
       onSubmit={handleSubmit(onSubmit)}
       sx={{
         bgcolor: "background.paper",
-        p: 3,
+        p: [3, 6],
       }}
     >
       <PageInfoCard
@@ -117,6 +116,7 @@ const EditForm = ({
         rules={{ required: "" }}
       />
       <SenifitToggleButtonGroup<Gender>
+        fullWidth
         value={gender}
         onChange={(newValue) => {
           setValue("gender", newValue);
@@ -125,11 +125,24 @@ const EditForm = ({
         options={genderOptions}
       />
       <SenifitToggleButtonGroup<MemberRank>
-        // sx={{
-        //   "& .MuiToggleButtonGroup-root": {
-        //     flexWrap: "wrap",
-        //   },
-        // }}
+        groupProps={{
+          sx: {
+            flexWrap: "wrap",
+            rowGap: 1.5,
+            columnGap: 1.5,
+            width: "100%",
+          },
+        }}
+        buttonProps={{
+          sx: {
+            minWidth: "8.5rem",
+            flex: "unset",
+            flexGrow: "unset",
+            width: "fit-content !important",
+            px: 6,
+            wordBreak: "keep-all",
+          },
+        }}
         value={memberRank}
         onChange={(newValue) => {
           setValue("memberRank", newValue);

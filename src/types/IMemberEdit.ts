@@ -1,4 +1,4 @@
-export type Gender = 0 | 1;
+export type Gender = 0 | 1 | 2; // 0: other, 1: male, 2: female
 export type MemberRank = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0: 등급 외, 6: 인지지원등급
 export interface IMemberEditFormValue {
   name: string;

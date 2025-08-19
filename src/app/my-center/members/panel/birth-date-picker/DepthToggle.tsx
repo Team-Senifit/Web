@@ -65,6 +65,7 @@ const DepthToggle = ({
       }}
     >
       <SenifitToggleButtonGroup<Depth>
+        fullWidth
         value={depth}
         onChange={(v: Depth) => setDepth(v)}
         exclusive
