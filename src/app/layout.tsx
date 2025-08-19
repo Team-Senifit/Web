@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import SenifitThemeProvider from "./panel/SenifitThemeProvider";
-import SenifitNavBar from "@/components/SenifitNavBar";
-import SenifitHeader from "@/components/SenifitHeader";
-import { Container } from "@mui/material";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
@@ -27,21 +24,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <SenifitThemeProvider>
-          <SenifitHeader />
-          <Container
-            maxWidth={"desktop"}
-            sx={{
-              pt: [9, 12, 20.75],
-              px: [0, 3],
-              pb: [11, 12, 0],
-              boxSizing: "border-box",
-            }}
-          >
-            {children}
-          </Container>
-          <SenifitNavBar />
-        </SenifitThemeProvider>
+        <SenifitThemeProvider>{children}</SenifitThemeProvider>
       </body>
     </html>
   );

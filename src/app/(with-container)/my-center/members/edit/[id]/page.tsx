@@ -1,6 +1,6 @@
 import React from "react";
 import dayjs from "dayjs";
-import EditForm from "@/app/my-center/members/panel/EditForm";
+import EditForm from "@/app/(with-container)/my-center/members/panel/EditForm";
 import {
   IMemberEditFormPayload,
   IMemberEditFormValue,
