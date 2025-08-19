@@ -13,7 +13,7 @@ import { useFormContext } from "react-hook-form";
 import { IMemberEditFormValue } from "@/types/IMemberEdit";
 import { calculateAge } from "@/utils/calculateAge";
 
-const BirthDatePicker = () => {
+const BirthDatePicker = ({ isEdit }: { isEdit: boolean }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [depth, setDepth] = useState<Depth>("year");
 
@@ -49,7 +49,7 @@ const BirthDatePicker = () => {
           }
         >
           <Typography variant="Headline1" sx={{ color: "primary.main" }}>
-            생년월일 수정하기
+            {`생년월일 ${isEdit ? "수정하기" : "입력하기"}`}
           </Typography>
         </Button>
       </Stack>
@@ -90,12 +90,15 @@ const BirthDatePicker = () => {
               month={month}
               day={day}
               onChange={(newValue) => {
+                console.log("newValue", newValue?.format("YYYY-MM-DD"));
                 setValue("day", newValue ? newValue.date() : null, {
                   shouldDirty: true,
                 });
-                setValue("month", newValue ? newValue.month() + 1 : null, {
-                  shouldDirty: true,
-                });
+                if (newValue && newValue.month() + 1 !== month) {
+                  setValue("month", newValue.month(), {
+                    shouldDirty: true,
+                  });
+                }
                 setValue("year", newValue ? newValue.year() : null, {
                   shouldDirty: true,
                 });
@@ -107,7 +110,7 @@ const BirthDatePicker = () => {
               setYear={(value) => setValue("year", value)}
               month={month}
               setMonth={(value) => {
-                setValue("month", value);
+                setValue("month", value ? value + 1 : null);
                 setDepth("day");
               }}
             />

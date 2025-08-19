@@ -7,12 +7,6 @@ import { Theme } from "@emotion/react";
 import CalendarTitle from "./CalendarTitle";
 import dayjs from "dayjs";
 
-const ChevronIconStyle: SxProps<Theme> = {
-  width: "1.5rem",
-  height: "1.5rem",
-  color: "label.strong",
-};
-
 const MonthCalendarWidthYear = ({
   year,
   setYear,
@@ -25,6 +19,7 @@ const MonthCalendarWidthYear = ({
   setMonth: (value: number | null) => void;
 }) => {
   if (year === null) return null;
+  console.log("month", month);
   return (
     <Stack>
       <CalendarTitle
@@ -62,7 +57,7 @@ const MonthCalendarWidthYear = ({
             }}
             value={month ? dayjs(`${year}-${month}-01`) : null}
             onChange={(value) => {
-              setMonth(value ? value.month() + 1 : null);
+              setMonth(value ? value.month() : null);
             }}
           />
         </Box>

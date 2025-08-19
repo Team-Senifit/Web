@@ -46,8 +46,6 @@ const EditForm = ({
   isEdit?: boolean;
   defaultValues?: Partial<IMemberEditFormValue>;
 }) => {
-  const { isDesktop } = useMedia();
-
   const methods = useForm<IMemberEditFormValue>({
     defaultValues,
   });
@@ -131,7 +129,7 @@ const EditForm = ({
       </Field>
       <Field label="생년월일" id="birthDate">
         <FormProvider {...methods}>
-          <BirthDatePicker />
+          <BirthDatePicker isEdit={isEdit} />
         </FormProvider>
       </Field>
       <Field label="성별" id="gender">
