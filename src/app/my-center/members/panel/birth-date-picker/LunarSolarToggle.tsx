@@ -43,6 +43,7 @@ const LunarSolarToggle = ({
       }}
     >
       <SenifitToggleButtonGroup<CalendarType>
+        fullWidth
         value={calendarType}
         onChange={setCalendarType}
         exclusive
