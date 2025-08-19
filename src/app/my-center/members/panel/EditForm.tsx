@@ -3,7 +3,7 @@ import SenifitTextField from "@/components/SenifitTextField";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import BirthDatePicker from "./BirthDatePicker";
+import BirthDatePicker from "./edit-form/BirthDatePicker";
 import { Gender, IMemberEditFormValue, MemberRank } from "@/types/IMemberEdit";
 import { SquareUserRoundIcon } from "@/components/icons";
 import PageInfoCard from "@/components/PageInfoCard";
