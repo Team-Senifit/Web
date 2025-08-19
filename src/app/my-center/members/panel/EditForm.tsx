@@ -12,11 +12,30 @@ import SenifitToggleButtonGroup from "@/components/SenifitToggleButtonGroup";
 import { ISenifitToggleOption } from "@/types/IToggleButton";
 import MemberRankPicker from "./edit-form/MemberRankPicker";
 
-const RequiredField = () => {
+const Field = ({
+  label,
+  id,
+  children,
+}: {
+  label: string;
+  id: string;
+  children: React.ReactNode;
+}) => {
+  const { isDesktop } = useMedia();
   return (
-    <Typography component={"span"} sx={{ color: "primary.main" }}>
-      {" *"}
-    </Typography>
+    <Stack direction={"column"} spacing={1}>
+      <Typography
+        component={"label"}
+        htmlFor={id}
+        variant={isDesktop ? "Title3" : "Headline1"}
+      >
+        {label}
+        <Typography component={"span"} sx={{ color: "primary.main" }}>
+          {" *"}
+        </Typography>
+      </Typography>
+      {children}
+    </Stack>
   );
 };
 
@@ -89,6 +108,7 @@ const EditForm = ({
       sx={{
         bgcolor: "background.paper",
         p: [3, 6],
+        borderRadius: [0, 1.5],
       }}
     >
       <PageInfoCard
@@ -101,51 +121,65 @@ const EditForm = ({
         }
       />
       <Divider sx={{ w: 1 }} />
-      <Typography
-        component={"label"}
-        htmlFor="name"
-        variant={isDesktop ? "Title3" : "Headline1"}
-      >
-        {"성함"}
-        <RequiredField />
-      </Typography>
-      <SenifitTextField
-        control={control}
-        name="name"
-        autoComplete="off"
-        placeholder="성함을 입력하세요"
-        rules={{ required: "" }}
-      />
-      <SenifitToggleButtonGroup<Gender>
-        value={gender}
-        onChange={(newValue) => {
-          setValue("gender", newValue);
-        }}
-        exclusive
-        options={genderOptions}
-        groupProps={{
-          sx: {
-            gap: 2,
-          },
-        }}
-        buttonProps={{
-          sx: {
-            minWidth: "8.5rem",
-          },
-        }}
-      />
-      <MemberRankPicker
-        memberRank={memberRank}
-        setValue={setValue}
-        memberRankOptions={memberRankOptions}
-        control={control}
-      />
-      <FormProvider {...methods}>
-        <BirthDatePicker />
-      </FormProvider>
-      <Button type="submit" variant="contained" color="primary">
-        <Typography>{isEdit ? "수정완료" : "추가"}</Typography>
-      </Button>
+      <Field label="성함" id="name">
+        <SenifitTextField
+          control={control}
+          name="name"
+          autoComplete="off"
+          placeholder="성함을 입력하세요"
+        />
+      </Field>
+      <Field label="생년월일" id="birthDate">
+        <FormProvider {...methods}>
+          <BirthDatePicker />
+        </FormProvider>
+      </Field>
+      <Field label="성별" id="gender">
+        <SenifitToggleButtonGroup<Gender>
+          value={gender}
+          onChange={(newValue) => {
+            setValue("gender", newValue);
+          }}
+          exclusive
+          options={genderOptions}
+          groupProps={{
+            sx: {
+              gap: 2,
+            },
+          }}
+          buttonProps={{
+            sx: {
+              minWidth: "8.5rem",
+            },
+          }}
+        />
+      </Field>
+      <Field label="등급" id="memberRank">
+        <MemberRankPicker
+          memberRank={memberRank}
+          setValue={setValue}
+          memberRankOptions={memberRankOptions}
+          control={control}
+        />
+      </Field>
+
+      <Stack direction="row-reverse" pt={[1, 2]}>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          sx={{
+            width: [1, 1, "fit-content"],
+            height: "3.5rem",
+            borderRadius: "0.75rem",
+            px: 8,
+          }}
+        >
+          <Typography variant="Heading1">
+            {isEdit ? "저장하기" : "등록하기"}
+          </Typography>
+        </Button>
+      </Stack>
     </Stack>
   );
 };

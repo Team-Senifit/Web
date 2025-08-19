@@ -34,7 +34,8 @@ const SenifitToggleButton = styled(ToggleButton, {
   const borderNormal =
     (theme.palette as any)?.borderVariants?.normal ?? theme.palette.divider;
   const bgAlt =
-    (theme.palette as any)?.bg?.alternative ?? theme.palette.action.hover;
+    (theme.palette as any)?.fillVariants?.alternative ??
+    theme.palette.action.hover;
   const selectedBg =
     (theme.palette as any)?.fillVariants?.colored ??
     theme.palette.action.selected;
