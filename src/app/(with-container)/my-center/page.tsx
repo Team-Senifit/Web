@@ -6,6 +6,7 @@ import PageInfoCard from "./panel/PageInfoCard";
 import { HouseIcon, MapPinHouseIcon } from "@/components/icons";
 import Link from "next/link";
 import CTAButton from "@/components/CTAButton";
+import Footer from "./panel/Footer";
 
 const memberData: Array<IMember> = [
   {
@@ -47,75 +48,78 @@ const memberData: Array<IMember> = [
 
 const Page = () => {
   return (
-    <Box>
-      <PageInfoCard />
-      <Grid container spacing={[2, 3]} columns={14}>
-        <Grid
-          container
-          size={{ phone: 14, desktop: 4 }}
-          spacing={3}
-          columns={14}
-        >
+    <>
+      <Box>
+        <PageInfoCard />
+        <Grid container spacing={[2, 3]} columns={14}>
           <Grid
-            size={{
-              phone: 14,
-              tablet: 7,
-              desktop: 14,
-            }}
+            container
+            size={{ phone: 14, desktop: 4 }}
+            spacing={3}
+            columns={14}
           >
-            <InfoCard
-              icon={
-                <HouseIcon
-                  sx={{ width: 24, height: 24, color: "label.neutral" }}
-                  strokeWidth={2}
-                />
-              }
-              title={"센터명"}
-              content={"시니데이케어센터"}
-            />
-          </Grid>
-          <Grid
-            size={{
-              phone: 14,
-              tablet: 7,
-              desktop: 14,
-            }}
-          >
-            <InfoCard
-              icon={
-                <MapPinHouseIcon
-                  sx={{ width: 24, height: 24, color: "label.neutral" }}
-                  strokeWidth={2}
-                />
-              }
-              title={"센터 위치"}
-              content={"서울 광진구 능동로 123 2층"}
-            />
-          </Grid>
-        </Grid>
-        <Grid size={{ phone: 14, desktop: 10 }}>
-          <MemberInfoCard count={memberData.length} members={memberData} />
-        </Grid>
-        <Grid
-          size={{ phone: 14 }}
-          sx={{
-            px: [3, 0],
-            justifyContent: "flex-end",
-          }}
-        >
-          <Stack direction={"row"} justifyContent={"flex-end"}>
-            <CTAButton
-              text={"로그아웃"}
-              sx={{
-                width: ["100%", "fit-content"],
-                bgcolor: "fillVariants.negative",
-                color: "error.main",
+            <Grid
+              size={{
+                phone: 14,
+                tablet: 7,
+                desktop: 14,
               }}
-            />
-          </Stack>
+            >
+              <InfoCard
+                icon={
+                  <HouseIcon
+                    sx={{ width: 24, height: 24, color: "label.neutral" }}
+                    strokeWidth={2}
+                  />
+                }
+                title={"센터명"}
+                content={"시니데이케어센터"}
+              />
+            </Grid>
+            <Grid
+              size={{
+                phone: 14,
+                tablet: 7,
+                desktop: 14,
+              }}
+            >
+              <InfoCard
+                icon={
+                  <MapPinHouseIcon
+                    sx={{ width: 24, height: 24, color: "label.neutral" }}
+                    strokeWidth={2}
+                  />
+                }
+                title={"센터 위치"}
+                content={"서울 광진구 능동로 123 2층"}
+              />
+            </Grid>
+          </Grid>
+          <Grid size={{ phone: 14, desktop: 10 }}>
+            <MemberInfoCard count={memberData.length} members={memberData} />
+          </Grid>
+          <Grid
+            size={{ phone: 14 }}
+            sx={{
+              px: [3, 0],
+              justifyContent: "flex-end",
+            }}
+          >
+            <Stack direction={"row"} justifyContent={"flex-end"}>
+              <CTAButton
+                text={"로그아웃"}
+                sx={{
+                  width: ["100%", "fit-content"],
+                  bgcolor: "fillVariants.negative",
+                  color: "error.main",
+                }}
+              />
+            </Stack>
+          </Grid>
         </Grid>
-      </Grid>
-    </Box>
+      </Box>
+      <Footer />
+    </>
   );
 };
 
