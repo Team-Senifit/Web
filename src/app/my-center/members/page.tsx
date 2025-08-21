@@ -1,8 +1,12 @@
-import { Button, Container, Stack, Typography } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+"use client";
+
+import { Box, Divider, Stack } from "@mui/material";
 import React from "react";
-import MemberList from "./MemberList";
-import Link from "next/link";
+import MemberList from "./panel/MemberList";
+import ReturnButton from "./panel/ReturnButton";
+import PageInfoCard from "./panel/PageInfoCard";
+import AddMemberButton from "./panel/AddMemberButton";
+import useMedia from "@/hooks/useMedia";
 
 const memberData: Array<IMember> = [
   {
@@ -30,33 +34,38 @@ const memberData: Array<IMember> = [
 ];
 
 const Page = () => {
+  const { isDesktop } = useMedia();
   return (
-    <Container component={Stack} spacing={2}>
+    <Stack spacing={[2, 3]} sx={{ width: "100%", height: "100%" }}>
+      <ReturnButton />
       <Stack
-        direction={"row"}
-        justifyContent="space-between"
-        alignItems="center"
+        direction={"column"}
+        justifyContent="start"
+        alignItems="start"
+        spacing={[2, 3]}
+        sx={{
+          width: 1,
+          bgcolor: "background.paper",
+          p: [3, 6],
+          borderRadius: [0, "0.75rem"],
+        }}
       >
-        <Typography>{"등록 어르신 관리하기"}</Typography>
-        <Button
-          variant="contained"
-          href="/my-center/members/add"
-          component={Link}
-          startIcon={<AddIcon />}
-        >
-          {"어르신 추가하기"}
-        </Button>
+        <PageInfoCard />
+        <Divider
+          sx={{ borderColor: "#f2f2f2", borderBottomWidth: "2px", width: 1 }}
+        />
+        <MemberList members={memberData} />
       </Stack>
-      <MemberList members={memberData} />
-      <Button
-        variant="contained"
-        href="/my-center"
-        component={Link}
-        sx={{ width: "fit-content" }}
-      >
-        <Typography>{"돌아가기"}</Typography>
-      </Button>
-    </Container>
+      {!isDesktop && (
+        <Box
+          sx={{
+            px: ["1.5rem", 0],
+          }}
+        >
+          <AddMemberButton />
+        </Box>
+      )}
+    </Stack>
   );
 };
 
