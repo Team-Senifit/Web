@@ -4,9 +4,10 @@ import { Box, Divider, Stack } from "@mui/material";
 import React from "react";
 import MemberList from "./panel/MemberList";
 import ReturnButton from "./panel/ReturnButton";
-import PageInfoCard from "./panel/PageInfoCard";
+import PageInfoCard from "@/components/PageInfoCard";
 import AddMemberButton from "./panel/AddMemberButton";
 import useMedia from "@/hooks/useMedia";
+import { SquareUserRoundIcon } from "@/components/icons";
 
 const memberData: Array<IMember> = [
   {
@@ -37,7 +38,7 @@ const Page = () => {
   const { isDesktop } = useMedia();
   return (
     <Stack spacing={[2, 3]} sx={{ width: "100%", height: "100%" }}>
-      <ReturnButton />
+      <ReturnButton href="/my-center" />
       <Stack
         direction={"column"}
         justifyContent="start"
@@ -50,7 +51,16 @@ const Page = () => {
           borderRadius: [0, "0.75rem"],
         }}
       >
-        <PageInfoCard />
+        <PageInfoCard
+          icon={
+            <SquareUserRoundIcon
+              strokeWidth={2}
+              sx={{ color: "label.neutral" }}
+            />
+          }
+          title={"등록 어르신 관리하기"}
+          endAction={<AddMemberButton />}
+        />
         <Divider
           sx={{ borderColor: "#f2f2f2", borderBottomWidth: "2px", width: 1 }}
         />

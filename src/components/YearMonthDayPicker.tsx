@@ -1,23 +1,121 @@
 "use client";
-import { useState } from "react";
-import TextField from "@mui/material/TextField";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import type { Dayjs } from "dayjs";
+import { useEffect, useState } from "react";
+import { CalendarIcon } from "./icons";
+import { Button, Modal, Paper, Typography } from "@mui/material";
+import { LunarSolarToggle, Title } from "./date-picker";
+import DepthToggle, { Depth } from "./date-picker/DepthToggle";
+import DecadeCalendar from "./date-picker/DecadeCalendar";
+import dayjs from "dayjs";
+import MonthCalendarWidthYear from "./date-picker/MonthCalendarWidthYear";
+import DateCalendarWithTitle from "./date-picker/DateCalendarWithTitle";
+import BirthDateField from "./date-picker/BirthDateField";
+import { Control, useFormContext } from "react-hook-form";
+import { IMemberEditFormValue } from "@/types/IMemberEdit";
 
-// 예시 코드. 실제 디자인 된 이후 예시로만 쓰고 실제로는 안 쓸 가능성이 높습니다.
-export default function YearMonthDayPicker() {
-  const [value, setValue] = useState<Dayjs | null>(null);
+export default function YearMonthDayPicker({
+  control,
+}: {
+  control: Control<IMemberEditFormValue>;
+}) {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [depth, setDepth] = useState<Depth>("year");
+
+  const { getValues, setValue } = useFormContext<IMemberEditFormValue>();
+
+  const { year, month, day } = getValues();
+
+  useEffect(() => {
+    console.log("YearMonthDayPicker", year, month, day);
+
+    return () => {};
+  }, [day, month]);
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DatePicker
-        openTo="year"
-        views={["year", "month", "day"]}
-        value={value}
-        onChange={setValue}
-      />
-    </LocalizationProvider>
+    <>
+      <BirthDateField control={control} />
+      <Button
+        onClick={() => setIsOpen(true)}
+        sx={{
+          bgcolor: "fillVariants.colored",
+          width: "16rem",
+          py: 2,
+          px: 6,
+          borderRadius: "0.75rem",
+        }}
+        startIcon={
+          <CalendarIcon
+            sx={{ width: "1.5rem", height: "1.5rem" }}
+            strokeWidth={2}
+          />
+        }
+      >
+        <Typography variant="Headline1" sx={{ color: "primary.main" }}>
+          생년월일 수정하기
+        </Typography>
+      </Button>
+      <Modal
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: ["flex-end", "center"],
+        }}
+        aria-labelledby="year-month-day-picker-title"
+      >
+        <Paper
+          sx={{
+            width: [1, "34.5rem"],
+            height: ["36.25rem"],
+            borderRadius: "0.75rem",
+            borderBottomRightRadius: [0, "0.75rem"],
+            borderBottomLeftRadius: [0, "0.75rem"],
+          }}
+        >
+          <Title closeDatePicker={() => setIsOpen(false)} />
+          <DepthToggle
+            depth={depth}
+            setDepth={setDepth}
+            year={year}
+            month={month}
+            day={day}
+          />
+          {/* RHF 연결 이후 처리 */}
+          <LunarSolarToggle calendarType={"solar"} setCalendarType={() => {}} />
+          {depth === "day" ? (
+            <DateCalendarWithTitle
+              year={year}
+              month={month}
+              day={day}
+              onChange={(newValue) => {
+                console.log(newValue?.format("YYYY-MM-DD"));
+                setValue("day", newValue ? newValue.date() : null);
+                setValue("month", newValue ? newValue.month() : null);
+                setValue("year", newValue ? newValue.year() : null);
+              }}
+            />
+          ) : depth === "month" ? (
+            <MonthCalendarWidthYear
+              year={year}
+              setYear={(value) => setValue("year", value)}
+              month={month}
+              setMonth={(value) => {
+                setValue("month", value);
+                setDepth("day");
+              }}
+            />
+          ) : (
+            <DecadeCalendar
+              value={year ? dayjs(`${year}-01-01`) : null}
+              onChange={(value) => {
+                setValue("year", value ? value.year() : null);
+                setDepth("month");
+              }}
+            />
+          )}
+        </Paper>
+      </Modal>
+    </>
   );
 }
