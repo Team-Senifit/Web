@@ -1,3 +1,4 @@
+import axios from "axios";
 import Record from "./panel/Record";
 import { Typography, Container, Box } from "@mui/material";
 
@@ -11,22 +12,29 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function RecordPage() {
-  let centerName = "시니데이케어센터";
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/center`, {
-      cache: "no-store",
-    });
-    if (res.ok) {
-      const json = (await res.json()) as CenterAPI;
-      centerName = json?.data?.name || centerName;
-      console.log(centerName);
-    }
-    else {
-      console.log("센터정보 api 연동 안됨");
-    }
-  } catch {
-    console.log("센터정보 api 연동 실패");
-  }
+  let centerName = "연동 실패";
+  // try {
+  //   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/center`, {
+  //     cache: "no-store",
+  //   });
+  //   if (res.ok) {
+  //     const json = (await res.json()) as CenterAPI;
+  //     centerName = json?.data?.name || centerName;
+  //     console.log(centerName);
+  //   }
+  //   else {
+  //     console.log("센터정보 api 연동 안됨");
+  //   }
+  // } catch {
+  //   console.log("센터정보 api 연동 실패");
+  // }
+
+  const { data } = await axios.get<CenterAPI>(
+    `${process.env.NEXT_PUBLIC_API_URL}/center`,
+    { withCredentials: true }
+  );
+  centerName = data?.data?.name || centerName;
+  console.log(centerName);
   
   return (
     <Container max-width="lg" sx={{ py: 4 }}>
