@@ -3,7 +3,7 @@ import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
 import React from "react";
 
-const ReturnButton = () => {
+const ReturnButton = ({ href }: { href: string }) => {
   return (
     <Box
       sx={{
@@ -12,8 +12,8 @@ const ReturnButton = () => {
       }}
     >
       <Button
-        href="/my-center"
         component={Link}
+        href={href}
         endIcon={
           <UndoIcon
             strokeWidth={2}

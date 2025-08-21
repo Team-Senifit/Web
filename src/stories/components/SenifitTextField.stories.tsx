@@ -21,14 +21,6 @@ const meta: Meta<typeof SenifitTextField> = {
         defaultValue: { summary: "name" },
       },
     },
-    label: {
-      control: "text",
-      description: "라벨 텍스트",
-      table: {
-        type: { summary: "string" },
-        defaultValue: { summary: "Label" },
-      },
-    },
     placeholder: {
       control: "text",
       description: "입력 필드의 플레이스홀더 텍스트",
@@ -72,7 +64,6 @@ type Story = StoryObj<typeof SenifitTextField>;
 export const Default: Story = {
   args: {
     name: "email",
-    label: "이메일",
     placeholder: "이메일을 입력하세요",
     fullWidth: true,
     rules: { required: "이메일은 필수입니다" },
