@@ -1,12 +1,12 @@
 import React from "react";
 import dayjs from "dayjs";
-import EditForm from "@/app/(with-container)/my-center/members/panel/EditForm";
 import {
   IMemberEditFormPayload,
   IMemberEditFormValue,
 } from "@/types/IMemberEdit";
 import { Stack } from "@mui/material";
 import ReturnButton from "../../panel/ReturnButton";
+import EditForm from "../../panel/EditForm";
 
 const transformPayloadToValue = (
   payload: IMemberEditFormPayload
@@ -32,7 +32,8 @@ const transformValueToPayload = (
   };
 };
 
-const Page = ({ params: { id } }: { params: { id: string } }) => {
+const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = await params;
   const data: IMemberEditFormPayload = {
     name: "홍길동",
     birthDate: "1965-01-01",
