@@ -1,11 +1,14 @@
 import React from "react";
-import EditForm from "../../panel/EditForm";
+import EditForm from "../panel/EditForm";
+import ReturnButton from "../panel/ReturnButton";
+import { Stack } from "@mui/material";
 
 const Page = () => {
   return (
-    <div>
+    <Stack spacing={1.5} pb={3}>
+      <ReturnButton href="/my-center/members" />
       <EditForm />
-    </div>
+    </Stack>
   );
 };
 

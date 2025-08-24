@@ -45,7 +45,6 @@ const memberData: Array<IMember> = [
   },
 ];
 
-// grid로 처리해도 되지만, 모바일, 테블릿에서 어떻게 나올지 몰라서 Stack으로 임시 처리
 const Page = () => {
   return (
     <Box>
