@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import SenifitToggleButtonGroup from "../SenifitToggleButtonGroup";
+import SenifitToggleButtonGroup from "@/components/SenifitToggleButtonGroup";
 import { Box, Typography } from "@mui/material";
 import useMedia from "@/hooks/useMedia";
 import { ISenifitToggleOption } from "@/types/IToggleButton";
@@ -65,6 +65,7 @@ const DepthToggle = ({
       }}
     >
       <SenifitToggleButtonGroup<Depth>
+        fullWidth
         value={depth}
         onChange={(v: Depth) => setDepth(v)}
         exclusive

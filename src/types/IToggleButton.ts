@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import type {
   ToggleButtonProps as MuiToggleButtonProps,
   ToggleButtonGroupProps as MuiToggleButtonGroupProps,
+  SxProps,
+  Theme,
 } from "@mui/material";
 
 /** 버튼 높이 프리셋 사이즈 */

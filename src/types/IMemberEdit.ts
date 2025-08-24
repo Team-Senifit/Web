@@ -1,17 +1,19 @@
+export type Gender = 0 | 1 | 2; // 0: other, 1: male, 2: female
+export type MemberRank = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0: 등급 외, 6: 인지지원등급
 export interface IMemberEditFormValue {
   name: string;
   year: number | null;
   month: number | null;
   day: number | null;
-  gender: number;
-  memberRank: number;
+  gender: Gender;
+  memberRank: MemberRank;
   isSolar: boolean;
 }
 
 export interface IMemberEditFormPayload {
   name: string;
-  gender: number;
+  gender: Gender;
   birthDate: string; // YYYY-MM-DD
-  memberRank: number;
+  memberRank: MemberRank;
   isSolar: boolean;
 }

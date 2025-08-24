@@ -1,5 +1,5 @@
 import React from "react";
-import SenifitToggleButtonGroup from "../SenifitToggleButtonGroup";
+import SenifitToggleButtonGroup from "../../../../../../components/SenifitToggleButtonGroup";
 import { Box, Typography } from "@mui/material";
 import useMedia from "@/hooks/useMedia";
 import { ISenifitToggleOption } from "@/types/IToggleButton";
@@ -43,6 +43,7 @@ const LunarSolarToggle = ({
       }}
     >
       <SenifitToggleButtonGroup<CalendarType>
+        fullWidth
         value={calendarType}
         onChange={setCalendarType}
         exclusive
