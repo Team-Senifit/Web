@@ -4,9 +4,9 @@ import {
   Box,
   Button,
   Typography,
-  Avatar,
   Snackbar,
 } from "@mui/material";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { login } from "@/apis/auth";
 import SenifitTextField from "../../../components/SenifitTextField";
@@ -15,6 +15,7 @@ import { useState } from "react";
 // import { useTheme } from "@mui/material/styles";
 import useMedia from "@/hooks/useMedia";
 import CustomFailDialog from "./CustomFailDialog";
+import Logo from "@/assets/logo/senifit-logo.svg";
 
 type LoginFormValues = { id: string; password: string };
 
@@ -52,15 +53,9 @@ export default function LoginForm() {
       alignItems="center"
       bgcolor="static.white"
     >
-      {/* 로고 자리 (추후에 이미지 삽입) */}
-      <Avatar
-        sx={{ width: 96, height: 96, bgcolor: "grey.300", mb: 2 }}
-        variant="rounded"
-      >
-        <Typography variant="Caption1" color="grey.700">
-          senifit
-        </Typography>
-      </Avatar>
+      <Box mb={2}>
+        <Image src={Logo} alt="시니핏 로고" />
+      </Box>
 
       <Typography
         variant={isPhone ? "Headline1" : "Heading1"}
