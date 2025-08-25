@@ -30,17 +30,17 @@ export default async function RecordPage() {
   // }
 
   const { data } = await axios.get<CenterAPI>(
-    `${process.env.NEXT_PUBLIC_API_URL}/center`,
+    `${process.env.NEXT_PUBLIC_API_URL}/centers`,
     { withCredentials: true }
   );
   centerName = data?.data?.name || centerName;
   console.log(centerName);
-  
+
   return (
     <Container max-width="lg" sx={{ py: 4 }}>
       <Box>
         <Typography variant="h5" fontWeight={600}>
-          {centerName} 님, 안녕하세요 :)
+          {`${centerName} 님, 안녕하세요 :)`}
         </Typography>
       </Box>
 
