@@ -41,7 +41,8 @@ const SenifitTextField = <T extends FieldValues>(props: TProps<T>) => {
     fieldState: { error },
   } = useController({ name, control, rules });
 
-  const helper = error?.message ?? hintText;
+  // Prefer an explicit error message; if it's empty/null/undefined, fall back to hintText
+  const helper = error?.message || hintText;
   const helperId = helper ? `${String(name)}-hint` : undefined;
 
   return (
@@ -89,7 +90,7 @@ const SenifitTextField = <T extends FieldValues>(props: TProps<T>) => {
           <Typography
             variant={"Body1"}
             sx={{
-              color: "status.negative",
+              color: "statusVariants.negative",
             }}
           >
             {helper}
