@@ -1,13 +1,12 @@
 "use client";
 
-import { Box, Button, Typography, Snackbar } from "@mui/material";
+import { Box, Button, Typography, Snackbar, Stack } from "@mui/material";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { login } from "@/apis/auth";
 import SenifitTextField from "../../../../components/SenifitTextField";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-// import { useTheme } from "@mui/material/styles";
 import useMedia from "@/hooks/useMedia";
 import CustomFailDialog from "./CustomFailDialog";
 import Logo from "@/assets/logo/senifit-logo.svg";
@@ -15,11 +14,14 @@ import Logo from "@/assets/logo/senifit-logo.svg";
 type LoginFormValues = { id: string; password: string };
 
 export default function LoginForm() {
-  // const theme = useTheme();
   const { isPhone } = useMedia();
 
   const methods = useForm<LoginFormValues>({ mode: "onSubmit" });
-  const { handleSubmit, control } = methods;
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = methods;
 
   const router = useRouter();
   const [showSnackbar, setShowSnackbar] = useState(false);
@@ -35,6 +37,12 @@ export default function LoginForm() {
       setFailDialogOpen(true);
     }
   };
+
+  const errorText = errors.id
+    ? "아이디를 입력하세요."
+    : errors.password
+      ? "비밀번호를 입력하세요."
+      : undefined;
 
   const LoginContent = (
     <Box
@@ -64,21 +72,39 @@ export default function LoginForm() {
       </Typography>
 
       {/* 입력폼 */}
-      <Box mb={3} width="100%" maxWidth={472}>
+      <Stack
+        direction={"column"}
+        spacing={1.25}
+        mb={3}
+        width="100%"
+        maxWidth={472}
+      >
         <SenifitTextField
+          placeholder="아이디를 입력하세요."
           name="id"
-          rules={{ required: "아이디를 입력해주세요." }}
+          rules={{ required: true }}
           control={control}
-          sx={{ width: 1, height: 55, mb: 1 }}
+          fullWidth
+          sx={{ height: 55, mb: 1 }}
         />
         <SenifitTextField
+          placeholder="비밀번호를 입력하세요."
           name="password"
           type="password"
-          rules={{ required: "비밀번호를 입력해주세요." }}
+          rules={{ required: true }}
           control={control}
-          sx={{ width: 1, height: 55 }}
+          fullWidth
+          sx={{ height: 55 }}
         />
-      </Box>
+      </Stack>
+      {errorText !== undefined && (
+        <Typography
+          variant="Body1"
+          sx={{ color: (t) => t.palette.statusVariants.negative, mt: 1 }}
+        >
+          {errorText}
+        </Typography>
+      )}
 
       <Button
         type="submit"
