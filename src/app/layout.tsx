@@ -7,6 +7,7 @@ import { Container } from "@mui/material";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import QueryProviders from "./panel/QueryClientProvider";
 
 // dayjs locale 설정, time zone 설정
 dayjs.locale("ko");
@@ -27,21 +28,23 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <SenifitThemeProvider>
-          <SenifitHeader />
-          <Container
-            maxWidth={"desktop"}
-            sx={{
-              pt: [9, 12, 20.75],
-              px: [0, 3],
-              pb: [11, 12, 0],
-              boxSizing: "border-box",
-            }}
-          >
-            {children}
-          </Container>
-          <SenifitNavBar />
-        </SenifitThemeProvider>
+        <QueryProviders>
+          <SenifitThemeProvider>
+            <SenifitHeader />
+            <Container
+              maxWidth={"desktop"}
+              sx={{
+                pt: [9, 12, 20.75],
+                px: [0, 3],
+                pb: [11, 12, 0],
+                boxSizing: "border-box",
+              }}
+            >
+              {children}
+            </Container>
+            <SenifitNavBar />
+          </SenifitThemeProvider>
+        </QueryProviders>
       </body>
     </html>
   );

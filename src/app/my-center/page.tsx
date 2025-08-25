@@ -1,51 +1,20 @@
+"use client";
+
 import React from "react";
 import InfoCard from "./panel/InfoCard";
 import { Box, Button, Grid, Stack } from "@mui/material";
 import MemberInfoCard from "./panel/MemberInfoCard";
 import PageInfoCard from "./panel/PageInfoCard";
 import { HouseIcon, MapPinHouseIcon } from "@/components/icons";
-import Link from "next/link";
 import CTAButton from "@/components/CTAButton";
-
-const memberData: Array<IMember> = [
-  {
-    id: 1,
-    name: "홍길동",
-    age: 70,
-    grade: "인지지원등급",
-    gender: "남성",
-  },
-  {
-    id: 2,
-    name: "김영희",
-    age: 65,
-    grade: "1등급",
-    gender: "여성",
-  },
-  {
-    id: 3,
-    name: "이철수",
-    age: 72,
-    grade: "2등급",
-    gender: "남성",
-  },
-  {
-    id: 4,
-    name: "박지영",
-    age: 68,
-    grade: "인지지원등급",
-    gender: "여성",
-  },
-  {
-    id: 5,
-    name: "최민수",
-    age: 75,
-    grade: "3등급",
-    gender: "남성",
-  },
-];
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { IResponse } from "@/types/IResponse";
+import { IMyCenter } from "@/types/IMyCenter";
 
 const Page = () => {
+  const { data } = useSuspenseQuery<IResponse<IMyCenter>>({
+    queryKey: ["/centers"],
+  });
   return (
     <Box>
       <PageInfoCard />
@@ -70,7 +39,7 @@ const Page = () => {
                   strokeWidth={2}
                 />
               }
-              title={"센터명"}
+              title={data.data.name}
               content={"시니데이케어센터"}
             />
           </Grid>
@@ -94,7 +63,10 @@ const Page = () => {
           </Grid>
         </Grid>
         <Grid size={{ phone: 14, desktop: 10 }}>
-          <MemberInfoCard count={memberData.length} members={memberData} />
+          <MemberInfoCard
+            count={data.data.memberCount}
+            members={data.data.members}
+          />
         </Grid>
         <Grid
           size={{ phone: 14 }}
