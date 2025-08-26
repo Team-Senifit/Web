@@ -68,7 +68,7 @@ const Footer = () => {
         mt: [7, 10],
         pt: [6],
         px: [3, 9],
-        pb: [10],
+        pb: 14,
       }}
     >
       <Container maxWidth="desktop">
