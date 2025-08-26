@@ -72,13 +72,7 @@ export default function LoginForm() {
       </Typography>
 
       {/* 입력폼 */}
-      <Stack
-        direction={"column"}
-        spacing={1.25}
-        mb={3}
-        width="100%"
-        maxWidth={472}
-      >
+      <Stack direction={"column"} mb={3} width="100%" maxWidth={472}>
         <SenifitTextField
           placeholder="아이디를 입력하세요."
           name="id"
@@ -94,30 +88,35 @@ export default function LoginForm() {
           rules={{ required: true }}
           control={control}
           fullWidth
-          sx={{ height: 55 }}
+          sx={{ height: 55, mt: 1.25 }}
         />
+        {errorText !== undefined && (
+          <Typography
+            variant="Body1"
+            sx={{
+              color: (t) => t.palette.statusVariants.negative,
+              width: "100%",
+              mt: 1,
+              textAlign: "left",
+            }}
+          >
+            {errorText}
+          </Typography>
+        )}
       </Stack>
-      {errorText !== undefined && (
-        <Typography
-          variant="Body1"
-          sx={{ color: (t) => t.palette.statusVariants.negative, mt: 1 }}
-        >
-          {errorText}
-        </Typography>
-      )}
 
       <Button
         type="submit"
         variant="contained"
         sx={{
-          width: { phone: "calc(100% - 40px)", tablet: 1, desktop: 1 },
+          width: 1,
           maxWidth: 472,
           height: 56,
           bgcolor: "primaryVariants.default",
           borderRadius: 2,
           boxShadow: "none",
           mb: 1.5,
-          mx: { phone: "20px", tablet: "auto", desktop: "auto" },
+          mt: 3,
         }}
       >
         <Typography variant="Heading1" color="static.white">
