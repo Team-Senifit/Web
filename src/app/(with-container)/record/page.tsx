@@ -29,10 +29,9 @@ export default async function RecordPage() {
   //   console.log("센터정보 api 연동 실패");
   // }
 
-  const { data } = await axios.get<CenterAPI>(
-    `${process.env.NEXT_PUBLIC_API_URL}/centers`,
-    { withCredentials: true }
-  );
+  const { data } = await axios.get<CenterAPI>(`/api/centers`, {
+    withCredentials: true,
+  });
   centerName = data?.data?.name || centerName;
   console.log(centerName);
 
