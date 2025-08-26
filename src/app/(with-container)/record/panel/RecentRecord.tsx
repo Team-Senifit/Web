@@ -21,7 +21,7 @@ import {
   participantString,
   exerciseString,
   RecordItem,
-} from "@/app/record/utils/recordUtils";
+} from "../utils/recordUtils";
 
 export default function RecentRecord() {
   const router = useRouter();
@@ -71,13 +71,16 @@ export default function RecentRecord() {
           </Box>
 
           <Box sx={{ flex: 2, overflow: "hidden" }}>
-            <Stack spacing={0.5} sx={{ textAlign: { xs: "left", md: "right" } }}>
+            <Stack
+              spacing={0.5}
+              sx={{ textAlign: { xs: "left", md: "right" } }}
+            >
               <Typography variant="subtitle1" fontWeight={600} noWrap>
                 {loading
                   ? "불러오는 중..."
                   : latest
-                  ? dateString(latest.startTime, latest.endTime)
-                  : "최근 수업이 없습니다"}
+                    ? dateString(latest.startTime, latest.endTime)
+                    : "최근 수업이 없습니다"}
               </Typography>
 
               {!!latest && (
@@ -96,7 +99,12 @@ export default function RecentRecord() {
       </Card>
 
       {/* 🔹 이미 작성된 경우 팝업 */}
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} max-width="xs" fullWidth>
+      <Dialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        max-width="xs"
+        fullWidth
+      >
         <DialogTitle sx={{ pb: 1.5 }}>이미 기록을 작성했습니다.</DialogTitle>
         <DialogContent sx={{ pt: 0 }}>
           <Typography variant="body2" color="text.secondary">

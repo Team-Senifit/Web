@@ -21,10 +21,9 @@ type RecordAPI = { status: number; message: string; data: RecordItem[] };
 
 /* /record api 호출 (axios) */
 export async function getRecords(): Promise<RecordItem[]> {
-  const { data } = await axios.get<RecordAPI>(
-    `${process.env.NEXT_PUBLIC_API_URL}/record`,
-    { withCredentials: true }
-  );
+  const { data } = await axios.get<RecordAPI>(`/api/record`, {
+    withCredentials: true,
+  });
   return data?.data ?? [];
 }
 
@@ -37,13 +36,18 @@ export function dateString(startISO?: string, endISO?: string) {
 }
 
 /* participantCount */
-export function participantString(r: Pick<RecordItem,
-  "participantCount">) {
-    return r.participantCount
+export function participantString(r: Pick<RecordItem, "participantCount">) {
+  return r.participantCount;
 }
 
 /* routine / cognitive / singing / duration */
-export function exerciseString(r: Pick<RecordItem,
-  "routineKind" | "cognitiveKind" | "singingKind" | "durationKind">) {
-  return [r.routineKind, r.cognitiveKind, r.singingKind, r.durationKind].join(" / ");
+export function exerciseString(
+  r: Pick<
+    RecordItem,
+    "routineKind" | "cognitiveKind" | "singingKind" | "durationKind"
+  >
+) {
+  return [r.routineKind, r.cognitiveKind, r.singingKind, r.durationKind].join(
+    " / "
+  );
 }
