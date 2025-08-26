@@ -172,8 +172,14 @@ npm run dev:https
 ```
 접속:
 - 프론트: https://localhost:3000  
-- API 호출: `/api/...` → `.env`의 `NEXT_PUBLIC_API_URL`로 프록시
+- client 컴포넌트에서 API 호출: `/api/...` → `.env`의 `NEXT_PUBLIC_API_URL`로 프록시
+- server 컴포넌트에서 API 호출: createAxiosServer로 인스턴스 생성 후, 인스턴스에 주소를 `/...` -> `.env`의 `NEXT_PUBLIC_API_URL`로 
+!! 이때 앞에 백엔드 서버 URL이나 `/api`를 앞에 붙이면 안됩니다. endpoint만 넣어야합니다 !!
 
+```tsx
+const api = await createAxiosServer();
+const { data } = await api.get("/centers");
+```
 ---
 
 ### 4) 트러블슈팅
