@@ -1,6 +1,6 @@
 import { Stack, Typography } from "@mui/material";
 import React from "react";
-import SenifitTextField from "../../../../../../components/SenifitTextField";
+import SenifitTextField from "../../../../../../../components/SenifitTextField";
 import { Control } from "react-hook-form";
 import { IMemberEditFormValue } from "@/types/IMemberEdit";
 

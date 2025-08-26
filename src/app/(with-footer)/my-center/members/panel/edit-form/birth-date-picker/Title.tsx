@@ -1,6 +1,6 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import React from "react";
-import { CrossIcon } from "../../../../../../components/icons";
+import { CrossIcon } from "../../../../../../../components/icons";
 
 const Title = ({ closeDatePicker }: { closeDatePicker: () => void }) => {
   return (

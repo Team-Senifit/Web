@@ -6,6 +6,7 @@ import PageInfoCard from "./panel/PageInfoCard";
 import { HouseIcon, MapPinHouseIcon } from "@/components/icons";
 import Link from "next/link";
 import CTAButton from "@/components/CTAButton";
+import Footer from "../panel/Footer";
 
 const memberData: Array<IMember> = [
   {
