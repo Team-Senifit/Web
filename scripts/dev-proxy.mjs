@@ -1,17 +1,18 @@
-// scripts/dev-proxy.mjs
-import "dotenv/config"; // .env 로드
+import "dotenv/config";
 import fs from "node:fs";
 import https from "node:https";
 import httpProxy from "http-proxy";
 import { URL } from "node:url";
 
 // ── 설정 ───────────────────────────────────────────────────────────────────────
-const HTTPS_PORT = 3000; // 사용자가 접속할 포트 (HTTPS)
-const NEXT_URL = process.env.NEXT_URL || "http://127.0.0.1:3001"; // Next dev
-const API_PREFIX = process.env.API_PREFIX || "/api"; // 프론트 라우팅 프리픽스
+const HTTPS_PORT = 3000;
+const NEXT_URL = process.env.NEXT_URL || "http://127.0.0.1:3001";
+const API_PREFIX = process.env.API_PREFIX || "/api";
 
 // .env 예: NEXT_PUBLIC_API_URL=https://dev.api.example.com/api
-const apiBase = process.env.NEXT_PUBLIC_API_URL?.trim();
+let apiBase = process.env.NEXT_PUBLIC_API_URL;
+if (apiBase && /^["'].*["']$/.test(apiBase)) apiBase = apiBase.slice(1, -1); // 따옴표 제거
+apiBase = apiBase?.trim();
 if (!apiBase) {
   console.error("❌ NEXT_PUBLIC_API_URL 이(가) .env에 설정되어 있지 않습니다.");
   process.exit(1);
@@ -26,26 +27,38 @@ try {
   process.exit(1);
 }
 
+const REQUEST_TIMEOUT_MS = 10000;
+
 const proxy = httpProxy.createProxyServer({
   changeOrigin: true,
-  secure: false, // 개발용: self-signed 허용
+  secure: false, // self-signed 허용(개발)
   ws: true,
   xfwd: true,
+  timeout: REQUEST_TIMEOUT_MS,
+  proxyTimeout: REQUEST_TIMEOUT_MS,
 });
 
-// 쿠키 도메인/보안 리라이트(개발 편의)
+// ✅ 에러 핸들러: 프로세스가 죽지 않도록 502로 응답
+proxy.on("error", (err, req, res) => {
+  const target = req?.__target || "unknown";
+  console.error("🔴 Proxy error:", err.code || err.message, "→", target);
+  try {
+    if (!res.headersSent) res.writeHead(502, { "Content-Type": "text/plain" });
+    res.end(`Bad Gateway (proxy to ${target})\n${err.code || err.message}`);
+  } catch {}
+});
+
+// ✅ 쿠키 리라이트(문자열/배열 모두 안전)
 proxy.on("proxyRes", (proxyRes, req, res) => {
-  const setCookie = proxyRes.headers["set-cookie"];
-  if (setCookie) {
-    const rewritten = setCookie.map((c) =>
-      // Domain=... 이 있으면 localhost로 강제 (없으면 그대로 둠)
-      c
-        .replace(/;\s*Domain=[^;]+/i, "; Domain=localhost")
-        // 개발환경이라 Secure 없으면 추가(HTTPS 브라우저 컨텍스트에서 필요)
-        .replace(/(;?\s*)$/i, "; Secure$1")
-    );
-    res.setHeader("set-cookie", rewritten);
-  }
+  const raw = proxyRes.headers["set-cookie"];
+  if (!raw) return;
+  const arr = Array.isArray(raw) ? raw : [raw];
+  const rewritten = arr.map((c) => {
+    let v = c.replace(/;\s*Domain=[^;]+/i, "; Domain=localhost");
+    if (!/;\s*Secure/i.test(v)) v += "; Secure"; // 중복 방지
+    return v;
+  });
+  res.setHeader("set-cookie", rewritten);
 });
 
 // 경로 조인 유틸
@@ -59,19 +72,12 @@ function joinPath(a, b) {
 function routeAndRewrite(req) {
   const reqUrl = new URL(req.url, `https://localhost:${HTTPS_PORT}`);
   const isApi = reqUrl.pathname.startsWith(API_PREFIX);
-
   if (isApi) {
-    // /api/* → BACKEND (NEXT_PUBLIC_API_URL)
-    // 1) /api 프리픽스 제거
     const strippedPath = reqUrl.pathname.slice(API_PREFIX.length) || "/";
-    // 2) 백엔드 base path(API_BASE_URL.pathname)와 합치기
     const targetPath = joinPath(API_BASE_URL.pathname || "/", strippedPath);
-    // 3) req.url을 백엔드가 원하는 최종 path+query로 교체
     req.url = targetPath + reqUrl.search;
-    return API_BASE_URL.origin; // host/port/protocol만 타겟으로 넘김
+    return API_BASE_URL.origin; // ex) https://dev.api.example.com
   }
-
-  // 그 외 → Next dev
   return NEXT_URL;
 }
 
@@ -83,6 +89,7 @@ const server = https.createServer(
   (req, res) => {
     req.headers["x-forwarded-proto"] = "https";
     const target = routeAndRewrite(req);
+    req.__target = target; // ✅ 에러 로그에 타겟 표시
     proxy.web(req, res, { target });
   }
 );
@@ -90,7 +97,16 @@ const server = https.createServer(
 // HMR/WebSocket
 server.on("upgrade", (req, socket, head) => {
   const target = routeAndRewrite(req);
+  req.__target = target; // ✅ 에러 로그에 타겟 표시
   proxy.ws(req, socket, head, { target });
+});
+
+// ✅ TLS 핸드셰이크 중 에러도 먹어주기
+server.on("clientError", (err, socket) => {
+  console.error("🔴 clientError:", err.code || err.message);
+  try {
+    socket.end("HTTP/1.1 400 Bad Request\r\n\r\n");
+  } catch {}
 });
 
 server.listen(HTTPS_PORT, () => {

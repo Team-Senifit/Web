@@ -1,6 +1,6 @@
-import axios from "axios";
 import Record from "./panel/Record";
 import { Typography, Container, Box } from "@mui/material";
+import { createAxiosServer } from "@/apis/createAxiosServer";
 
 type CenterAPI = {
   status: number;
@@ -13,25 +13,9 @@ export const revalidate = 0;
 
 export default async function RecordPage() {
   let centerName = "연동 실패";
-  // try {
-  //   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/center`, {
-  //     cache: "no-store",
-  //   });
-  //   if (res.ok) {
-  //     const json = (await res.json()) as CenterAPI;
-  //     centerName = json?.data?.name || centerName;
-  //     console.log(centerName);
-  //   }
-  //   else {
-  //     console.log("센터정보 api 연동 안됨");
-  //   }
-  // } catch {
-  //   console.log("센터정보 api 연동 실패");
-  // }
 
-  const { data } = await axios.get<CenterAPI>(`/api/centers`, {
-    withCredentials: true,
-  });
+  const api = await createAxiosServer();
+  const { data } = await api.get("/centers");
   centerName = data?.data?.name || centerName;
   console.log(centerName);
 
