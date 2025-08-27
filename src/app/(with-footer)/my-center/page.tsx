@@ -5,6 +5,7 @@ import MemberInfoCard from "./panel/MemberInfoCard";
 import PageInfoCard from "./panel/PageInfoCard";
 import { HouseIcon, MapPinHouseIcon } from "@/components/icons";
 import CTAButton from "@/components/CTAButton";
+import { IMember } from "@/types/IMember";
 
 const memberData: Array<IMember> = [
   {

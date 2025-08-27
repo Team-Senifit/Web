@@ -8,6 +8,7 @@ import PageInfoCard from "@/components/PageInfoCard";
 import AddMemberButton from "./panel/AddMemberButton";
 import useMedia from "@/hooks/useMedia";
 import { SquareUserRoundIcon } from "@/components/icons";
+import { IMember } from "@/types/IMember";
 
 const memberData: Array<IMember> = [
   {
