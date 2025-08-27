@@ -3,6 +3,7 @@
 import CTAButton from "@/components/CTAButton";
 import { SquareUserRoundIcon } from "@/components/icons";
 import useMedia from "@/hooks/useMedia";
+import { IMember } from "@/types/IMember";
 import { Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import React from "react";

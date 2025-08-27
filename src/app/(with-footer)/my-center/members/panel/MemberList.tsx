@@ -1,6 +1,7 @@
 "use client";
 
 import useMedia from "@/hooks/useMedia";
+import { IMember } from "@/types/IMember";
 import { Button, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import React from "react";
