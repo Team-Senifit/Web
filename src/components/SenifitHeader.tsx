@@ -26,7 +26,7 @@ const PCNavTab = (props: IPCNavTabProps) => {
   return (
     <Tab
       component={Link}
-      label={<Typography variant="Heading1">{props.label}</Typography>}
+      label={<Typography variant={"Heading1"}>{props.label}</Typography>}
       {...props}
       sx={{
         height: "100%",
@@ -73,24 +73,24 @@ const PCNav = () => {
     >
       <PCNavTab
         component={Link}
-        label="운동"
-        iconPosition="start"
+        label={"운동"}
+        iconPosition={"start"}
         icon={<HumanIcon sx={tabIconStyle} />}
-        href="/"
+        href={"/"}
       />
       <PCNavTab
         component={Link}
-        label="기록"
-        iconPosition="start"
+        label={"기록"}
+        iconPosition={"start"}
         icon={<ClipboardIcon sx={tabIconStyle} />}
-        href="/record"
+        href={"/record"}
       />
       <PCNavTab
         component={Link}
-        label="우리 센터"
-        iconPosition="start"
+        label={"우리 센터"}
+        iconPosition={"start"}
         icon={<HouseIcon sx={tabIconStyle} />}
-        href="/my-center"
+        href={"/my-center"}
       />
     </Tabs>
   );
@@ -134,7 +134,7 @@ const SenifitHeader = () => {
           boxSizing: "border-box",
         }}
       >
-        <Image src={Logo} alt="시니핏 로고" />
+        <Image src={Logo} alt={"시니핏 로고"} />
         <PCNav />
       </Container>
     </Box>

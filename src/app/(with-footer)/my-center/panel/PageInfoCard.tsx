@@ -9,10 +9,10 @@ const PageInfoCard = () => {
 
   return (
     <Stack
-      direction="column"
+      direction={"column"}
       spacing={1}
-      alignItems="start"
-      justifyContent="center"
+      alignItems={"start"}
+      justifyContent={"center"}
       sx={{
         px: [3, 6],
         py: [3, 4.5],

@@ -28,11 +28,11 @@ const LunarSolarToggle = ({
   const options = [
     {
       value: "lunar",
-      label: <LunarSolarLabel text="음력" variant={textVariant} />,
+      label: <LunarSolarLabel text={"음력"} variant={textVariant} />,
     },
     {
       value: "solar",
-      label: <LunarSolarLabel text="양력" variant={textVariant} />,
+      label: <LunarSolarLabel text={"양력"} variant={textVariant} />,
     },
   ] as ISenifitToggleOption<CalendarType>[];
 

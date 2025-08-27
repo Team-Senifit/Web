@@ -50,7 +50,7 @@ export default [
       },
     },
     plugins: {
-      "@next/next": nextPlugin, // ← 핵심
+      "@next/next": nextPlugin,
       "@typescript-eslint": tseslint,
       react,
       "react-hooks": reactHooks,
@@ -68,14 +68,19 @@ export default [
         {
           types: {
             "React.FC": { message: "React.FC는 사용하지 마세요." },
-            "React.FunctionComponent": { message: "React.FunctionComponent는 사용하지 마세요." },
+            "React.FunctionComponent": {
+              message: "React.FunctionComponent는 사용하지 마세요.",
+            },
           },
         },
       ],
       "react/no-unescaped-entities": "off",
       "react/display-name": "off",
       "react/prop-types": "off",
-      "react/jsx-curly-brace-presence": ["error", { props: "always", children: "always" }],
+      "react/jsx-curly-brace-presence": [
+        "error",
+        { props: "always", children: "always" },
+      ],
     },
   },
 ];

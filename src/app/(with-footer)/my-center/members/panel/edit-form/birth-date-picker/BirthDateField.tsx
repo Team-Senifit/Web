@@ -12,9 +12,9 @@ const Field = ({
   children: React.ReactNode;
 }) => {
   return (
-    <Stack direction={"row"} spacing={1} alignItems="center">
+    <Stack direction={"row"} spacing={1} alignItems={"center"}>
       {children}
-      <Typography variant="Heading1" sx={{ color: "label.neutral" }}>
+      <Typography variant={"Heading1"} sx={{ color: "label.neutral" }}>
         {label}
       </Typography>
     </Stack>
@@ -34,11 +34,11 @@ const BirthDateField = ({
       gap={[1.5, 4]}
       alignItems={["flex-start", "center"]}
     >
-      <Typography variant="Heading1" sx={{ color: "label.normal" }}>
+      <Typography variant={"Heading1"} sx={{ color: "label.normal" }}>
         {"만 "}
         <Typography
-          variant="Heading1"
-          component="span"
+          variant={"Heading1"}
+          component={"span"}
           sx={{ color: "primary.main" }}
         >
           {age}
@@ -46,11 +46,11 @@ const BirthDateField = ({
         {"세"}
       </Typography>
       <Stack direction={"row"} spacing={2}>
-        <Field label="년">
+        <Field label={"년"}>
           <SenifitTextField
             control={control}
-            name="year"
-            placeholder="생년"
+            name={"year"}
+            placeholder={"생년"}
             rules={{
               required: "생년을 입력해주세요.",
             }}
@@ -59,11 +59,11 @@ const BirthDateField = ({
             }}
           />
         </Field>
-        <Field label="월">
+        <Field label={"월"}>
           <SenifitTextField
             control={control}
-            name="month"
-            placeholder="생월"
+            name={"month"}
+            placeholder={"생월"}
             rules={{
               required: "생월을 입력해주세요.",
             }}
@@ -72,11 +72,11 @@ const BirthDateField = ({
             }}
           />
         </Field>
-        <Field label="일">
+        <Field label={"일"}>
           <SenifitTextField
             control={control}
-            name="day"
-            placeholder="생일"
+            name={"day"}
+            placeholder={"생일"}
             rules={{
               required: "생일을 입력해주세요.",
             }}

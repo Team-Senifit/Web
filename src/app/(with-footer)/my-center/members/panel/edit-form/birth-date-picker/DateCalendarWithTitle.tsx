@@ -25,8 +25,8 @@ const DateCalendarWithTitle = ({
     <Stack>
       <CalendarTitle
         title={value.format("YYYY년 MM월")}
-        leftAriaLabel="이전 달"
-        rightAriaLabel="다음 달"
+        leftAriaLabel={"이전 달"}
+        rightAriaLabel={"다음 달"}
         onLeftArrowClick={() => onChange(value.subtract(1, "month"))}
         onRightArrowClick={() => onChange(value.add(1, "month"))}
         prevDisabled={value.month() === 0 && value.year() <= 1900}

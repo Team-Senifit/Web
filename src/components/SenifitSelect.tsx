@@ -1,5 +1,5 @@
 "use client";
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from "react";
 import {
   Select,
@@ -7,7 +7,7 @@ import {
   Typography,
   type SelectChangeEvent,
 } from "@mui/material";
-import { styled, alpha } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import KeyboardArrowDownRounded from "@mui/icons-material/KeyboardArrowDownRounded";
 import { Controller, type FieldValues } from "react-hook-form";
 
@@ -74,13 +74,11 @@ const SenifitSelectRoot = styled(Select, {
 /** ───────── Pure Select ───────── */
 
 export function SenifitSelect<T extends TOptionValue>(
-  props: TSenifitSelectProps<T>
+  props: TSenifitSelectProps<T>,
 ) {
   const {
     options,
     placeholder,
-    menuPaperSx,
-    menuListSx,
     multiple,
     value,
     onChange,
@@ -127,7 +125,7 @@ export function SenifitSelect<T extends TOptionValue>(
             color: "interaction.inactive",
           }}
         >
-          선택
+          {"선택"}
         </Typography>
       )
     );
@@ -166,7 +164,7 @@ export function SenifitSelect<T extends TOptionValue>(
       value={value as any}
       onChange={handleChange}
       IconComponent={KeyboardArrowDownRounded}
-      variant="outlined"
+      variant={"outlined"}
       renderValue={renderValue}
       fullWidth={fullWidth}
       MenuProps={{
@@ -176,6 +174,7 @@ export function SenifitSelect<T extends TOptionValue>(
             mt: 0,
             borderRadius: 1.5,
             overflow: "hidden",
+
             ...(rest as any)?.menuPaperSx,
             width: "fit-content",
           },
@@ -200,6 +199,7 @@ export function SenifitSelect<T extends TOptionValue>(
                 color: "interaction.inactive",
               },
             },
+
             ...(rest as any)?.menuListSx,
           },
         },

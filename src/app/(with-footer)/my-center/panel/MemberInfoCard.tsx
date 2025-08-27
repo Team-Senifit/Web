@@ -3,7 +3,7 @@
 import CTAButton from "@/components/CTAButton";
 import { SquareUserRoundIcon } from "@/components/icons";
 import useMedia from "@/hooks/useMedia";
-import { Button, Grid, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import React from "react";
 
@@ -17,25 +17,26 @@ const MemberEditButton = () => {
       sx={{
         bgcolor: "fillVariants.colored",
       }}
-      text="관리하기"
+      text={"관리하기"}
     />
   );
 };
 
 const Member = ({ name, age, grade, gender }: IMember) => {
   return (
-    <Stack direction="row" spacing={[1, 2]} alignItems="center">
-      <Typography variant="Heading1" sx={{ width: ["8rem", "8.25rem"] }}>
+    <Stack direction={"row"} spacing={[1, 2]} alignItems={"center"}>
+      <Typography variant={"Heading1"} sx={{ width: ["8rem", "8.25rem"] }}>
         {name}
       </Typography>
-      <Stack direction="row" spacing={[2, 9]} alignItems="center">
-        <Typography variant="Heading1" sx={{ width: ["3rem", "3.5rem"] }}>
-          {age}세
+      <Stack direction={"row"} spacing={[2, 9]} alignItems={"center"}>
+        <Typography variant={"Heading1"} sx={{ width: ["3rem", "3.5rem"] }}>
+          {age}
+          {"세"}
         </Typography>
-        <Typography variant="Heading1" sx={{ width: ["3rem", "3.5rem"] }}>
+        <Typography variant={"Heading1"} sx={{ width: ["3rem", "3.5rem"] }}>
           {gender}
         </Typography>
-        <Typography variant="Heading1" sx={{ width: ["6rem", "8rem"] }}>
+        <Typography variant={"Heading1"} sx={{ width: ["6rem", "8rem"] }}>
           {grade}
         </Typography>
       </Stack>
@@ -55,7 +56,7 @@ const MemberInfoCard = ({
     <Stack
       component={"section"}
       spacing={[2, 0]}
-      direction="column"
+      direction={"column"}
       justifyContent={["start", "space-between"]}
       alignItems={"start"}
       sx={{
@@ -67,11 +68,11 @@ const MemberInfoCard = ({
         py: [3, 4.5],
       }}
     >
-      <Stack direction="column" spacing={4} width={1}>
+      <Stack direction={"column"} spacing={4} width={1}>
         <Stack
-          direction="row"
+          direction={"row"}
           justifyContent={"space-between"}
-          alignItems="center"
+          alignItems={"center"}
           width={1}
         >
           <Stack
@@ -100,7 +101,7 @@ const MemberInfoCard = ({
         >
           {"현재 등록된 어르신은\n"}
           <Typography
-            component="span"
+            component={"span"}
             variant={isPhone ? "Headline1" : "Heading1"}
             sx={{ color: "primaryVariants.default" }}
           >{`${count}명 `}</Typography>
@@ -112,7 +113,7 @@ const MemberInfoCard = ({
         <MemberEditButton />
       ) : (
         members.length !== 0 && (
-          <Stack direction="column" spacing={[2, 1.5]}>
+          <Stack direction={"column"} spacing={[2, 1.5]}>
             {members.map((member, index) => (
               <Member {...member} key={index} />
             ))}
