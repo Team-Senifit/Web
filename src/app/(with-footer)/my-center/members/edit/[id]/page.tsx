@@ -9,7 +9,7 @@ import ReturnButton from "../../panel/ReturnButton";
 import EditForm from "../../panel/EditForm";
 
 const transformPayloadToValue = (
-  payload: IMemberEditFormPayload
+  payload: IMemberEditFormPayload,
 ): IMemberEditFormValue => {
   return {
     ...payload,
@@ -19,8 +19,9 @@ const transformPayloadToValue = (
   };
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const transformValueToPayload = (
-  value: IMemberEditFormValue
+  value: IMemberEditFormValue,
 ): IMemberEditFormPayload => {
   return {
     ...value,
@@ -33,6 +34,7 @@ const transformValueToPayload = (
 };
 
 const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id } = await params;
   const data: IMemberEditFormPayload = {
     name: "홍길동",
@@ -44,7 +46,7 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
 
   return (
     <Stack spacing={[2, 3]}>
-      <ReturnButton href="/my-center/members" />
+      <ReturnButton href={"/my-center/members"} />
       <EditForm isEdit defaultValues={transformPayloadToValue(data)} />
     </Stack>
   );

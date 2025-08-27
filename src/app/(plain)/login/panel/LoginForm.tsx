@@ -50,41 +50,42 @@ export default function LoginForm() {
       px={{ phone: 2.5, tablet: 5, desktop: 5 }}
       py={{ phone: 4, tablet: 5, desktop: 5 }}
       borderRadius={1.5}
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      bgcolor="static.white"
+      display={"flex"}
+      flexDirection={"column"}
+      justifyContent={"center"}
+      alignItems={"center"}
+      bgcolor={"static.white"}
     >
       <Box mb={2}>
-        <Image src={Logo} alt="시니핏 로고" />
+        <Image src={Logo} alt={"시니핏 로고"} />
       </Box>
 
       <Typography
         variant={isPhone ? "Headline1" : "Heading1"}
-        color="text.primary"
+        color={"text.primary"}
         mb={5}
-        textAlign="center"
+        textAlign={"center"}
       >
-        누구나 진행할 수 있는, <br />
-        검증된 노인 운동 콘텐츠{" "}
-        <span style={{ color: "primaryVariants.default" }}>시니핏</span>
+        {"누구나 진행할 수 있는, "}
+        <br />
+        {"검증된 노인 운동 콘텐츠"}{" "}
+        <span style={{ color: "primaryVariants.default" }}>{"시니핏"}</span>
       </Typography>
 
       {/* 입력폼 */}
-      <Stack direction={"column"} mb={3} width="100%" maxWidth={472}>
+      <Stack direction={"column"} mb={3} width={"100%"} maxWidth={472}>
         <SenifitTextField
-          placeholder="아이디를 입력하세요."
-          name="id"
+          placeholder={"아이디를 입력하세요."}
+          name={"id"}
           rules={{ required: true }}
           control={control}
           fullWidth
           sx={{ height: 55, mb: 1 }}
         />
         <SenifitTextField
-          placeholder="비밀번호를 입력하세요."
-          name="password"
-          type="password"
+          placeholder={"비밀번호를 입력하세요."}
+          name={"password"}
+          type={"password"}
           rules={{ required: true }}
           control={control}
           fullWidth
@@ -92,7 +93,7 @@ export default function LoginForm() {
         />
         {errorText !== undefined && (
           <Typography
-            variant="Body1"
+            variant={"Body1"}
             sx={{
               color: (t) => t.palette.statusVariants.negative,
               width: "100%",
@@ -106,8 +107,8 @@ export default function LoginForm() {
       </Stack>
 
       <Button
-        type="submit"
-        variant="contained"
+        type={"submit"}
+        variant={"contained"}
         sx={{
           width: 1,
           maxWidth: 472,
@@ -119,8 +120,8 @@ export default function LoginForm() {
           mt: 3,
         }}
       >
-        <Typography variant="Heading1" color="static.white">
-          로그인
+        <Typography variant={"Heading1"} color={"static.white"}>
+          {"로그인"}
         </Typography>
       </Button>
 
@@ -137,8 +138,8 @@ export default function LoginForm() {
           mx: "auto",
         }}
       >
-        <Typography variant="Headline2" color="primaryVariants.default">
-          로그인이 되지 않나요?
+        <Typography variant={"Headline2"} color={"primaryVariants.default"}>
+          {"로그인이 되지 않나요?"}
         </Typography>
       </Button>
     </Box>
@@ -147,10 +148,10 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="100vh"
+        display={"flex"}
+        justifyContent={"center"}
+        alignItems={"center"}
+        minHeight={"100vh"}
         bgcolor={isPhone ? "transparent" : "static.black"}
       >
         {LoginContent}
@@ -174,7 +175,7 @@ export default function LoginForm() {
       <Snackbar
         open={showSnackbar}
         autoHideDuration={1500}
-        message="로그인 성공! 오늘도 즐거운 시니핏 하세요!"
+        message={"로그인 성공! 오늘도 즐거운 시니핏 하세요!"}
       />
     </form>
   );

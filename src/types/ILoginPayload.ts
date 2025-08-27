@@ -1,4 +1,4 @@
-interface ILoginPayload {
+export interface ILoginPayload {
   id: string;
   password: string;
 }

@@ -39,8 +39,8 @@ const SenifitRadioButtonGroup = <T extends FieldValues>({
   const labelId = `${field.name}-label`;
 
   return (
-    <FormControl component="fieldset" error={!!error} fullWidth>
-      <FormLabel id={labelId} component="legend">
+    <FormControl component={"fieldset"} error={!!error} fullWidth>
+      <FormLabel id={labelId} component={"legend"}>
         {label}
       </FormLabel>
 

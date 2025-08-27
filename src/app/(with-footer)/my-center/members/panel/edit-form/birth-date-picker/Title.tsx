@@ -12,11 +12,11 @@ const Title = ({ closeDatePicker }: { closeDatePicker: () => void }) => {
     >
       <Box sx={{ width: "1.5rem", height: "1.5rem", color: "label.strong" }} />
       <Typography
-        id="year-month-day-picker-title"
-        variant="Headline1"
+        id={"year-month-day-picker-title"}
+        variant={"Headline1"}
         sx={{ color: "label.strong" }}
       >
-        생년월일 수정하기
+        {"생년월일 수정하기"}
       </Typography>
       <Button
         onClick={closeDatePicker}

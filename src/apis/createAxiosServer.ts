@@ -5,7 +5,7 @@ import { headers as nextHeaders } from "next/headers";
 
 const API_PREFIX = normalizePrefix(process.env.NEXT_PUBLIC_API_BASE ?? "/api");
 const SITE_URL = ensureOrigin(
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://localhost:3000"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://localhost:3000",
 );
 
 const devHttpsAgent =

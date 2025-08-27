@@ -17,7 +17,7 @@ const InfoCard = ({
   return (
     <Stack
       component={"section"}
-      direction="column"
+      direction={"column"}
       justifyContent={"space-between"}
       alignItems={"start"}
       sx={{

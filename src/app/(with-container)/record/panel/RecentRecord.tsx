@@ -55,7 +55,7 @@ export default function RecentRecord() {
   return (
     <>
       <Card
-        variant="outlined"
+        variant={"outlined"}
         onClick={handleClickCard}
         sx={{
           bgcolor: (t) => t.palette.grey[100],
@@ -65,8 +65,8 @@ export default function RecentRecord() {
       >
         <CardContent sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <Box sx={{ flex: 1, minWidth: 220 }}>
-            <Typography variant="h6" fontWeight={700}>
-              최근 수업 작성하기 →
+            <Typography variant={"h6"} fontWeight={700}>
+              {"최근 수업 작성하기 →"}
             </Typography>
           </Box>
 
@@ -75,7 +75,7 @@ export default function RecentRecord() {
               spacing={0.5}
               sx={{ textAlign: { xs: "left", md: "right" } }}
             >
-              <Typography variant="subtitle1" fontWeight={600} noWrap>
+              <Typography variant={"subtitle1"} fontWeight={600} noWrap>
                 {loading
                   ? "불러오는 중..."
                   : latest
@@ -85,11 +85,14 @@ export default function RecentRecord() {
 
               {!!latest && (
                 <>
-                  <Typography variant="body2" noWrap>
-                    참여인원 : {participantString(latest)}명
+                  <Typography variant={"body2"} noWrap>
+                    {"참여인원 : "}
+                    {participantString(latest)}
+                    {"명"}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" noWrap>
-                    맞춤형 루틴 : {exerciseString(latest)}
+                  <Typography variant={"body2"} color={"text.secondary"} noWrap>
+                    {"맞춤형 루틴 : "}
+                    {exerciseString(latest)}
                   </Typography>
                 </>
               )}
@@ -102,25 +105,27 @@ export default function RecentRecord() {
       <Dialog
         open={openDialog}
         onClose={() => setOpenDialog(false)}
-        max-width="xs"
+        max-width={"xs"}
         fullWidth
       >
-        <DialogTitle sx={{ pb: 1.5 }}>이미 기록을 작성했습니다.</DialogTitle>
+        <DialogTitle sx={{ pb: 1.5 }}>
+          {"이미 기록을 작성했습니다."}
+        </DialogTitle>
         <DialogContent sx={{ pt: 0 }}>
-          <Typography variant="body2" color="text.secondary">
-            최근 수업이 이미 등록되어 있습니다.
+          <Typography variant={"body2"} color={"text.secondary"}>
+            {"최근 수업이 이미 등록되어 있습니다."}
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button variant="outlined" onClick={() => setOpenDialog(false)}>
-            취소
+          <Button variant={"outlined"} onClick={() => setOpenDialog(false)}>
+            {"취소"}
           </Button>
           <Button
-            variant="contained"
+            variant={"contained"}
             component={Link}
             href={latest ? `/record/${latest.recordId}` : "/record"}
           >
-            작성한 기록 보기
+            {"작성한 기록 보기"}
           </Button>
         </DialogActions>
       </Dialog>

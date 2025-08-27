@@ -1,12 +1,10 @@
 import React from "react";
 import InfoCard from "./panel/InfoCard";
-import { Box, Button, Grid, Stack } from "@mui/material";
+import { Box, Grid, Stack } from "@mui/material";
 import MemberInfoCard from "./panel/MemberInfoCard";
 import PageInfoCard from "./panel/PageInfoCard";
 import { HouseIcon, MapPinHouseIcon } from "@/components/icons";
-import Link from "next/link";
 import CTAButton from "@/components/CTAButton";
-import Footer from "../panel/Footer";
 
 const memberData: Array<IMember> = [
   {

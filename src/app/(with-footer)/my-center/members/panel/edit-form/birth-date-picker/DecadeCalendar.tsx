@@ -1,16 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  Box,
-  IconButton,
-  Stack,
-  Typography,
-  type SxProps,
-  type Theme,
-} from "@mui/material";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { Box } from "@mui/material";
 import { YearCalendar } from "@mui/x-date-pickers/YearCalendar";
 import dayjs, { Dayjs } from "dayjs";
 import CalendarButton from "./CalendarButton";
@@ -88,8 +79,8 @@ const DecadeCalendar = ({
     <KoLocalizationProvider>
       <CalendarTitle
         title={`${windowStart}년 ~ ${windowEnd}년`}
-        leftAriaLabel="이전 10년"
-        rightAriaLabel="다음 10년"
+        leftAriaLabel={"이전 10년"}
+        rightAriaLabel={"다음 10년"}
         onLeftArrowClick={() => setCursorYear(windowStart - 1)} // → 10년 이전으로 스냅
         onRightArrowClick={() => setCursorYear(windowEnd + 1)} // → 10년 다음으로 스냅
         prevDisabled={prevDisabled}
@@ -122,7 +113,7 @@ const DecadeCalendar = ({
           minDate={minDate}
           maxDate={maxDate}
           yearsPerRow={3} // 12년 => 3x4 그리드가 딱 맞음
-          yearsOrder="asc"
+          yearsOrder={"asc"}
           slots={{
             yearButton: CalendarButton,
           }}

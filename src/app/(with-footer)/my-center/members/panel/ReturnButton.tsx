@@ -36,7 +36,7 @@ const ReturnButton = ({ href }: { href: string }) => {
           sx={{
             color: "label.normal",
           }}
-          variant="Heading1"
+          variant={"Heading1"}
         >
           {"돌아가기"}
         </Typography>

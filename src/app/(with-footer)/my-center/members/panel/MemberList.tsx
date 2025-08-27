@@ -1,7 +1,7 @@
 "use client";
 
 import useMedia from "@/hooks/useMedia";
-import { Button, Grid, Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import React from "react";
 
@@ -18,13 +18,13 @@ const Member = ({
     <Stack
       direction={{ phone: "column", tablet: "row" }}
       spacing={2}
-      alignItems="center"
+      alignItems={"center"}
       justifyContent={["center", "space-between"]}
       width={1}
     >
       <Stack
         direction={{ phone: "column", desktop: "row" }}
-        alignItems="start"
+        alignItems={"start"}
         spacing={1}
         width={1}
       >
@@ -34,7 +34,7 @@ const Member = ({
         >
           {name}
         </Typography>
-        <Stack direction="row" spacing={2} alignItems="center">
+        <Stack direction={"row"} spacing={2} alignItems={"center"}>
           <Typography
             variant={isDesktop ? "Heading1" : "Headline1"}
             sx={{
@@ -42,7 +42,8 @@ const Member = ({
               width: { phone: "3rem", desktop: "3.5rem" },
             }}
           >
-            {age}세
+            {age}
+            {"세"}
           </Typography>
           <Typography
             variant={isDesktop ? "Heading1" : "Headline1"}
@@ -66,13 +67,13 @@ const Member = ({
       </Stack>
 
       <Stack
-        direction="row"
+        direction={"row"}
         spacing={1}
         width={[1, "55%"]}
-        justifyContent="flex-end"
+        justifyContent={"flex-end"}
       >
         <Button
-          variant="text"
+          variant={"text"}
           component={Link}
           href={`/my-center/members/edit/${id}`}
           sx={{
@@ -86,11 +87,11 @@ const Member = ({
           }}
         >
           <Typography variant={isTablet ? "Heading1" : "Headline1"}>
-            수정하기
+            {"수정하기"}
           </Typography>
         </Button>
         <Button
-          variant="text"
+          variant={"text"}
           sx={{
             color: "statusVariants.negative",
             bgcolor: "fillVariants.negative",
@@ -102,7 +103,7 @@ const Member = ({
           }}
         >
           <Typography variant={isTablet ? "Heading1" : "Headline1"}>
-            삭제하기
+            {"삭제하기"}
           </Typography>
         </Button>
       </Stack>

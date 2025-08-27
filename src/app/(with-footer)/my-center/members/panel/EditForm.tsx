@@ -75,8 +75,14 @@ const EditForm = ({
   };
 
   const genderOptions = [
-    { value: 2, label: <Typography variant="Headline1">여성</Typography> },
-    { value: 1, label: <Typography variant="Headline1">남성</Typography> },
+    {
+      value: 2,
+      label: <Typography variant={"Headline1"}>{"여성"}</Typography>,
+    },
+    {
+      value: 1,
+      label: <Typography variant={"Headline1"}>{"남성"}</Typography>,
+    },
   ] as ISenifitToggleOption<Gender>[];
 
   const gender = watch("gender");
@@ -84,31 +90,31 @@ const EditForm = ({
   const memberRankOptions = [
     {
       value: 1,
-      label: <Typography variant="Headline1">1등급</Typography>,
+      label: <Typography variant={"Headline1"}>{"1등급"}</Typography>,
     },
     {
       value: 2,
-      label: <Typography variant="Headline1">2등급</Typography>,
+      label: <Typography variant={"Headline1"}>{"2등급"}</Typography>,
     },
     {
       value: 3,
-      label: <Typography variant="Headline1">3등급</Typography>,
+      label: <Typography variant={"Headline1"}>{"3등급"}</Typography>,
     },
     {
       value: 4,
-      label: <Typography variant="Headline1">4등급</Typography>,
+      label: <Typography variant={"Headline1"}>{"4등급"}</Typography>,
     },
     {
       value: 5,
-      label: <Typography variant="Headline1">5등급</Typography>,
+      label: <Typography variant={"Headline1"}>{"5등급"}</Typography>,
     },
     {
       value: 6,
-      label: <Typography variant="Headline1">인지지원등급</Typography>,
+      label: <Typography variant={"Headline1"}>{"인지지원등급"}</Typography>,
     },
     {
       value: 0,
-      label: <Typography variant="Headline1">등급외</Typography>,
+      label: <Typography variant={"Headline1"}>{"등급외"}</Typography>,
     },
   ] as ISenifitToggleOption<MemberRank>[];
 
@@ -116,9 +122,9 @@ const EditForm = ({
 
   return (
     <Stack
-      direction="column"
+      direction={"column"}
       spacing={[2, 2, 3]}
-      component="form"
+      component={"form"}
       onSubmit={handleSubmit(onSubmit)}
       sx={{
         bgcolor: "background.paper",
@@ -130,26 +136,26 @@ const EditForm = ({
         title={`어르신 ${isEdit ? "수정하기" : "등록하기"}`}
         icon={
           <SquareUserRoundIcon
-            stroke="2"
+            stroke={"2"}
             sx={{ color: "label.neutral", w: 3, h: 3 }}
           />
         }
       />
       <Divider sx={{ w: 1 }} />
-      <Field label="성함" id="name">
+      <Field label={"성함"} id={"name"}>
         <SenifitTextField
           control={control}
-          name="name"
-          autoComplete="off"
-          placeholder="성함을 입력하세요"
+          name={"name"}
+          autoComplete={"off"}
+          placeholder={"성함을 입력하세요"}
         />
       </Field>
-      <Field label="나이" id="birthDate" tabletDirection="column">
+      <Field label={"나이"} id={"birthDate"} tabletDirection={"column"}>
         <FormProvider {...methods}>
           <BirthDatePicker isEdit={isEdit} />
         </FormProvider>
       </Field>
-      <Field label="성별" id="gender">
+      <Field label={"성별"} id={"gender"}>
         <SenifitToggleButtonGroup<Gender>
           value={gender}
           onChange={(newValue) => {
@@ -169,7 +175,7 @@ const EditForm = ({
           }}
         />
       </Field>
-      <Field label="등급" id="memberRank">
+      <Field label={"등급"} id={"memberRank"}>
         <MemberRankPicker
           memberRank={memberRank}
           setValue={setValue}
@@ -178,11 +184,11 @@ const EditForm = ({
         />
       </Field>
 
-      <Stack direction="row-reverse" pt={[1, 2]}>
+      <Stack direction={"row-reverse"} pt={[1, 2]}>
         <Button
-          type="submit"
-          variant="contained"
-          color="primary"
+          type={"submit"}
+          variant={"contained"}
+          color={"primary"}
           sx={{
             width: [1, 1, "fit-content"],
             height: "3.5rem",
@@ -190,7 +196,7 @@ const EditForm = ({
             px: 8,
           }}
         >
-          <Typography variant="Heading1">
+          <Typography variant={"Heading1"}>
             {isEdit ? "저장하기" : "등록하기"}
           </Typography>
         </Button>

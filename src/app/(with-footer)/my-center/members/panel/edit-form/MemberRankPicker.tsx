@@ -14,6 +14,7 @@ const MemberRankPicker = ({
   control,
 }: {
   memberRank: MemberRank;
+  // eslint-disable-next-line
   setValue: (field: any, value: MemberRank) => void;
   memberRankOptions: ISenifitToggleOption<MemberRank>[];
   control: Control<IMemberEditFormValue>;
@@ -26,7 +27,7 @@ const MemberRankPicker = ({
         control={control}
         name={"memberRank"}
         options={memberRankOptions}
-        placeholder="등급 선택"
+        placeholder={"등급 선택"}
         sx={{
           width: "10rem",
           height: "3.5rem",
