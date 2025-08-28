@@ -8,7 +8,8 @@
     "dev:https": "concurrently -k -n NEXT,SSL \"npm run dev\" \"npm run proxy\"",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "lint": "next lint --max-warnings=0",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
