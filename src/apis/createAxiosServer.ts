@@ -2,6 +2,7 @@ import "server-only";
 import axios, { AxiosHeaders, type AxiosInstance } from "axios";
 import https from "node:https";
 import { headers as nextHeaders } from "next/headers";
+import { AuthError } from "./errors";
 
 const API_PREFIX = normalizePrefix(process.env.NEXT_PUBLIC_API_BASE ?? "/api");
 const SITE_URL = ensureOrigin(
@@ -50,6 +51,15 @@ export async function createAxiosServer(opts?: {
     config.headers = hdrs;
     return config;
   });
+
+  instance.interceptors.response.use(
+    (res) => res,
+    (err) => {
+      const s = err?.response?.status;
+      if (s === 401 || s === 403) throw new AuthError("/login");
+      throw err;
+    },
+  );
 
   return instance;
 }
