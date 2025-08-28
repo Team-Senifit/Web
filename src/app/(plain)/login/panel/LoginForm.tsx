@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { login } from "@/apis/auth";
 import SenifitTextField from "../../../../components/SenifitTextField";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import useMedia from "@/hooks/useMedia";
 import CustomFailDialog from "./CustomFailDialog";
@@ -15,6 +15,9 @@ type LoginFormValues = { id: string; password: string };
 
 export default function LoginForm() {
   const { isPhone } = useMedia();
+
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next") || "/";
 
   const methods = useForm<LoginFormValues>({ mode: "onSubmit" });
   const {
@@ -32,7 +35,7 @@ export default function LoginForm() {
     try {
       await login(data);
       setShowSnackbar(true);
-      setTimeout(() => router.push("/"), 1000);
+      setTimeout(() => router.push(next), 1000);
     } catch {
       setFailDialogOpen(true);
     }
