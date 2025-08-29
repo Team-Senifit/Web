@@ -84,19 +84,19 @@ const SenifitNavBar = () => {
     >
       <BottomNavigation showLabels value={getCurrentPathValue()}>
         <NavAction
-          label="운동"
+          label={"운동"}
           icon={<HumanIcon sx={navActionStyle} />}
-          href="/"
+          href={"/"}
         />
         <NavAction
-          label="기록"
+          label={"기록"}
           icon={<ClipboardIcon sx={navActionStyle} />}
-          href="/record"
+          href={"/record"}
         />
         <NavAction
-          label="우리 센터"
+          label={"우리 센터"}
           icon={<HouseIcon sx={navActionStyle} />}
-          href="/my-center"
+          href={"/my-center"}
         />
       </BottomNavigation>
     </Box>
