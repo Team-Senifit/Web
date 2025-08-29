@@ -1,16 +1,18 @@
 "use client";
 
 import useMedia from "@/hooks/useMedia";
-import { IMember } from "@/types/IMember";
+import { genderLabel, gradeLabel, IMember } from "@/types/IMember";
+import { calculateAge } from "@/utils/calculateAge";
 import { Button, Stack, Typography } from "@mui/material";
+import dayjs from "dayjs";
 import Link from "next/link";
 import React from "react";
 
 const Member = ({
-  id,
+  memberId: id,
   name,
-  age,
-  grade,
+  birthDate,
+  memberRank,
   gender,
   isTablet,
   isDesktop,
@@ -43,8 +45,7 @@ const Member = ({
               width: { phone: "3rem", desktop: "3.5rem" },
             }}
           >
-            {age}
-            {"세"}
+            {`${calculateAge(dayjs(birthDate))}세`}
           </Typography>
           <Typography
             variant={isDesktop ? "Heading1" : "Headline1"}
@@ -53,7 +54,7 @@ const Member = ({
               width: { phone: "3rem", desktop: "3.5rem" },
             }}
           >
-            {gender}
+            {genderLabel[gender]}
           </Typography>
           <Typography
             variant={isDesktop ? "Heading1" : "Headline1"}
@@ -62,7 +63,7 @@ const Member = ({
               width: { phone: "6rem", desktop: "8rem" },
             }}
           >
-            {grade}
+            {gradeLabel[memberRank]}
           </Typography>
         </Stack>
       </Stack>
@@ -118,7 +119,7 @@ const MemberList = ({ members }: { members: Array<IMember> }) => {
     <>
       {members.map((member) => (
         <Member
-          key={member.id}
+          key={member.memberId}
           isDesktop={isDesktop}
           isTablet={isTablet}
           {...member}

@@ -1,7 +1,9 @@
 export type Gender = 0 | 1 | 2; // 0: other, 1: male, 2: female
 export type MemberRank = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0: 등급 외, 6: 인지지원등급
 
-export const grade: Array<string> = [
+export const genderLabel: Array<string> = ["기타", "남성", "여성"];
+
+export const gradeLabel: Array<string> = [
   "등급외",
   "1등급",
   "2등급",
