@@ -15,6 +15,7 @@ const Page = () => {
   const { data } = useSuspenseQuery<IResponse<IMyCenter>>({
     queryKey: ["/centers"],
   });
+
   return (
     <Box>
       <PageInfoCard />
