@@ -10,7 +10,7 @@ import {
 import dynamic from "next/dynamic";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { isAxiosError } from "axios";
-import { api } from "@/apis/api";
+import { axiosClient } from "@/apis/axiosClient";
 
 const ReactQueryDevtools =
   process.env.NODE_ENV === "development"
@@ -33,7 +33,7 @@ async function axiosQueryFn({
 }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [endpoint, params] = queryKey as [string, Record<string, any>?];
-  const res = await api.get(endpoint, { params, signal });
+  const res = await axiosClient.get(endpoint, { params, signal });
   return res.data;
 }
 
@@ -74,7 +74,7 @@ export default function QueryProviders({ children }: PropsWithChildren) {
               ? err.response?.status
               : // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (err as any)?.status;
-            if (status === 401) redirectToLogin();
+            if (status === 401 || status === 403) redirectToLogin();
           },
         }),
         mutationCache: new MutationCache({
@@ -83,7 +83,7 @@ export default function QueryProviders({ children }: PropsWithChildren) {
               ? err.response?.status
               : // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (err as any)?.status;
-            if (status === 401) redirectToLogin();
+            if (status === 401 || status === 403) redirectToLogin();
           },
         }),
         defaultOptions: {

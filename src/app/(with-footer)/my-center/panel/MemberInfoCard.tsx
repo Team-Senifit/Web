@@ -3,7 +3,7 @@
 import CTAButton from "@/components/CTAButton";
 import { SquareUserRoundIcon } from "@/components/icons";
 import useMedia from "@/hooks/useMedia";
-import { grade, IMember } from "@/types/IMember";
+import { gradeLabel, type IMember } from "@/types/IMember";
 import { calculateAge } from "@/utils/calculateAge";
 import { Stack, Typography } from "@mui/material";
 import dayjs from "dayjs";
@@ -41,7 +41,7 @@ const Member = ({ name, birthDate, memberRank, gender }: IMember) => {
           {gender}
         </Typography>
         <Typography variant={"Heading1"} sx={{ width: ["6rem", "8rem"] }}>
-          {grade[memberRank]}
+          {gradeLabel[memberRank]}
         </Typography>
       </Stack>
     </Stack>

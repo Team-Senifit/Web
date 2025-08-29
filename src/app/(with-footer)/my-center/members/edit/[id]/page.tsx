@@ -1,12 +1,15 @@
 import React from "react";
 import dayjs from "dayjs";
-import {
+import type {
+  IMember,
   IMemberEditFormPayload,
   IMemberEditFormValue,
-} from "@/types/IMemberEdit";
+} from "@/types/IMember";
 import { Stack } from "@mui/material";
 import ReturnButton from "../../panel/ReturnButton";
 import EditForm from "../../panel/EditForm";
+import { createAxiosServer } from "@/apis/createAxiosServer";
+import { IResponse } from "@/types/IResponse";
 
 const transformPayloadToValue = (
   payload: IMemberEditFormPayload,
@@ -34,20 +37,26 @@ const transformValueToPayload = (
 };
 
 const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id } = await params;
-  const data: IMemberEditFormPayload = {
-    name: "홍길동",
-    birthDate: "1965-01-01",
-    memberRank: 1,
-    isSolar: true,
-    gender: 2,
-  };
+
+  const axiosServer = await createAxiosServer();
+
+  const {
+    data: { data },
+  } = await axiosServer
+    .get<IResponse<IMember>>(`/members/${id}`)
+    .catch((error) => {
+      console.error("Error fetching member data:", error);
+      return { data: { data: null } };
+    });
+  if (!data) return null;
+
+  const transformedData = transformPayloadToValue(data);
 
   return (
     <Stack spacing={[2, 3]}>
       <ReturnButton href={"/my-center/members"} />
-      <EditForm isEdit defaultValues={transformPayloadToValue(data)} />
+      <EditForm isEdit defaultValues={transformedData} />
     </Stack>
   );
 };
