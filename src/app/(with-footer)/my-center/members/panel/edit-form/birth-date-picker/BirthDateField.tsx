@@ -2,7 +2,7 @@ import { Stack, Typography } from "@mui/material";
 import React from "react";
 import SenifitTextField from "../../../../../../../components/SenifitTextField";
 import { Control } from "react-hook-form";
-import { IMemberEditFormValue } from "@/types/IMemberEdit";
+import { IMemberEditFormValue } from "@/types/IMember";
 
 const Field = ({
   label,
@@ -22,9 +22,11 @@ const Field = ({
 };
 
 const BirthDateField = ({
+  isSolar,
   age,
   control,
 }: {
+  isSolar: boolean;
   age: number;
   control: Control<IMemberEditFormValue>;
 }) => {
@@ -44,6 +46,14 @@ const BirthDateField = ({
           {age}
         </Typography>
         {"세"}
+
+        <Typography
+          variant={"Heading1"}
+          component={"span"}
+          sx={{ color: "primary.main" }}
+        >
+          {isSolar ? " (양력)" : " (음력)"}
+        </Typography>
       </Typography>
       <Stack direction={"row"} spacing={2}>
         <Field label={"년"}>
