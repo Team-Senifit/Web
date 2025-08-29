@@ -21,7 +21,6 @@ export default async function RecordPage() {
   try {
     const { data } = await api.get("/centers");
     centerName = data?.data?.name || centerName;
-    console.log(centerName);
 
     return (
       <>
