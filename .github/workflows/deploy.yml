@@ -1,0 +1,85 @@
+name: CI/CD Deploy
+
+on:
+  push:
+    branches: [ "develop" ]   # 배포 브랜치
+  workflow_dispatch: {}    # 수동 실행도 가능
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      APP_DIR: /srv/senifit-front
+      RELEASE_NAME: ${{ github.sha }}      # 커밋 SHA로 릴리스 폴더명
+      NODE_ENV: production
+      NEXT_PUBLIC_API_BASE: ${{ secrets.NEXT_PUBLIC_API_BASE }}
+      NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+      API_PREFIX: ${{ secrets.API_PREFIX }}
+      NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      # devDeps 제거해 산출물 슬림화 (next는 반드시 dependencies에 있어야 함)
+      - name: Prune devDependencies
+        run: npm prune --omit=dev
+
+      - name: Create deploy package
+        run: |
+          mkdir -p deploy
+          cp -r .next node_modules package.json package-lock.json public next.config.* deploy/ 2>/dev/null || true
+          tar -C deploy -czf release.tgz .
+
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Known hosts
+        run: ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Upload artifact to EC2
+        run: scp -o StrictHostKeyChecking=yes release.tgz ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/tmp/senifit-front-${{ env.RELEASE_NAME }}.tgz
+
+      - name: Remote deploy (extract, swap, restart)
+        run: |
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} bash -se <<'EOF'
+          set -euo pipefail
+          APP_DIR="/srv/senifit-front"
+          REL="${RELEASE_NAME}"
+
+          mkdir -p "$APP_DIR/releases/$REL"
+          tar -xzf "/tmp/senifit-front-${REL}.tgz" -C "$APP_DIR/releases/$REL"
+
+          # 권한 정리(ubuntu로 서비스 구동 시)
+          chown -R ubuntu:ubuntu "$APP_DIR/releases/$REL"
+
+          # 원자적 스와프
+          ln -sfn "$APP_DIR/releases/$REL" "$APP_DIR/current"
+
+          # 서비스 재시작
+          sudo systemctl daemon-reload
+          sudo systemctl restart senifit-front
+
+          # 헬스 체크 (로컬)
+          curl -sS -I http://127.0.0.1:3000 | head -n1
+          EOF
+        env:
+          RELEASE_NAME: ${{ env.RELEASE_NAME }}
+
+      - name: Public healthcheck
+        run: |
+          curl -sSL -o /dev/null -w 'HTTPS %s -> %{http_code}\n' https://senifit.co.kr

@@ -10,7 +10,7 @@ export interface ICTAButtonProps extends ButtonProps {
 const CTAButton = (props: ICTAButtonProps) => {
   return (
     <Button
-      variant="text"
+      variant={"text"}
       {...props}
       sx={{
         py: 2,

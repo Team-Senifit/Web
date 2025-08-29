@@ -37,7 +37,7 @@ export function calculateAge(birth: Dayjs, opts: IManAgeOptions = {}): number {
     const leapThisYear = dayjs(
       `${now.year()}-02-29`,
       "YYYY-MM-DD",
-      true
+      true,
     ).isValid();
     if (!leapThisYear) {
       if (leapDayAsFeb28) {
@@ -66,5 +66,5 @@ export function calculateAge(birth: Dayjs, opts: IManAgeOptions = {}): number {
 export const getManAgeAt = (
   birth: Dayjs,
   at: Dayjs,
-  opts?: Omit<IManAgeOptions, "now">
+  opts?: Omit<IManAgeOptions, "now">,
 ) => calculateAge(birth, { ...opts, now: at });

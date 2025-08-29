@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import * as React from "react";
 import {
@@ -83,7 +84,7 @@ const SenifitToggleButtonGroupRoot = styled(ToggleButtonGroup, {
 }));
 
 function SenifitToggleButtonGroup<T extends string | number>(
-  props: IExclusiveProps<T> | IMultiProps<T>
+  props: IExclusiveProps<T> | IMultiProps<T>,
 ) {
   const {
     options,
