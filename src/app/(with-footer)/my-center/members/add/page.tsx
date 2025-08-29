@@ -7,7 +7,11 @@ const Page = () => {
   return (
     <Stack spacing={1.5} pb={3}>
       <ReturnButton href={"/my-center/members"} />
-      <EditForm />
+      <EditForm
+        defaultValues={{
+          isSolar: true,
+        }}
+      />
     </Stack>
   );
 };
