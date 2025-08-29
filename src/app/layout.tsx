@@ -25,7 +25,9 @@ export default function RootLayout({
   return (
     <html lang={"ko"}>
       <body>
-        <SenifitThemeProvider>{children}</SenifitThemeProvider>
+        <QueryProviders>
+          <SenifitThemeProvider>{children}</SenifitThemeProvider>
+        </QueryProviders>
       </body>
     </html>
   );
