@@ -1,5 +1,5 @@
 import Record from "./panel/Record";
-import { Typography, Container, Box } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import { createAxiosServer } from "@/apis/createAxiosServer";
 import { isAuthError } from "@/apis/errors";
 import { redirect } from "next/navigation";
