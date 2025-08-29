@@ -17,9 +17,9 @@ const ReactQueryDevtools =
     ? dynamic(
         () =>
           import("@tanstack/react-query-devtools").then(
-            (m) => m.ReactQueryDevtools
+            (m) => m.ReactQueryDevtools,
           ),
-        { ssr: false }
+        { ssr: false },
       )
     : () => null;
 
@@ -31,6 +31,7 @@ async function axiosQueryFn({
   queryKey: readonly unknown[];
   signal?: AbortSignal;
 }) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [endpoint, params] = queryKey as [string, Record<string, any>?];
   const res = await api.get(endpoint, { params, signal });
   return res.data;
@@ -71,7 +72,8 @@ export default function QueryProviders({ children }: PropsWithChildren) {
           onError: (err) => {
             const status = isAxiosError(err)
               ? err.response?.status
-              : (err as any)?.status;
+              : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (err as any)?.status;
             if (status === 401) redirectToLogin();
           },
         }),
@@ -79,7 +81,8 @@ export default function QueryProviders({ children }: PropsWithChildren) {
           onError: (err) => {
             const status = isAxiosError(err)
               ? err.response?.status
-              : (err as any)?.status;
+              : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (err as any)?.status;
             if (status === 401) redirectToLogin();
           },
         }),
@@ -93,7 +96,8 @@ export default function QueryProviders({ children }: PropsWithChildren) {
             retry(failureCount, err) {
               const status = isAxiosError(err)
                 ? err.response?.status
-                : (err as any)?.status;
+                : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  (err as any)?.status;
               // 5xx만 최대 2회 재시도
               return !!status && status >= 500 && failureCount < 2;
             },
@@ -102,7 +106,7 @@ export default function QueryProviders({ children }: PropsWithChildren) {
           },
           mutations: { retry: 0 },
         },
-      })
+      }),
   );
 
   return (
