@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import InfoCard from "./panel/InfoCard";
 import { Box, Grid, Stack } from "@mui/material";
 import MemberInfoCard from "./panel/MemberInfoCard";
