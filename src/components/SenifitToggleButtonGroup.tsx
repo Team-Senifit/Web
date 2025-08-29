@@ -83,7 +83,7 @@ const SenifitToggleButtonGroupRoot = styled(ToggleButtonGroup, {
   "& .MuiToggleButtonGroup-grouped": { margin: 0 },
 }));
 
-function SenifitToggleButtonGroup<T extends string | number>(
+function SenifitToggleButtonGroup<T extends string | number | boolean>(
   props: IExclusiveProps<T> | IMultiProps<T>,
 ) {
   const {

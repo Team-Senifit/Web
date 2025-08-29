@@ -4,13 +4,23 @@ import { Button, Divider, Stack, Typography } from "@mui/material";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import BirthDatePicker from "./edit-form/BirthDatePicker";
-import { Gender, IMemberEditFormValue, MemberRank } from "@/types/IMemberEdit";
+import {
+  Gender,
+  IMemberEditFormPayload,
+  IMemberEditFormValue,
+  MemberRank,
+} from "@/types/IMember";
 import { SquareUserRoundIcon } from "@/components/icons";
 import PageInfoCard from "@/components/PageInfoCard";
 import useMedia from "@/hooks/useMedia";
 import SenifitToggleButtonGroup from "@/components/SenifitToggleButtonGroup";
 import { ISenifitToggleOption } from "@/types/IToggleButton";
 import MemberRankPicker from "./edit-form/MemberRankPicker";
+import { transformValueToPayload } from "./transformData";
+import { IResponse } from "@/types/IResponse";
+import { useMutation } from "@tanstack/react-query";
+import { axiosClient } from "@/apis/axiosClient";
+import { useRouter } from "next/navigation";
 
 const Field = ({
   label,
@@ -57,21 +67,51 @@ const Field = ({
 };
 
 const EditForm = ({
+  id,
   isEdit = false,
   defaultValues,
 }: {
+  id?: string;
   isEdit?: boolean;
   defaultValues?: Partial<IMemberEditFormValue>;
 }) => {
+  const router = useRouter();
+
   const methods = useForm<IMemberEditFormValue>({
     defaultValues,
   });
 
-  const { handleSubmit, control, watch, setValue } = methods;
+  const {
+    handleSubmit,
+    control,
+    watch,
+    setValue,
+    formState: { isSubmitting },
+  } = methods;
 
-  const onSubmit = (data: IMemberEditFormValue) => {
-    console.log("Submitted data:", data);
-    // api 요청 로직 추가
+  const mutation = useMutation({
+    mutationFn: async (payload: IMemberEditFormPayload) => {
+      if (isEdit) {
+        await axiosClient.put<IResponse<string>>(
+          `/centers/members/${id}`,
+          payload,
+        );
+      } else {
+        await axiosClient.post<IResponse<string>>(`/centers/members`, payload);
+      }
+    },
+    onSuccess: () => {
+      router.push("/my-center/members");
+    },
+    onError: () => {
+      // Handle error
+    },
+  });
+
+  const onSubmit = async (formData: IMemberEditFormValue) => {
+    const payload = transformValueToPayload(formData);
+    console.log(payload);
+    await mutation.mutate(payload);
   };
 
   const genderOptions = [
@@ -195,6 +235,7 @@ const EditForm = ({
             borderRadius: "0.75rem",
             px: 8,
           }}
+          loading={isSubmitting}
         >
           <Typography variant={"Heading1"}>
             {isEdit ? "저장하기" : "등록하기"}
