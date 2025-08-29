@@ -6,13 +6,26 @@ import MemberInfoCard from "./panel/MemberInfoCard";
 import PageInfoCard from "./panel/PageInfoCard";
 import { HouseIcon, MapPinHouseIcon } from "@/components/icons";
 import CTAButton from "@/components/CTAButton";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import { IResponse } from "@/types/IResponse";
 import { IMyCenter } from "@/types/IMyCenter";
+import { axiosClient } from "@/apis/axiosClient";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
+  const router = useRouter();
+
   const { data } = useSuspenseQuery<IResponse<IMyCenter>>({
     queryKey: ["/centers"],
+  });
+
+  const { mutate } = useMutation({
+    mutationFn: async () => {
+      await axiosClient.get("/auth/signout");
+    },
+    onSuccess: () => {
+      router.push("/login");
+    },
   });
 
   return (
@@ -78,6 +91,9 @@ const Page = () => {
           <Stack direction={"row"} justifyContent={"flex-end"}>
             <CTAButton
               text={"로그아웃"}
+              onClick={() => {
+                mutate();
+              }}
               sx={{
                 width: ["100%", "fit-content"],
                 bgcolor: "fillVariants.negative",
