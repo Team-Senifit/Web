@@ -8,6 +8,7 @@ import PageInfoCard from "@/components/PageInfoCard";
 import AddMemberButton from "./panel/AddMemberButton";
 import useMedia from "@/hooks/useMedia";
 import { SquareUserRoundIcon } from "@/components/icons";
+import { IMember } from "@/types/IMember";
 
 const memberData: Array<IMember> = [
   {
@@ -38,11 +39,11 @@ const Page = () => {
   const { isDesktop } = useMedia();
   return (
     <Stack spacing={[2, 3]} sx={{ width: "100%", height: "100%" }}>
-      <ReturnButton href="/my-center" />
+      <ReturnButton href={"/my-center"} />
       <Stack
         direction={"column"}
-        justifyContent="start"
-        alignItems="start"
+        justifyContent={"start"}
+        alignItems={"start"}
         spacing={[2, 3]}
         sx={{
           width: 1,

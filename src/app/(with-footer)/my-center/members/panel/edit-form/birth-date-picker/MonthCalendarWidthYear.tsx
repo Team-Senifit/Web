@@ -1,9 +1,8 @@
 import React from "react";
 import KoLocalizationProvider from "./KoLocalizationProvider";
-import { Box, IconButton, Stack, SxProps } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { MonthCalendar } from "@mui/x-date-pickers";
 import CalendarButton from "./CalendarButton";
-import { Theme } from "@emotion/react";
 import CalendarTitle from "./CalendarTitle";
 import dayjs from "dayjs";
 
@@ -24,8 +23,8 @@ const MonthCalendarWidthYear = ({
     <Stack>
       <CalendarTitle
         title={`${year}년`}
-        leftAriaLabel="이전 연도"
-        rightAriaLabel="다음 연도"
+        leftAriaLabel={"이전 연도"}
+        rightAriaLabel={"다음 연도"}
         onLeftArrowClick={() => setYear(year - 1)}
         onRightArrowClick={() => setYear(year + 1)}
         prevDisabled={year === null || year <= 1900}

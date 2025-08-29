@@ -2,7 +2,6 @@
 
 import React from "react";
 import {
-  Box,
   IconButton,
   Stack,
   Typography,
@@ -37,9 +36,9 @@ const CalendarTitle = ({
 }) => {
   return (
     <Stack
-      direction="row"
-      alignItems="center"
-      justifyContent="space-between"
+      direction={"row"}
+      alignItems={"center"}
+      justifyContent={"space-between"}
       sx={{ py: 1, px: 3 }}
     >
       <IconButton

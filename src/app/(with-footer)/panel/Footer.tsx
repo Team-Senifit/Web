@@ -27,13 +27,13 @@ const Inquiry = ({
         spacing={1}
       >
         {icon}
-        <Typography variant="Title1" sx={{ color: "label.normal" }}>
+        <Typography variant={"Title1"} sx={{ color: "label.normal" }}>
           {title}
         </Typography>
       </Stack>
       <Stack spacing={1.5}>
         <Button
-          variant="contained"
+          variant={"contained"}
           sx={{
             py: 2,
             width: { phone: "100%", tablet: "18.5rem" },
@@ -41,12 +41,12 @@ const Inquiry = ({
             bgcolor: buttonBgColor,
           }}
         >
-          <Typography variant="Heading1" sx={{ color: buttonTextColor }}>
+          <Typography variant={"Heading1"} sx={{ color: buttonTextColor }}>
             {buttonText}
           </Typography>
         </Button>
         <Typography
-          variant="Headline1"
+          variant={"Headline1"}
           sx={{
             whiteSpace: "pre-line",
             color: "label.neutral",
@@ -71,9 +71,9 @@ const Footer = () => {
         pb: 14,
       }}
     >
-      <Container maxWidth="desktop">
-        <Typography variant="Heading1" sx={{ color: "label.neutral", mb: 3 }}>
-          사용 중 도움이 필요하신가요?
+      <Container maxWidth={"desktop"}>
+        <Typography variant={"Heading1"} sx={{ color: "label.neutral", mb: 3 }}>
+          {"사용 중 도움이 필요하신가요?"}
         </Typography>
         <Stack direction={{ phone: "column", desktop: "row" }} spacing={6}>
           <Stack
@@ -83,29 +83,29 @@ const Footer = () => {
             columnGap={3}
           >
             <Inquiry
-              title="유선 전화 문의"
+              title={"유선 전화 문의"}
               icon={
                 <PhoneCallIcon
                   strokeWidth={4}
                   sx={{ width: 40, height: 40, color: "primary.main" }}
                 />
               }
-              buttonTextColor="staticVariants.white"
-              buttonBgColor="primary.main"
-              buttonText="070-8065-7080"
+              buttonTextColor={"staticVariants.white"}
+              buttonBgColor={"primary.main"}
+              buttonText={"070-8065-7080"}
               footnote={`평일 00:00~00:00\n주말 및 공휴일 휴무`}
             />
             <Inquiry
-              title="카카오톡 문의"
+              title={"카카오톡 문의"}
               icon={
                 <MessageCircleMoreIcon
                   strokeWidth={3.3}
                   sx={{ width: 40, height: 40, color: "primary.main" }}
                 />
               }
-              buttonTextColor="label.normal"
-              buttonBgColor="#FEE500"
-              buttonText="카카오톡 채널 바로가기"
+              buttonTextColor={"label.normal"}
+              buttonBgColor={"#FEE500"}
+              buttonText={"카카오톡 채널 바로가기"}
               footnote={`카카오톡 상단 돋보기 아이콘을 누르고\nSGEE를 검색해 보세요.`}
             />
           </Stack>
@@ -119,7 +119,7 @@ const Footer = () => {
           >
             <Typography
               component={"p"}
-              variant="Caption1"
+              variant={"Caption1"}
               sx={{
                 textAlign: "right",
                 whiteSpace: "pre-line",
@@ -129,8 +129,8 @@ const Footer = () => {
               {`㈜튼튼한거북이\n대표 : 최진석\n본점 : 경기도 안산시 단원구 원포공원1로 59, 신명트윈타워 A동 5층 창업 5호\n서울지점 : 서울특별시 광진구 능동로 120 건국대학교 중장비실험동 3층 303호\n사업자번호 : 327-86-03115\nTEL : 070-8065-7080\nE-MAIL : teunteun.turtle@gmail.com`}
             </Typography>
             <Button
-              component="a"
-              variant="text"
+              component={"a"}
+              variant={"text"}
               sx={{
                 width: "fit-content",
                 color: "label.normal",
@@ -141,7 +141,7 @@ const Footer = () => {
                 },
               }}
             >
-              개인정보처리방침
+              {"개인정보처리방침"}
             </Button>
           </Stack>
         </Stack>

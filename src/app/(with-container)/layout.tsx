@@ -11,7 +11,7 @@ export default function WithContainerLayout({
     <>
       <SenifitHeader />
       <Container
-        maxWidth="desktop"
+        maxWidth={"desktop"}
         sx={{
           pt: [9, 12, 20.75],
           px: [0, 3],

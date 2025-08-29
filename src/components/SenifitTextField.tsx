@@ -31,7 +31,6 @@ const SenifitTextField = <T extends FieldValues>(props: TProps<T>) => {
     formControlProps,
     onChange,
     onBlur,
-    disableHelperText = false, // default는 false
     sx,
     ...inputBaseProps
   } = props;

@@ -45,9 +45,9 @@ export function exerciseString(
   r: Pick<
     RecordItem,
     "routineKind" | "cognitiveKind" | "singingKind" | "durationKind"
-  >
+  >,
 ) {
   return [r.routineKind, r.cognitiveKind, r.singingKind, r.durationKind].join(
-    " / "
+    " / ",
   );
 }
