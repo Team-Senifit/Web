@@ -1,0 +1,55 @@
+name: PR Checks (typecheck & lint)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [ main, develop ]
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: Install deps
+        run: npm ci
+
+      # ---- Typecheck ----
+      - name: TypeScript typecheck
+        if: ${{ hashFiles('tsconfig.json') != '' }}
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+        run: |
+          if npm run | grep -qE '^ *typecheck'; then
+            npm run typecheck
+          else
+            npx -y typescript tsc --noEmit
+          fi
+
+      # ---- Lint ----
+      - name: ESLint
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+        run: |
+          if npm run | grep -qE '^ *lint'; then
+            npm run lint --if-present
+          else
+            npx -y eslint . --max-warnings=0
+          fi

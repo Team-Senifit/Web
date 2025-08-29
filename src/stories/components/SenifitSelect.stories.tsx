@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
 import SenifitSelect from "@/components/SenifitSelect";
-import { options } from "node_modules/axios/index.cjs";
 
 const meta: Meta = {
   title: "components/SenifitSelect",
