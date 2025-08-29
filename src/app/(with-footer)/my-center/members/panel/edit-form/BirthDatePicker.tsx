@@ -33,7 +33,9 @@ const BirthDatePicker = ({ isEdit }: { isEdit: boolean }) => {
   return (
     <>
       <Stack direction={"column"} spacing={1.5} id={"birthDate"}>
-        {year && month && day && <BirthDateField control={control} age={age} />}
+        {year && month && day && (
+          <BirthDateField control={control} age={age} isSolar={isSolar} />
+        )}
         <Button
           onClick={() => setIsOpen(true)}
           sx={{
