@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import QueryProviders from "./panel/QueryClientProvider";
+import { AuthErrorBoundary } from "./panel/ErrorBoundary";
 
 // dayjs locale 설정, time zone 설정
 dayjs.locale("ko");
@@ -26,7 +27,9 @@ export default function RootLayout({
     <html lang={"ko"}>
       <body>
         <QueryProviders>
-          <SenifitThemeProvider>{children}</SenifitThemeProvider>
+          <AuthErrorBoundary>
+            <SenifitThemeProvider>{children}</SenifitThemeProvider>
+          </AuthErrorBoundary>
         </QueryProviders>
       </body>
     </html>

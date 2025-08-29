@@ -9,8 +9,8 @@ import {
 } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { isAxiosError } from "axios";
 import { axiosClient } from "@/apis/axiosClient";
+import { isAuthError } from "@/apis/errors";
 
 const ReactQueryDevtools =
   process.env.NODE_ENV === "development"
@@ -23,7 +23,6 @@ const ReactQueryDevtools =
       )
     : () => null;
 
-// 공통 axios 기반 queryFn
 async function axiosQueryFn({
   queryKey,
   signal,
@@ -33,6 +32,9 @@ async function axiosQueryFn({
 }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [endpoint, params] = queryKey as [string, Record<string, any>?];
+
+  console.log("🔧 Query endpoint:", endpoint);
+
   const res = await axiosClient.get(endpoint, { params, signal });
   return res.data;
 }
@@ -42,27 +44,42 @@ export default function QueryProviders({ children }: PropsWithChildren) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // 최신 경로/쿼리 보관용 ref
   const locationRef = useRef({ pathname: "/", search: "" });
+  const redirectingRef = useRef(false);
+  const lastRedirectTimeRef = useRef(0);
+
   useEffect(() => {
     locationRef.current = {
       pathname: pathname || "/",
       search: searchParams?.toString() || "",
     };
+    // 경로가 바뀌면 리다이렉트 플래그 해제
+    redirectingRef.current = false;
   }, [pathname, searchParams]);
 
-  // 중복 리다이렉트 방지
-  const redirectingRef = useRef(false);
-  const redirectToLogin = () => {
-    if (typeof window === "undefined") return; // SSR 안전장치
-    if (redirectingRef.current) return;
+  const redirectToLogin = (to = "/login") => {
+    if (typeof window === "undefined") return;
+
+    // 중복 리다이렉트 방지 (1초 내 중복 요청 차단)
+    const now = Date.now();
+    if (redirectingRef.current || now - lastRedirectTimeRef.current < 1000) {
+      return;
+    }
 
     const { pathname, search } = locationRef.current;
-    if (pathname.startsWith("/login")) return; // 로그인 페이지면 패스
+    // 이미 로그인 페이지에 있으면 리다이렉트하지 않음
+    if (pathname.startsWith("/login")) return;
 
     redirectingRef.current = true;
+    lastRedirectTimeRef.current = now;
+
     const next = pathname + (search ? `?${search}` : "");
-    router.replace(`/login?next=${encodeURIComponent(next)}`);
+    router.replace(`${to}?next=${encodeURIComponent(next)}`);
+
+    // 3초 후 플래그 해제 (안전장치)
+    setTimeout(() => {
+      redirectingRef.current = false;
+    }, 3000);
   };
 
   const [client] = useState(
@@ -70,41 +87,38 @@ export default function QueryProviders({ children }: PropsWithChildren) {
       new QueryClient({
         queryCache: new QueryCache({
           onError: (err) => {
-            const status = isAxiosError(err)
-              ? err.response?.status
-              : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (err as any)?.status;
-            if (status === 401 || status === 403) redirectToLogin();
+            if (isAuthError(err)) {
+              redirectToLogin(err.redirectTo);
+            }
           },
         }),
         mutationCache: new MutationCache({
           onError: (err) => {
-            const status = isAxiosError(err)
-              ? err.response?.status
-              : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (err as any)?.status;
-            if (status === 401 || status === 403) redirectToLogin();
+            if (isAuthError(err)) {
+              redirectToLogin(err.redirectTo);
+            }
           },
         }),
         defaultOptions: {
           queries: {
+            queryFn: axiosQueryFn,
             staleTime: 5 * 60_000,
             gcTime: 30 * 60_000,
             refetchOnWindowFocus: false,
             refetchOnReconnect: "always",
             refetchOnMount: false,
             retry(failureCount, err) {
-              const status = isAxiosError(err)
-                ? err.response?.status
-                : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  (err as any)?.status;
-              // 5xx만 최대 2회 재시도
-              return !!status && status >= 500 && failureCount < 2;
+              // 인증 에러면 재시도하지 않음 (이미 onError에서 처리됨)
+              if (isAuthError(err)) {
+                return false;
+              }
+
+              // 5xx 에러만 최대 2회 재시도
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              const status = (err as any)?.response?.status;
+              return status >= 500 && failureCount < 2;
             },
-            retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 30_000),
-            queryFn: axiosQueryFn,
           },
-          mutations: { retry: 0 },
         },
       }),
   );
