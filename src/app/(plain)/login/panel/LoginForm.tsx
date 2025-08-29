@@ -10,6 +10,7 @@ import { useState } from "react";
 import useMedia from "@/hooks/useMedia";
 import CustomFailDialog from "./CustomFailDialog";
 import Logo from "@/assets/logo/senifit-logo.svg";
+import SenifitDialog from "@/components/SenifitDialog";
 
 type LoginFormValues = { id: string; password: string };
 
@@ -161,10 +162,21 @@ export default function LoginForm() {
       </Box>
 
       {/* 로그인 실패 다이얼로그 */}
-      <CustomFailDialog
+      {/* <CustomFailDialog
         open={failDialogOpen}
         onClose={() => setFailDialogOpen(false)}
         main={true}
+      /> */}
+      <SenifitDialog
+        isOpen={failDialogOpen}
+        onClose={() => setFailDialogOpen(false)}
+        dialogType={"error"}
+        title={"아이디 혹은 비밀번호가\n일치하지 않습니다."}
+        body={
+          "로그인 정보에 대한 자세한 문의는\nSGEE 협회로 문의해주시기 바랍니다."
+        }
+        primaryText={"다시 시도"}
+        onPrimaryClick={() => setFailDialogOpen(false)}
       />
 
       {/* 도움말 다이얼로그 */}
