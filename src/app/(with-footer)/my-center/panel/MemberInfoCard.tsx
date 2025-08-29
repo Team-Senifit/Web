@@ -29,7 +29,15 @@ const Member = ({ name, birthDate, memberRank, gender }: IMember) => {
   const age = calculateAge(dayjs(birthDate));
   return (
     <Stack direction={"row"} spacing={[1, 2]} alignItems={"center"}>
-      <Typography variant={"Heading1"} sx={{ width: ["8rem", "8.25rem"] }}>
+      <Typography
+        variant={"Heading1"}
+        sx={{
+          width: ["8rem", "8.25rem"],
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+        }}
+      >
         {name}
       </Typography>
       <Stack direction={"row"} spacing={[2, 9]} alignItems={"center"}>

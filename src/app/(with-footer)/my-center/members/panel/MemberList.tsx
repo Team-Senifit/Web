@@ -1,9 +1,15 @@
 "use client";
 
+import { axiosClient } from "@/apis/axiosClient";
 import useMedia from "@/hooks/useMedia";
 import { genderLabel, gradeLabel, IMember } from "@/types/IMember";
 import { calculateAge } from "@/utils/calculateAge";
 import { Button, Stack, Typography } from "@mui/material";
+import {
+  type UseMutateFunction,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import dayjs from "dayjs";
 import Link from "next/link";
 import React from "react";
@@ -16,7 +22,12 @@ const Member = ({
   gender,
   isTablet,
   isDesktop,
-}: IMember & { isDesktop: boolean; isTablet: boolean }) => {
+  mutate,
+}: IMember & {
+  isDesktop: boolean;
+  isTablet: boolean;
+  mutate: UseMutateFunction<void, Error, number, unknown>;
+}) => {
   return (
     <Stack
       direction={{ phone: "column", tablet: "row" }}
@@ -33,7 +44,14 @@ const Member = ({
       >
         <Typography
           variant={isDesktop ? "Title2" : "Headline1"}
-          sx={{ color: "label.normal", width: "8.25rem" }}
+          title={name}
+          sx={{
+            color: "label.normal",
+            width: "8.25rem",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
         >
           {name}
         </Typography>
@@ -94,6 +112,9 @@ const Member = ({
         </Button>
         <Button
           variant={"text"}
+          onClick={() => {
+            mutate(id);
+          }}
           sx={{
             color: "statusVariants.negative",
             bgcolor: "fillVariants.negative",
@@ -115,6 +136,18 @@ const Member = ({
 
 const MemberList = ({ members }: { members: Array<IMember> }) => {
   const { isTablet, isDesktop } = useMedia();
+
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation({
+    mutationFn: async (id: number) => {
+      await axiosClient.delete(`/centers/members/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/centers/members"] });
+    },
+  });
+
   return (
     <>
       {members.map((member) => (
@@ -122,6 +155,7 @@ const MemberList = ({ members }: { members: Array<IMember> }) => {
           key={member.memberId}
           isDesktop={isDesktop}
           isTablet={isTablet}
+          mutate={mutate}
           {...member}
         />
       ))}
