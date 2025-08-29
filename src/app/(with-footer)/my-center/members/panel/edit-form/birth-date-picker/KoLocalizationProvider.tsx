@@ -13,7 +13,7 @@ const KoLocalizationProvider = ({
   return (
     <LocalizationProvider
       dateAdapter={AdapterDayjs}
-      adapterLocale="ko"
+      adapterLocale={"ko"}
       localeText={
         koKR.components.MuiLocalizationProvider.defaultProps.localeText
       }

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CalendarIcon } from "../../../../../../components/icons";
 import { Button, Modal, Paper, Stack, Typography } from "@mui/material";
 import { LunarSolarToggle, Title } from "./birth-date-picker";
@@ -30,7 +30,7 @@ const BirthDatePicker = ({ isEdit }: { isEdit: boolean }) => {
 
   return (
     <>
-      <Stack direction={"column"} spacing={1.5} id="birthDate">
+      <Stack direction={"column"} spacing={1.5} id={"birthDate"}>
         {year && month && day && <BirthDateField control={control} age={age} />}
         <Button
           onClick={() => setIsOpen(true)}
@@ -48,7 +48,7 @@ const BirthDatePicker = ({ isEdit }: { isEdit: boolean }) => {
             />
           }
         >
-          <Typography variant="Headline1" sx={{ color: "primary.main" }}>
+          <Typography variant={"Headline1"} sx={{ color: "primary.main" }}>
             {`생년월일 ${isEdit ? "수정하기" : "입력하기"}`}
           </Typography>
         </Button>
@@ -63,7 +63,7 @@ const BirthDatePicker = ({ isEdit }: { isEdit: boolean }) => {
           alignItems: "center",
           justifyContent: ["flex-end", "center"],
         }}
-        aria-labelledby="year-month-day-picker-title"
+        aria-labelledby={"year-month-day-picker-title"}
       >
         <Paper
           sx={{

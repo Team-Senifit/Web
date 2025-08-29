@@ -51,6 +51,7 @@ export type TSenifitSelectProps<T extends TOptionValue> =
   | IMultiSelectProps<T>;
 
 /** RHF 래퍼용 */
+/** RHF는 useForm의 defaultValues 권장, 필요 시 명시 가능 */
 export interface ISenifitSelectFieldProps<
   TFieldValues extends FieldValues,
   T extends TOptionValue,
@@ -58,6 +59,6 @@ export interface ISenifitSelectFieldProps<
   name: Path<TFieldValues>;
   control: Control<TFieldValues>;
   rules?: RegisterOptions<TFieldValues, Path<TFieldValues>>;
-  /** RHF는 useForm의 defaultValues 권장, 필요 시 명시 가능 */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   defaultValue?: any;
 }

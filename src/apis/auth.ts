@@ -1,3 +1,4 @@
+import { ILoginPayload } from "@/types/ILoginPayload";
 import axios from "axios";
 
 export const login = async ({ id, password }: ILoginPayload) => {

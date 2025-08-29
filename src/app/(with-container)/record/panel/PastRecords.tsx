@@ -39,28 +39,28 @@ export default function PastRecords({ records }: { records?: RecordItem[] }) {
 
   const isEmpty = useMemo(
     () => !loading && (!list || list.length === 0),
-    [loading, list]
+    [loading, list],
   );
 
   return (
-    <Card variant="outlined">
+    <Card variant={"outlined"}>
       <CardContent sx={{ pb: 1 }}>
         <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
+          direction={"row"}
+          alignItems={"center"}
+          justifyContent={"space-between"}
           mb={1.5}
         >
-          <Typography variant="h6" fontWeight={700}>
-            지난 수업 보기
+          <Typography variant={"h6"} fontWeight={700}>
+            {"지난 수업 보기"}
           </Typography>
           <Button
             component={Link}
-            href="/record/all"
-            size="small"
-            variant="text"
+            href={"/record/all"}
+            size={"small"}
+            variant={"text"}
           >
-            전체보기
+            {"전체보기"}
           </Button>
         </Stack>
 
@@ -76,14 +76,16 @@ export default function PastRecords({ records }: { records?: RecordItem[] }) {
               gap: 2,
             }}
           >
-            <Typography variant="body1">아직 진행한 수업이 없어요!</Typography>
+            <Typography variant={"body1"}>
+              {"아직 진행한 수업이 없어요!"}
+            </Typography>
             <Button
               component={Link}
-              href="/record/new"
-              variant="outlined"
-              size="small"
+              href={"/record/new"}
+              variant={"outlined"}
+              size={"small"}
             >
-              운동하러 가기
+              {"운동하러 가기"}
             </Button>
           </Box>
         ) : (
@@ -99,16 +101,20 @@ export default function PastRecords({ records }: { records?: RecordItem[] }) {
               return (
                 <Box key={it.recordId} sx={{ py: 2 }}>
                   <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
+                    direction={"row"}
+                    alignItems={"center"}
+                    justifyContent={"space-between"}
                     spacing={2}
                   >
                     <Stack spacing={0.5} sx={{ minWidth: 0 }}>
-                      <Typography variant="subtitle1" fontWeight={600} noWrap>
+                      <Typography variant={"subtitle1"} fontWeight={600} noWrap>
                         {title}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary" noWrap>
+                      <Typography
+                        variant={"body2"}
+                        color={"text.secondary"}
+                        noWrap
+                      >
                         {desc}
                       </Typography>
                     </Stack>
@@ -116,8 +122,8 @@ export default function PastRecords({ records }: { records?: RecordItem[] }) {
                     <Button
                       component={Link}
                       href={href}
-                      variant="outlined"
-                      size="small"
+                      variant={"outlined"}
+                      size={"small"}
                     >
                       {cta}
                     </Button>
