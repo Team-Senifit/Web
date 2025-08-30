@@ -30,10 +30,10 @@ export default function RecordButton({ href, cta, surveysExist }: Props) {
           : "var(--Fill-colored, #FFF5F0)",
         color: isDetail
           ? "var(--Sementic-Color-Label-color-label-neutral, var(--Label-neutral, #646568))"
-          : "var(--Sementic-Color-Primary-color-primary-default, var(--Primary-default, #FB5F04))"
+          : "var(--Sementic-Color-Primary-color-primary-default, var(--Primary-default, #FB5F04))",
       }}
     >
-      <Typography variant="Heading1" sx={{ color: "inherit" }}>
+      <Typography variant={"Heading1"} sx={{ color: "inherit" }}>
         {cta}
       </Typography>
     </Button>
