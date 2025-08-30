@@ -19,7 +19,7 @@ const ExercisePageInfoCard = ({
     <Stack
       spacing={2}
       sx={{
-        borderRadius: [0, 1.5],
+        borderRadius: [0, "0.75rem"],
         px: [3, 6],
         py: [3, 4.5],
         background: "linear-gradient(270deg, #FC7F36 0%, #FF8A00 100%)",
