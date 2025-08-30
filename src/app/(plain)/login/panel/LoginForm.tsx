@@ -8,9 +8,9 @@ import SenifitTextField from "../../../../components/SenifitTextField";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import useMedia from "@/hooks/useMedia";
-import CustomFailDialog from "./CustomFailDialog";
 import Logo from "@/assets/logo/senifit-logo.svg";
 import SenifitDialog from "@/components/SenifitDialog";
+import Link from "next/link";
 
 type LoginFormValues = { id: string; password: string };
 
@@ -175,15 +175,30 @@ export default function LoginForm() {
         body={
           "로그인 정보에 대한 자세한 문의는\nSGEE 협회로 문의해주시기 바랍니다."
         }
-        primaryText={"다시 시도"}
+        primaryText={"다시 시도하기"}
         onPrimaryClick={() => setFailDialogOpen(false)}
+        secondaryText={"문의하기"}
+        secondaryButtonProps={{
+          component: Link,
+          href: "http://pf.kakao.com/_rXiVn",
+        }}
       />
 
-      {/* 도움말 다이얼로그 */}
-      <CustomFailDialog
-        open={inquiryDialogOpen}
+      <SenifitDialog
+        isOpen={inquiryDialogOpen}
         onClose={() => setInquiryDialogOpen(false)}
-        main={false}
+        dialogType={"error"}
+        title={"로그인이 되지 않나요?"}
+        body={
+          "로그인 정보에 대한 자세한 문의는\nSGEE 협회로 문의해주시기 바랍니다."
+        }
+        primaryText={"다시 시도하기"}
+        onPrimaryClick={() => setInquiryDialogOpen(false)}
+        secondaryText={"문의하기"}
+        secondaryButtonProps={{
+          component: Link,
+          href: "http://pf.kakao.com/_rXiVn",
+        }}
       />
 
       {/* 성공 알림 */}

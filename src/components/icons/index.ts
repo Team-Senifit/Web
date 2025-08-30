@@ -6,3 +6,6 @@ export { default as SquareUserRoundIcon } from "./SquareUserRoundIcon";
 export { default as UndoIcon } from "./UndoIcon";
 export { default as CalendarIcon } from "./CalendarIcon";
 export { default as CrossIcon } from "./CrossIcon";
+export { default as TriangleAlertIcon } from "./TriangleAlertIcon";
+export { default as CircleQuestionMarkIcon } from "./CircleQuestionMarkIcon";
+export { default as CircleCheckBigIcon } from "./CircleCheckBigIcon";
