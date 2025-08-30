@@ -46,6 +46,7 @@ const PopularRoutine = () => {
         justifyContent: "flex-start",
         alignItems: "flex-start",
         p: 0,
+        height: "32rem",
       }}
     >
       <Stack

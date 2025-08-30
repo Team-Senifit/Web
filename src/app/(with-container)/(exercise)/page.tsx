@@ -6,6 +6,7 @@ import ExercisePageInfoCard from "./panel/ExercisePageInfoCard";
 import CustomizedRoutine from "./panel/CustomizedRoutine";
 import useMedia from "@/hooks/useMedia";
 import PopularRoutine from "./panel/PopularRoutine";
+import ThematicRoutine from "./panel/ThematicRoutine";
 
 const Page = () => {
   const { isPhone } = useMedia();
@@ -28,12 +29,18 @@ const Page = () => {
         <CustomizedRoutine />
       </Grid>
       <Grid
+        container
         size={{
           phone: 12,
           desktop: 6,
         }}
       >
-        <PopularRoutine />
+        <Grid size={12}>
+          <PopularRoutine />
+        </Grid>
+        <Grid size={12}>
+          <ThematicRoutine />
+        </Grid>
       </Grid>
     </Grid>
   );
