@@ -7,13 +7,13 @@ import {
   Typography,
   Button,
   Stack,
-  Box,
-  type SxProps,
-  type Theme,
+  ButtonProps,
 } from "@mui/material";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
-import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
+import {
+  CircleCheckBigIcon,
+  CircleQuestionMarkIcon,
+  TriangleAlertIcon,
+} from "./icons";
 
 export interface ISenifitDialogProps {
   isOpen: boolean;
@@ -25,23 +25,49 @@ export interface ISenifitDialogProps {
   secondaryText?: string;
   onPrimaryClick?: () => void;
   onSecondaryClick?: () => void;
+  primaryButtonProps?: ButtonProps;
+  secondaryButtonProps?: ButtonProps;
 }
 
 const iconByType: Record<
   ISenifitDialogProps["dialogType"],
-  { node: React.ReactNode; sx: SxProps<Theme> }
+  { node: React.ReactNode }
 > = {
   info: {
-    node: <InfoOutlinedIcon fontSize={"inherit"} />,
-    sx: { color: "primaryVariants.default", fontSize: 48 },
+    node: (
+      <CircleQuestionMarkIcon
+        strokeWidth={3}
+        sx={{
+          color: (t) => t.palette.statusVariants.positive,
+          width: "2.5rem",
+          height: "2.5rem",
+        }}
+      />
+    ),
   },
   success: {
-    node: <CheckCircleOutlineRoundedIcon fontSize={"inherit"} />,
-    sx: { color: "success.main", fontSize: 48 },
+    node: (
+      <CircleCheckBigIcon
+        strokeWidth={3}
+        sx={{
+          color: (t) => t.palette.statusVariants.positive,
+          width: "2.5rem",
+          height: "2.5rem",
+        }}
+      />
+    ),
   },
   error: {
-    node: <WarningAmberRoundedIcon fontSize={"inherit"} />,
-    sx: { color: "error.main", fontSize: 48 },
+    node: (
+      <TriangleAlertIcon
+        strokeWidth={3}
+        sx={{
+          color: (t) => t.palette.statusVariants.negative,
+          width: "2.5rem",
+          height: "2.5rem",
+        }}
+      />
+    ),
   },
 };
 
@@ -55,8 +81,10 @@ export default function SenifitDialog({
   secondaryText,
   onPrimaryClick,
   onSecondaryClick,
+  primaryButtonProps,
+  secondaryButtonProps,
 }: ISenifitDialogProps) {
-  const { node: IconNode, sx: iconSx } = iconByType[dialogType];
+  const { node: IconNode } = iconByType[dialogType];
   const titleId = React.useId();
   const descId = React.useId();
 
@@ -66,6 +94,13 @@ export default function SenifitDialog({
       onClose={onClose}
       aria-labelledby={titleId}
       aria-describedby={descId}
+      slotProps={{
+        paper: {
+          sx: {
+            borderRadius: "0.75rem",
+          },
+        },
+      }}
     >
       <DialogContent
         sx={{
@@ -90,15 +125,12 @@ export default function SenifitDialog({
             justifyContent={"center"}
             spacing={2}
           >
-            <Box sx={iconSx} aria-hidden>
-              {IconNode}
-            </Box>
+            {IconNode}
 
             <Typography
               id={titleId}
               variant={"Headline1"}
               align={"center"}
-              fontWeight={600}
               color={"text.primary"}
               sx={{ whiteSpace: "pre-line" }}
             >
@@ -124,15 +156,17 @@ export default function SenifitDialog({
             direction={"column"}
             spacing={1.5}
           >
-            {primaryText && onPrimaryClick && (
+            {primaryText && (
               <Button
                 fullWidth
                 onClick={onPrimaryClick}
+                {...primaryButtonProps}
                 sx={{
                   bgcolor: "primaryVariants.default",
                   borderRadius: 2,
                   height: 60,
                   "&:hover": { bgcolor: "primaryVariants.default" },
+                  ...primaryButtonProps?.sx,
                 }}
               >
                 <Typography variant={"Heading1"} color={"static.white"}>
@@ -141,15 +175,17 @@ export default function SenifitDialog({
               </Button>
             )}
 
-            {secondaryText && onSecondaryClick && (
+            {secondaryText && (
               <Button
                 fullWidth
                 onClick={onSecondaryClick}
+                {...secondaryButtonProps}
                 sx={{
                   bgcolor: "fillVariants.colored",
                   borderRadius: 2,
                   height: 60,
                   "&:hover": { bgcolor: "fillVariants.colored" },
+                  ...secondaryButtonProps?.sx,
                 }}
               >
                 <Typography
