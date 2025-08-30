@@ -1,16 +1,21 @@
 "use client";
 
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import bgImage from "@/assets/images/customized-routine.png";
 import useMedia from "@/hooks/useMedia";
+import Tag from "@/components/Tag";
+import Link from "next/link";
 
 const CustomizedRoutine = () => {
   const { isPhone } = useMedia();
   return (
-    <Box
+    <Button
+      component={Link}
+      href={"/exercise/customized"}
       sx={{
+        display: "block",
         position: "relative",
         overflow: "hidden",
         borderRadius: [0, 2],
@@ -35,7 +40,7 @@ const CustomizedRoutine = () => {
             width: "40rem",
             height: "40rem",
             position: "absolute",
-            top: 0,
+            bottom: 0,
             right: 0,
             aspectRatio: "1 / 1",
             pointerEvents: "none",
@@ -46,15 +51,18 @@ const CustomizedRoutine = () => {
 
       {/* Foreground content */}
       <Stack spacing={1} sx={{ position: "relative", zIndex: 1 }}>
-        <Typography
-          variant={isPhone ? "Title3" : "Display1"}
-          sx={{
-            color: ["label.normal", "static.white"],
-            whiteSpace: ["normal", "pre-line"],
-          }}
-        >
-          {"맞춤형\n운동 프로그램"}
-        </Typography>
+        <Stack direction={"row"} spacing={1}>
+          <Typography
+            variant={isPhone ? "Title3" : "Display1"}
+            sx={{
+              color: ["label.normal", "static.white"],
+              whiteSpace: ["normal", "pre-line"],
+            }}
+          >
+            {"맞춤형\n운동 프로그램"}
+          </Typography>
+          {isPhone && <Tag label={"추천"} />}
+        </Stack>
 
         <Typography
           variant={isPhone ? "Headline1" : "Heading1"}
@@ -66,7 +74,7 @@ const CustomizedRoutine = () => {
           {"우리 센터에 딱 맞는 맞춤형 프로그램을\n진행할 수 있어요!"}
         </Typography>
       </Stack>
-    </Box>
+    </Button>
   );
 };
 
