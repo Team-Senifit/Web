@@ -48,7 +48,7 @@ export default function LoginForm() {
       ? "비밀번호를 입력하세요."
       : undefined;
 
-  const LoginContent = (
+  const LoginContent = () => (
     <Box
       width={{ phone: "100%", tablet: 552, desktop: 552 }}
       px={{ phone: 2.5, tablet: 5, desktop: 5 }}
@@ -158,7 +158,7 @@ export default function LoginForm() {
         minHeight={"100vh"}
         bgcolor={isPhone ? "transparent" : "static.black"}
       >
-        {LoginContent}
+        <LoginContent />
       </Box>
 
       {/* 로그인 실패 다이얼로그 */}
