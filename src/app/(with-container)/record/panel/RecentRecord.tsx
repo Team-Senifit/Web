@@ -7,7 +7,6 @@ import {
   Card,
   CardContent,
   Typography,
-  Stack,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -15,104 +14,114 @@ import {
   Button,
   Box,
 } from "@mui/material";
-import {
-  getRecords,
-  dateString,
-  participantString,
-  exerciseString,
-  RecordItem,
-} from "../utils/recordUtils";
+import { getRecords, RecordItem } from "../utils/recordUtils";
+import RecordBrief from "./RecordBrief";
 
 export default function RecentRecord() {
   const router = useRouter();
 
   const [latest, setLatest] = useState<RecordItem | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
-  const [loading, setLoading] = useState(true);
 
-  // 🔹 최근 기록 가져오기
   useEffect(() => {
     let mounted = true;
     (async () => {
       const data = await getRecords();
       if (mounted) setLatest(data[0] ?? null);
-      setLoading(false);
     })();
     return () => {
       mounted = false;
     };
   }, []);
 
-  // 🔹 카드 클릭: 설문 존재 여부 확인
   const handleClickCard = () => {
     if (latest?.surveysExist) {
       setOpenDialog(true);
       return;
     }
-    router.push("/record/new");
+    router.push(`/record/detail/${latest?.recordId}`);
   };
 
   return (
     <>
       <Card
-        variant={"outlined"}
         onClick={handleClickCard}
         sx={{
-          bgcolor: (t) => t.palette.grey[100],
+          display: "flex",
+          height: 284,
+          p: "36px",
+          alignItems: "flex-start",
+          gap: "16px",
+          alignSelf: "stretch",
+          borderRadius: "12px",
+          background:
+            "linear-gradient(98deg, #FFFDFA 50.89%, #FFE3C2 100.93%, #FEDDCC 118.86%)",
+          boxShadow: "0 0 8px 0 rgba(12, 13, 13, 0.05)",
           cursor: "pointer",
-          "&:hover": { bgcolor: (t) => t.palette.grey[200] },
         }}
       >
-        <CardContent sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <Box sx={{ flex: 1, minWidth: 220 }}>
-            <Typography variant={"h6"} fontWeight={700}>
-              {"최근 수업 작성하기 →"}
-            </Typography>
-          </Box>
+        <CardContent
+          sx={{
+            p: 0,
+            flex: 1,
+            minWidth: 0,
+            display: "flex",
+            flexDirection: "column",
+            gap: "24px",
+          }}
+        >
+          <Typography variant={"Title1"}>{"최근 수업 기록하기"}</Typography>
 
-          <Box sx={{ flex: 2, overflow: "hidden" }}>
-            <Stack
-              spacing={0.5}
-              sx={{ textAlign: { xs: "left", md: "right" } }}
+          {latest ? (
+            <RecordBrief record={latest} />
+          ) : (
+            <Typography
+              variant={"Heading1"}
+              sx={{
+                color:
+                  "var(--Sementic-Color-Label-color-label-neutral, var(--Label-neutral, #646568))",
+              }}
             >
-              <Typography variant={"subtitle1"} fontWeight={600} noWrap>
-                {loading
-                  ? "불러오는 중..."
-                  : latest
-                    ? dateString(latest.startTime, latest.endTime)
-                    : "최근 수업이 없습니다"}
-              </Typography>
-
-              {!!latest && (
-                <>
-                  <Typography variant={"body2"} noWrap>
-                    {"참여인원 : "}
-                    {participantString(latest)}
-                    {"명"}
-                  </Typography>
-                  <Typography variant={"body2"} color={"text.secondary"} noWrap>
-                    {"맞춤형 루틴 : "}
-                    {exerciseString(latest)}
-                  </Typography>
-                </>
-              )}
-            </Stack>
-          </Box>
+              {"아직 진행한 수업이 없어요"}
+            </Typography>
+          )}
         </CardContent>
+
+        {/* 오른쪽 이미지 임시 */}
+        <Box
+          sx={{
+            flexShrink: 0,
+            width: 240,
+            height: 212,
+            borderRadius: 2,
+            bgcolor: "rgba(255,255,255,0.6)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            overflow: "hidden",
+          }}
+        >
+          <Box
+            component={"img"}
+            src={"https://dummyimage.com/360x240/f8a94c/ffffff&text=IMAGE"}
+            alt={"placeholder"}
+            sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        </Box>
       </Card>
 
-      {/* 🔹 이미 작성된 경우 팝업 */}
+      {/* 이미 작성된 경우 팝업 */}
       <Dialog
         open={openDialog}
         onClose={() => setOpenDialog(false)}
-        max-width={"xs"}
+        max-Width={"xs"}
         fullWidth
       >
         <DialogTitle sx={{ pb: 1.5 }}>
           {"이미 기록을 작성했습니다."}
         </DialogTitle>
         <DialogContent sx={{ pt: 0 }}>
-          <Typography variant={"body2"} color={"text.secondary"}>
+          <Typography variant={"Body2"} color={"text.secondary"}>
             {"최근 수업이 이미 등록되어 있습니다."}
           </Typography>
         </DialogContent>
@@ -123,7 +132,7 @@ export default function RecentRecord() {
           <Button
             variant={"contained"}
             component={Link}
-            href={latest ? `/record/${latest.recordId}` : "/record"}
+            href={latest ? `/record/detail/${latest.recordId}` : "/record"}
           >
             {"작성한 기록 보기"}
           </Button>
