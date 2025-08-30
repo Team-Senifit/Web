@@ -28,7 +28,7 @@ const ExercisePageInfoCard = ({
       <Typography
         variant={isPhone ? "Headline1" : "Title1"}
         sx={{
-          color: (t) => t.palette.static.white,
+          color: "white",
         }}
       >
         {title}
@@ -36,7 +36,7 @@ const ExercisePageInfoCard = ({
       <Typography
         variant={isDesktop ? "Heading1" : "Headline1"}
         sx={{
-          color: (t) => t.palette.primaryVariants.disabled,
+          color: "primaryVariants.disabled",
           whiteSpace: "pre-line",
         }}
       >
