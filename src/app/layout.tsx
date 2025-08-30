@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import SenifitThemeProvider from "./panel/SenifitThemeProvider";
+import { Suspense } from "react";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
@@ -26,11 +27,13 @@ export default function RootLayout({
   return (
     <html lang={"ko"}>
       <body>
-        <QueryProviders>
-          <AuthErrorBoundary>
-            <SenifitThemeProvider>{children}</SenifitThemeProvider>
-          </AuthErrorBoundary>
-        </QueryProviders>
+        <Suspense fallback={null}>
+          <QueryProviders>
+            <AuthErrorBoundary>
+              <SenifitThemeProvider>{children}</SenifitThemeProvider>
+            </AuthErrorBoundary>
+          </QueryProviders>
+        </Suspense>
       </body>
     </html>
   );
