@@ -30,8 +30,7 @@ async function axiosQueryFn({
   queryKey: readonly unknown[];
   signal?: AbortSignal;
 }) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [endpoint, params] = queryKey as [string, Record<string, any>?];
+  const [endpoint, params] = queryKey as [string, Record<string, unknown>?];
 
   console.log("🔧 Query endpoint:", endpoint);
 
