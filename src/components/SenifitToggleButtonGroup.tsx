@@ -67,24 +67,34 @@ const SenifitToggleButton = styled(Button, {
 });
 
 const GridContainer = styled(Box, {
-  shouldForwardProp: (prop) => prop !== "gap" && prop !== "maxItemsPerRow",
+  shouldForwardProp: (prop) =>
+    prop !== "gap" && prop !== "maxItemsPerRow" && prop !== "maxItemWidth",
 })<{
   gap: number;
   maxItemsPerRow?: number | IResponsiveMaxItems;
-}>(({ theme, gap, maxItemsPerRow }) => {
+  maxItemWidth?: number;
+}>(({ theme, gap, maxItemsPerRow, maxItemWidth }) => {
   let gridTemplateColumns: string;
 
   if (typeof maxItemsPerRow === "number") {
     // 숫자인 경우: 모든 브레이크포인트에서 동일
-    gridTemplateColumns = `repeat(${maxItemsPerRow}, 1fr)`;
+    const columnDefinition = maxItemWidth
+      ? `minmax(auto, ${maxItemWidth}px)`
+      : "1fr";
+    gridTemplateColumns = `repeat(${maxItemsPerRow}, ${columnDefinition})`;
   } else if (maxItemsPerRow && typeof maxItemsPerRow === "object") {
     // 객체인 경우: 반응형 처리
     const { phone, tablet, desktop } = maxItemsPerRow;
+    const columnDef = maxItemWidth ? `minmax(auto, ${maxItemWidth}px)` : "1fr";
     const phoneColumns = phone
-      ? `repeat(${phone}, 1fr)`
-      : "repeat(auto-fit, minmax(120px, 1fr))";
-    const tabletColumns = tablet ? `repeat(${tablet}, 1fr)` : phoneColumns;
-    const desktopColumns = desktop ? `repeat(${desktop}, 1fr)` : tabletColumns;
+      ? `repeat(${phone}, ${columnDef})`
+      : `repeat(auto-fit, minmax(120px, ${maxItemWidth ? `${maxItemWidth}px` : "1fr"}))`;
+    const tabletColumns = tablet
+      ? `repeat(${tablet}, ${columnDef})`
+      : phoneColumns;
+    const desktopColumns = desktop
+      ? `repeat(${desktop}, ${columnDef})`
+      : tabletColumns;
 
     return {
       display: "grid",
@@ -100,7 +110,9 @@ const GridContainer = styled(Box, {
     };
   } else {
     // 기본값: 자동 반응형
-    gridTemplateColumns = "repeat(auto-fit, minmax(120px, 1fr))";
+    const minWidth = maxItemWidth ? `min(120px, ${maxItemWidth}px)` : "120px";
+    const maxWidth = maxItemWidth ? `${maxItemWidth}px` : "1fr";
+    gridTemplateColumns = `repeat(auto-fit, minmax(${minWidth}, ${maxWidth}))`;
   }
 
   return {
@@ -119,6 +131,7 @@ function SenifitToggleButtonGroup<T extends string | number | boolean>(
     sizeVariant = "md",
     fullWidth = false,
     maxItemsPerRow,
+    maxItemWidth,
     groupProps,
     buttonProps,
   } = props;
@@ -155,16 +168,18 @@ function SenifitToggleButtonGroup<T extends string | number | boolean>(
     [props],
   );
 
-  const { gap = 2, ...restGroupProps } = groupProps || {};
+  const { gap = 1.25, ...restGroupProps } = groupProps || {};
 
   return (
     <GridContainer
       gap={gap}
       maxItemsPerRow={maxItemsPerRow}
+      maxItemWidth={maxItemWidth}
       {...restGroupProps}
     >
       {options.map(({ value, label, disabled, buttonProps: perBtn }) => {
-        const { ...restPerBtn } = perBtn || {};
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { onClick, ...restPerBtn } = perBtn || {};
 
         const { ...restButtonProps } = buttonProps || {};
 

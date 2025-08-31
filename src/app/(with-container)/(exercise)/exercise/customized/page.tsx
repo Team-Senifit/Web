@@ -73,9 +73,7 @@ const Page = () => {
             name={"duration"}
             exclusive
             options={durationOptions}
-            buttonProps={{
-              fullWidth: true,
-            }}
+            maxItemsPerRow={2}
           />
         </Field>
         <Field
@@ -92,18 +90,9 @@ const Page = () => {
             name={"cognitive_workout_code"}
             exclusive
             options={cognitiveOptions}
-            groupProps={{
-              sx: { flexWrap: "wrap", gap: 2, maxWidth: "100%" },
-            }}
-            buttonProps={{
-              fullWidth: true,
-              sx: {
-                minWidth: "9.5rem",
-                flex: "unset",
-                flexGrow: "unset",
-                width: "fit-content !important",
-                wordBreak: "keep-all",
-              },
+            maxItemsPerRow={{
+              phone: 2,
+              tablet: 4,
             }}
           />
         </Field>
@@ -121,18 +110,9 @@ const Page = () => {
             name={"primary_target_code"}
             exclusive
             options={primaryTargetOptions}
-            groupProps={{
-              sx: { flexWrap: "wrap", gap: 2, maxWidth: "100%" },
-            }}
-            buttonProps={{
-              fullWidth: true,
-              sx: {
-                minWidth: "9.5rem",
-                flex: "unset",
-                flexGrow: "unset",
-                width: "fit-content !important",
-                wordBreak: "keep-all",
-              },
+            maxItemsPerRow={{
+              phone: 2,
+              tablet: 4,
             }}
           />
         </Field>
@@ -150,9 +130,7 @@ const Page = () => {
             name={"singing_workout_code"}
             exclusive
             options={singingOptions}
-            buttonProps={{
-              fullWidth: true,
-            }}
+            maxItemsPerRow={2}
           />
         </Field>
         <Stack direction={"row"} width={"100%"} justifyContent={"flex-end"}>

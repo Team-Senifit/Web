@@ -26,6 +26,8 @@ export interface ISenifitToggleButtonGroupRootProps {
   gap?: number;
   /** 한 줄에 표시할 최대 버튼 개수 (반응형 또는 고정값) */
   maxItemsPerRow?: number | IResponsiveMaxItems;
+  /** 각 버튼의 최대 너비 (px 단위) */
+  maxItemWidth?: number;
   /** 추가 CSS 클래스명 */
   className?: string;
   /** 인라인 스타일 */
@@ -54,6 +56,8 @@ export interface IBaseProps<T extends string | number | boolean> {
   fullWidth?: boolean;
   /** 한 줄에 표시할 최대 버튼 개수 (반응형 또는 고정값) */
   maxItemsPerRow?: number | IResponsiveMaxItems;
+  /** 각 버튼의 최대 너비 (px 단위) */
+  maxItemWidth?: number;
   /** 그룹 루트에 전달할 추가 props(제어 관련 키는 제외) */
   groupProps?: Omit<
     ISenifitToggleButtonGroupRootProps,
