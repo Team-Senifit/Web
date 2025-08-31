@@ -40,7 +40,7 @@ const Page = () => {
       <Stack
         direction={"column"}
         spacing={3}
-        p={[3, 4.5]}
+        p={[3, 6]}
         sx={{
           bgcolor: "background.paper",
           borderRadius: [undefined, "0.75rem"],
@@ -110,7 +110,7 @@ const Page = () => {
             label={"전체 해제"}
           />
         </Stack>
-        <Divider sx={{ color: "border.normal" }} />
+        <Divider sx={{ borderColor: "borderVariants.normal" }} />
         <Controller
           name={"members"}
           control={control}
@@ -169,7 +169,7 @@ const Page = () => {
             );
           }}
         />
-        <Divider sx={{ color: "border.normal" }} />
+        <Divider sx={{ borderColor: "borderVariants.normal" }} />
         <Stack direction={"row"} justifyContent={"space-between"} spacing={3}>
           <Button
             variant={"text"}
