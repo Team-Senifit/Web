@@ -8,13 +8,20 @@ import VideoInfo from "../panel/VideoInfo";
 import ReturnButton from "@/components/ReturnButton";
 import { IResponse } from "@/types/IResponse";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import useProgramStore from "@/states/useProgramStore";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
+  const router = useRouter();
+
+  const { setId, setType } = useProgramStore();
+
   const {
     data: { data: popularRoutine },
   } = useSuspenseQuery<IResponse<Array<IPopularRoutine>>>({
     queryKey: ["/programs/recommendation/by-popular", { count: "3" }],
   });
+
   return (
     <Stack direction={"column"} spacing={3}>
       <ReturnButton href={"/"} />
@@ -35,7 +42,15 @@ const Page = () => {
         }}
       >
         {popularRoutine.map((routine) => (
-          <VideoInfo key={routine.id} {...routine} />
+          <VideoInfo
+            key={routine.id}
+            {...routine}
+            onButtonClick={() => {
+              setId(routine.id);
+              setType("popular");
+              router.push("/exercise/members");
+            }}
+          />
         ))}
       </Stack>
     </Stack>

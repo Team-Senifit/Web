@@ -11,13 +11,18 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { IResponse } from "@/types/IResponse";
 import { IRoutineDetail } from "@/types/IRoutineDetail";
 
+interface IVideoInfoProps extends IPopularRoutine {
+  onButtonClick: () => void;
+}
+
 const VideoInfo = ({
   id,
   name,
   thumbnail_path,
   duration,
   description,
-}: IPopularRoutine) => {
+  onButtonClick,
+}: IVideoInfoProps) => {
   const { isPhone, isDesktop } = useMedia();
 
   const {
@@ -102,6 +107,7 @@ const VideoInfo = ({
           )}
 
           <Button
+            onClick={onButtonClick}
             fullWidth
             disableElevation
             variant={"contained"}

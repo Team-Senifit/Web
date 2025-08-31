@@ -28,7 +28,7 @@ const Page = () => {
 
   const router = useRouter();
 
-  const { setSelectedProgram, setType } = useProgramStore();
+  const { setId, setType } = useProgramStore();
 
   const {
     control,
@@ -45,7 +45,7 @@ const Page = () => {
       "/programs/recommendation/by-personal",
       data,
     );
-    setSelectedProgram(selectedProgram);
+    setId(selectedProgram.id);
     setType("customized");
     router.push("/exercise/members");
   };
