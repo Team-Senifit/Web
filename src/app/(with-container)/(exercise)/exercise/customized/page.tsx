@@ -17,16 +17,37 @@ import {
   singingOptions,
 } from "./panel/options";
 import Field from "../../panel/Field";
+import { axiosClient } from "@/apis/axiosClient";
+import { IResponse } from "@/types/IResponse";
+import { IRoutineDetail } from "@/types/IRoutineDetail";
+import useProgramStore from "@/states/useProgramStore";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const { isPhone, isDesktop } = useMedia();
 
-  const { control, handleSubmit } = useForm<ICustomizedRoutineField>({
+  const router = useRouter();
+
+  const { setSelectedProgram, setType } = useProgramStore();
+
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<ICustomizedRoutineField>({
     mode: "onSubmit",
   });
 
-  const onSubmit = (data: ICustomizedRoutineField) => {
-    console.log(data);
+  const onSubmit = async (data: ICustomizedRoutineField) => {
+    const {
+      data: { data: selectedProgram },
+    } = await axiosClient.post<IResponse<IRoutineDetail>>(
+      "/programs/recommendation/by-personal",
+      data,
+    );
+    setSelectedProgram(selectedProgram);
+    setType("customized");
+    router.push("/exercise/members");
   };
 
   return (
@@ -135,6 +156,7 @@ const Page = () => {
         </Field>
         <Stack direction={"row"} width={"100%"} justifyContent={"flex-end"}>
           <Button
+            loading={isSubmitting}
             type={"submit"}
             variant={"contained"}
             fullWidth={!isDesktop}
