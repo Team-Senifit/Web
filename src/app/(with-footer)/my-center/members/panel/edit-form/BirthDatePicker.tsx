@@ -10,7 +10,7 @@ import MonthCalendarWidthYear from "./birth-date-picker/MonthCalendarWidthYear";
 import DateCalendarWithTitle from "./birth-date-picker/DateCalendarWithTitle";
 import BirthDateField from "./birth-date-picker/BirthDateField";
 import { useFormContext } from "react-hook-form";
-import { IMemberEditFormValue } from "@/types/IMemberEdit";
+import { IMemberEditFormValue } from "@/types/IMember";
 import { calculateAge } from "@/utils/calculateAge";
 
 const BirthDatePicker = ({ isEdit }: { isEdit: boolean }) => {
@@ -23,6 +23,8 @@ const BirthDatePicker = ({ isEdit }: { isEdit: boolean }) => {
   const month = watch("month");
   const day = watch("day");
 
+  const isSolar = watch("isSolar");
+
   const age =
     year && month && day
       ? calculateAge(dayjs(`${year}-${month ? month - 1 : 0}-${day}`))
@@ -31,7 +33,9 @@ const BirthDatePicker = ({ isEdit }: { isEdit: boolean }) => {
   return (
     <>
       <Stack direction={"column"} spacing={1.5} id={"birthDate"}>
-        {year && month && day && <BirthDateField control={control} age={age} />}
+        {year && month && day && (
+          <BirthDateField control={control} age={age} isSolar={isSolar} />
+        )}
         <Button
           onClick={() => setIsOpen(true)}
           sx={{
@@ -83,7 +87,10 @@ const BirthDatePicker = ({ isEdit }: { isEdit: boolean }) => {
             day={day}
           />
           {/* RHF 연결 이후 처리 */}
-          <LunarSolarToggle calendarType={"solar"} setCalendarType={() => {}} />
+          <LunarSolarToggle
+            calendarType={isSolar}
+            setCalendarType={(isSolar: boolean) => setValue("isSolar", isSolar)}
+          />
           {depth === "day" ? (
             <DateCalendarWithTitle
               year={year}

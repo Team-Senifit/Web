@@ -2,7 +2,7 @@
 import { SenifitSelectField } from "@/components/SenifitSelect";
 import SenifitToggleButtonGroup from "@/components/SenifitToggleButtonGroup";
 import useMedia from "@/hooks/useMedia";
-import type { IMemberEditFormValue, MemberRank } from "@/types/IMemberEdit";
+import type { IMemberEditFormValue, MemberRank } from "@/types/IMember";
 import { ISenifitToggleOption } from "@/types/IToggleButton";
 import React from "react";
 import { Control } from "react-hook-form";

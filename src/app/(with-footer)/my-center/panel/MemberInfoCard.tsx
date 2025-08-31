@@ -3,8 +3,10 @@
 import CTAButton from "@/components/CTAButton";
 import { SquareUserRoundIcon } from "@/components/icons";
 import useMedia from "@/hooks/useMedia";
-import { IMember } from "@/types/IMember";
+import { gradeLabel, type IMember } from "@/types/IMember";
+import { calculateAge } from "@/utils/calculateAge";
 import { Stack, Typography } from "@mui/material";
+import dayjs from "dayjs";
 import Link from "next/link";
 import React from "react";
 
@@ -23,10 +25,19 @@ const MemberEditButton = () => {
   );
 };
 
-const Member = ({ name, age, grade, gender }: IMember) => {
+const Member = ({ name, birthDate, memberRank, gender }: IMember) => {
+  const age = calculateAge(dayjs(birthDate));
   return (
     <Stack direction={"row"} spacing={[1, 2]} alignItems={"center"}>
-      <Typography variant={"Heading1"} sx={{ width: ["8rem", "8.25rem"] }}>
+      <Typography
+        variant={"Heading1"}
+        sx={{
+          width: ["8rem", "8.25rem"],
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+        }}
+      >
         {name}
       </Typography>
       <Stack direction={"row"} spacing={[2, 9]} alignItems={"center"}>
@@ -38,7 +49,7 @@ const Member = ({ name, age, grade, gender }: IMember) => {
           {gender}
         </Typography>
         <Typography variant={"Heading1"} sx={{ width: ["6rem", "8rem"] }}>
-          {grade}
+          {gradeLabel[memberRank]}
         </Typography>
       </Stack>
     </Stack>

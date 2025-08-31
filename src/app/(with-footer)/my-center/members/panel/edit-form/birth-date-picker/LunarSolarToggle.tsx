@@ -4,8 +4,6 @@ import { Box, Typography } from "@mui/material";
 import useMedia from "@/hooks/useMedia";
 import { ISenifitToggleOption } from "@/types/IToggleButton";
 
-type CalendarType = "lunar" | "solar";
-
 const LunarSolarLabel = ({
   text,
   variant,
@@ -18,8 +16,8 @@ const LunarSolarToggle = ({
   calendarType,
   setCalendarType,
 }: {
-  calendarType: CalendarType;
-  setCalendarType: (value: CalendarType) => void;
+  calendarType: boolean;
+  setCalendarType: (value: boolean) => void;
 }) => {
   const { isPhone } = useMedia();
 
@@ -27,14 +25,14 @@ const LunarSolarToggle = ({
 
   const options = [
     {
-      value: "lunar",
+      value: false,
       label: <LunarSolarLabel text={"음력"} variant={textVariant} />,
     },
     {
-      value: "solar",
+      value: true,
       label: <LunarSolarLabel text={"양력"} variant={textVariant} />,
     },
-  ] as ISenifitToggleOption<CalendarType>[];
+  ] as ISenifitToggleOption<boolean>[];
 
   return (
     <Box
@@ -42,7 +40,7 @@ const LunarSolarToggle = ({
         p: [1.5],
       }}
     >
-      <SenifitToggleButtonGroup<CalendarType>
+      <SenifitToggleButtonGroup<boolean>
         fullWidth
         value={calendarType}
         onChange={setCalendarType}
