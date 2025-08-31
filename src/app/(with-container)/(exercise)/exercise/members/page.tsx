@@ -19,8 +19,11 @@ import { IResponse } from "@/types/IResponse";
 import { IMember } from "@/types/IMember";
 import { Controller, useForm } from "react-hook-form";
 import SenifitCheckbox from "@/components/SenifitCheckbox";
+import useMedia from "@/hooks/useMedia";
 
 const Page = () => {
+  const { isDesktop } = useMedia();
+
   const {
     data: { data: memberData },
   } = useSuspenseQuery<IResponse<Array<IMember>>>({
@@ -58,58 +61,121 @@ const Page = () => {
               }}
             />
           }
+          endAction={
+            <Stack direction={"row"} spacing={1}>
+              <FormControlLabel
+                sx={{
+                  gap: 1,
+                  px: 2,
+                }}
+                control={
+                  <SenifitCheckbox
+                    checked={memberData.length === selectedMembers?.length}
+                    onChange={() => {
+                      setValue(
+                        "members",
+                        memberData.map((m) => m.memberId),
+                      );
+                    }}
+                    sx={{
+                      padding: "0 !important",
+                    }}
+                  />
+                }
+                slotProps={{
+                  typography: {
+                    variant: "Title2",
+                    sx: { color: "label.normal" },
+                  },
+                }}
+                label={"전체 선택"}
+              />
+              <FormControlLabel
+                sx={{
+                  gap: 1,
+                  px: 2,
+                }}
+                control={
+                  <SenifitCheckbox
+                    checked={selectedMembers?.length === 0}
+                    onChange={() => {
+                      setValue("members", []);
+                    }}
+                    sx={{
+                      padding: "0 !important",
+                    }}
+                  />
+                }
+                slotProps={{
+                  typography: {
+                    variant: "Title2",
+                    sx: { color: "label.normal" },
+                  },
+                }}
+                label={"전체 해제"}
+              />
+            </Stack>
+          }
           title={"참여 어르신 선택하기"}
         />
-        <Stack direction={"row"} width={"100%"} spacing={2}>
-          <FormControlLabel
-            sx={{
-              gap: 1,
-            }}
-            control={
-              <SenifitCheckbox
-                checked={memberData.length === selectedMembers?.length}
-                onChange={() => {
-                  setValue(
-                    "members",
-                    memberData.map((m) => m.memberId),
-                  );
-                }}
-                sx={{
-                  padding: "0 !important",
-                }}
-              />
-            }
-            slotProps={{
-              typography: {
-                variant: "Headline1",
-                sx: { color: "label.normal" },
-              },
-            }}
-            label={"전체 선택"}
-          />
-          <FormControlLabel
-            sx={{
-              gap: 1,
-            }}
-            control={
-              <SenifitCheckbox
-                onChange={() => {
-                  setValue("members", []);
-                }}
-                sx={{
-                  padding: "0 !important",
-                }}
-              />
-            }
-            slotProps={{
-              typography: {
-                variant: "Headline1",
-                sx: { color: "label.normal" },
-              },
-            }}
-            label={"전체 해제"}
-          />
-        </Stack>
+        {!isDesktop && (
+          <Stack
+            direction={"row"}
+            width={"100%"}
+            spacing={2}
+            justifyContent={["flex-start", "flex-end"]}
+          >
+            <FormControlLabel
+              sx={{
+                gap: 1,
+              }}
+              control={
+                <SenifitCheckbox
+                  checked={memberData.length === selectedMembers?.length}
+                  onChange={() => {
+                    setValue(
+                      "members",
+                      memberData.map((m) => m.memberId),
+                    );
+                  }}
+                  sx={{
+                    padding: "0 !important",
+                  }}
+                />
+              }
+              slotProps={{
+                typography: {
+                  variant: "Headline1",
+                  sx: { color: "label.normal" },
+                },
+              }}
+              label={"전체 선택"}
+            />
+            <FormControlLabel
+              sx={{
+                gap: 1,
+              }}
+              control={
+                <SenifitCheckbox
+                  checked={selectedMembers?.length === 0}
+                  onChange={() => {
+                    setValue("members", []);
+                  }}
+                  sx={{
+                    padding: "0 !important",
+                  }}
+                />
+              }
+              slotProps={{
+                typography: {
+                  variant: "Headline1",
+                  sx: { color: "label.normal" },
+                },
+              }}
+              label={"전체 해제"}
+            />
+          </Stack>
+        )}
         <Divider sx={{ borderColor: "borderVariants.normal" }} />
         <Controller
           name={"members"}
