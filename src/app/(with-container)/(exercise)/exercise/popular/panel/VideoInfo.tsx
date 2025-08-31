@@ -6,6 +6,7 @@ import { IPopularRoutine } from "@/types/IPopularRoutine";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
+import VideoInfoDetail from "./VideoInfoDetail";
 
 const VideoInfo = ({
   name,
@@ -20,6 +21,7 @@ const VideoInfo = ({
       sx={{
         width: "100%",
       }}
+      spacing={[2, 4]}
     >
       <Box
         sx={{
@@ -61,34 +63,41 @@ const VideoInfo = ({
           </Stack>
         )}
       </Box>
-      <Stack direction={"column"} spacing={2}>
-        <Stack
-          direction={"column"}
-          spacing={1}
-          sx={{
-            width: "100%",
-          }}
-        >
-          <Typography variant={"Title1"} color={"label.normal"}>
-            {name}
-          </Typography>
-          <Tag label={`${duration}분`} />
-        </Stack>
-        <Typography
-          variant={"Heading1"}
-          component={"p"}
-          color={"label.neutral"}
-          sx={{
-            display: "-webkit-box",
-            WebkitLineClamp: 3, // 3줄로 제한
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-            height: "calc(3 * 1.75rem + 0.5rem)", // 3줄로 제한
-          }}
-        >
-          {description}
-        </Typography>
+      <Stack direction={"column"} spacing={2} width={"100%"}>
+        {!isPhone && (
+          <>
+            <Stack
+              direction={"column"}
+              spacing={1}
+              sx={{
+                width: "100%",
+              }}
+            >
+              <Typography variant={"Title1"} color={"label.normal"}>
+                {name}
+              </Typography>
+              <Tag label={`${duration}분`} />
+            </Stack>
+            <Typography
+              variant={"Heading1"}
+              component={"p"}
+              color={"label.neutral"}
+              sx={{
+                display: "-webkit-box",
+                WebkitLineClamp: 3, // 3줄로 제한
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+                height: "calc(3 * 1.75rem + 0.5rem)", // 3줄로 제한
+              }}
+            >
+              {description}
+            </Typography>
+          </>
+        )}
+
         <Button
+          fullWidth
+          disableElevation
           variant={"contained"}
           color={"primary"}
           sx={{
@@ -107,6 +116,7 @@ const VideoInfo = ({
             {"선택하기"}
           </Typography>
         </Button>
+        {!isPhone && <VideoInfoDetail />}
       </Stack>
     </Stack>
   );
