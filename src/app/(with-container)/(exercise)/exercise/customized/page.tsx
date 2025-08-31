@@ -16,46 +16,18 @@ import {
   primaryTargetOptions,
   singingOptions,
 } from "./panel/options";
-
-const Field = ({
-  label,
-  id,
-  children,
-  isPhone,
-}: {
-  label: string;
-  id: string;
-  children: React.ReactNode;
-  tabletDirection?: "column" | "row";
-  isPhone?: boolean;
-}) => {
-  return (
-    <Stack direction={"column"} spacing={1} width={"100%"}>
-      <Stack direction={"row"} spacing={0.5} pt={[0, 2]}>
-        <Typography
-          component={"label"}
-          htmlFor={id}
-          variant={isPhone ? "Headline1" : "Title3"}
-          sx={{ color: "label.normal", wordBreak: "keep-all" }}
-        >
-          {label}
-        </Typography>
-        <Typography component={"span"} sx={{ color: "primary.main" }}>
-          {" *"}
-        </Typography>
-      </Stack>
-
-      {children}
-    </Stack>
-  );
-};
+import Field from "../../panel/Field";
 
 const Page = () => {
   const { isPhone, isDesktop } = useMedia();
 
-  const { control } = useForm<ICustomizedRoutineField>({
+  const { control, handleSubmit } = useForm<ICustomizedRoutineField>({
     mode: "onSubmit",
   });
+
+  const onSubmit = (data: ICustomizedRoutineField) => {
+    console.log(data);
+  };
 
   return (
     <Stack spacing={[2, 3]}>
@@ -67,6 +39,8 @@ const Page = () => {
         }
       />
       <Stack
+        component={"form"}
+        onSubmit={handleSubmit(onSubmit)}
         direction={"column"}
         spacing={3}
         sx={{
@@ -85,7 +59,12 @@ const Page = () => {
           title={"운동 옵션 선택하기"}
         />
         <Divider sx={{ borderColor: "borderVariants.normal" }} />
-        <Field label={"진행 시간"} id={"exerciseGoal"} isPhone={isPhone}>
+        <Field
+          required
+          label={"진행 시간"}
+          id={"exerciseGoal"}
+          isPhone={isPhone}
+        >
           <SenifitToggleButtonGroupField
             rules={{
               required: true,
@@ -100,6 +79,7 @@ const Page = () => {
           />
         </Field>
         <Field
+          required
           label={"인지운동"}
           id={"cognitive_workout_code"}
           isPhone={isPhone}
@@ -127,7 +107,12 @@ const Page = () => {
             }}
           />
         </Field>
-        <Field label={"주요 부위"} id={"primary_target_code"} isPhone={isPhone}>
+        <Field
+          required
+          label={"주요 부위"}
+          id={"primary_target_code"}
+          isPhone={isPhone}
+        >
           <SenifitToggleButtonGroupField
             rules={{
               required: true,
@@ -152,6 +137,7 @@ const Page = () => {
           />
         </Field>
         <Field
+          required
           label={"노래체조 여부"}
           id={"singing_workout_code"}
           isPhone={isPhone}
@@ -174,6 +160,7 @@ const Page = () => {
             type={"submit"}
             variant={"contained"}
             fullWidth={!isDesktop}
+            disableElevation
             sx={{
               borderRadius: "0.75rem",
               px: 8,

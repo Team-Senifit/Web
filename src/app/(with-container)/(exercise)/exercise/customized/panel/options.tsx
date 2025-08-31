@@ -108,6 +108,51 @@ export const primaryTargetOptions = [
   },
 ] as const satisfies ISenifitToggleOption<CALISTHENIC_TARGET_CODES>[];
 
+export const primaryTargetOptionsThematic = [
+  {
+    value: "workout_kinds_calisthenic_targets_armsAndShoulders",
+    label: (
+      <Typography variant={"Headline1"}>
+        {`${
+          calisthenicTargetCodesLabel[
+            "workout_kinds_calisthenic_targets_armsAndShoulders"
+          ]
+        } 집중 운동`}
+      </Typography>
+    ),
+  },
+  {
+    value: "workout_kinds_calisthenic_targets_back",
+    label: (
+      <Typography variant={"Headline1"}>
+        {`${
+          calisthenicTargetCodesLabel["workout_kinds_calisthenic_targets_back"]
+        } 집중 운동`}
+      </Typography>
+    ),
+  },
+  {
+    value: "workout_kinds_calisthenic_targets_abs",
+    label: (
+      <Typography variant={"Headline1"}>
+        {`${
+          calisthenicTargetCodesLabel["workout_kinds_calisthenic_targets_abs"]
+        } 집중 운동`}
+      </Typography>
+    ),
+  },
+  {
+    value: "workout_kinds_calisthenic_targets_legs",
+    label: (
+      <Typography variant={"Headline1"}>
+        {`${
+          calisthenicTargetCodesLabel["workout_kinds_calisthenic_targets_legs"]
+        } 집중 운동`}
+      </Typography>
+    ),
+  },
+] as const satisfies ISenifitToggleOption<CALISTHENIC_TARGET_CODES>[];
+
 export const singingOptions = [
   {
     value: "workout_kinds_singing",
@@ -124,5 +169,12 @@ export const singingOptions = [
         {singingWorkoutCodesLabel["workout_notSelected"]}
       </Typography>
     ),
+  },
+] as const satisfies ISenifitToggleOption<SINGING_WORKOUT_CODES>[];
+
+export const singingOptionsThematic = [
+  {
+    value: "workout_kinds_singing",
+    label: <Typography variant={"Headline1"}>{"노래 체조"}</Typography>,
   },
 ] as const satisfies ISenifitToggleOption<SINGING_WORKOUT_CODES>[];
