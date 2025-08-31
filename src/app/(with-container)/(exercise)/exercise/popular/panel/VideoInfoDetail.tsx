@@ -1,7 +1,7 @@
 "use client";
 
 import { IRoutineDetail } from "@/types/IRoutineDetail";
-import { ArrowBackIos, ArrowForwardIos, ExpandMore } from "@mui/icons-material";
+import { ArrowForwardIos, ChevronLeft, ExpandMore } from "@mui/icons-material";
 import {
   Accordion,
   AccordionDetails,
@@ -9,9 +9,11 @@ import {
   Box,
   Typography,
   IconButton,
-  Card,
+  SxProps,
+  Stack,
 } from "@mui/material";
 import React, { useState } from "react";
+import VideoCard from "./VideoCard";
 
 const mock: IRoutineDetail = {
   id: 1,
@@ -25,7 +27,7 @@ const mock: IRoutineDetail = {
   singing_workout_code: "workout_kinds_singing",
   primary_target_code: "workout_kinds_calisthenic_targets_armsAndShoulders",
   specialized_workout_code: "workout_kinds_cognitive_kinds_taekwondo",
-  thumbnail_path: "/thumbnails/program_001.jpg",
+  thumbnail_path: "https://picsum.photos/300/300?random=1",
   videos: [
     {
       id: 1,
@@ -35,7 +37,7 @@ const mock: IRoutineDetail = {
       script: "어깨를 천천히 돌려주세요. 목을 좌우로 부드럽게 움직여주세요.",
       duration: 5,
       video_path: "/videos/warmup_001.mp4",
-      thumbnail_path: "/thumbnails/warmup_001.jpg",
+      thumbnail_path: "https://picsum.photos/300/300?random=2",
     },
     {
       id: 2,
@@ -46,7 +48,7 @@ const mock: IRoutineDetail = {
         "두 발을 어깨 너비로 벌리고 허리를 곧게 펴세요. 주먹을 허리에 대고 시선은 정면을 바라보세요.",
       duration: 8,
       video_path: "/videos/taekwondo_basic_001.mp4",
-      thumbnail_path: "/thumbnails/taekwondo_basic_001.jpg",
+      thumbnail_path: "https://picsum.photos/300/300?random=3",
     },
     {
       id: 3,
@@ -57,7 +59,7 @@ const mock: IRoutineDetail = {
         "팔을 위아래로 움직이면서 3의 배수를 큰 소리로 말해보세요. 3, 6, 9, 12...",
       duration: 10,
       video_path: "/videos/dual_task_001.mp4",
-      thumbnail_path: "/thumbnails/dual_task_001.jpg",
+      thumbnail_path: "https://picsum.photos/300/300?random=4",
     },
     {
       id: 4,
@@ -68,7 +70,7 @@ const mock: IRoutineDetail = {
         "나비야 나비야~ 이리 날아오너라~ 노래에 맞춰 팔을 나비처럼 펄럭여보세요.",
       duration: 6,
       video_path: "/videos/singing_001.mp4",
-      thumbnail_path: "/thumbnails/singing_001.jpg",
+      thumbnail_path: "https://picsum.photos/300/300?random=5",
     },
     {
       id: 5,
@@ -78,7 +80,7 @@ const mock: IRoutineDetail = {
       script: "깊게 숨을 들이마시고 천천히 내쉬면서 온몸의 힘을 빼세요.",
       duration: 1,
       video_path: "/videos/cooldown_001.mp4",
-      thumbnail_path: "/thumbnails/cooldown_001.jpg",
+      thumbnail_path: "https://picsum.photos/300/300?random=6",
     },
   ],
 };
@@ -86,11 +88,29 @@ const mock: IRoutineDetail = {
 const VideoInfoDetail = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const itemWidth = 216;
+
+  const iconButtonStyle: SxProps = {
+    position: "absolute",
+    top: "50%",
+    transform: "translateY(-50%)",
+    zIndex: 2,
+    width: "4rem !important",
+    height: "4rem !important",
+    color: "label.normal",
+    bgcolor: "background.paper",
+    borderRadius: "50% !important",
+    boxSizing: "border-box",
+    "&:hover": {
+      backgroundColor: "#e0e0e0",
+    },
+  };
+
   return (
     <Box
       sx={{
         position: "relative",
         minHeight: "3.5rem",
+        width: "100%",
       }}
     >
       <Accordion
@@ -146,19 +166,33 @@ const VideoInfoDetail = () => {
           sx={{
             backgroundColor: "background.default",
             borderRadius: "0 0 0.75rem 0.75rem",
+            p: 0,
           }}
         >
           <Box sx={{ position: "relative", overflow: "hidden" }}>
             {/* 이전/다음 버튼 */}
             <IconButton
-              sx={{ position: "absolute", left: 8, top: "50%", zIndex: 2 }}
+              sx={{
+                ...iconButtonStyle,
+                left: "1rem",
+                display: currentSlide === 0 ? "none" : "flex",
+              }}
               onClick={() => setCurrentSlide(Math.max(0, currentSlide - 1))}
             >
-              <ArrowBackIos />
+              <ChevronLeft
+                sx={{
+                  fontSize: "2.5rem",
+                }}
+              />
             </IconButton>
 
             <IconButton
-              sx={{ position: "absolute", right: 8, top: "50%", zIndex: 2 }}
+              sx={{
+                ...iconButtonStyle,
+                right: "1rem",
+                display:
+                  currentSlide === mock.videos.length - 1 ? "none" : "flex",
+              }}
               onClick={() =>
                 setCurrentSlide(
                   Math.min(mock.videos.length - 1, currentSlide + 1),
@@ -169,21 +203,19 @@ const VideoInfoDetail = () => {
             </IconButton>
 
             {/* 캐러셀 트랙 */}
-            <Box
+            <Stack
+              direction={"row"}
               sx={{
-                display: "flex",
                 transform: `translateX(-${currentSlide * itemWidth}px)`,
                 transition: "transform 0.3s ease",
-                gap: 2,
-                p: 3,
+                gap: 4,
+                p: 4,
               }}
             >
               {mock.videos.map((item, index) => (
-                <Card key={index} sx={{ minWidth: 200, height: 150 }}>
-                  {/* 아이템 내용 */}
-                </Card>
+                <VideoCard key={index} {...item} />
               ))}
-            </Box>
+            </Stack>
           </Box>
         </AccordionDetails>
       </Accordion>
