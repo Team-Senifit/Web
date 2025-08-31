@@ -31,7 +31,6 @@ const ThematicRoutine = () => {
         sx={{
           bgcolor: "background.paper",
           borderRadius: [0, "0.75rem"],
-
           p: [3, 4.5],
         }}
       >
