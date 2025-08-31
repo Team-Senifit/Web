@@ -51,3 +51,20 @@ export const singingWorkoutCodesLabel: Record<SINGING_WORKOUT_CODES, string> = {
   workout_kinds_singing: "포함",
   workout_notSelected: "미포함",
 };
+
+export const thematicWorkoutCodesLabel: Record<
+  COGNITIVE_WORKOUT_CODES | SINGING_WORKOUT_CODES | CALISTHENIC_TARGET_CODES,
+  string
+> = {
+  workout_kinds_cognitive_kinds_taekwondo: "태권도 인지운동",
+  workout_kinds_cognitive_kinds_dualtasking: "듀얼태스킹 인지운동",
+  workout_kinds_cognitive_kinds_continuous: "연속동작 인지운동",
+  workout_kinds_calisthenic_targets_arms: "팔 집중 운동",
+  workout_kinds_calisthenic_targets_shoulders: "어깨 집중 운동",
+  workout_kinds_calisthenic_targets_abs: "복부 집중 운동",
+  workout_kinds_calisthenic_targets_legs: "다리 집중 운동",
+  workout_kinds_calisthenic_targets_back: "등 집중 운동",
+  workout_kinds_calisthenic_targets_armsAndShoulders: "팔/어깨 집중 운동",
+  workout_kinds_singing: "노래 체조",
+  workout_notSelected: "미포함",
+};

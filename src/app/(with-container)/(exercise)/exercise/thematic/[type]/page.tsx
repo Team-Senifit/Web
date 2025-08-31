@@ -1,8 +1,8 @@
 import { Stack } from "@mui/material";
 import React from "react";
-import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
+import ExercisePageInfoCard from "../../../panel/ExercisePageInfoCard";
 import { IPopularRoutine } from "@/types/IPopularRoutine";
-import VideoInfo from "../panel/VideoInfo";
+import VideoInfo from "../../panel/VideoInfo";
 import ReturnButton from "@/app/(with-footer)/my-center/members/panel/ReturnButton";
 
 const popularRoutine: Array<IPopularRoutine> = [
