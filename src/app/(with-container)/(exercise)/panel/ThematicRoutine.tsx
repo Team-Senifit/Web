@@ -20,6 +20,7 @@ const ThematicRoutine = () => {
         p: 0,
         height: "9.5rem",
         boxSizing: "border-box",
+        borderRadius: [0, "0.75rem"],
       }}
     >
       <Stack
@@ -29,6 +30,8 @@ const ThematicRoutine = () => {
         alignItems={"flex-start"}
         sx={{
           bgcolor: "background.paper",
+          borderRadius: [0, "0.75rem"],
+
           p: [3, 4.5],
         }}
       >

@@ -17,7 +17,7 @@ const VideoInfoCard = ({ name, thumbnail_path, duration }: IPopularRoutine) => {
           width: "100%",
           maxWidth: [undefined, "17.75rem"],
           overflow: "hidden",
-          aspectRatio: ["38/22", "71/40"],
+          aspectRatio: "16/9",
           borderRadius: "0.75rem",
         }}
       >
