@@ -1,14 +1,12 @@
 import type { ReactNode } from "react";
-import type {
-  ToggleButtonProps as MuiToggleButtonProps,
-  ToggleButtonGroupProps as MuiToggleButtonGroupProps,
-} from "@mui/material";
+import type { ButtonProps as MuiButtonProps } from "@mui/material";
 
 /** 버튼 높이 프리셋 사이즈 */
 export type SizeVariant = "sm" | "md" | "lg";
 
 /** 개별 토글 버튼 공용 props */
-export interface ISenifitToggleButtonProps extends MuiToggleButtonProps {
+export interface ISenifitToggleButtonProps
+  extends Omit<MuiButtonProps, "onChange"> {
   /** 버튼 높이 프리셋 */
   sizeVariant?: SizeVariant;
   /** 그룹 내에서 각 버튼을 가변 폭(flex:1)으로 확장할지 여부 */
@@ -16,10 +14,15 @@ export interface ISenifitToggleButtonProps extends MuiToggleButtonProps {
 }
 
 /** 토글 버튼 그룹 루트 컴포넌트 공용 props */
-export interface ISenifitToggleButtonGroupRootProps
-  extends MuiToggleButtonGroupProps {
+export interface ISenifitToggleButtonGroupRootProps {
   /** 버튼 간 간격(theme.spacing 배수) */
   gap?: number;
+  /** 한 줄에 표시할 최대 버튼 개수 */
+  maxItemsPerRow?: number;
+  /** 추가 CSS 클래스명 */
+  className?: string;
+  /** 인라인 스타일 */
+  style?: React.CSSProperties;
 }
 
 /** 렌더링할 각 토글 버튼 옵션 모델 */
@@ -42,6 +45,8 @@ export interface IBaseProps<T extends string | number | boolean> {
   sizeVariant?: SizeVariant;
   /** 버튼을 동일 가변 폭으로 채울지 여부 */
   fullWidth?: boolean;
+  /** 한 줄에 표시할 최대 버튼 개수 */
+  maxItemsPerRow?: number;
   /** 그룹 루트에 전달할 추가 props(제어 관련 키는 제외) */
   groupProps?: Omit<
     ISenifitToggleButtonGroupRootProps,
@@ -78,5 +83,5 @@ export type ISenifitToggleButtonGroupProps<
   T extends string | number | boolean,
 > = IExclusiveProps<T> | IMultiProps<T>;
 
-/** 편의상 MUI 원본 타입 재노출(필요 시 import 없이 사용 가능) */
-export type { MuiToggleButtonProps, MuiToggleButtonGroupProps };
+/** 편의상 기존 호환성을 위한 타입 재노출 */
+export type MuiToggleButtonProps = MuiButtonProps;

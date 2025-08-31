@@ -63,11 +63,8 @@ const Page = () => {
             name={"workout_kind"}
             options={cognitiveOptionsThematic}
             control={control}
-            groupProps={{
-              sx: { flexWrap: ["wrap", "unset"] },
-            }}
+            maxItemsPerRow={1}
             buttonProps={{
-              fullWidth: !isPhone,
               sx: {
                 width: ["100%", "auto"],
                 p: 0,
@@ -83,18 +80,9 @@ const Page = () => {
             name={"workout_kind"}
             options={primaryTargetOptionsThematic}
             control={control}
-            groupProps={{
-              sx: { flexWrap: "wrap", gap: 2, maxWidth: "100%" },
-            }}
             buttonProps={{
-              fullWidth: true,
               sx: {
-                minWidth: "9.25rem",
-                p: 0,
-                flex: "unset",
-                flexGrow: "unset",
-                width: "fit-content !important",
-                wordBreak: "keep-all",
+                width: "100%",
               },
             }}
           />
@@ -104,9 +92,6 @@ const Page = () => {
             name={"workout_kind"}
             options={singingOptionsThematic}
             control={control}
-            groupProps={{
-              sx: { flexWrap: ["wrap", "unset"] },
-            }}
             buttonProps={{
               fullWidth: !isPhone,
               sx: { width: ["100%", "auto"] },
