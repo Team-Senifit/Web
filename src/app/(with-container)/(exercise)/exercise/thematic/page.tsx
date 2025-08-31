@@ -19,7 +19,7 @@ import useMedia from "@/hooks/useMedia";
 import Link from "next/link";
 
 const Page = () => {
-  const { isPhone, isDesktop } = useMedia();
+  const { isDesktop } = useMedia();
 
   const { control, watch } = useForm<IThematicRoutineField>({
     defaultValues: {
@@ -63,15 +63,15 @@ const Page = () => {
             name={"workout_kind"}
             options={cognitiveOptionsThematic}
             control={control}
-            maxItemsPerRow={1}
+            maxItemsPerRow={{
+              phone: 1,
+              tablet: 2,
+              desktop: 4,
+            }}
             buttonProps={{
               sx: {
-                width: ["100%", "auto"],
-                p: 0,
                 wordBreak: "keep-all",
               },
-
-              // fullWidth: true,
             }}
           />
         </Field>
@@ -80,9 +80,14 @@ const Page = () => {
             name={"workout_kind"}
             options={primaryTargetOptionsThematic}
             control={control}
+            maxItemsPerRow={{
+              phone: 1,
+              tablet: 2,
+              desktop: 4,
+            }}
             buttonProps={{
               sx: {
-                width: "100%",
+                wordBreak: "keep-all",
               },
             }}
           />
@@ -92,9 +97,10 @@ const Page = () => {
             name={"workout_kind"}
             options={singingOptionsThematic}
             control={control}
-            buttonProps={{
-              fullWidth: !isPhone,
-              sx: { width: ["100%", "auto"] },
+            maxItemsPerRow={{
+              phone: 1,
+              tablet: 2,
+              desktop: 4,
             }}
           />
         </Field>
