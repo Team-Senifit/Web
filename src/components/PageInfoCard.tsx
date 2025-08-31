@@ -8,9 +8,15 @@ export interface IPageInfoCardProps {
   icon: React.ReactNode;
   title: string;
   endAction?: React.ReactNode;
+  color?: string;
 }
 
-const PageInfoCard = ({ icon, title, endAction }: IPageInfoCardProps) => {
+const PageInfoCard = ({
+  icon,
+  title,
+  endAction,
+  color = "label.neutral",
+}: IPageInfoCardProps) => {
   const { isPhone, isDesktop } = useMedia();
   return (
     <Stack
@@ -31,7 +37,7 @@ const PageInfoCard = ({ icon, title, endAction }: IPageInfoCardProps) => {
         {icon}
         <Typography
           variant={isPhone ? "Headline1" : "Heading1"}
-          sx={{ color: "label.neutral" }}
+          sx={{ color: color }}
         >
           {title}
         </Typography>

@@ -303,6 +303,21 @@ if (theme.components) {
       },
     },
   };
+
+  if (theme.components.MuiButton) {
+    theme.components.MuiButton.styleOverrides = {
+      root: {
+        borderRadius: "0.75rem",
+        height: "3.75rem",
+      },
+      contained: {
+        boxShadow: "none",
+      },
+      text: {
+        backgroundColor: "fillVariant.colored",
+      },
+    };
+  }
 }
 
 theme.typography.Display1 = {
