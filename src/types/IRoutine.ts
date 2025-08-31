@@ -52,10 +52,12 @@ export const singingWorkoutCodesLabel: Record<SINGING_WORKOUT_CODES, string> = {
   workout_notSelected: "미포함",
 };
 
-export const thematicWorkoutCodesLabel: Record<
-  COGNITIVE_WORKOUT_CODES | SINGING_WORKOUT_CODES | CALISTHENIC_TARGET_CODES,
-  string
-> = {
+export type WorkoutKind =
+  | COGNITIVE_WORKOUT_CODES
+  | CALISTHENIC_TARGET_CODES
+  | SINGING_WORKOUT_CODES;
+
+export const thematicWorkoutCodesLabel: Record<WorkoutKind, string> = {
   workout_kinds_cognitive_kinds_taekwondo: "태권도 인지운동",
   workout_kinds_cognitive_kinds_dualtasking: "듀얼태스킹 인지운동",
   workout_kinds_cognitive_kinds_continuous: "연속동작 인지운동",
