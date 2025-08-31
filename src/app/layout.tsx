@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import SenifitThemeProvider from "./panel/SenifitThemeProvider";
+import { Suspense } from "react";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import QueryProviders from "./panel/QueryClientProvider";
+import { AuthErrorBoundary } from "./panel/ErrorBoundary";
 
 // dayjs locale 설정, time zone 설정
 dayjs.locale("ko");
@@ -24,7 +27,13 @@ export default function RootLayout({
   return (
     <html lang={"ko"}>
       <body>
-        <SenifitThemeProvider>{children}</SenifitThemeProvider>
+        <Suspense fallback={null}>
+          <QueryProviders>
+            <AuthErrorBoundary>
+              <SenifitThemeProvider>{children}</SenifitThemeProvider>
+            </AuthErrorBoundary>
+          </QueryProviders>
+        </Suspense>
       </body>
     </html>
   );
