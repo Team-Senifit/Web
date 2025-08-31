@@ -58,7 +58,7 @@ const Page = () => {
               }}
             />
           }
-          title={"운동 프로그램"}
+          title={"주제 선택하기"}
         />
         <Divider sx={{ borderColor: "border.normal" }} />
         <Field label={"인지운동"} id={""}>
