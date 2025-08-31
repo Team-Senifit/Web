@@ -7,14 +7,25 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import VideoInfoDetail from "./VideoInfoDetail";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { IResponse } from "@/types/IResponse";
+import { IRoutineDetail } from "@/types/IRoutineDetail";
 
 const VideoInfo = ({
+  id,
   name,
   thumbnail_path,
   duration,
   description,
 }: IPopularRoutine) => {
   const { isPhone, isDesktop } = useMedia();
+
+  const {
+    data: { data },
+  } = useSuspenseQuery<IResponse<IRoutineDetail>>({
+    queryKey: [`/programs/${id}`],
+  });
+
   return (
     <Stack direction={"column"} spacing={3}>
       <Stack direction={isDesktop ? "row" : "column"} spacing={[2, 4]}>
@@ -113,7 +124,7 @@ const VideoInfo = ({
           </Button>
         </Stack>
       </Stack>
-      {!isPhone && <VideoInfoDetail />}
+      {!isPhone && <VideoInfoDetail videos={data.videos} />}
     </Stack>
   );
 };
