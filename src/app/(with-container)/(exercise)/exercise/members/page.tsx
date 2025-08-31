@@ -54,7 +54,14 @@ const Page = () => {
   const selectedMembers = watch("members");
 
   const onSubmit = (data: { members: number[] }) => {
-    setSelectedMembers(data.members);
+    if (!data.members?.length) {
+      setSelectedMembers(null);
+    } else {
+      const selectedMembers = memberData.filter((m) =>
+        data.members?.includes(m.memberId),
+      );
+      setSelectedMembers(selectedMembers);
+    }
     router.push("/exercise/check-selected");
   };
 
