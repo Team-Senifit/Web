@@ -7,7 +7,7 @@ import {
   type WORKOUT_DURATIONS,
   type CALISTHENIC_TARGET_CODES,
   type SINGING_WORKOUT_CODES,
-} from "@/types/ICustomizedRoutine";
+} from "@/types/IRoutine";
 import type { ISenifitToggleOption } from "@/types/IToggleButton";
 import { Typography } from "@mui/material";
 
@@ -52,14 +52,10 @@ export const cognitiveOptions = [
     ),
   },
   {
-    value: "workout_kinds_cognitive_kinds_dualtasking",
+    value: "workout_kinds_cognitive_kinds_continuous",
     label: (
       <Typography variant={"Headline1"}>
-        {
-          cognitiveWorkoutCodesLabel[
-            "workout_kinds_cognitive_kinds_dualtasking"
-          ]
-        }
+        {cognitiveWorkoutCodesLabel["workout_kinds_cognitive_kinds_continuous"]}
       </Typography>
     ),
   },
