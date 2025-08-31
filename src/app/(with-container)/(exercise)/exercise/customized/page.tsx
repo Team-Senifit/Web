@@ -87,6 +87,9 @@ const Page = () => {
         <Divider sx={{ borderColor: "borderVariants.normal" }} />
         <Field label={"진행 시간"} id={"exerciseGoal"} isPhone={isPhone}>
           <SenifitToggleButtonGroupField
+            rules={{
+              required: true,
+            }}
             control={control}
             name={"duration"}
             exclusive
@@ -102,6 +105,9 @@ const Page = () => {
           isPhone={isPhone}
         >
           <SenifitToggleButtonGroupField
+            rules={{
+              required: true,
+            }}
             control={control}
             name={"cognitive_workout_code"}
             exclusive
@@ -123,6 +129,9 @@ const Page = () => {
         </Field>
         <Field label={"주요 부위"} id={"primary_target_code"} isPhone={isPhone}>
           <SenifitToggleButtonGroupField
+            rules={{
+              required: true,
+            }}
             control={control}
             name={"primary_target_code"}
             exclusive
@@ -148,6 +157,9 @@ const Page = () => {
           isPhone={isPhone}
         >
           <SenifitToggleButtonGroupField
+            rules={{
+              required: true,
+            }}
             control={control}
             name={"singing_workout_code"}
             exclusive
