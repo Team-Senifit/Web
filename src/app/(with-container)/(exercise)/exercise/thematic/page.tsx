@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import { IThematicRoutineField } from "@/types/IThematicRoutine";
 import SenifitToggleButtonGroupField from "@/components/SenifitToggleButtonGroupField";
 import {
-  cognitiveOptions,
+  cognitiveOptionsThematic,
   primaryTargetOptionsThematic,
   singingOptionsThematic,
 } from "../customized/panel/options";
@@ -63,14 +63,19 @@ const Page = () => {
         <Field label={"인지운동"} id={""}>
           <SenifitToggleButtonGroupField
             name={"workout_kind"}
-            options={cognitiveOptions.slice(0, 3)}
+            options={cognitiveOptionsThematic}
             control={control}
             groupProps={{
               sx: { flexWrap: ["wrap", "unset"] },
             }}
             buttonProps={{
               fullWidth: !isPhone,
-              sx: { width: ["100%", "auto"] },
+              sx: {
+                width: ["100%", "auto"],
+                p: 0,
+                wordBreak: "keep-all",
+              },
+
               // fullWidth: true,
             }}
           />
@@ -107,7 +112,6 @@ const Page = () => {
             buttonProps={{
               fullWidth: !isPhone,
               sx: { width: ["100%", "auto"] },
-              // fullWidth: true,
             }}
           />
         </Field>

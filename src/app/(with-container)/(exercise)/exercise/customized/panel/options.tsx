@@ -30,6 +30,37 @@ export const durationOptions = [
   },
 ] as const satisfies ISenifitToggleOption<WORKOUT_DURATIONS>[];
 
+export const cognitiveOptionsThematic = [
+  {
+    value: "workout_kinds_cognitive_kinds_taekwondo",
+    label: (
+      <Typography variant={"Headline1"}>
+        {`${cognitiveWorkoutCodesLabel["workout_kinds_cognitive_kinds_taekwondo"]} 인지운동`}
+      </Typography>
+    ),
+  },
+  {
+    value: "workout_kinds_cognitive_kinds_dualtasking",
+    label: (
+      <Typography variant={"Headline1"}>
+        {`${
+          cognitiveWorkoutCodesLabel[
+            "workout_kinds_cognitive_kinds_dualtasking"
+          ]
+        } 인지운동`}
+      </Typography>
+    ),
+  },
+  {
+    value: "workout_kinds_cognitive_kinds_continuous",
+    label: (
+      <Typography variant={"Headline1"}>
+        {`${cognitiveWorkoutCodesLabel["workout_kinds_cognitive_kinds_continuous"]} 인지운동`}
+      </Typography>
+    ),
+  },
+] as const satisfies ISenifitToggleOption<COGNITIVE_WORKOUT_CODES>[];
+
 export const cognitiveOptions = [
   {
     value: "workout_kinds_cognitive_kinds_taekwondo",
