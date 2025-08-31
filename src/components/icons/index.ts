@@ -9,3 +9,4 @@ export { default as CrossIcon } from "./CrossIcon";
 export { default as TriangleAlertIcon } from "./TriangleAlertIcon";
 export { default as CircleQuestionMarkIcon } from "./CircleQuestionMarkIcon";
 export { default as CircleCheckBigIcon } from "./CircleCheckBigIcon";
+export { default as SettingsIcon } from "./SettingsIcon";
