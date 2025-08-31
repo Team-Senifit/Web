@@ -23,7 +23,7 @@ export interface ISenifitToggleButtonGroupRootProps
 }
 
 /** 렌더링할 각 토글 버튼 옵션 모델 */
-export interface ISenifitToggleOption<T extends string | number> {
+export interface ISenifitToggleOption<T extends string | number | boolean> {
   /** 해당 옵션의 값 */
   value: T;
   /** 버튼 라벨(텍스트/아이콘 등) */
@@ -35,7 +35,7 @@ export interface ISenifitToggleOption<T extends string | number> {
 }
 
 /** 단일/멀티 공용 기본 props */
-export interface IBaseProps<T extends string | number> {
+export interface IBaseProps<T extends string | number | boolean> {
   /** 버튼 옵션 목록 */
   options: ISenifitToggleOption<T>[];
   /** 버튼 높이 프리셋 */
@@ -52,7 +52,7 @@ export interface IBaseProps<T extends string | number> {
 }
 
 /** 단일 선택(Exclusive) 모드용 props */
-export interface IExclusiveProps<T extends string | number>
+export interface IExclusiveProps<T extends string | number | boolean>
   extends IBaseProps<T> {
   /** true 또는 생략 시 단일 선택 모드 */
   exclusive?: true;
@@ -63,7 +63,8 @@ export interface IExclusiveProps<T extends string | number>
 }
 
 /** 다중 선택(Multi) 모드용 props */
-export interface IMultiProps<T extends string | number> extends IBaseProps<T> {
+export interface IMultiProps<T extends string | number | boolean>
+  extends IBaseProps<T> {
   /** false일 때만 다중 선택 모드로 동작 */
   exclusive: false;
   /** 현재 선택 값 배열 */
@@ -73,9 +74,9 @@ export interface IMultiProps<T extends string | number> extends IBaseProps<T> {
 }
 
 /** 컴포넌트 공개 props 유니온(제네릭 진입점) */
-export type ISenifitToggleButtonGroupProps<T extends string | number> =
-  | IExclusiveProps<T>
-  | IMultiProps<T>;
+export type ISenifitToggleButtonGroupProps<
+  T extends string | number | boolean,
+> = IExclusiveProps<T> | IMultiProps<T>;
 
 /** 편의상 MUI 원본 타입 재노출(필요 시 import 없이 사용 가능) */
 export type { MuiToggleButtonProps, MuiToggleButtonGroupProps };
