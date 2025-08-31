@@ -55,7 +55,15 @@ const Page = () => {
           "시니핏에서 인기있는 운동 프로그램을 한 눈에!\n자세히 보기로 어떤 운동들이 있는지 확인해 보세요."
         }
       />
-      <Stack direction={"column"}>
+      <Stack
+        direction={"column"}
+        spacing={[3, 4]}
+        sx={{
+          p: [3, 6],
+          bgcolor: "background.paper",
+          borderRadius: [0, "0.75rem"],
+        }}
+      >
         {popularRoutine.map((routine) => (
           <VideoInfo key={routine.id} {...routine} />
         ))}
