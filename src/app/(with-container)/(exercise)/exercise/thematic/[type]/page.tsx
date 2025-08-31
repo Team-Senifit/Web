@@ -62,7 +62,7 @@ const Page = () => {
             {...routine}
             onButtonClick={() => {
               setId(routine.id);
-              setType("thematic");
+              setType(["thematic", params.type]);
               router.push("/exercise/members");
             }}
           />
