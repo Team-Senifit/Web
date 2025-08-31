@@ -3,7 +3,7 @@ import React from "react";
 import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
 import { IPopularRoutine } from "@/types/IPopularRoutine";
 import VideoInfo from "../panel/VideoInfo";
-import ReturnButton from "@/app/(with-footer)/my-center/members/panel/ReturnButton";
+import ReturnButton from "@/components/ReturnButton";
 
 const popularRoutine: Array<IPopularRoutine> = [
   {

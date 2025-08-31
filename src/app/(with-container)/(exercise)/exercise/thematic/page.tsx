@@ -1,6 +1,6 @@
 "use client";
 
-import ReturnButton from "@/app/(with-footer)/my-center/members/panel/ReturnButton";
+import ReturnButton from "@/components/ReturnButton";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import React from "react";
 import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
