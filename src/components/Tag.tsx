@@ -7,6 +7,7 @@ const Tag = ({ label }: { label: string }) => {
       variant={"Headline1"}
       component={"span"}
       sx={{
+        width: "fit-content",
         borderRadius: "6.25rem",
         px: 1,
         py: 0.5,
