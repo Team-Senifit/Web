@@ -74,9 +74,9 @@ export interface IMultiProps<T extends string | number | boolean>
 }
 
 /** 컴포넌트 공개 props 유니온(제네릭 진입점) */
-export type ISenifitToggleButtonGroupProps<T extends string | number> =
-  | IExclusiveProps<T>
-  | IMultiProps<T>;
+export type ISenifitToggleButtonGroupProps<
+  T extends string | number | boolean,
+> = IExclusiveProps<T> | IMultiProps<T>;
 
 /** 편의상 MUI 원본 타입 재노출(필요 시 import 없이 사용 가능) */
 export type { MuiToggleButtonProps, MuiToggleButtonGroupProps };
