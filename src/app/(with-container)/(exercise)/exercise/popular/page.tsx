@@ -3,6 +3,7 @@ import React from "react";
 import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
 import { IPopularRoutine } from "@/types/IPopularRoutine";
 import VideoInfo from "./panel/VideoInfo";
+import ReturnButton from "@/app/(with-footer)/my-center/members/panel/ReturnButton";
 
 const popularRoutine: Array<IPopularRoutine> = [
   {
@@ -48,7 +49,8 @@ const popularRoutine: Array<IPopularRoutine> = [
 
 const Page = () => {
   return (
-    <Stack>
+    <Stack direction={"column"} spacing={3}>
+      <ReturnButton href={"/"} />
       <ExercisePageInfoCard
         title={"인기 운동 프로그램"}
         description={
@@ -62,6 +64,7 @@ const Page = () => {
           p: [3, 6],
           bgcolor: "background.paper",
           borderRadius: [0, "0.75rem"],
+          width: "100%",
         }}
       >
         {popularRoutine.map((routine) => (
