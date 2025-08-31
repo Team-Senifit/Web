@@ -1,3 +1,4 @@
+import { IMember } from "@/types/IMember";
 import { WorkoutKind } from "@/types/IRoutine";
 import { IRoutineDetail } from "@/types/IRoutineDetail";
 import { create } from "zustand";
@@ -5,11 +6,11 @@ import { create } from "zustand";
 interface IProgramStore {
   id: number | null;
   selectedProgram: IRoutineDetail | null;
-  selectedMembers: number[] | null;
+  selectedMembers: IMember[] | null;
   type: "customized" | "popular" | ["thematic", WorkoutKind] | null;
   setId: (id: number | null) => void;
   setSelectedProgram: (program: IRoutineDetail | null) => void;
-  setSelectedMembers: (members: number[] | null) => void;
+  setSelectedMembers: (members: IMember[] | null) => void;
   setType: (
     type: "customized" | "popular" | ["thematic", WorkoutKind] | null,
   ) => void;
