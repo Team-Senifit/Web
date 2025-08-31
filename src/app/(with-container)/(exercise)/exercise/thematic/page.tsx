@@ -16,19 +16,18 @@ import {
   singingOptionsThematic,
 } from "../customized/panel/options";
 import useMedia from "@/hooks/useMedia";
+import Link from "next/link";
 
 const Page = () => {
   const { isPhone, isDesktop } = useMedia();
 
-  const { control, handleSubmit } = useForm<IThematicRoutineField>({
+  const { control, watch } = useForm<IThematicRoutineField>({
     defaultValues: {
       workout_kind: "workout_kinds_cognitive_kinds_taekwondo",
     },
   });
 
-  const onSubmit = (data: IThematicRoutineField) => {
-    console.log(data);
-  };
+  const workoutKind = watch("workout_kind");
 
   return (
     <Stack direction={"column"} spacing={3}>
@@ -40,8 +39,6 @@ const Page = () => {
         }
       />
       <Stack
-        component={"form"}
-        onSubmit={handleSubmit(onSubmit)}
         spacing={3}
         sx={{
           p: [3, 6],
@@ -119,7 +116,8 @@ const Page = () => {
 
         <Stack direction={"row"} width={"100%"} justifyContent={"flex-end"}>
           <Button
-            type={"submit"}
+            component={Link}
+            href={`/exercise/thematic/${workoutKind}`}
             variant={"contained"}
             fullWidth={!isDesktop}
             disableElevation
