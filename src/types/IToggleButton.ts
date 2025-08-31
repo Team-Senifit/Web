@@ -4,6 +4,13 @@ import type { ButtonProps as MuiButtonProps } from "@mui/material";
 /** 버튼 높이 프리셋 사이즈 */
 export type SizeVariant = "sm" | "md" | "lg";
 
+/** 반응형 maxItemsPerRow 설정 */
+export interface IResponsiveMaxItems {
+  phone?: number;
+  tablet?: number;
+  desktop?: number;
+}
+
 /** 개별 토글 버튼 공용 props */
 export interface ISenifitToggleButtonProps
   extends Omit<MuiButtonProps, "onChange"> {
@@ -17,8 +24,8 @@ export interface ISenifitToggleButtonProps
 export interface ISenifitToggleButtonGroupRootProps {
   /** 버튼 간 간격(theme.spacing 배수) */
   gap?: number;
-  /** 한 줄에 표시할 최대 버튼 개수 */
-  maxItemsPerRow?: number;
+  /** 한 줄에 표시할 최대 버튼 개수 (반응형 또는 고정값) */
+  maxItemsPerRow?: number | IResponsiveMaxItems;
   /** 추가 CSS 클래스명 */
   className?: string;
   /** 인라인 스타일 */
@@ -45,8 +52,8 @@ export interface IBaseProps<T extends string | number | boolean> {
   sizeVariant?: SizeVariant;
   /** 버튼을 동일 가변 폭으로 채울지 여부 */
   fullWidth?: boolean;
-  /** 한 줄에 표시할 최대 버튼 개수 */
-  maxItemsPerRow?: number;
+  /** 한 줄에 표시할 최대 버튼 개수 (반응형 또는 고정값) */
+  maxItemsPerRow?: number | IResponsiveMaxItems;
   /** 그룹 루트에 전달할 추가 props(제어 관련 키는 제외) */
   groupProps?: Omit<
     ISenifitToggleButtonGroupRootProps,

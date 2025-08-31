@@ -8,6 +8,7 @@ import {
   IExclusiveProps,
   IMultiProps,
   SizeVariant,
+  IResponsiveMaxItems,
 } from "@/types/IToggleButton";
 
 /** ───────────────── Styled primitives ───────────────── */
@@ -65,17 +66,50 @@ const SenifitToggleButton = styled(Button, {
   };
 });
 
-const GridContainer = styled(Box)<{
+const GridContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "gap" && prop !== "maxItemsPerRow",
+})<{
   gap: number;
-  maxItemsPerRow?: number;
-}>(({ theme, gap, maxItemsPerRow }) => ({
-  display: "grid",
-  gridTemplateColumns: maxItemsPerRow
-    ? `repeat(${maxItemsPerRow}, 1fr)`
-    : "repeat(auto-fit, minmax(120px, 1fr))",
-  gap: theme.spacing(gap),
-  width: "100%",
-}));
+  maxItemsPerRow?: number | IResponsiveMaxItems;
+}>(({ theme, gap, maxItemsPerRow }) => {
+  let gridTemplateColumns: string;
+
+  if (typeof maxItemsPerRow === "number") {
+    // 숫자인 경우: 모든 브레이크포인트에서 동일
+    gridTemplateColumns = `repeat(${maxItemsPerRow}, 1fr)`;
+  } else if (maxItemsPerRow && typeof maxItemsPerRow === "object") {
+    // 객체인 경우: 반응형 처리
+    const { phone, tablet, desktop } = maxItemsPerRow;
+    const phoneColumns = phone
+      ? `repeat(${phone}, 1fr)`
+      : "repeat(auto-fit, minmax(120px, 1fr))";
+    const tabletColumns = tablet ? `repeat(${tablet}, 1fr)` : phoneColumns;
+    const desktopColumns = desktop ? `repeat(${desktop}, 1fr)` : tabletColumns;
+
+    return {
+      display: "grid",
+      gap: theme.spacing(gap),
+      width: "100%",
+      gridTemplateColumns: phoneColumns,
+      [theme.breakpoints.up("tablet")]: {
+        gridTemplateColumns: tabletColumns,
+      },
+      [theme.breakpoints.up("desktop")]: {
+        gridTemplateColumns: desktopColumns,
+      },
+    };
+  } else {
+    // 기본값: 자동 반응형
+    gridTemplateColumns = "repeat(auto-fit, minmax(120px, 1fr))";
+  }
+
+  return {
+    display: "grid",
+    gridTemplateColumns,
+    gap: theme.spacing(gap),
+    width: "100%",
+  };
+});
 
 function SenifitToggleButtonGroup<T extends string | number | boolean>(
   props: IExclusiveProps<T> | IMultiProps<T>,
@@ -121,7 +155,7 @@ function SenifitToggleButtonGroup<T extends string | number | boolean>(
     [props],
   );
 
-  const { gap = 1.25, ...restGroupProps } = groupProps || {};
+  const { gap = 2, ...restGroupProps } = groupProps || {};
 
   return (
     <GridContainer
