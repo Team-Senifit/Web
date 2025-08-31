@@ -37,19 +37,12 @@ const MemberRankPicker = ({
   }
   return (
     <SenifitToggleButtonGroup<MemberRank>
-      groupProps={{
-        sx: {
-          flexWrap: "wrap",
-          gap: 2,
-          maxWidth: "50rem",
-        },
-      }}
+      maxItemWidth={136}
       buttonProps={{
         sx: {
           minWidth: "8.5rem",
           flex: "unset",
           flexGrow: "unset",
-          width: "fit-content !important",
           px: 6,
           wordBreak: "keep-all",
         },
