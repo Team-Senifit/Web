@@ -1,32 +1,34 @@
-"use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
 
 import * as React from "react";
-import {
-  ToggleButton,
-  ToggleButtonGroup,
-  type ToggleButtonProps,
-} from "@mui/material";
+import { Button, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import {
   IExclusiveProps,
   IMultiProps,
-  ISenifitToggleButtonGroupRootProps,
+  SizeVariant,
 } from "@/types/IToggleButton";
 
 /** ───────────────── Styled primitives ───────────────── */
 
-export type SizeVariant = "sm" | "md" | "lg";
 const HEIGHT_PX: Record<SizeVariant, number> = { sm: 40, md: 56, lg: 64 };
 
-export interface ISenifitToggleButtonProps extends ToggleButtonProps {
+export interface ISenifitToggleButtonProps {
   sizeVariant?: SizeVariant;
   fullWidth?: boolean;
+  selected?: boolean;
 }
 
-const SenifitToggleButton = styled(ToggleButton, {
-  shouldForwardProp: (prop) => prop !== "sizeVariant" && prop !== "fullWidth",
-})<ISenifitToggleButtonProps>(({ theme, sizeVariant = "md", fullWidth }) => {
+const SenifitToggleButton = styled(Button, {
+  shouldForwardProp: (prop) =>
+    prop !== "sizeVariant" && prop !== "fullWidth" && prop !== "selected",
+})<ISenifitToggleButtonProps>(({
+  theme,
+  sizeVariant = "md",
+  fullWidth,
+  selected,
+}) => {
   const h = HEIGHT_PX[sizeVariant];
 
   const inactive =
@@ -43,44 +45,36 @@ const SenifitToggleButton = styled(ToggleButton, {
   const selectedColor = theme.palette.primary.main;
 
   return {
-    "&.MuiButtonBase-root": {
-      height: h,
-      maxHeight: h,
-      minHeight: h,
-      color: inactive,
-      borderRadius: "0.75rem",
-      borderStyle: "solid",
-      borderColor: borderNormal,
-      backgroundColor: bgAlt,
-      textTransform: "none",
-      flex: fullWidth ? "1 1 0" : "0 0 auto",
-      "&:hover": {
-        borderColor: selectedColor,
-        backgroundColor: selectedBg,
-        color: selectedColor,
-      },
-      "&.Mui-selected": {
-        color: selectedColor,
-        borderColor: selectedColor,
-        backgroundColor: selectedBg,
-        "&:hover": { backgroundColor: selectedBg },
-      },
-      "&& ": {
-        borderWidth: "2px !important",
-      },
+    height: h,
+    maxHeight: h,
+    minHeight: h,
+    color: selected ? selectedColor : inactive,
+    borderRadius: "0.75rem",
+    borderStyle: "solid",
+    borderWidth: "2px",
+    borderColor: selected ? selectedColor : borderNormal,
+    backgroundColor: selected ? selectedBg : bgAlt,
+    textTransform: "none",
+    flex: fullWidth ? "1 1 0" : "0 0 auto",
+    minWidth: fullWidth ? 0 : "auto",
+    "&:hover": {
+      borderColor: selectedColor,
+      backgroundColor: selectedBg,
+      color: selectedColor,
     },
   };
 });
 
-const SenifitToggleButtonGroupRoot = styled(ToggleButtonGroup, {
-  shouldForwardProp: (prop) =>
-    prop !== "gap" && prop !== "paddingX" && prop !== "paddingTop",
-})<ISenifitToggleButtonGroupRootProps>(({ theme, gap = 1.25 }) => ({
-  display: "flex",
-  flexDirection: "row",
+const GridContainer = styled(Box)<{
+  gap: number;
+  maxItemsPerRow?: number;
+}>(({ theme, gap, maxItemsPerRow }) => ({
+  display: "grid",
+  gridTemplateColumns: maxItemsPerRow
+    ? `repeat(${maxItemsPerRow}, 1fr)`
+    : "repeat(auto-fit, minmax(120px, 1fr))",
   gap: theme.spacing(gap),
   width: "100%",
-  "& .MuiToggleButtonGroup-grouped": { margin: 0 },
 }));
 
 function SenifitToggleButtonGroup<T extends string | number | boolean>(
@@ -90,41 +84,72 @@ function SenifitToggleButtonGroup<T extends string | number | boolean>(
     options,
     sizeVariant = "md",
     fullWidth = false,
+    maxItemsPerRow,
     groupProps,
     buttonProps,
   } = props;
 
-  const handleChange = (_: React.MouseEvent<HTMLElement>, newValue: any) => {
-    if (props.exclusive === false) {
-      props.onChange(Array.isArray(newValue) ? (newValue as T[]) : []);
-    } else {
-      if (newValue !== null && newValue !== undefined) {
-        props.onChange(newValue as T);
+  const isSelected = React.useCallback(
+    (optionValue: T): boolean => {
+      if (props.exclusive === false) {
+        return Array.isArray(props.value) && props.value.includes(optionValue);
+      } else {
+        return props.value === optionValue;
       }
-    }
-  };
+    },
+    [props.value, props.exclusive],
+  );
+
+  const handleButtonClick = React.useCallback(
+    (optionValue: T) => () => {
+      if (props.exclusive === false) {
+        // 다중 선택 모드
+        const currentValues = Array.isArray(props.value) ? props.value : [];
+        const newValues = currentValues.includes(optionValue)
+          ? currentValues.filter((v) => v !== optionValue)
+          : [...currentValues, optionValue];
+        props.onChange(newValues);
+      } else {
+        // 단일 선택 모드
+        if (props.value === optionValue) {
+          // 이미 선택된 버튼을 클릭하면 선택 해제 (필요에 따라 제거 가능)
+          return;
+        }
+        props.onChange(optionValue);
+      }
+    },
+    [props],
+  );
+
+  const { gap = 1.25, ...restGroupProps } = groupProps || {};
 
   return (
-    <SenifitToggleButtonGroupRoot
-      {...groupProps}
-      value={props.value as any}
-      exclusive={props.exclusive !== false}
-      onChange={handleChange}
+    <GridContainer
+      gap={gap}
+      maxItemsPerRow={maxItemsPerRow}
+      {...restGroupProps}
     >
-      {options.map(({ value, label, disabled, buttonProps: perBtn }) => (
-        <SenifitToggleButton
-          key={String(value)}
-          value={value}
-          sizeVariant={sizeVariant}
-          fullWidth={fullWidth}
-          disabled={disabled}
-          {...buttonProps}
-          {...perBtn}
-        >
-          {label}
-        </SenifitToggleButton>
-      ))}
-    </SenifitToggleButtonGroupRoot>
+      {options.map(({ value, label, disabled, buttonProps: perBtn }) => {
+        const { ...restPerBtn } = perBtn || {};
+
+        const { ...restButtonProps } = buttonProps || {};
+
+        return (
+          <SenifitToggleButton
+            key={String(value)}
+            sizeVariant={sizeVariant}
+            fullWidth={fullWidth}
+            selected={isSelected(value)}
+            disabled={disabled}
+            onClick={!disabled ? handleButtonClick(value) : undefined}
+            {...restButtonProps}
+            {...restPerBtn}
+          >
+            {label}
+          </SenifitToggleButton>
+        );
+      })}
+    </GridContainer>
   );
 }
 
