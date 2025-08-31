@@ -20,9 +20,26 @@ import { IMember } from "@/types/IMember";
 import { Controller, useForm } from "react-hook-form";
 import SenifitCheckbox from "@/components/SenifitCheckbox";
 import useMedia from "@/hooks/useMedia";
+import { useRouter } from "next/navigation";
+import useProgramStore from "@/states/useProgramStore";
+import Link from "next/link";
 
 const Page = () => {
   const { isDesktop } = useMedia();
+
+  const router = useRouter();
+
+  const { type, setSelectedMembers } = useProgramStore();
+
+  let returnPath = "";
+
+  if (type) {
+    if (Array.isArray(type)) {
+      returnPath = `/exercise/thematic/${type[1]}`;
+    } else {
+      returnPath = `/exercise/${type}`;
+    }
+  }
 
   const {
     data: { data: memberData },
@@ -30,9 +47,16 @@ const Page = () => {
     queryKey: ["/centers/members"],
   });
 
-  const { control, watch, setValue } = useForm<{ members: number[] }>({});
+  const { control, watch, setValue, handleSubmit } = useForm<{
+    members: number[];
+  }>({});
 
   const selectedMembers = watch("members");
+
+  const onSubmit = (data: { members: number[] }) => {
+    setSelectedMembers(data.members);
+    router.push("/exercise/check-selected");
+  };
 
   return (
     <Stack direction={"column"} spacing={3}>
@@ -41,6 +65,8 @@ const Page = () => {
         description={"운동에 참여할 어르신을 선택해 주세요."}
       />
       <Stack
+        component={"form"}
+        onSubmit={handleSubmit(onSubmit)}
         direction={"column"}
         spacing={3}
         p={[3, 6]}
@@ -180,9 +206,6 @@ const Page = () => {
         <Controller
           name={"members"}
           control={control}
-          rules={{
-            validate: (v) => v.length >= 1 || "최소 1개 이상 선택해 주세요",
-          }}
           render={({ field }) => {
             const selected = field.value ?? [];
             const toggle = (val: number) => {
@@ -238,8 +261,9 @@ const Page = () => {
         <Divider sx={{ borderColor: "borderVariants.normal" }} />
         <Stack direction={"row"} justifyContent={"space-between"} spacing={3}>
           <Button
+            component={Link}
+            href={returnPath}
             variant={"text"}
-            color={"primary"}
             sx={{
               flex: 1,
               bgcolor: "fillVariants.colored",
@@ -247,13 +271,11 @@ const Page = () => {
               py: 2,
               maxWidth: "10.5rem",
             }}
-            onClick={() => {
-              // Handle button click
-            }}
           >
             <Typography variant={"Heading1"}>{"이전"}</Typography>
           </Button>
           <Button
+            type={"submit"}
             variant={"contained"}
             color={"primary"}
             disableElevation
@@ -262,9 +284,6 @@ const Page = () => {
               borderRadius: "0.75rem",
               py: 2,
               maxWidth: "10.5rem",
-            }}
-            onClick={() => {
-              // Handle button click
             }}
           >
             <Typography variant={"Heading1"}>{"다음"}</Typography>
