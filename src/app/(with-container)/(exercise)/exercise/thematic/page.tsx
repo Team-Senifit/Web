@@ -1,7 +1,7 @@
 "use client";
 
 import ReturnButton from "@/app/(with-footer)/my-center/members/panel/ReturnButton";
-import { Button, Stack, Typography } from "@mui/material";
+import { Button, Divider, Stack, Typography } from "@mui/material";
 import React from "react";
 import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
 import PageInfoCard from "@/components/PageInfoCard";
@@ -60,6 +60,7 @@ const Page = () => {
           }
           title={"운동 프로그램"}
         />
+        <Divider sx={{ borderColor: "border.normal" }} />
         <Field label={"인지운동"} id={""}>
           <SenifitToggleButtonGroupField
             name={"workout_kind"}
