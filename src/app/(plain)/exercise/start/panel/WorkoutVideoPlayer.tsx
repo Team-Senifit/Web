@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import VideoPlayer, { IVideoHandle } from "@/components/VideoPlayer";
 import useMedia from "@/hooks/useMedia";
+import Header from "./Header";
 
 export interface IWorkoutVideo {
   id: number;
@@ -26,6 +27,7 @@ export interface IWorkoutVideoPlaylistProps {
   assetBaseUrl?: string;
   /** 인덱스 변경 콜백(옵션) */
   onIndexChange?: (index: number, video: IWorkoutVideo) => void;
+  duration: number;
 }
 
 const toAbsUrl = (path: string, base?: string) => {
@@ -51,6 +53,7 @@ export default function WorkoutVideoPlaylist({
   loop = true,
   assetBaseUrl,
   onIndexChange,
+  duration,
 }: IWorkoutVideoPlaylistProps) {
   const { isPhone } = useMedia();
 
@@ -101,7 +104,9 @@ export default function WorkoutVideoPlaylist({
   }, [src]);
 
   return (
-    <Stack spacing={1}>
+    <Stack>
+      <Header duration={duration} />
+
       {/* 커스텀 슬라이더 포함된 비디오(내부) */}
       <VideoPlayer
         ref={handleRef}

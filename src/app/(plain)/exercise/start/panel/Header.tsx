@@ -3,22 +3,13 @@
 import { Button, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import Timer from "./Timer";
-import useProgramStore from "@/states/useProgramStore";
-import { useRouter } from "next/navigation";
 import useMedia from "@/hooks/useMedia";
 
-const Header = () => {
+const Header = ({ duration }: { duration: number }) => {
   const { isPhone, isTablet } = useMedia();
-  const router = useRouter();
-
-  const { selectedProgram } = useProgramStore();
 
   const [seconds, setSeconds] = useState<number>(0);
 
-  if (!selectedProgram) {
-    router.push("/");
-    return null;
-  }
   return (
     <Stack
       direction={"row"}
@@ -49,7 +40,7 @@ const Header = () => {
           {"수업 시간"}
         </Typography>
         <Timer
-          duration={selectedProgram?.duration}
+          duration={duration}
           seconds={seconds}
           setSeconds={setSeconds}
           variant={isPhone ? "Headline1" : isTablet ? "Title2" : "Title1"}

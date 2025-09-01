@@ -1,18 +1,28 @@
 "use client";
 
-import React from "react";
-import Header from "./panel/Header";
+import React, { useEffect } from "react";
 import useProgramStore from "@/states/useProgramStore";
 import WorkoutVideoPlaylist from "./panel/WorkoutVideoPlayer";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
+  const router = useRouter();
   const { selectedProgram } = useProgramStore();
+
+  useEffect(() => {
+    if (!selectedProgram) {
+      router.push("/");
+    }
+
+    return () => {};
+  }, [selectedProgram, router]);
+
   if (!selectedProgram) return null;
 
   return (
     <div>
-      <Header />
       <WorkoutVideoPlaylist
+        duration={selectedProgram?.duration}
         videos={selectedProgram?.videos}
         initialId={selectedProgram?.videos[0]?.id}
       />
