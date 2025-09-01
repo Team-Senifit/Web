@@ -7,6 +7,7 @@ import React, {
   useState,
   forwardRef,
   useImperativeHandle,
+  RefObject,
 } from "react";
 import { Box, IconButton, Slider, Stack, Typography } from "@mui/material";
 import PlayArrowRounded from "@mui/icons-material/PlayArrowRounded";
@@ -23,7 +24,7 @@ export interface IVideoHandle {
   getEl: () => HTMLVideoElement | null;
 }
 
-export interface IMinimalVideoPlayerProps
+export interface IVideoPlayerProps
   extends Omit<React.VideoHTMLAttributes<HTMLVideoElement>, "onTimeUpdate"> {
   src: string;
   poster?: string;
@@ -34,17 +35,14 @@ export interface IMinimalVideoPlayerProps
   onMuteChange?: (muted: boolean) => void;
   onTimeUpdateSec?: (current: number, duration: number) => void;
 
-  /** 비디오 표시 여부(기본 true). false면 '바만 보이는' 모드 */
-  showVideo?: boolean;
-
-  /** CSS aspect-ratio (기본 16/9). ex) "4 / 3" 또는 1.7778 */
+  /** CSS aspect-ratio (기본 16/9). "16 / 9" | "4 / 3" | 1.7778 */
   aspectRatio?: string | number;
 
-  /** 뷰포트 높이를 넘기지 않도록 자동으로 width 제한 (기본 true) */
-  fitViewport?: boolean;
-
-  /** 상단 고정 헤더 등 높이 보정(px). fitViewport=true일 때만 사용 */
+  /** 헤더+푸터 등 상하 고정영역 (px) — 부모에서 동적 측정해서 전달 */
   viewportOffsetPx?: number;
+
+  /** 남은 뷰포트 안에서 자동으로 width 제한(기본 true) */
+  fitViewport?: boolean;
 }
 
 const formatTime = (sec: number) => {
@@ -64,7 +62,6 @@ const bufferedEnd = (v: HTMLVideoElement) => {
   return buffered.length ? buffered.end(buffered.length - 1) : 0;
 };
 
-/** "16 / 9" | "16/9" | 1.777... 모두 숫자로 변환 */
 const parseAspectRatioToNumber = (ar?: string | number): number => {
   if (typeof ar === "number" && Number.isFinite(ar)) return ar;
   if (typeof ar === "string") {
@@ -78,11 +75,40 @@ const parseAspectRatioToNumber = (ar?: string | number): number => {
     const asNum = Number(trimmed);
     if (Number.isFinite(asNum)) return asNum;
   }
-  return 16 / 9; // fallback
+  return 16 / 9;
 };
 
-const MinimalVideoPlayer = forwardRef<IVideoHandle, IMinimalVideoPlayerProps>(
-  function MinimalVideoPlayer(
+/** margin 포함 바깥높이 측정 */
+const useOuterHeight = (ref: React.RefObject<HTMLElement>) => {
+  const [h, setH] = useState(0);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const compute = () => {
+      const rect = el.getBoundingClientRect();
+      const styles = window.getComputedStyle(el);
+      const mt = parseFloat(styles.marginTop || "0") || 0;
+      const mb = parseFloat(styles.marginBottom || "0") || 0;
+      setH(rect.height + mt + mb);
+    };
+
+    const ro = new ResizeObserver(compute);
+    ro.observe(el);
+    compute();
+
+    // margin 변경은 ResizeObserver로 안 잡힐 수 있으니, 폰트/윈도우 리사이즈에 보정
+    window.addEventListener("resize", compute);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", compute);
+    };
+  }, [ref]);
+  return h;
+};
+
+const VideoPlayer = forwardRef<IVideoHandle, IVideoPlayerProps>(
+  function VideoPlayer(
     {
       src,
       poster,
@@ -94,15 +120,18 @@ const MinimalVideoPlayer = forwardRef<IVideoHandle, IMinimalVideoPlayerProps>(
       onMuteChange,
       onTimeUpdateSec,
       onEnded,
-      showVideo = true,
       aspectRatio = "16 / 9",
-      fitViewport = true,
       viewportOffsetPx = 0,
+      fitViewport = true,
       ...rest
     },
     ref,
   ) {
     const videoRef = useRef<HTMLVideoElement>(null);
+    const controlsRef = useRef<HTMLDivElement>(null);
+    const controlsOuterH = useOuterHeight(
+      controlsRef as RefObject<HTMLElement>,
+    ); // ⬅️ 컨트롤(슬라이더) 바깥높이
 
     useImperativeHandle(ref, () => ({
       play: async () =>
@@ -199,58 +228,57 @@ const MinimalVideoPlayer = forwardRef<IVideoHandle, IMinimalVideoPlayerProps>(
     const unbuffered = railVariant === "dark" ? "#1f1f1f" : "#bfc3c7";
     const bufferedColor = railVariant === "dark" ? "#2b2b2b" : "#9ea0a3";
 
-    // ===== 뷰포트 핏 계산 (핵심) =====
+    // ===== 핵심: 컨트롤 높이까지 뺀 남은 세로로 16:9 최대폭 계산 =====
     const ratioNum = parseAspectRatioToNumber(aspectRatio);
-    const maxH = `calc(100dvh - ${viewportOffsetPx}px)`; // 모바일도 안전한 100dvh 사용
-    const maxWFromHeight = `calc(${maxH} * ${ratioNum})`;
     const aspectCss =
       typeof aspectRatio === "number" ? aspectRatio : (aspectRatio ?? "16 / 9");
+    const maxWFromHeightExpr = `calc((100dvh - ${viewportOffsetPx + Math.round(controlsOuterH)}px) * ${ratioNum})`;
 
     return (
       <Stack spacing={1} sx={{ width: "100%", color: "common.white" }}>
-        {/* 비디오 영역 */}
-        {showVideo !== false && (
+        {/* 비디오 영역: 남은 높이를 꽉 채우되 16:9 유지 */}
+        <Box
+          sx={{
+            width: fitViewport ? `min(100%, ${maxWFromHeightExpr})` : "100%",
+            mx: "auto",
+            alignSelf: "center",
+          }}
+        >
           <Box
-            // width를 "min(100%, 뷰포트로부터 허용되는 최대폭)"으로 제한
             sx={{
-              width: fitViewport ? `min(100%, ${maxWFromHeight})` : "100%",
+              position: "relative",
+              width: "100%",
+              borderRadius: 2,
+              overflow: "hidden",
+              bgcolor: "black",
+              aspectRatio: aspectCss,
             }}
           >
-            <Box
-              sx={{
-                position: "relative",
-                width: "100%",
-                borderRadius: 2,
-                overflow: "hidden",
-                bgcolor: "black",
-                aspectRatio: aspectCss, // 16:9 유지
+            <video
+              ref={videoRef}
+              src={src}
+              poster={poster}
+              preload={preload}
+              playsInline
+              crossOrigin={"anonymous"}
+              onEnded={(e) => {
+                onEnded?.(e);
+                setPlaying(false);
               }}
-            >
-              <video
-                ref={videoRef}
-                src={src}
-                poster={poster}
-                preload={preload}
-                playsInline
-                crossOrigin={"anonymous"}
-                onEnded={(e) => {
-                  onEnded?.(e); // 부모에 알림 (예: next 호출)
-                  setPlaying(false); // 내부 상태 정리(선택)
-                }}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  display: "block",
-                  objectFit: "cover",
-                }}
-                {...rest}
-              />
-            </Box>
+              style={{
+                width: "100%",
+                height: "100%",
+                display: "block",
+                objectFit: "cover",
+              }}
+              {...rest}
+            />
           </Box>
-        )}
+        </Box>
 
-        {/* 컨트롤 바 (재생/음소거/시간/커스텀 슬라이더) */}
+        {/* 컨트롤 바 (마진 포함 바깥높이 측정을 위해 ref 부착) */}
         <Box
+          ref={controlsRef}
           sx={{
             display: "flex",
             alignItems: "center",
@@ -327,4 +355,4 @@ const MinimalVideoPlayer = forwardRef<IVideoHandle, IMinimalVideoPlayerProps>(
   },
 );
 
-export default MinimalVideoPlayer;
+export default VideoPlayer;
