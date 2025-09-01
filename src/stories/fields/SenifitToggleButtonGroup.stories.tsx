@@ -8,7 +8,7 @@ import { IMultiProps, ISenifitToggleOption } from "@/types/IToggleButton";
 type Depth = "year" | "month" | "day";
 
 const meta = {
-  title: "Components/SenifitToggleButtonGroup",
+  title: "Fields/SenifitToggleButtonGroup",
   component: SenifitToggleButtonGroup,
   tags: ["autodocs"],
   parameters: { layout: "centered" },
@@ -18,6 +18,10 @@ const meta = {
     maxItemsPerRow: {
       control: "number",
       description: "한 행에 표시할 최대 버튼 수",
+    },
+    maxItemWidth: {
+      control: "number",
+      description: "버튼의 최대 너비(px단위)",
     },
   },
 } satisfies Meta<typeof SenifitToggleButtonGroup>;
@@ -72,6 +76,7 @@ const MultiWrapper = ({
         fullWidth={fullWidth}
         groupProps={{ gap: 1, ...groupProps }}
         buttonProps={buttonProps}
+        maxItemsPerRow={3}
       />
     </div>
   );

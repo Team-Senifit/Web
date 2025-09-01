@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs";
-import EditForm from "@/app/my-center/members/panel/EditForm";
+import EditForm from "@/app/(with-footer)/my-center/members/panel/EditForm";
 
 const meta: Meta = {
   title: "my-center/EditForm",
