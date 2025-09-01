@@ -57,7 +57,7 @@ const Page = () => {
           }
           title={"주제 선택하기"}
         />
-        <Divider sx={{ borderColor: "border.normal" }} />
+        <Divider sx={{ borderColor: "borderVariants.normal" }} />
         <Field label={"인지운동"} id={""}>
           <SenifitToggleButtonGroupField
             name={"workout_kind"}
