@@ -1,7 +1,7 @@
 "use client";
 
 import { Divider, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
 import PageInfoCard from "@/components/PageInfoCard";
 import { CirclePlayIcon, SquareUserRoundIcon } from "@/components/icons";
@@ -14,11 +14,11 @@ import useMedia from "@/hooks/useMedia";
 import { IRoutineDetail } from "@/types/IRoutineDetail";
 import { IResponse } from "@/types/IResponse";
 import { useSuspenseQuery } from "@tanstack/react-query";
-// import Tag from "@/components/Tag";
-// import {
-//   calisthenicTargetCodesLabel,
-//   cognitiveWorkoutCodesLabel,
-// } from "@/types/IRoutine";
+import Tag from "@/components/Tag";
+import {
+  calisthenicTargetCodesLabel,
+  cognitiveWorkoutCodesLabel,
+} from "@/types/IRoutine";
 
 const Page = () => {
   const { isPhone, isDesktop } = useMedia();
@@ -28,13 +28,17 @@ const Page = () => {
   const {
     data: { data: routineDetail },
   } = useSuspenseQuery<IResponse<IRoutineDetail>>({
-    queryKey: [`/programs/${1}`],
+    queryKey: [`/programs/${id}`],
   });
-
-  setSelectedProgram(routineDetail);
 
   const videoTitle =
     type === "customized" ? "맞춤형 운동 프로그램" : routineDetail.name;
+
+  useEffect(() => {
+    return () => {
+      setSelectedProgram(routineDetail);
+    };
+  }, []);
 
   const SelectMemberAgainButton = () => {
     return (
@@ -137,7 +141,7 @@ const Page = () => {
         <Typography variant={!isPhone ? "Title2" : "Headline1"}>
           {videoTitle}
         </Typography>
-        {/* <Stack direction={"row"} spacing={1.5}>
+        <Stack direction={"row"} spacing={1.5}>
           <Tag label={`${routineDetail.duration}분`} />
           {routineDetail.cognitive_workout_code !== "workout_notSelected" && (
             <Tag
@@ -152,7 +156,7 @@ const Page = () => {
           {routineDetail.singing_workout_code !== "workout_notSelected" && (
             <Tag label={"노래체조 포함"} />
           )}
-        </Stack> */}
+        </Stack>
 
         {!isDesktop && <SelectMemberAgainButton />}
       </Stack>
