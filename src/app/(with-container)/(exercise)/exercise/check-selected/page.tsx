@@ -1,6 +1,6 @@
 "use client";
 
-import { Divider, Stack, Typography } from "@mui/material";
+import { Button, Divider, Stack, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
 import PageInfoCard from "@/components/PageInfoCard";
@@ -19,11 +19,28 @@ import {
   calisthenicTargetCodesLabel,
   cognitiveWorkoutCodesLabel,
 } from "@/types/IRoutine";
+import Carousel from "@/components/Carousel";
+import VideoCard from "@/components/VideoCard";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Page = () => {
   const { isPhone, isDesktop } = useMedia();
 
+  const router = useRouter();
+
   const { id, type, selectedMembers, setSelectedProgram } = useProgramStore();
+
+  useEffect(() => {
+    if (!type || !id || selectedMembers?.length === 0) {
+      window.alert(
+        "운동 프로그램과 참여 어르신을 선택해 주세요. (이후 토스트 틍으로... 수정해야합니다.)",
+      );
+      router.push("/");
+    }
+
+    return () => {};
+  }, []);
 
   const {
     data: { data: routineDetail },
@@ -33,6 +50,16 @@ const Page = () => {
 
   const videoTitle =
     type === "customized" ? "맞춤형 운동 프로그램" : routineDetail.name;
+
+  let routineUrl: string;
+
+  if (type === "customized" || type === "popular") {
+    routineUrl = `/exercise/${type}`;
+  } else if (type === null) {
+    routineUrl = `/`;
+  } else {
+    routineUrl = `/exercise/thematic/${type[1]}`;
+  }
 
   useEffect(() => {
     return () => {
@@ -46,13 +73,32 @@ const Page = () => {
         href={"/exercise/members"}
         variant={"text"}
         text={"참여 어르신 다시 선택하기"}
-        sx={{ bgcolor: "fillVariants.colored" }}
+        sx={{
+          bgcolor: "fillVariants.colored",
+          wordBreak: "keep-all",
+          px: [0, 0, 8],
+        }}
+      />
+    );
+  };
+
+  const SelectRoutineAgainButton = () => {
+    return (
+      <CTAButton
+        href={routineUrl}
+        variant={"text"}
+        text={"운동 옵션 다시 선택하기"}
+        sx={{
+          bgcolor: "fillVariants.colored",
+          wordBreak: "keep-all",
+          px: [0, 0, 8],
+        }}
       />
     );
   };
 
   return (
-    <Stack>
+    <Stack direction={"column"} spacing={[3]}>
       <ExercisePageInfoCard
         title={"수업 전 체크"}
         description={
@@ -134,31 +180,71 @@ const Page = () => {
               }}
             />
           }
-          endAction={<SelectMemberAgainButton />}
+          endAction={<SelectRoutineAgainButton />}
           title={"맞춤형 운동 프로그램"}
         />
         <Divider sx={{ borderColor: "borderVariants.normal" }} />
-        <Typography variant={!isPhone ? "Title2" : "Headline1"}>
-          {videoTitle}
-        </Typography>
-        <Stack direction={"row"} spacing={1.5}>
-          <Tag label={`${routineDetail.duration}분`} />
-          {routineDetail.cognitive_workout_code !== "workout_notSelected" && (
-            <Tag
-              label={`${cognitiveWorkoutCodesLabel[routineDetail.cognitive_workout_code]}`}
-            />
-          )}
-          {routineDetail.primary_target_code !== "workout_notSelected" && (
-            <Tag
-              label={`${calisthenicTargetCodesLabel[routineDetail.primary_target_code]}`}
-            />
-          )}
-          {routineDetail.singing_workout_code !== "workout_notSelected" && (
-            <Tag label={"노래체조 포함"} />
-          )}
+        <Stack spacing={1}>
+          <Typography variant={!isPhone ? "Title2" : "Headline1"}>
+            {videoTitle}
+          </Typography>
+          <Stack direction={"row"} spacing={1.5} pt={1}>
+            <Tag label={`${routineDetail.duration}분`} />
+            {routineDetail.cognitive_workout_code !== "workout_notSelected" && (
+              <Tag
+                label={`${cognitiveWorkoutCodesLabel[routineDetail.cognitive_workout_code]}`}
+              />
+            )}
+            {routineDetail.primary_target_code !== "workout_notSelected" && (
+              <Tag
+                label={`${calisthenicTargetCodesLabel[routineDetail.primary_target_code]}`}
+              />
+            )}
+            {routineDetail.singing_workout_code !== "workout_notSelected" && (
+              <Tag label={"노래체조 포함"} />
+            )}
+          </Stack>
+          <Carousel
+            items={routineDetail.videos}
+            renderItem={(video, index) => <VideoCard key={index} {...video} />}
+            itemWidth={216}
+            gap={4}
+            padding={4}
+          />
         </Stack>
 
-        {!isDesktop && <SelectMemberAgainButton />}
+        {!isDesktop && <SelectRoutineAgainButton />}
+        <Divider sx={{ borderColor: "borderVariants.normal" }} />
+        <Stack direction={"row"} justifyContent={"space-between"} spacing={3}>
+          <Button
+            component={Link}
+            href={"/exercise/members"}
+            variant={"text"}
+            sx={{
+              bgcolor: "fillVariants.colored",
+              borderRadius: "0.75rem",
+              py: 2,
+              px: [0, 8],
+              flex: [1, "unset"],
+            }}
+          >
+            <Typography variant={"Heading1"}>{"이전"}</Typography>
+          </Button>
+          <Button
+            component={Link}
+            href={"/exercise/start"}
+            variant={"contained"}
+            disableElevation
+            sx={{
+              borderRadius: "0.75rem",
+              py: 2,
+              px: [0, 8],
+              flex: [1, "unset"],
+            }}
+          >
+            <Typography variant={"Heading1"}>{"수업 시작"}</Typography>
+          </Button>
+        </Stack>
       </Stack>
     </Stack>
   );
