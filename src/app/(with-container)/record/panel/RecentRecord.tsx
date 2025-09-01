@@ -18,6 +18,7 @@ import RecordBrief from "./RecordBrief";
 import Image from "next/image";
 import recordLogo from "@/assets/logo/record-logo.png";
 import GradientCard from "../utils/GradientCard";
+import SurveyIcon from "@/components/icons/SurveyIcon";
 
 export default function RecentRecord() {
   const router = useRouter();
@@ -40,7 +41,7 @@ export default function RecentRecord() {
       setOpenDialog(true);
       return;
     }
-    router.push(`/record/detail/${latest?.recordId}`);
+    router.push(`/record/write/${latest?.recordId}`);
   };
 
   return (
@@ -60,7 +61,16 @@ export default function RecentRecord() {
               gap: "24px",
             }}
           >
-            <Typography variant={"Title1"}>{"최근 수업 기록하기"}</Typography>
+            <Box
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <Typography variant={"Title1"}>{"최근 수업 기록하기"}</Typography>
+              <SurveyIcon active={true} />
+            </Box>
 
             {latest ? (
               <RecordBrief record={latest} />
@@ -80,8 +90,8 @@ export default function RecentRecord() {
               right: 36,
               top: "50%",
               transform: "translateY(-50%)",
-              width: { phone: 180, desktop: 240 },
-              height: { phone: 150, desktop: 212 },
+              width: { phone: 0, tablet: 0, desktop: 350 },
+              height: { phone: 0, tablet: 0, desktop: 350 },
               pointerEvents: "none",
               borderRadius: 2,
               overflow: "hidden",

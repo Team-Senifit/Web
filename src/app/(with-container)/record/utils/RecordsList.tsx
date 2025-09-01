@@ -6,16 +6,15 @@ import {
   Card,
   CardContent,
   Divider,
-  IconButton,
   Stack,
   Typography,
   Button,
 } from "@mui/material";
-import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
 import Link from "next/link";
 import { getRecords, RecordItem } from "./recordUtils";
 import RecordBrief from "../panel/RecordBrief";
 import RecordButton from "../panel/RecordButton";
+import ReloadIcon from "@/components/icons/ReloadIcon";
 
 type Variant = "top3" | "all";
 
@@ -35,8 +34,11 @@ export default function RecordsList({ variant }: Props) {
     setLoading(true);
     const data = await getRecords();
     setAll(data);
+    console.log(data);
     setVisible(variant === "top3" ? 3 : BATCH);
+    console.log(visible);
     setLoading(false);
+    console.log(loading);
   };
 
   useEffect(() => {
@@ -55,27 +57,21 @@ export default function RecordsList({ variant }: Props) {
   }, [all.length, variant]);
 
   const list = useMemo(() => all.slice(0, visible), [all, visible]);
-  const isEmpty = !loading && list.length === 0;
+  console.log("loading ", loading);
+  const isEmpty = !loading && all.length === 0;
 
   return (
-    <Card variant={"outlined"} sx={{ p: 0, borderRadius: "12px" }}>
+    <Card variant={"outlined"} sx={{ p: 0, borderRadius: "12px", mb: 8 }}>
       <CardContent sx={{ p: 6 }}>
         <Stack spacing={1}>
-          <IconButton
-            aria-label={"새로고침"}
-            size={"small"}
-            onClick={load}
-            sx={{ alignSelf: "flex-start" }}
-          >
-            <RefreshRoundedIcon fontSize={"small"} />
-          </IconButton>
+          <ReloadIcon />
           <Typography variant={"Heading1"}>{"지난 수업 보기"}</Typography>
         </Stack>
 
         <Divider sx={{ mt: 3 }} />
 
         {isEmpty ? (
-          <EmptyState showCta={variant === "top3"} />
+          <EmptyState />
         ) : (
           <>
             <Stack sx={{ mt: 3 }}>
@@ -122,15 +118,17 @@ export default function RecordsList({ variant }: Props) {
                 sx={{
                   borderRadius: "12px",
                   padding: "16px 64px",
-                  background: (t) =>
-                    isEmpty
-                      ? t.palette.primary.light
-                      : t.palette.fillVariants.colored,
+                  background: (t) => t.palette.fillVariants.colored,
                 }}
               >
                 <Typography
                   variant={"Heading1"}
-                  sx={{ color: (t) => t.palette.primary.main }}
+                  sx={{
+                    color: (t) =>
+                      isEmpty
+                        ? t.palette.primary.light
+                        : t.palette.primary.main,
+                  }}
                 >
                   {"이전 수업 전체보기"}
                 </Typography>
@@ -143,7 +141,7 @@ export default function RecordsList({ variant }: Props) {
   );
 }
 
-function EmptyState({ showCta }: { showCta: boolean }) {
+function EmptyState() {
   return (
     <Box
       sx={{
@@ -152,6 +150,7 @@ function EmptyState({ showCta }: { showCta: boolean }) {
         flexDirection: "column",
         alignItems: "center",
         gap: 3,
+        mt: 3,
       }}
     >
       <Typography
@@ -161,23 +160,21 @@ function EmptyState({ showCta }: { showCta: boolean }) {
         {"아직 진행한 수업이 없어요"}
       </Typography>
 
-      {showCta && (
-        <Button
-          component={Link}
-          href={"/"}
-          disableElevation
-          sx={{
-            padding: "16px 64px",
-            gap: "10px",
-            borderRadius: "12px",
-            background: (t) => t.palette.primary.main,
-          }}
-        >
-          <Typography variant={"Heading1"} color={"static.white"}>
-            {"수업 시작하러 가기"}
-          </Typography>
-        </Button>
-      )}
+      <Button
+        component={Link}
+        href={"/"}
+        disableElevation
+        sx={{
+          padding: "16px 64px",
+          gap: "10px",
+          borderRadius: "12px",
+          background: (t) => t.palette.primary.main,
+        }}
+      >
+        <Typography variant={"Heading1"} color={"static.white"}>
+          {"수업 시작하러 가기"}
+        </Typography>
+      </Button>
     </Box>
   );
 }
