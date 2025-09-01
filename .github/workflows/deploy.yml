@@ -56,29 +56,25 @@ jobs:
 
       - name: Remote deploy (extract, swap, restart)
         run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} bash -se <<'EOF'
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} bash -s -- "${{ env.RELEASE_NAME }}" <<'EOF'
           set -euo pipefail
+          REL="$1"
           APP_DIR="/srv/senifit-front"
-          REL="${RELEASE_NAME}"
-
+              
           mkdir -p "$APP_DIR/releases/$REL"
           tar -xzf "/tmp/senifit-front-${REL}.tgz" -C "$APP_DIR/releases/$REL"
-
-          # 권한 정리(ubuntu로 서비스 구동 시)
+              
+          # 서비스 유저/그룹에 맞게 수정(예: ubuntu:ubuntu)
           chown -R ubuntu:ubuntu "$APP_DIR/releases/$REL"
-
-          # 원자적 스와프
+              
           ln -sfn "$APP_DIR/releases/$REL" "$APP_DIR/current"
-
-          # 서비스 재시작
+              
           sudo systemctl daemon-reload
           sudo systemctl restart senifit-front
-
-          # 헬스 체크 (로컬)
+              
           curl -sS -I http://127.0.0.1:3000 | head -n1
           EOF
-        env:
-          RELEASE_NAME: ${{ env.RELEASE_NAME }}
+              
 
       - name: Public healthcheck
         run: |

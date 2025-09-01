@@ -1,6 +1,6 @@
 import React from "react";
 import EditForm from "../panel/EditForm";
-import ReturnButton from "../panel/ReturnButton";
+import ReturnButton from "@/components/ReturnButton";
 import { Stack } from "@mui/material";
 
 const Page = () => {

@@ -203,14 +203,10 @@ const EditForm = ({
           }}
           exclusive
           options={genderOptions}
-          groupProps={{
-            sx: {
-              gap: 2,
-            },
-          }}
+          maxItemWidth={136}
           buttonProps={{
             sx: {
-              minWidth: "8.5rem",
+              maxWidth: "8.5rem",
             },
           }}
         />
