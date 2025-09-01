@@ -64,7 +64,6 @@ jobs:
           mkdir -p "$APP_DIR/releases/$REL"
           tar -xzf "/tmp/senifit-front-${REL}.tgz" -C "$APP_DIR/releases/$REL"
               
-          # 서비스 유저/그룹에 맞게 수정(예: ubuntu:ubuntu)
           chown -R ubuntu:ubuntu "$APP_DIR/releases/$REL"
               
           ln -sfn "$APP_DIR/releases/$REL" "$APP_DIR/current"
