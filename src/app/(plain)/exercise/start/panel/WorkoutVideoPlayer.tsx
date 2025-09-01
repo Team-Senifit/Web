@@ -1,8 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Button, Divider, Stack, Typography } from "@mui/material";
 import VideoPlayer, { IVideoHandle } from "@/components/VideoPlayer";
+import useMedia from "@/hooks/useMedia";
 
 export interface IWorkoutVideo {
   id: number;
@@ -37,12 +38,12 @@ const toAbsUrl = (path: string, base?: string) => {
   }
 };
 
-const fmt = (sec?: number) => {
-  if (!sec || !Number.isFinite(sec)) return "0:00";
-  const m = Math.floor(sec / 60);
-  const s = Math.floor(sec % 60);
-  return `${m}:${String(s).padStart(2, "0")}`;
-};
+// const fmt = (sec?: number) => {
+//   if (!sec || !Number.isFinite(sec)) return "0:00";
+//   const m = Math.floor(sec / 60);
+//   const s = Math.floor(sec % 60);
+//   return `${m}:${String(s).padStart(2, "0")}`;
+// };
 
 export default function WorkoutVideoPlaylist({
   videos,
@@ -51,6 +52,8 @@ export default function WorkoutVideoPlaylist({
   assetBaseUrl,
   onIndexChange,
 }: IWorkoutVideoPlaylistProps) {
+  const { isPhone } = useMedia();
+
   const initialIndex = useMemo(() => {
     if (initialId == null) return 0;
     const i = videos.findIndex((v) => v.id === initialId);
@@ -99,32 +102,6 @@ export default function WorkoutVideoPlaylist({
 
   return (
     <Stack spacing={1}>
-      {/* 외부 컨트롤 (비디오 컴포넌트 바깥) */}
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        <Button variant={"outlined"} onClick={prev}>
-          {"이전"}
-        </Button>
-        <Button variant={"outlined"} onClick={next}>
-          {"다음"}
-        </Button>
-
-        <Typography
-          sx={{
-            ml: 1,
-            flex: 1,
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {current.name}
-        </Typography>
-
-        <Typography variant={"body2"} sx={{ opacity: 0.8 }}>
-          {fmt(current.duration)}
-        </Typography>
-      </Box>
-
       {/* 커스텀 슬라이더 포함된 비디오(내부) */}
       <VideoPlayer
         ref={handleRef}
@@ -135,6 +112,57 @@ export default function WorkoutVideoPlaylist({
         onEnded={next} // 한 영상 끝나면 다음으로
         // onTimeUpdateSec={(cur, dur) => { /* 필요 시 진행률 상태 외부에 전달 */ }}
       />
+      <Stack
+        direction={"column"}
+        spacing={3}
+        sx={{
+          bgcolor: "background.paper",
+          boxShadow: 1,
+          pt: [undefined, 3],
+          px: [undefined, 6],
+          pb: [undefined, 4],
+          p: 3,
+        }}
+      >
+        {!isPhone && (
+          <>
+            <Stack direction={"column"} spacing={1}>
+              <Typography variant={"Title2"}>{current.name}</Typography>
+              <Typography variant={"Heading1"}>
+                {current.description}
+              </Typography>
+            </Stack>
+            <Divider sx={{ borderColor: "border.normal" }} />
+          </>
+        )}
+
+        <Stack direction={"row"} justifyContent={"space-between"} spacing={3}>
+          <Button
+            sx={{
+              flex: [1, "unset"],
+              borderRadius: "0.75rem",
+              py: 2,
+              px: [0, 8],
+              bgcolor: "fillVariants.colored",
+            }}
+            onClick={prev}
+          >
+            <Typography variant={"Heading1"}>{"이전"}</Typography>
+          </Button>
+          <Button
+            variant={"contained"}
+            sx={{
+              flex: [1, "unset"],
+              borderRadius: "0.75rem",
+              py: 2,
+              px: [0, 8],
+            }}
+            onClick={next}
+          >
+            <Typography variant={"Heading1"}>{"다음"}</Typography>
+          </Button>
+        </Stack>
+      </Stack>
     </Stack>
   );
 }
