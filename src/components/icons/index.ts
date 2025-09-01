@@ -11,3 +11,5 @@ export { default as CircleQuestionMarkIcon } from "./CircleQuestionMarkIcon";
 export { default as CircleCheckBigIcon } from "./CircleCheckBigIcon";
 export { default as SettingsIcon } from "./SettingsIcon";
 export { default as ClipboardCheckIcon } from "./ClipboardCheckIcon";
+export { default as CheckIcon } from "./CheckIcon";
+export { default as CirclePlayIcon } from "./CirclePlayIcon";
