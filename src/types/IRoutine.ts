@@ -29,7 +29,8 @@ export type CALISTHENIC_TARGET_CODES =
   | "workout_kinds_calisthenic_targets_abs"
   | "workout_kinds_calisthenic_targets_legs"
   | "workout_kinds_calisthenic_targets_back"
-  | "workout_kinds_calisthenic_targets_armsAndShoulders";
+  | "workout_kinds_calisthenic_targets_armsAndShoulders"
+  | "workout_notSelected";
 
 export const calisthenicTargetCodesLabel: Record<
   CALISTHENIC_TARGET_CODES,
@@ -41,6 +42,7 @@ export const calisthenicTargetCodesLabel: Record<
   workout_kinds_calisthenic_targets_legs: "다리",
   workout_kinds_calisthenic_targets_back: "등",
   workout_kinds_calisthenic_targets_armsAndShoulders: "팔/어깨",
+  workout_notSelected: "미포함",
 };
 
 export type SINGING_WORKOUT_CODES =
