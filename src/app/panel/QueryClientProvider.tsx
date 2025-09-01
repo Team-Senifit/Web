@@ -32,8 +32,6 @@ async function axiosQueryFn({
 }) {
   const [endpoint, params] = queryKey as [string, Record<string, unknown>?];
 
-  console.log("🔧 Query endpoint:", endpoint);
-
   const res = await axiosClient.get(endpoint, { params, signal });
   return res.data;
 }

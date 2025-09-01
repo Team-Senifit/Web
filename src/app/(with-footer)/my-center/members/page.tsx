@@ -46,7 +46,11 @@ const Page = () => {
           endAction={<AddMemberButton />}
         />
         <Divider
-          sx={{ borderColor: "#f2f2f2", borderBottomWidth: "2px", width: 1 }}
+          sx={{
+            borderColor: "borderVariants.normal",
+            borderBottomWidth: "2px",
+            width: 1,
+          }}
         />
         <MemberList members={memberData} />
       </Stack>
