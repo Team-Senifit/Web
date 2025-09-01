@@ -127,6 +127,10 @@ export default function WorkoutVideoPlaylist({
           px: [undefined, 6],
           pb: [undefined, 4],
           p: 3,
+          display: "fixed",
+          left: 0,
+          right: 0,
+          bottom: 0,
         }}
       >
         {!isPhone && (
