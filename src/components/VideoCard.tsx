@@ -23,6 +23,7 @@ const VideoCard = ({ thumbnail_path, name }: IWorkoutVideo) => {
         variant={"Heading1"}
         title={name}
         sx={{
+          width: "15rem",
           color: "label.neutral",
           overflow: "hidden",
           textOverflow: "ellipsis",
