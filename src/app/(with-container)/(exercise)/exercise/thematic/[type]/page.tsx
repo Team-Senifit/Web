@@ -1,9 +1,13 @@
+"use client";
+
 import { Stack } from "@mui/material";
 import React from "react";
-import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
+import ExercisePageInfoCard from "../../../panel/ExercisePageInfoCard";
 import { IPopularRoutine } from "@/types/IPopularRoutine";
-import VideoInfo from "../panel/VideoInfo";
+import VideoInfo from "../../panel/VideoInfo";
 import ReturnButton from "@/components/ReturnButton";
+import { useParams } from "next/navigation";
+import { thematicWorkoutCodesLabel, WorkoutKind } from "@/types/IRoutine";
 
 const popularRoutine: Array<IPopularRoutine> = [
   {
@@ -48,13 +52,14 @@ const popularRoutine: Array<IPopularRoutine> = [
 ];
 
 const Page = () => {
+  const params = useParams<{ type: WorkoutKind }>();
   return (
     <Stack direction={"column"} spacing={3}>
-      <ReturnButton href={"/"} />
+      <ReturnButton href={"/exercise/thematic"} />
       <ExercisePageInfoCard
-        title={"인기 운동 프로그램"}
+        title={`주제별 운동 프로그램 - ${thematicWorkoutCodesLabel[params.type as WorkoutKind]}`}
         description={
-          "시니핏에서 인기있는 운동 프로그램을 한 눈에!\n자세히 보기로 어떤 운동들이 있는지 확인해 보세요."
+          "하고 싶은 주제를 선택하여\n운동 프로그램을 진행할 수 있어요"
         }
       />
       <Stack

@@ -1,7 +1,7 @@
 import React from "react";
 import type { IMember } from "@/types/IMember";
 import { Stack } from "@mui/material";
-import ReturnButton from "../../panel/ReturnButton";
+import ReturnButton from "@/components/ReturnButton";
 import EditForm from "../../panel/EditForm";
 import { createAxiosServer } from "@/apis/createAxiosServer";
 import { IResponse } from "@/types/IResponse";

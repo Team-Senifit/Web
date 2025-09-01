@@ -3,7 +3,7 @@
 import { Box, Divider, Stack } from "@mui/material";
 import React from "react";
 import MemberList from "./panel/MemberList";
-import ReturnButton from "./panel/ReturnButton";
+import ReturnButton from "@/components/ReturnButton";
 import PageInfoCard from "@/components/PageInfoCard";
 import AddMemberButton from "./panel/AddMemberButton";
 import useMedia from "@/hooks/useMedia";
