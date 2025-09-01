@@ -1,11 +1,7 @@
 import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/nextjs";
-import SenifitToggleButtonGroup, {
-  type IExclusiveProps,
-  type IMultiProps,
-  type ISenifitToggleOption,
-  type SizeVariant,
-} from "@/components/SenifitToggleButtonGroup";
+import SenifitToggleButtonGroup from "@/components/SenifitToggleButtonGroup";
+import { IMultiProps, ISenifitToggleOption } from "@/types/IToggleButton";
 
 /** ───────── Exclusive Wrapper (T = "year" | "month" | "day") ───────── */
 
@@ -18,6 +14,11 @@ const meta = {
   parameters: { layout: "centered" },
   argTypes: {
     sizeVariant: { control: { type: "radio" }, options: ["sm", "md", "lg"] },
+    buttonProps: { control: "object" },
+    maxItemsPerRow: {
+      control: "number",
+      description: "한 행에 표시할 최대 버튼 수",
+    },
   },
 } satisfies Meta<typeof SenifitToggleButtonGroup>;
 
