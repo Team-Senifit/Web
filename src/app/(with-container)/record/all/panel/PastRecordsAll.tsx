@@ -2,6 +2,6 @@
 
 import RecordsList from "@/app/(with-container)/record/utils/RecordsList";
 
-export default function PastRecords() {
-  return <RecordsList variant={"top3"} />;
+export default function PastRecordsAll() {
+  return <RecordsList variant={"all"} />;
 }

@@ -25,15 +25,12 @@ export default function RecordButton({ href, cta, surveysExist }: Props) {
         alignItems: "center",
         gap: "8px",
         borderRadius: "12px",
-        background: isDetail
-          ? "var(--Background-alternative, #F5F5F5)"
-          : "var(--Fill-colored, #FFF5F0)",
-        color: isDetail
-          ? "var(--Sementic-Color-Label-color-label-neutral, var(--Label-neutral, #646568))"
-          : "var(--Sementic-Color-Primary-color-primary-default, var(--Primary-default, #FB5F04))"
+        background: (t) =>
+          isDetail ? t.palette.background.default : t.palette.primary.main,
+        color: (t) => (isDetail ? t.palette.grey[600] : t.palette.static.white),
       }}
     >
-      <Typography variant="Heading1" sx={{ color: "inherit" }}>
+      <Typography variant={"Heading1"} sx={{ color: "inherit" }}>
         {cta}
       </Typography>
     </Button>
