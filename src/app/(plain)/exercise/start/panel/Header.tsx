@@ -17,10 +17,6 @@ const Header = ({ duration }: { duration: number }) => {
         py: 3,
         px: 4.5,
         bgcolor: "background.paper",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
       }}
       justifyContent={"space-between"}
     >
