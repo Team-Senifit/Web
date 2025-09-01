@@ -25,7 +25,7 @@ import useProgramStore from "@/states/useProgramStore";
 import Link from "next/link";
 
 const Page = () => {
-  const { isDesktop } = useMedia();
+  const { isPhone, isDesktop } = useMedia();
 
   const router = useRouter();
 
@@ -54,7 +54,14 @@ const Page = () => {
   const selectedMembers = watch("members");
 
   const onSubmit = (data: { members: number[] }) => {
-    setSelectedMembers(data.members);
+    if (!data.members?.length) {
+      setSelectedMembers(null);
+    } else {
+      const selectedMembers = memberData.filter((m) =>
+        data.members?.includes(m.memberId),
+      );
+      setSelectedMembers(selectedMembers);
+    }
     router.push("/exercise/check-selected");
   };
 
@@ -203,6 +210,20 @@ const Page = () => {
           </Stack>
         )}
         <Divider sx={{ borderColor: "borderVariants.normal" }} />
+        <Typography
+          variant={isPhone ? "Headline1" : "Title2"}
+          sx={{ color: "label.normal" }}
+        >
+          {"총 "}
+          <Typography
+            component={"span"}
+            variant={isPhone ? "Headline1" : "Title2"}
+            sx={{ color: "primary.main" }}
+          >
+            {selectedMembers?.length ?? 0}
+          </Typography>
+          {"명"}
+        </Typography>
         <Controller
           name={"members"}
           control={control}
