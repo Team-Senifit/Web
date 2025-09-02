@@ -40,7 +40,7 @@
     ".next",
     ".storybook",
     "storybook-static",
-    "**/*.stories.*",
+    // "**/*.stories.*",
     "**/*.story.*",
     "**/*.test.*"
   ]

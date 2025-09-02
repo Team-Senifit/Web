@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import SenifitSelect from "@/components/SenifitSelect";
 
 const meta: Meta = {
-  title: "components/SenifitSelect",
+  title: "Fields/SenifitSelect",
   component: SenifitSelect,
   tags: ["autodocs"],
 };
