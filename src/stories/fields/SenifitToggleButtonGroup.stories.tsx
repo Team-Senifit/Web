@@ -1,23 +1,28 @@
 import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/nextjs";
-import SenifitToggleButtonGroup, {
-  type IExclusiveProps,
-  type IMultiProps,
-  type ISenifitToggleOption,
-  type SizeVariant,
-} from "@/components/SenifitToggleButtonGroup";
+import SenifitToggleButtonGroup from "@/components/SenifitToggleButtonGroup";
+import { IMultiProps, ISenifitToggleOption } from "@/types/IToggleButton";
 
 /** ───────── Exclusive Wrapper (T = "year" | "month" | "day") ───────── */
 
 type Depth = "year" | "month" | "day";
 
 const meta = {
-  title: "Components/SenifitToggleButtonGroup",
+  title: "Fields/SenifitToggleButtonGroup",
   component: SenifitToggleButtonGroup,
   tags: ["autodocs"],
   parameters: { layout: "centered" },
   argTypes: {
     sizeVariant: { control: { type: "radio" }, options: ["sm", "md", "lg"] },
+    buttonProps: { control: "object" },
+    maxItemsPerRow: {
+      control: "number",
+      description: "한 행에 표시할 최대 버튼 수",
+    },
+    maxItemWidth: {
+      control: "number",
+      description: "버튼의 최대 너비(px단위)",
+    },
   },
 } satisfies Meta<typeof SenifitToggleButtonGroup>;
 
@@ -71,6 +76,7 @@ const MultiWrapper = ({
         fullWidth={fullWidth}
         groupProps={{ gap: 1, ...groupProps }}
         buttonProps={buttonProps}
+        maxItemsPerRow={3}
       />
     </div>
   );
