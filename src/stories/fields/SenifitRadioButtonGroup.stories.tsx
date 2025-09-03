@@ -3,7 +3,7 @@ import SenifitRadioButtonGroup from "@/components/SenifitRadioButtonGroup";
 import WithRHF from "../utils/WithRHF"; // 필요에 따라 경로 조정
 
 const meta: Meta<typeof SenifitRadioButtonGroup> = {
-  title: "Components/SenifitRadioButtonGroup",
+  title: "Fields/SenifitRadioButtonGroup",
   component: SenifitRadioButtonGroup,
   decorators: [WithRHF(false)], // submit 버튼 숨김
   tags: ["autodocs"],
