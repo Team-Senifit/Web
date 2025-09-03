@@ -58,7 +58,7 @@ const toAbsUrl = (path: string, base?: string) => {
 export default function WorkoutVideoPlaylist({
   videos,
   initialId,
-  loop = true,
+  loop = false,
   assetBaseUrl,
   onIndexChange,
   duration,
@@ -152,6 +152,7 @@ export default function WorkoutVideoPlaylist({
         <VideoPlayer
           ref={handleRef}
           src={src}
+          length={videos[index].duration}
           poster={poster}
           barColor={"#FF7A00"}
           aspectRatio={"16 / 9"}
@@ -211,7 +212,9 @@ export default function WorkoutVideoPlaylist({
             }}
             onClick={next}
           >
-            <Typography variant={"Heading1"}>{"다음"}</Typography>
+            <Typography variant={"Heading1"}>
+              {videos.length - 1 === index ? "종료" : "다음"}
+            </Typography>
           </Button>
         </Stack>
       </Stack>

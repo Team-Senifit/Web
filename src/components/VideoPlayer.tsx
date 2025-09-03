@@ -25,6 +25,7 @@ export interface IVideoHandle {
 export interface IVideoPlayerProps
   extends Omit<React.VideoHTMLAttributes<HTMLVideoElement>, "onTimeUpdate"> {
   src: string;
+  length: number;
   poster?: string;
   barColor?: string; // e.g. "warning.main" | "#FF7A00"
   autoPlayOnSourceChange?: boolean;
@@ -58,6 +59,7 @@ const VideoPlayer = forwardRef<IVideoHandle, IVideoPlayerProps>(
   function VideoPlayer(
     {
       src,
+      length,
       poster,
       barColor = "warning.main",
       preload = "metadata",
@@ -280,6 +282,7 @@ const VideoPlayer = forwardRef<IVideoHandle, IVideoPlayerProps>(
 
             <VideoControls
               playing={playing}
+              length={length}
               muted={muted}
               valueNow={valueNow}
               duration={duration}
