@@ -144,7 +144,6 @@ export default function WorkoutVideoPlaylist({
           minHeight: "100dvh",
           display: "grid",
           placeItems: "center",
-          px: 2,
           bgcolor: "black",
         }}
       >
@@ -183,17 +182,23 @@ export default function WorkoutVideoPlaylist({
           py: 3,
           borderTop: "1px solid",
           borderColor: "divider",
+          width: "100%",
         }}
       >
         {!isPhone && <Typography variant={"Title2"}>{current.name}</Typography>}
 
-        <Stack direction={"row"} spacing={3}>
+        <Stack
+          direction={"row"}
+          spacing={3}
+          justifyContent={"flex-end"}
+          width={["100%", "unset"]}
+        >
           <Button
             sx={{
               flex: [1, "unset"],
               borderRadius: "0.75rem",
               py: 2,
-              px: [0, 8],
+              px: [0, 4, 8],
               bgcolor: "fillVariants.colored",
             }}
             onClick={prev}
@@ -208,7 +213,7 @@ export default function WorkoutVideoPlaylist({
               flex: [1, "unset"],
               borderRadius: "0.75rem",
               py: 2,
-              px: [0, 8],
+              px: [0, 4, 8],
             }}
             onClick={next}
           >
