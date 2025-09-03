@@ -65,6 +65,32 @@ export default function WorkoutVideoPlaylist({
 }: IWorkoutVideoPlaylistProps) {
   const { isPhone } = useMedia();
 
+  const CHANNEL = "class-status";
+  const STORAGE_KEY = "__bc_class-status";
+
+  const notifyDone = () => {
+    // eslint-disable-next-line
+    const id = (crypto as any).randomUUID?.() ?? String(Date.now());
+
+    try {
+      const bc = new BroadcastChannel(CHANNEL);
+      bc.postMessage({ type: "CLASS_DONE", id, at: Date.now() });
+      bc.close();
+      window.close();
+      // eslint-disable-next-line
+    } catch (e) {
+      // 일부 환경에서 채널 생성 실패할 수 있으므로 그냥 폴백만 써도 OK
+    }
+
+    // 폴백 (또는 이걸 항상 함께 보냄)
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ type: "CLASS_DONE", id, at: Date.now() }),
+      );
+    } catch {}
+  };
+
   const initialIndex = useMemo(() => {
     if (initialId == null) return 0;
     const i = videos.findIndex((v) => v.id === initialId);
@@ -215,7 +241,7 @@ export default function WorkoutVideoPlaylist({
               py: 2,
               px: [0, 4, 8],
             }}
-            onClick={next}
+            onClick={videos.length - 1 === index ? notifyDone : next}
           >
             <Typography variant={"Heading1"}>
               {videos.length - 1 === index ? "종료" : "다음"}
