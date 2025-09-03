@@ -11,6 +11,7 @@ const formatTime = (sec: number) =>
     : "0:00";
 
 interface Props {
+  length: number;
   playing: boolean;
   muted: boolean;
   valueNow: number;
@@ -28,6 +29,7 @@ interface Props {
 }
 
 export default function VideoControls({
+  length,
   playing,
   muted,
   valueNow,
@@ -81,7 +83,7 @@ export default function VideoControls({
       </IconButton>
 
       <Typography variant={"body2"} sx={{ minWidth: 90 }}>
-        {formatTime(valueNow)} {"/"} {formatTime(duration)}
+        {formatTime(valueNow)} {"/"} {formatTime(length)}
       </Typography>
 
       <Slider
