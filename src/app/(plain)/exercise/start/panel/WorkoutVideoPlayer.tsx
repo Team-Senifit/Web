@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Box, Button, Divider, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import VideoPlayer, { IVideoHandle } from "@/components/VideoPlayer";
 import useMedia from "@/hooks/useMedia";
 import Header from "./Header";
@@ -94,7 +94,7 @@ export default function WorkoutVideoPlaylist({
         if (!loop) return; // 마지막에서 멈춤
         target = 0;
       } else if (next < 0) {
-        target = loop ? len - 1 : 0;
+        target = 0;
       }
 
       setIndex(target);
@@ -153,7 +153,6 @@ export default function WorkoutVideoPlaylist({
           ref={handleRef}
           src={src}
           poster={poster}
-          railVariant={"light"}
           barColor={"#FF7A00"}
           aspectRatio={"16 / 9"}
           fitViewport
@@ -167,10 +166,12 @@ export default function WorkoutVideoPlaylist({
       <Stack
         component={"footer"}
         ref={footerWrapRef}
-        direction={"column"}
+        direction={"row"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
         spacing={3}
         sx={{
-          position: "fixed", // ← display: "fixed" 오타 수정
+          position: "fixed",
           left: 0,
           right: 0,
           bottom: 0,
@@ -183,21 +184,9 @@ export default function WorkoutVideoPlaylist({
           borderColor: "divider",
         }}
       >
-        {!isPhone && (
-          <>
-            <Stack direction={"column"} spacing={1}>
-              <Typography variant={"Title2"} noWrap>
-                {current.name}
-              </Typography>
-              <Typography variant={"Heading1"}>
-                {current.description}
-              </Typography>
-            </Stack>
-            <Divider sx={{ borderColor: "border.normal" }} />
-          </>
-        )}
+        {!isPhone && <Typography variant={"Title2"}>{current.name}</Typography>}
 
-        <Stack direction={"row"} justifyContent={"space-between"} spacing={3}>
+        <Stack direction={"row"} spacing={3}>
           <Button
             sx={{
               flex: [1, "unset"],
@@ -207,10 +196,12 @@ export default function WorkoutVideoPlaylist({
               bgcolor: "fillVariants.colored",
             }}
             onClick={prev}
+            disabled={index === 0}
           >
             <Typography variant={"Heading1"}>{"이전"}</Typography>
           </Button>
           <Button
+            disableElevation
             variant={"contained"}
             sx={{
               flex: [1, "unset"],
