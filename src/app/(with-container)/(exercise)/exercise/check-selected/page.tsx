@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Divider, Stack, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
 import PageInfoCard from "@/components/PageInfoCard";
 import { CirclePlayIcon, SquareUserRoundIcon } from "@/components/icons";
@@ -24,17 +24,55 @@ import VideoCard from "@/components/VideoCard";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+const CHANNEL = "class-status";
+const STORAGE_KEY = "__bc_class-status";
+
 const Page = () => {
   const { isPhone, isDesktop } = useMedia();
 
   const router = useRouter();
+  const handled = useRef<Set<string>>(new Set()); // 중복 방지
+
+  useEffect(() => {
+    // 1) BroadcastChannel 만들기 (mount마다 새로 생성)
+    const bc = new BroadcastChannel(CHANNEL);
+
+    const handleDone = (id: string) => {
+      if (handled.current.has(id)) return;
+      handled.current.add(id);
+      router.push("/exercise/done");
+    };
+
+    const onBc = (e: MessageEvent) => {
+      // eslint-disable-next-line
+      const { type, id } = (e as any).data || {};
+      if (type === "CLASS_DONE" && typeof id === "string") handleDone(id);
+    };
+    bc.addEventListener("message", onBc);
+
+    // 2) storage 폴백 (구형/특수환경 대비)
+    const onStorage = (e: StorageEvent) => {
+      if (e.key !== STORAGE_KEY || !e.newValue) return;
+      try {
+        const { type, id } = JSON.parse(e.newValue);
+        if (type === "CLASS_DONE" && typeof id === "string") handleDone(id);
+      } catch {}
+    };
+    window.addEventListener("storage", onStorage);
+
+    return () => {
+      bc.removeEventListener("message", onBc);
+      bc.close(); // 이 이펙트가 만든 인스턴스만 닫힘 (StrictMode 안전)
+      window.removeEventListener("storage", onStorage);
+    };
+  }, [router]);
 
   const { id, type, selectedMembers, setSelectedProgram } = useProgramStore();
 
   useEffect(() => {
-    if (!type || !id || selectedMembers?.length === 0) {
+    if (!type || !id) {
       window.alert(
-        "운동 프로그램과 참여 어르신을 선택해 주세요. (이후 토스트 틍으로... 수정해야합니다.)",
+        "운동 프로그램을 선택해 주세요. (이후 토스트 틍으로... 수정해야합니다.)",
       );
       router.push("/");
     }
@@ -233,6 +271,8 @@ const Page = () => {
           <Button
             component={Link}
             href={"/exercise/start"}
+            target={"_blank"}
+            rel={"noopener noreferrer"}
             variant={"contained"}
             disableElevation
             sx={{
