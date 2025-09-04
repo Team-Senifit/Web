@@ -5,10 +5,26 @@ import React, { useState } from "react";
 import Timer from "./Timer";
 import useMedia from "@/hooks/useMedia";
 
-const Header = ({ duration }: { duration: number }) => {
+const Header = ({
+  duration,
+  onEnd,
+  isEnd,
+}: {
+  duration: number;
+  isEnd: boolean;
+  onEnd: () => void;
+}) => {
   const { isPhone, isTablet } = useMedia();
 
   const [seconds, setSeconds] = useState<number>(0);
+
+  const handleEnd = () => {
+    if (isEnd) {
+      onEnd();
+    } else {
+      window.close();
+    }
+  };
 
   return (
     <Stack
@@ -48,6 +64,7 @@ const Header = ({ duration }: { duration: number }) => {
       </Stack>
       {isPhone ? (
         <Button
+          onClick={handleEnd}
           sx={{
             px: 2,
             py: 1,
@@ -59,6 +76,7 @@ const Header = ({ duration }: { duration: number }) => {
         </Button>
       ) : (
         <Button
+          onClick={handleEnd}
           sx={{
             px: 8,
             py: 2,
@@ -67,7 +85,9 @@ const Header = ({ duration }: { duration: number }) => {
             borderRadius: "0.75rem",
           }}
         >
-          <Typography variant={"Heading1"}>{"수업 중단"}</Typography>
+          <Typography variant={"Heading1"}>
+            {isEnd ? "수업 종료" : "수업 중단"}
+          </Typography>
         </Button>
       )}
     </Stack>
