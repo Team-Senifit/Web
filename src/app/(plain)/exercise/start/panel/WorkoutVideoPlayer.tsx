@@ -78,11 +78,8 @@ export default function WorkoutVideoPlaylist({
       bc.close();
       window.close();
       // eslint-disable-next-line
-    } catch (e) {
-      // 일부 환경에서 채널 생성 실패할 수 있으므로 그냥 폴백만 써도 OK
-    }
+    } catch (e) {}
 
-    // 폴백 (또는 이걸 항상 함께 보냄)
     try {
       localStorage.setItem(
         STORAGE_KEY,
@@ -158,7 +155,11 @@ export default function WorkoutVideoPlaylist({
           zIndex: 1200,
         }}
       >
-        <Header duration={duration} />
+        <Header
+          duration={duration}
+          isEnd={index === videos.length - 1}
+          onEnd={notifyDone}
+        />
       </Box>
 
       {/* 본문: 헤더/푸터만큼 패딩을 줘서 겹침 방지 + 가운데 정렬 */}
