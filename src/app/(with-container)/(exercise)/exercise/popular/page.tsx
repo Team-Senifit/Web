@@ -10,16 +10,23 @@ import { IResponse } from "@/types/IResponse";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import useProgramStore from "@/states/useProgramStore";
 import { useRouter } from "next/navigation";
+import { workoutDurationsType } from "@/types/IRoutine";
 
 const Page = () => {
   const router = useRouter();
 
-  const { setId, setType, setSelectedProgram } = useProgramStore();
+  const {
+    setId,
+    setType,
+    setSelectedProgram,
+    selectedRoutineRecord,
+    setSelectedRoutineRecord,
+  } = useProgramStore();
 
   useEffect(() => {
     setSelectedProgram(null);
     return () => {};
-  }, []);
+  }, [setSelectedProgram]);
 
   const {
     data: { data: popularRoutine },
@@ -53,6 +60,15 @@ const Page = () => {
             onButtonClick={() => {
               setId(routine.id);
               setType("popular");
+              setSelectedRoutineRecord({
+                ...selectedRoutineRecord,
+                programId: routine.id,
+                routineKind: "workout_programs_selections_byPopular",
+                durationKind: workoutDurationsType[routine.duration],
+                cognitiveKind: "workout_notSelected",
+                targetKind: "workout_notSelected",
+                singingKind: "workout_notSelected",
+              });
               router.push("/exercise/members");
             }}
           />

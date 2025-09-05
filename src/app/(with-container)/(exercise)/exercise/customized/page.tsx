@@ -22,13 +22,20 @@ import { IResponse } from "@/types/IResponse";
 import { IRoutineDetail } from "@/types/IRoutineDetail";
 import useProgramStore from "@/states/useProgramStore";
 import { useRouter } from "next/navigation";
+import { workoutDurationsType } from "@/types/IRoutine";
 
 const Page = () => {
   const { isPhone, isDesktop } = useMedia();
 
   const router = useRouter();
 
-  const { setId, setType, setSelectedProgram } = useProgramStore();
+  const {
+    setId,
+    setType,
+    setSelectedProgram,
+    selectedRoutineRecord,
+    setSelectedRoutineRecord,
+  } = useProgramStore();
 
   useEffect(() => {
     setSelectedProgram(null);
@@ -50,9 +57,18 @@ const Page = () => {
       "/programs/recommendation/by-personal",
       data,
     );
-    console.log(selectedProgram);
     setId(selectedProgram.id);
     setType("customized");
+    setSelectedRoutineRecord({
+      ...selectedRoutineRecord,
+      programId: selectedProgram.id,
+      routineKind: "workout_programs_selections_byPersonal",
+      durationKind: workoutDurationsType[data.duration],
+      cognitiveKind: data.cognitive_workout_code,
+      targetKind: data.primary_target_code,
+      singingKind: data.singing_workout_code,
+    });
+    setSelectedProgram(selectedProgram);
     router.push("/exercise/members");
   };
 
