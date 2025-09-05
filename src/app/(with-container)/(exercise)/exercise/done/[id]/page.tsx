@@ -114,7 +114,7 @@ const Page = () => {
       >
         <Button
           component={Link}
-          href={"/exercise/record"} // 이후 바로 해당 기록 페이지로 이동
+          href={"/exercise/record"} // 기록 페이지로 이동
           variant={"contained"}
           disableElevation
           sx={{
@@ -126,6 +126,8 @@ const Page = () => {
           <Typography variant={"Heading1"}>{"기록하러 가기"}</Typography>
         </Button>
         <Button
+          component={Link}
+          href={"/"}
           variant={"text"}
           sx={{
             borderRadius: "0.75rem",
