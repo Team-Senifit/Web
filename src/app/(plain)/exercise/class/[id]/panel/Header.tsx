@@ -1,11 +1,12 @@
 "use client";
 
 import { Button, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import Timer from "./Timer";
 import useMedia from "@/hooks/useMedia";
 
 const Header = ({
+  seconds,
   duration,
   onEnd,
   isEnd,
@@ -13,10 +14,9 @@ const Header = ({
   duration: number;
   isEnd: boolean;
   onEnd: () => void;
+  seconds: number;
 }) => {
   const { isPhone, isTablet } = useMedia();
-
-  const [seconds, setSeconds] = useState<number>(0);
 
   const handleEnd = () => {
     if (isEnd) {
@@ -58,7 +58,6 @@ const Header = ({
         <Timer
           duration={duration}
           seconds={seconds}
-          setSeconds={setSeconds}
           variant={isPhone ? "Headline1" : isTablet ? "Title2" : "Title1"}
         />
       </Stack>

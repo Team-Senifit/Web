@@ -6,6 +6,7 @@ import VideoPlayer, { IVideoHandle } from "@/components/VideoPlayer";
 import useMedia from "@/hooks/useMedia";
 import Header from "./Header";
 import { useParams } from "next/navigation";
+import { useTimer } from "@/hooks/useTimer";
 
 export interface IWorkoutVideo {
   id: number;
@@ -66,6 +67,8 @@ export default function WorkoutVideoPlaylist({
 }: IWorkoutVideoPlaylistProps) {
   const { isPhone } = useMedia();
 
+  const { seconds } = useTimer();
+
   const CHANNEL = "class-status";
   const STORAGE_KEY = "__bc_class-status";
 
@@ -77,7 +80,13 @@ export default function WorkoutVideoPlaylist({
 
     try {
       const bc = new BroadcastChannel(CHANNEL);
-      bc.postMessage({ type: "CLASS_DONE", id, programId, at: Date.now() });
+      bc.postMessage({
+        type: "CLASS_DONE",
+        id,
+        programId,
+        seconds,
+        at: Date.now(),
+      });
       bc.close();
       window.close();
       // eslint-disable-next-line
@@ -86,7 +95,13 @@ export default function WorkoutVideoPlaylist({
     try {
       localStorage.setItem(
         STORAGE_KEY,
-        JSON.stringify({ type: "CLASS_DONE", id, programId, at: Date.now() }),
+        JSON.stringify({
+          type: "CLASS_DONE",
+          id,
+          programId,
+          seconds,
+          at: Date.now(),
+        }),
       );
     } catch {}
   };
@@ -162,6 +177,7 @@ export default function WorkoutVideoPlaylist({
           duration={duration}
           isEnd={index === videos.length - 1}
           onEnd={notifyDone}
+          seconds={seconds}
         />
       </Box>
 
