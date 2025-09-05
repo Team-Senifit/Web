@@ -30,6 +30,8 @@ const STORAGE_KEY = "__bc_class-status";
 const Page = () => {
   const { isPhone, isDesktop } = useMedia();
 
+  const { id, type, selectedMembers, setSelectedProgram } = useProgramStore();
+
   const router = useRouter();
   const handled = useRef<Set<string>>(new Set()); // 중복 방지
 
@@ -67,7 +69,11 @@ const Page = () => {
     };
   }, [router]);
 
-  const { id, type, selectedMembers, setSelectedProgram } = useProgramStore();
+  const {
+    data: { data: routineDetail },
+  } = useSuspenseQuery<IResponse<IRoutineDetail>>({
+    queryKey: [`/programs/${id}`],
+  });
 
   useEffect(() => {
     if (!type || !id) {
@@ -77,14 +83,10 @@ const Page = () => {
       router.push("/");
     }
 
-    return () => {};
-  }, []);
-
-  const {
-    data: { data: routineDetail },
-  } = useSuspenseQuery<IResponse<IRoutineDetail>>({
-    queryKey: [`/programs/${id}`],
-  });
+    return () => {
+      setSelectedProgram(routineDetail || null);
+    };
+  }, [id, type, router, setSelectedProgram, routineDetail]);
 
   const videoTitle =
     type === "customized" ? "맞춤형 운동 프로그램" : routineDetail.name;
@@ -98,12 +100,6 @@ const Page = () => {
   } else {
     routineUrl = `/exercise/thematic/${type[1]}`;
   }
-
-  useEffect(() => {
-    return () => {
-      setSelectedProgram(routineDetail);
-    };
-  }, []);
 
   const SelectMemberAgainButton = () => {
     return (

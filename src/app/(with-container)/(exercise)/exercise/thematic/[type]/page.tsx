@@ -7,7 +7,11 @@ import { IPopularRoutine } from "@/types/IPopularRoutine";
 import VideoInfo from "../../panel/VideoInfo";
 import ReturnButton from "@/components/ReturnButton";
 import { useParams, useRouter } from "next/navigation";
-import { thematicWorkoutCodesLabel, WorkoutKind } from "@/types/IRoutine";
+import {
+  thematicWorkoutCodesLabel,
+  workoutDurationsType,
+  WorkoutKind,
+} from "@/types/IRoutine";
 import { useMutation } from "@tanstack/react-query";
 import { axiosClient } from "@/apis/axiosClient";
 import useProgramStore from "@/states/useProgramStore";
@@ -19,7 +23,8 @@ const Page = () => {
 
   const [routines, setRoutines] = useState<IPopularRoutine[]>([]);
 
-  const { setId, setType } = useProgramStore();
+  const { setId, setType, setSelectedRoutineRecord, selectedRoutineRecord } =
+    useProgramStore();
 
   const { mutate } = useMutation({
     mutationFn: () =>
@@ -33,7 +38,7 @@ const Page = () => {
 
   useEffect(() => {
     mutate();
-  }, []);
+  }, [mutate]);
 
   if (routines.length === 0) return null;
 
@@ -63,6 +68,11 @@ const Page = () => {
             onButtonClick={() => {
               setId(routine.id);
               setType(["thematic", params.type]);
+              setSelectedRoutineRecord({
+                ...selectedRoutineRecord,
+                programId: routine.id,
+                durationKind: workoutDurationsType[routine.duration],
+              });
               router.push("/exercise/members");
             }}
           />
