@@ -271,7 +271,7 @@ const theme = createTheme({
       positive: "#F5FEF9",
     },
     borderVariants: {
-      normal: "#CBCBCD",
+      normal: "#F2F2F2",
       strong: "#97989B",
     },
     material: {
