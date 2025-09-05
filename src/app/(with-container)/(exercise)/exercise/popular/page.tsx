@@ -16,7 +16,6 @@ const Page = () => {
   const router = useRouter();
 
   const {
-    setId,
     setType,
     setSelectedProgram,
     selectedRoutineRecord,
@@ -58,7 +57,6 @@ const Page = () => {
             key={routine.id}
             {...routine}
             onButtonClick={() => {
-              setId(routine.id);
               setType("popular");
               setSelectedRoutineRecord({
                 ...selectedRoutineRecord,

@@ -22,7 +22,6 @@ import { IResponse } from "@/types/IResponse";
 import { IRoutineDetail } from "@/types/IRoutineDetail";
 import useProgramStore from "@/states/useProgramStore";
 import { useRouter } from "next/navigation";
-import { workoutDurationsType } from "@/types/IRoutine";
 
 const Page = () => {
   const { isPhone, isDesktop } = useMedia();
@@ -30,7 +29,6 @@ const Page = () => {
   const router = useRouter();
 
   const {
-    setId,
     setType,
     setSelectedProgram,
     selectedRoutineRecord,
@@ -53,22 +51,21 @@ const Page = () => {
   const onSubmit = async (data: ICustomizedRoutineField) => {
     const {
       data: { data: selectedProgram },
-    } = await axiosClient.post<IResponse<IRoutineDetail>>(
+    } = await axiosClient.post<IResponse<Array<IRoutineDetail>>>(
       "/programs/recommendation/by-personal",
       data,
     );
-    setId(selectedProgram.id);
     setType("customized");
+    console.log(selectedProgram);
     setSelectedRoutineRecord({
       ...selectedRoutineRecord,
-      programId: selectedProgram.id,
+      programId: selectedProgram[0].id,
       routineKind: "workout_programs_selections_byPersonal",
-      durationKind: workoutDurationsType[data.duration],
+      durationKind: data.duration,
       cognitiveKind: data.cognitive_workout_code,
       targetKind: data.primary_target_code,
       singingKind: data.singing_workout_code,
     });
-    setSelectedProgram(selectedProgram);
     router.push("/exercise/members");
   };
 
