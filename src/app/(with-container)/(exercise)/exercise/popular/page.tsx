@@ -1,7 +1,7 @@
 "use client";
 
 import { Stack } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
 import { IPopularRoutine } from "@/types/IPopularRoutine";
 import VideoInfo from "../panel/VideoInfo";
@@ -14,7 +14,12 @@ import { useRouter } from "next/navigation";
 const Page = () => {
   const router = useRouter();
 
-  const { setId, setType } = useProgramStore();
+  const { setId, setType, setSelectedProgram } = useProgramStore();
+
+  useEffect(() => {
+    setSelectedProgram(null);
+    return () => {};
+  }, []);
 
   const {
     data: { data: popularRoutine },
