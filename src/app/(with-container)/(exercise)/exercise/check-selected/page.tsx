@@ -40,17 +40,17 @@ const Page = () => {
     // 1) BroadcastChannel 만들기 (mount마다 새로 생성)
     const bc = new BroadcastChannel(CHANNEL);
 
-    const handleDone = (id: string, programId: string) => {
+    const handleDone = (id: string, programId: string, seconds: number) => {
       if (handled.current.has(id)) return;
       handled.current.add(id);
-      router.push(`/exercise/done/${programId}`);
+      router.push(`/exercise/done/${programId}?seconds=${seconds}`);
     };
 
     const onBc = (e: MessageEvent) => {
       // eslint-disable-next-line
-      const { type, id, programId } = (e as any).data || {};
+      const { type, id, programId, seconds } = (e as any).data || {};
       if (type === "CLASS_DONE" && typeof id === "string")
-        handleDone(id, programId);
+        handleDone(id, programId, seconds);
     };
     bc.addEventListener("message", onBc);
 
@@ -58,9 +58,9 @@ const Page = () => {
     const onStorage = (e: StorageEvent) => {
       if (e.key !== STORAGE_KEY || !e.newValue) return;
       try {
-        const { type, id, programId } = JSON.parse(e.newValue);
+        const { type, id, programId, seconds } = JSON.parse(e.newValue);
         if (type === "CLASS_DONE" && typeof id === "string")
-          handleDone(id, programId);
+          handleDone(id, programId, seconds);
       } catch {}
     };
     window.addEventListener("storage", onStorage);

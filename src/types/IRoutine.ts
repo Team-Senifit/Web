@@ -12,6 +12,11 @@ export const workoutDurationsType: Record<number, WORKOUT_DURATIONS> = {
   60: "workout_duration_60minutes",
 };
 
+export const workoutDurationsValue: Record<WORKOUT_DURATIONS, number> = {
+  workout_duration_30minutes: 30,
+  workout_duration_60minutes: 60,
+};
+
 export type COGNITIVE_WORKOUT_CODES =
   | "workout_kinds_cognitive_kinds_taekwondo"
   | "workout_kinds_cognitive_kinds_dualtasking"
