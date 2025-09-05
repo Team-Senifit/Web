@@ -2,7 +2,7 @@
 
 import ReturnButton from "@/components/ReturnButton";
 import { Button, Divider, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
 import PageInfoCard from "@/components/PageInfoCard";
 import { SettingsIcon } from "@/components/icons";
@@ -28,7 +28,12 @@ const Page = () => {
 
   const router = useRouter();
 
-  const { setId, setType } = useProgramStore();
+  const { setId, setType, setSelectedProgram } = useProgramStore();
+
+  useEffect(() => {
+    setSelectedProgram(null);
+    return () => {};
+  }, [setSelectedProgram]);
 
   const {
     control,
@@ -45,6 +50,7 @@ const Page = () => {
       "/programs/recommendation/by-personal",
       data,
     );
+    console.log(selectedProgram);
     setId(selectedProgram.id);
     setType("customized");
     router.push("/exercise/members");

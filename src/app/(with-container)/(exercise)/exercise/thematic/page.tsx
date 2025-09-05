@@ -2,7 +2,7 @@
 
 import ReturnButton from "@/components/ReturnButton";
 import { Button, Divider, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
 import PageInfoCard from "@/components/PageInfoCard";
 import { ClipboardCheckIcon } from "@/components/icons";
@@ -17,9 +17,12 @@ import {
 } from "../customized/panel/options";
 import useMedia from "@/hooks/useMedia";
 import Link from "next/link";
+import useProgramStore from "@/states/useProgramStore";
 
 const Page = () => {
   const { isDesktop } = useMedia();
+
+  const { setSelectedProgram } = useProgramStore();
 
   const { control, watch } = useForm<IThematicRoutineField>({
     defaultValues: {
@@ -28,6 +31,11 @@ const Page = () => {
   });
 
   const workoutKind = watch("workout_kind");
+
+  useEffect(() => {
+    setSelectedProgram(null);
+    return () => {};
+  }, []);
 
   return (
     <Stack direction={"column"} spacing={3}>

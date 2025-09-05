@@ -18,7 +18,6 @@ interface IProgramStore {
   clearStore: () => void;
 }
 
-// 방법 1: Zustand persist 미들웨어 사용 (권장)
 const useProgramStore = create<IProgramStore>()(
   persist(
     (set) => ({
