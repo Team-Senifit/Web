@@ -2,6 +2,8 @@ import {
   COGNITIVE_WORKOUT_CODES,
   CALISTHENIC_TARGET_CODES,
   SINGING_WORKOUT_CODES,
+  ROUTINE_TYPES,
+  WORKOUT_DURATIONS,
 } from "./IRoutine";
 
 export interface IWorkoutVideo {
@@ -32,4 +34,14 @@ export interface IRoutineDetail {
     | "workout_notSelected";
   thumbnail_path: string;
   videos: IWorkoutVideo[];
+}
+
+export interface IExerciseNewPayload {
+  programId: number;
+  participants: number[];
+  routineKind: ROUTINE_TYPES;
+  cognitiveKind: COGNITIVE_WORKOUT_CODES;
+  singingKind: SINGING_WORKOUT_CODES;
+  durationKind: WORKOUT_DURATIONS;
+  targetKind: CALISTHENIC_TARGET_CODES;
 }

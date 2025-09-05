@@ -2,7 +2,7 @@
 
 import ReturnButton from "@/components/ReturnButton";
 import { Button, Divider, Stack, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
 import PageInfoCard from "@/components/PageInfoCard";
 import { ClipboardCheckIcon } from "@/components/icons";
@@ -16,29 +16,65 @@ import {
   singingOptionsThematic,
 } from "../customized/panel/options";
 import useMedia from "@/hooks/useMedia";
-import Link from "next/link";
 import useProgramStore from "@/states/useProgramStore";
+import {
+  COGNITIVE_WORKOUT_CODES,
+  SINGING_WORKOUT_CODES,
+  CALISTHENIC_TARGET_CODES,
+  ROUTINE_TYPES,
+} from "@/types/IRoutine";
+import { IExerciseNewPayload } from "@/types/IRoutineDetail";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
+  const router = useRouter();
+
   const { isDesktop } = useMedia();
 
-  const { setSelectedProgram } = useProgramStore();
+  const { setSelectedRoutineRecord } = useProgramStore();
 
-  const { control, watch } = useForm<IThematicRoutineField>({
+  const { control, handleSubmit } = useForm<IThematicRoutineField>({
     defaultValues: {
       workout_kind: "workout_kinds_cognitive_kinds_taekwondo",
     },
   });
 
-  const workoutKind = watch("workout_kind");
+  const onSubmit = (data: IThematicRoutineField) => {
+    const workoutKind = data.workout_kind;
 
-  useEffect(() => {
-    setSelectedProgram(null);
-    return () => {};
-  }, []);
+    const routineKind: ROUTINE_TYPES = "workout_programs_selections_byTarget";
+    const cognitiveKind: COGNITIVE_WORKOUT_CODES = workoutKind.includes(
+      "workout_kinds_cognitive_kinds_",
+    )
+      ? (workoutKind as COGNITIVE_WORKOUT_CODES)
+      : "workout_notSelected";
+    const singingKind: SINGING_WORKOUT_CODES = workoutKind.includes(
+      "workout_kinds_singing_kinds_",
+    )
+      ? (workoutKind as SINGING_WORKOUT_CODES)
+      : "workout_notSelected";
+    const targetKind: CALISTHENIC_TARGET_CODES = workoutKind.includes(
+      "workout_kinds_calisthenic_kinds_",
+    )
+      ? (workoutKind as CALISTHENIC_TARGET_CODES)
+      : "workout_notSelected";
 
+    setSelectedRoutineRecord({
+      routineKind,
+      cognitiveKind,
+      singingKind,
+      targetKind,
+    } as IExerciseNewPayload);
+
+    router.push(`/exercise/thematic/${workoutKind}`);
+  };
   return (
-    <Stack direction={"column"} spacing={3}>
+    <Stack
+      direction={"column"}
+      spacing={3}
+      component={"form"}
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <ReturnButton href={"/"} />
       <ExercisePageInfoCard
         title={"주제별 운동 프로그램"}
@@ -115,8 +151,9 @@ const Page = () => {
 
         <Stack direction={"row"} width={"100%"} justifyContent={"flex-end"}>
           <Button
-            component={Link}
-            href={`/exercise/thematic/${workoutKind}`}
+            // component={Link}
+            // href={`/exercise/thematic/${workoutKind}`}
+            type={"submit"}
             variant={"contained"}
             fullWidth={!isDesktop}
             disableElevation
