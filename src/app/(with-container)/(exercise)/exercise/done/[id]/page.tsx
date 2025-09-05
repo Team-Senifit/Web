@@ -2,10 +2,10 @@
 
 import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import Image from "next/image";
-// import { axiosClient } from "@/apis/axiosClient";
-// import { useMutation } from "@tanstack/react-query";
+import { axiosClient } from "@/apis/axiosClient";
+import { useMutation } from "@tanstack/react-query";
 import { useParams, useSearchParams } from "next/navigation";
-// import React, { useEffect } from "react";
+import React, { useEffect } from "react";
 import handclapImage from "@/assets/images/handclap.png";
 import useProgramStore from "@/states/useProgramStore";
 import { formatTime } from "@/stories/utils/formatTime";
@@ -13,7 +13,7 @@ import useMedia from "@/hooks/useMedia";
 import Link from "next/link";
 
 const Page = () => {
-  // const { id } = useParams();
+  const { id } = useParams();
 
   const { isTablet, isDesktop } = useMedia();
 
@@ -21,15 +21,15 @@ const Page = () => {
   const seconds = Number(searchParams.get("seconds")) || 0;
   const { selectedProgram } = useProgramStore();
 
-  // const { mutate } = useMutation({
-  //   mutationFn: async () => {
-  //     await axiosClient.put(`/records/${id}`);
-  //   },
-  // });
+  const { mutate } = useMutation({
+    mutationFn: async () => {
+      await axiosClient.put(`/records/${id}`);
+    },
+  });
 
-  // useEffect(() => {
-  //   mutate();
-  // }, [mutate]);
+  useEffect(() => {
+    mutate();
+  }, [mutate]);
 
   return (
     <Stack
