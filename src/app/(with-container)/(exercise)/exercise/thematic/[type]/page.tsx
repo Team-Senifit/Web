@@ -23,7 +23,7 @@ const Page = () => {
 
   const [routines, setRoutines] = useState<IPopularRoutine[]>([]);
 
-  const { setId, setType, setSelectedRoutineRecord, selectedRoutineRecord } =
+  const { setType, setSelectedRoutineRecord, selectedRoutineRecord } =
     useProgramStore();
 
   const { mutate } = useMutation({
@@ -66,7 +66,6 @@ const Page = () => {
             key={routine.id}
             {...routine}
             onButtonClick={() => {
-              setId(routine.id);
               setType(["thematic", params.type]);
               setSelectedRoutineRecord({
                 ...selectedRoutineRecord,

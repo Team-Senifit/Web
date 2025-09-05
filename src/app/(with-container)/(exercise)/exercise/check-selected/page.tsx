@@ -30,7 +30,8 @@ const STORAGE_KEY = "__bc_class-status";
 const Page = () => {
   const { isPhone, isDesktop } = useMedia();
 
-  const { id, type, selectedMembers, setSelectedProgram } = useProgramStore();
+  const { type, selectedMembers, setSelectedProgram, selectedRoutineRecord } =
+    useProgramStore();
 
   const router = useRouter();
   const handled = useRef<Set<string>>(new Set()); // 중복 방지
@@ -72,11 +73,11 @@ const Page = () => {
   const {
     data: { data: routineDetail },
   } = useSuspenseQuery<IResponse<IRoutineDetail>>({
-    queryKey: [`/programs/${id}`],
+    queryKey: [`/programs/${selectedRoutineRecord?.programId}`],
   });
 
   useEffect(() => {
-    if (!type || !id) {
+    if (!type || !selectedRoutineRecord) {
       window.alert(
         "운동 프로그램을 선택해 주세요. (이후 토스트 틍으로... 수정해야합니다.)",
       );
@@ -86,7 +87,7 @@ const Page = () => {
     return () => {
       setSelectedProgram(routineDetail || null);
     };
-  }, [id, type, router, setSelectedProgram, routineDetail]);
+  }, [type, router, setSelectedProgram, routineDetail, selectedRoutineRecord]);
 
   const videoTitle =
     type === "customized" ? "맞춤형 운동 프로그램" : routineDetail.name;
