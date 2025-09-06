@@ -30,11 +30,9 @@ export class AuthErrorBoundary extends Component<
     // 인증 에러면 로그인 페이지로 리다이렉트
     if (isAuthError(error)) {
       console.log("🔄 Redirecting to login...");
-
       // 현재 경로 보존
       const currentPath = window.location.pathname + window.location.search;
       const loginUrl = `${error.redirectTo}?next=${encodeURIComponent(currentPath)}`;
-
       // 즉시 리다이렉트
       window.location.href = loginUrl;
     }

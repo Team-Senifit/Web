@@ -7,6 +7,16 @@ export const workoutDurationsLabel: Record<WORKOUT_DURATIONS, string> = {
   workout_duration_60minutes: "60분",
 };
 
+export const workoutDurationsType: Record<number, WORKOUT_DURATIONS> = {
+  30: "workout_duration_30minutes",
+  60: "workout_duration_60minutes",
+};
+
+export const workoutDurationsValue: Record<WORKOUT_DURATIONS, number> = {
+  workout_duration_30minutes: 30,
+  workout_duration_60minutes: 60,
+};
+
 export type COGNITIVE_WORKOUT_CODES =
   | "workout_kinds_cognitive_kinds_taekwondo"
   | "workout_kinds_cognitive_kinds_dualtasking"
@@ -72,3 +82,8 @@ export const thematicWorkoutCodesLabel: Record<WorkoutKind, string> = {
   workout_kinds_singing: "노래 체조",
   workout_notSelected: "미포함",
 };
+
+export type ROUTINE_TYPES =
+  | "workout_programs_selections_byPopular"
+  | "workout_programs_selections_byPersonal"
+  | "workout_programs_selections_byTarget";

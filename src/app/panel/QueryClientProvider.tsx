@@ -8,7 +8,7 @@ import {
   MutationCache,
 } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { axiosClient } from "@/apis/axiosClient";
 import { isAuthError } from "@/apis/errors";
 
@@ -37,13 +37,14 @@ async function axiosQueryFn({
 }
 
 export default function QueryProviders({ children }: PropsWithChildren) {
-  const router = useRouter();
+  // const router = useRouter();
+
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const locationRef = useRef({ pathname: "/", search: "" });
   const redirectingRef = useRef(false);
-  const lastRedirectTimeRef = useRef(0);
+  // const lastRedirectTimeRef = useRef(0);
 
   useEffect(() => {
     locationRef.current = {
@@ -54,48 +55,11 @@ export default function QueryProviders({ children }: PropsWithChildren) {
     redirectingRef.current = false;
   }, [pathname, searchParams]);
 
-  const redirectToLogin = (to = "/login") => {
-    if (typeof window === "undefined") return;
-
-    // 중복 리다이렉트 방지 (1초 내 중복 요청 차단)
-    const now = Date.now();
-    if (redirectingRef.current || now - lastRedirectTimeRef.current < 1000) {
-      return;
-    }
-
-    const { pathname, search } = locationRef.current;
-    // 이미 로그인 페이지에 있으면 리다이렉트하지 않음
-    if (pathname.startsWith("/login")) return;
-
-    redirectingRef.current = true;
-    lastRedirectTimeRef.current = now;
-
-    const next = pathname + (search ? `?${search}` : "");
-    router.replace(`${to}?next=${encodeURIComponent(next)}`);
-
-    // 3초 후 플래그 해제 (안전장치)
-    setTimeout(() => {
-      redirectingRef.current = false;
-    }, 3000);
-  };
-
   const [client] = useState(
     () =>
       new QueryClient({
-        queryCache: new QueryCache({
-          onError: (err) => {
-            if (isAuthError(err)) {
-              redirectToLogin(err.redirectTo);
-            }
-          },
-        }),
-        mutationCache: new MutationCache({
-          onError: (err) => {
-            if (isAuthError(err)) {
-              redirectToLogin(err.redirectTo);
-            }
-          },
-        }),
+        queryCache: new QueryCache({}),
+        mutationCache: new MutationCache({}),
         defaultOptions: {
           queries: {
             queryFn: axiosQueryFn,
@@ -105,7 +69,6 @@ export default function QueryProviders({ children }: PropsWithChildren) {
             refetchOnReconnect: "always",
             refetchOnMount: false,
             retry(failureCount, err) {
-              // 인증 에러면 재시도하지 않음 (이미 onError에서 처리됨)
               if (isAuthError(err)) {
                 return false;
               }
