@@ -1,20 +1,33 @@
 "use client";
 
+import { axiosClient } from "@/apis/axiosClient";
 import useMedia from "@/hooks/useMedia";
-import { IMember } from "@/types/IMember";
+import { genderLabel, gradeLabel, IMember } from "@/types/IMember";
+import { calculateAge } from "@/utils/calculateAge";
 import { Button, Stack, Typography } from "@mui/material";
+import {
+  type UseMutateFunction,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
+import dayjs from "dayjs";
 import Link from "next/link";
 import React from "react";
 
 const Member = ({
-  id,
+  memberId: id,
   name,
-  age,
-  grade,
+  birthDate,
+  memberRank,
   gender,
   isTablet,
   isDesktop,
-}: IMember & { isDesktop: boolean; isTablet: boolean }) => {
+  mutate,
+}: IMember & {
+  isDesktop: boolean;
+  isTablet: boolean;
+  mutate: UseMutateFunction<void, Error, number, unknown>;
+}) => {
   return (
     <Stack
       direction={{ phone: "column", tablet: "row" }}
@@ -31,7 +44,14 @@ const Member = ({
       >
         <Typography
           variant={isDesktop ? "Title2" : "Headline1"}
-          sx={{ color: "label.normal", width: "8.25rem" }}
+          title={name}
+          sx={{
+            color: "label.normal",
+            width: "8.25rem",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
         >
           {name}
         </Typography>
@@ -43,8 +63,7 @@ const Member = ({
               width: { phone: "3rem", desktop: "3.5rem" },
             }}
           >
-            {age}
-            {"세"}
+            {`${calculateAge(dayjs(birthDate))}세`}
           </Typography>
           <Typography
             variant={isDesktop ? "Heading1" : "Headline1"}
@@ -53,7 +72,7 @@ const Member = ({
               width: { phone: "3rem", desktop: "3.5rem" },
             }}
           >
-            {gender}
+            {genderLabel[gender]}
           </Typography>
           <Typography
             variant={isDesktop ? "Heading1" : "Headline1"}
@@ -62,7 +81,7 @@ const Member = ({
               width: { phone: "6rem", desktop: "8rem" },
             }}
           >
-            {grade}
+            {gradeLabel[memberRank]}
           </Typography>
         </Stack>
       </Stack>
@@ -93,6 +112,9 @@ const Member = ({
         </Button>
         <Button
           variant={"text"}
+          onClick={() => {
+            mutate(id);
+          }}
           sx={{
             color: "statusVariants.negative",
             bgcolor: "fillVariants.negative",
@@ -114,13 +136,26 @@ const Member = ({
 
 const MemberList = ({ members }: { members: Array<IMember> }) => {
   const { isTablet, isDesktop } = useMedia();
+
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation({
+    mutationFn: async (id: number) => {
+      await axiosClient.delete(`/centers/members/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/centers/members"] });
+    },
+  });
+
   return (
     <>
       {members.map((member) => (
         <Member
-          key={member.id}
+          key={member.memberId}
           isDesktop={isDesktop}
           isTablet={isTablet}
+          mutate={mutate}
           {...member}
         />
       ))}

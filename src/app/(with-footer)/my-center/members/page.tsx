@@ -3,40 +3,23 @@
 import { Box, Divider, Stack } from "@mui/material";
 import React from "react";
 import MemberList from "./panel/MemberList";
-import ReturnButton from "./panel/ReturnButton";
+import ReturnButton from "@/components/ReturnButton";
 import PageInfoCard from "@/components/PageInfoCard";
 import AddMemberButton from "./panel/AddMemberButton";
 import useMedia from "@/hooks/useMedia";
 import { SquareUserRoundIcon } from "@/components/icons";
 import { IMember } from "@/types/IMember";
-
-const memberData: Array<IMember> = [
-  {
-    id: 1,
-    name: "홍길동",
-    age: 70,
-    grade: "인지지원등급",
-    gender: "남성",
-  },
-  {
-    id: 2,
-    name: "김영희",
-    age: 65,
-    grade: "1등급",
-    gender: "여성",
-  },
-
-  {
-    id: 3,
-    name: "이철수",
-    age: 72,
-    grade: "2등급",
-    gender: "남성",
-  },
-];
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { IResponse } from "@/types/IResponse";
 
 const Page = () => {
   const { isDesktop } = useMedia();
+  const {
+    data: { data: memberData },
+  } = useSuspenseQuery<IResponse<Array<IMember>>>({
+    queryKey: ["/centers/members"],
+  });
+
   return (
     <Stack spacing={[2, 3]} sx={{ width: "100%", height: "100%" }}>
       <ReturnButton href={"/my-center"} />
@@ -63,7 +46,11 @@ const Page = () => {
           endAction={<AddMemberButton />}
         />
         <Divider
-          sx={{ borderColor: "#f2f2f2", borderBottomWidth: "2px", width: 1 }}
+          sx={{
+            borderColor: "borderVariants.normal",
+            borderBottomWidth: "2px",
+            width: 1,
+          }}
         />
         <MemberList members={memberData} />
       </Stack>

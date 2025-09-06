@@ -1,12 +1,14 @@
 import { ILoginPayload } from "@/types/ILoginPayload";
-import { createAxiosServer } from "@/apis/createAxiosServer";
+import axios from "axios";
 
 export const login = async ({ id, password }: ILoginPayload) => {
-  const params = `id=${encodeURIComponent(id)}&password=${encodeURIComponent(password)}`;
+  const params = `id=${id}&password=${password}`;
 
-  const api = await createAxiosServer();
-  const response = await api.post(`/auth/signin`, params, {
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  const response = await axios.post(`/api/auth/signin`, params, {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    withCredentials: true, // 쿠키로 세션 유지
   });
 
   return response.data;
