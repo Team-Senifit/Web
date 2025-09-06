@@ -11,38 +11,27 @@ import {
   Button,
 } from "@mui/material";
 import Link from "next/link";
-import { getRecords, RecordItem } from "./recordUtils";
-import RecordBrief from "../panel/RecordBrief";
-import RecordButton from "../panel/RecordButton";
+import type { RecordItem } from "./recordUtils";
+import RecordBrief from "./RecordBrief";
+import RecordButton from "./RecordButton";
 import ReloadIcon from "@/components/icons/ReloadIcon";
 
 type Variant = "top3" | "all";
 
 type Props = {
   variant: Variant;
+  all: RecordItem[];
 };
 
 const BATCH = 10;
 
-export default function RecordsList({ variant }: Props) {
-  const [all, setAll] = useState<RecordItem[]>([]);
+export default function RecordsList({ variant, all }: Props) {
   const [visible, setVisible] = useState(variant === "top3" ? 3 : BATCH);
-  const [loading, setLoading] = useState(true);
+  const loading = false;
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
-  const load = async () => {
-    setLoading(true);
-    const data = await getRecords();
-    setAll(data);
-    console.log(data);
-    setVisible(variant === "top3" ? 3 : BATCH);
-    console.log(visible);
-    setLoading(false);
-    console.log(loading);
-  };
-
   useEffect(() => {
-    load();
+    setVisible(variant === "top3" ? 3 : BATCH);
   }, [variant]);
 
   // 무한 스크롤: variant === "all" 일 때만 동작
@@ -57,11 +46,18 @@ export default function RecordsList({ variant }: Props) {
   }, [all.length, variant]);
 
   const list = useMemo(() => all.slice(0, visible), [all, visible]);
-  console.log("loading ", loading);
   const isEmpty = !loading && all.length === 0;
 
   return (
-    <Card variant={"outlined"} sx={{ p: 0, borderRadius: "12px", mb: 8 }}>
+    <Card
+      variant={"outlined"}
+      sx={{
+        p: 0,
+        borderRadius: "12px",
+        mb: 8,
+        boxShadow: "0 0 8px 0 rgba(12, 13, 13, 0.05)",
+      }}
+    >
       <CardContent sx={{ p: 6 }}>
         <Stack spacing={1}>
           <ReloadIcon />

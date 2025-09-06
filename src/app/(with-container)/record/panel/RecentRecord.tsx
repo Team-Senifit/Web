@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -13,28 +13,20 @@ import {
   Button,
   Box,
 } from "@mui/material";
-import { getRecords, RecordItem } from "../utils/recordUtils";
-import RecordBrief from "./RecordBrief";
+import type { RecordItem } from "../utils/recordUtils";
+import RecordBrief from "../utils/RecordBrief";
 import Image from "next/image";
 import recordLogo from "@/assets/logo/record-logo.png";
 import GradientCard from "../utils/GradientCard";
 import SurveyIcon from "@/components/icons/SurveyIcon";
 
-export default function RecentRecord() {
+export default function RecentRecord({
+  latest,
+}: {
+  latest: RecordItem | null;
+}) {
   const router = useRouter();
-  const [latest, setLatest] = useState<RecordItem | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
-
-  useEffect(() => {
-    let mounted = true;
-    (async () => {
-      const data = await getRecords();
-      if (mounted) setLatest(data[0] ?? null);
-    })();
-    return () => {
-      mounted = false;
-    };
-  }, []);
 
   const handleClickCard = () => {
     if (latest?.surveysExist) {
@@ -69,7 +61,7 @@ export default function RecentRecord() {
               }}
             >
               <Typography variant={"Title1"}>{"최근 수업 기록하기"}</Typography>
-              <SurveyIcon active={true} />
+              <SurveyIcon active={1} />
             </Box>
 
             {latest ? (
