@@ -28,7 +28,12 @@ const Page = () => {
 
   const router = useRouter();
 
-  const { setId, setType, setSelectedProgram } = useProgramStore();
+  const {
+    setType,
+    setSelectedProgram,
+    selectedRoutineRecord,
+    setSelectedRoutineRecord,
+  } = useProgramStore();
 
   useEffect(() => {
     setSelectedProgram(null);
@@ -46,13 +51,21 @@ const Page = () => {
   const onSubmit = async (data: ICustomizedRoutineField) => {
     const {
       data: { data: selectedProgram },
-    } = await axiosClient.post<IResponse<IRoutineDetail>>(
+    } = await axiosClient.post<IResponse<Array<IRoutineDetail>>>(
       "/programs/recommendation/by-personal",
       data,
     );
-    console.log(selectedProgram);
-    setId(selectedProgram.id);
     setType("customized");
+    console.log(selectedProgram);
+    setSelectedRoutineRecord({
+      ...selectedRoutineRecord,
+      programId: selectedProgram[0].id,
+      routineKind: "workout_programs_selections_byPersonal",
+      durationKind: data.duration,
+      cognitiveKind: data.cognitive_workout_code,
+      targetKind: data.primary_target_code,
+      singingKind: data.singing_workout_code,
+    });
     router.push("/exercise/members");
   };
 

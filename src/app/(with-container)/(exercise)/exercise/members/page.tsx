@@ -29,7 +29,12 @@ const Page = () => {
 
   const router = useRouter();
 
-  const { type, setSelectedMembers } = useProgramStore();
+  const {
+    type,
+    setSelectedMembers,
+    setSelectedRoutineRecord,
+    selectedRoutineRecord,
+  } = useProgramStore();
 
   let returnPath = "";
 
@@ -61,6 +66,10 @@ const Page = () => {
         data.members?.includes(m.memberId),
       );
       setSelectedMembers(selectedMembers);
+      setSelectedRoutineRecord({
+        ...selectedRoutineRecord!,
+        participants: selectedMembers.map((m) => m.memberId),
+      });
     }
     router.push("/exercise/check-selected");
   };

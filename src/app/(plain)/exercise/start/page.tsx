@@ -1,33 +1,51 @@
 "use client";
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import useProgramStore from "@/states/useProgramStore";
-import WorkoutVideoPlaylist from "./panel/WorkoutVideoPlayer";
 import { useRouter } from "next/navigation";
+import { useClientReady } from "@/hooks/useClientReady";
+import { useMutation } from "@tanstack/react-query";
+import { axiosClient } from "@/apis/axiosClient";
+import { IResponse } from "@/types/IResponse";
 
 const Page = () => {
+  const isClientReady = useClientReady();
   const router = useRouter();
-  const { selectedProgram } = useProgramStore();
+  const { selectedProgram, selectedRoutineRecord } = useProgramStore();
+
+  const { mutate } = useMutation({
+    mutationFn: async (): Promise<IResponse<{ id: number }>> => {
+      const response = await axiosClient.post<IResponse<{ id: number }>>(
+        "/records",
+        {
+          programId: selectedRoutineRecord?.programId,
+          participants: selectedRoutineRecord?.participants,
+          routineKind: selectedRoutineRecord?.routineKind,
+          cognitiveKind: selectedRoutineRecord?.cognitiveKind,
+          singingKind: selectedRoutineRecord?.singingKind,
+          durationKind: selectedRoutineRecord?.durationKind,
+          targetKind: selectedRoutineRecord?.targetKind,
+        },
+      );
+      return response.data;
+    },
+    onSuccess: (data: IResponse<{ id: number }>) => {
+      router.push(`/exercise/class/${data.data.id}`);
+    },
+  });
 
   useEffect(() => {
-    if (!selectedProgram) {
+    if (!isClientReady) return;
+    else if (!selectedProgram || !selectedRoutineRecord) {
       router.push("/");
+    } else {
+      mutate();
     }
 
     return () => {};
-  }, [selectedProgram, router]);
+  }, [selectedProgram, router, isClientReady, selectedRoutineRecord, mutate]);
 
-  if (!selectedProgram) return null;
-
-  return (
-    <div>
-      <WorkoutVideoPlaylist
-        duration={selectedProgram?.duration}
-        videos={selectedProgram?.videos}
-        initialId={selectedProgram?.videos[0]?.id}
-      />
-    </div>
-  );
+  return null;
 };
 
 export default Page;

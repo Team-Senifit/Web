@@ -5,6 +5,8 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import VideoPlayer, { IVideoHandle } from "@/components/VideoPlayer";
 import useMedia from "@/hooks/useMedia";
 import Header from "./Header";
+import { useParams } from "next/navigation";
+import { useTimer } from "@/hooks/useTimer";
 
 export interface IWorkoutVideo {
   id: number;
@@ -64,6 +66,45 @@ export default function WorkoutVideoPlaylist({
   duration,
 }: IWorkoutVideoPlaylistProps) {
   const { isPhone } = useMedia();
+
+  const { seconds } = useTimer();
+
+  const CHANNEL = "class-status";
+  const STORAGE_KEY = "__bc_class-status";
+
+  const { id: programId } = useParams();
+
+  const notifyDone = () => {
+    // eslint-disable-next-line
+    const id = (crypto as any).randomUUID?.() ?? String(Date.now());
+
+    try {
+      const bc = new BroadcastChannel(CHANNEL);
+      bc.postMessage({
+        type: "CLASS_DONE",
+        id,
+        programId,
+        seconds,
+        at: Date.now(),
+      });
+      bc.close();
+      window.close();
+      // eslint-disable-next-line
+    } catch (e) {}
+
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          type: "CLASS_DONE",
+          id,
+          programId,
+          seconds,
+          at: Date.now(),
+        }),
+      );
+    } catch {}
+  };
 
   const initialIndex = useMemo(() => {
     if (initialId == null) return 0;
@@ -132,7 +173,12 @@ export default function WorkoutVideoPlaylist({
           zIndex: 1200,
         }}
       >
-        <Header duration={duration} />
+        <Header
+          duration={duration}
+          isEnd={index === videos.length - 1}
+          onEnd={notifyDone}
+          seconds={seconds}
+        />
       </Box>
 
       {/* 본문: 헤더/푸터만큼 패딩을 줘서 겹침 방지 + 가운데 정렬 */}
@@ -215,7 +261,7 @@ export default function WorkoutVideoPlaylist({
               py: 2,
               px: [0, 4, 8],
             }}
-            onClick={next}
+            onClick={videos.length - 1 === index ? notifyDone : next}
           >
             <Typography variant={"Heading1"}>
               {videos.length - 1 === index ? "종료" : "다음"}
