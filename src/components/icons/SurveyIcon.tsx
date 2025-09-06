@@ -44,20 +44,30 @@ const SurveyIconBase = createSvgIcon(
 
 export type SurveyIconProps = SvgIconProps & {
   strokeWidth?: number | string;
-  active?: boolean;
+  active?: 1 | 2 | 3;
 };
 
 const SurveyIcon = React.forwardRef<SVGSVGElement, SurveyIconProps>(
-  ({ strokeWidth, active = false, sx, ...rest }, ref) => (
+  ({ strokeWidth = 2, active = 1, sx, ...rest }, ref) => (
     <SurveyIconBase
       ref={ref}
       sx={{
         ...sx,
         strokeWidth,
         "& *": { vectorEffect: "non-scaling-stroke" },
-        color: (t) =>
-          active ? t.palette.primary.main : t.palette.common.white,
-        fontSize: active ? 40 : 24,
+        color: (t) => {
+          switch (active) {
+            case 1:
+              return t.palette.primary.main;
+            case 2:
+              return t.palette.common.white;
+            case 3:
+              return t.palette.label.neutral;
+            default:
+              return t.palette.label.neutral;
+          }
+        },
+        fontSize: active === 1 ? 40 : 24,
       }}
       {...rest}
     />

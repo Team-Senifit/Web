@@ -1,22 +1,12 @@
-import Record from "./panel/Record";
-import { Box } from "@mui/material";
+import { Stack } from "@mui/material";
+import RecentRecordSection from "./panel/RecentRecordSection";
+import PastRecordsSection from "./panel/PastRecordsSection";
 
-// type CenterAPI = {
-//   status: number;
-//   message: string;
-//   data: { name: string };
-// };
-
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
-export default async function RecordPage() {
-  // const api = await createAxiosServer();
-  // const { data } = await api.get("/centers");
-
+export default function Record() {
   return (
-    <Box>
-      <Record />
-    </Box>
+    <Stack spacing={3}>
+      <RecentRecordSection />
+      <PastRecordsSection />
+    </Stack>
   );
 }

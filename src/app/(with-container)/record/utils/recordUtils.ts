@@ -1,7 +1,5 @@
-import axios from "axios";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
-import { mockRecords } from "./record.mock";
 dayjs.locale("ko");
 
 /* 타입 */
@@ -18,28 +16,6 @@ export type RecordItem = {
   durationKind: string;
   surveysExist: boolean;
 };
-
-type RecordAPI = { status: number; message: string; data: RecordItem[] };
-
-const USE_MOCK =
-  typeof process !== "undefined" && process.env.NEXT_PUBLIC_USE_MOCK === "true";
-
-/** 공통 호출: mock 옵션 or .env 플래그 or 실패 시 => 더미 반환 */
-export async function getRecords(opts?: {
-  mock?: boolean;
-}): Promise<RecordItem[]> {
-  if (opts?.mock || USE_MOCK) return mockRecords;
-
-  try {
-    const { data } = await axios.get<RecordAPI>(`/api/record`, {
-      withCredentials: true,
-    });
-    return data?.data ?? [];
-  } catch {
-    // API 연동 전/실패 시 더미 사용
-    return mockRecords;
-  }
-}
 
 // 날짜를 반환
 export function dateString(startISO?: string, endISO?: string) {
@@ -112,6 +88,43 @@ export function translateSingingKind(value?: string): string {
       return "노래체조 포함";
     case "workout_notSelected":
       return "노래체조 미포함";
+    default:
+      return "";
+  }
+}
+
+export function ageFromBirthDate(birthISO?: string) {
+  if (!birthISO) return "";
+  const b = dayjs(birthISO);
+  const today = dayjs();
+  let age = today.year() - b.year();
+  if (
+    today.month() < b.month() ||
+    (today.month() === b.month() && today.date() < b.date())
+  ) {
+    age -= 1;
+  }
+  return `${age}세`;
+}
+
+export function genderLabel(g?: number) {
+  if (g === 1) return "남성";
+  if (g === 0) return "여성";
+  return "";
+}
+
+export function memberRankLabel(rank?: number) {
+  switch (rank) {
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+      return `${rank}등급`;
+    case 6:
+      return "인지지원등급";
+    case 0:
+      return "등급 외";
     default:
       return "";
   }

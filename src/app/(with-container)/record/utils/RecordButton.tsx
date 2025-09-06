@@ -35,7 +35,7 @@ export default function RecordButton({ href, cta, surveysExist }: Props) {
         {cta}
       </Typography>
       {/* 작성하기일 때만 SurveyIcon 표시 */}
-      {cta === "작성하기" && <SurveyIcon active={false} />}
+      {cta === "작성하기" && <SurveyIcon active={2} />}
     </Button>
   );
 }
