@@ -1,37 +1,25 @@
 "use client";
 
-import {
-  Box,
-  Button,
-  Collapse,
-  Typography,
-  Divider,
-  IconButton,
-} from "@mui/material";
+import { Box, Collapse, Typography, Divider, IconButton } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
-import {
-  useSuspenseQuery,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import SurveyElderCard, { Elder, ElderUpdatePayload } from "./SurveyElderCard";
 import SelectorCard from "./SelectorCard";
 import SelectorRadio from "./SelectorRadio";
 import SelectorTarget from "./SelectorTarget";
+import SurveyActionButton from "./SurveyActionButton";
 
 type Scale = "veryGood" | "good" | "neutral" | "bad" | "veryBad";
+type Mode = "write" | "detail" | "update";
 
 type Props = {
   recordId: number;
+  mode: Mode;
 };
 
-export default function SurveySection({ recordId }: Props) {
-  const router = useRouter();
-  const qc = useQueryClient();
-
+export default function SurveySection({ recordId, mode }: Props) {
   // 전체(공통) 섹션 상태
   const [attAll, setAttAll] = useState<Scale>("veryGood");
   const [ablAll, setAblAll] = useState<Scale>("veryGood");
@@ -39,6 +27,11 @@ export default function SurveySection({ recordId }: Props) {
     hasDiscomfort: "none" | "yes";
     parts: string[];
   }>({ hasDiscomfort: "none", parts: [] });
+  const [armed, setArmed] = useState({
+    att: false,
+    abl: false,
+    trouble: false,
+  });
 
   // 어르신 개별 섹션 상태
   const [open, setOpen] = useState(false);
@@ -46,10 +39,9 @@ export default function SurveySection({ recordId }: Props) {
     {},
   );
 
-  // --- GET: /records/{recordId}/surveys (열렸을 때만 요청) ---
+  // --- GET: /records/{recordId}/surveys ---
   const { data: elders = [] } = useSuspenseQuery<Elder[]>({
     queryKey: ["surveys", recordId],
-    enabled: open, // 열렸을 때만 요청 (닫히면 suspend하지 않음)
     queryFn: async () => {
       const res = await fetch(`/api/records/${recordId}/surveys`, {
         credentials: "include",
@@ -59,7 +51,14 @@ export default function SurveySection({ recordId }: Props) {
         throw new Error(`[${res.status}] ${res.statusText} ${text}`);
       }
       const json = await res.json();
-      return (json?.data?.surveys as Elder[]) ?? [];
+      const list = (json?.data?.surveys as Elder[]) ?? [];
+      // GET 직후 1번째 어르신 정보 콘솔 출력
+      if (list.length > 0) {
+        console.log("GET /records/{recordId}/surveys first elder:", list[0]);
+      } else {
+        console.log("GET /records/{recordId}/surveys: empty list");
+      }
+      return list;
     },
   });
 
@@ -69,33 +68,6 @@ export default function SurveySection({ recordId }: Props) {
   const handleChange = (surveyId: number, payload: ElderUpdatePayload) => {
     setPending((prev) => ({ ...prev, [surveyId]: payload }));
   };
-
-  // --- PUT: /records/{recordId}/surveys/{surveyId} ---
-  const { mutate: submit, isPending } = useMutation({
-    mutationFn: async () => {
-      const entries = Object.entries(pending);
-      if (entries.length === 0) return;
-
-      await Promise.all(
-        entries.map(async ([sid, body]) => {
-          const res = await fetch(`/api/records/${recordId}/surveys/${sid}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-            body: JSON.stringify(body),
-          });
-          if (!res.ok) {
-            const text = await res.text().catch(() => "");
-            throw new Error(`[${res.status}] ${res.statusText} ${text}`);
-          }
-        }),
-      );
-    },
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["surveys", recordId] });
-      router.push("/record");
-    },
-  });
 
   // 어르신 섹션 펼침 배너
   const Banner = useMemo(
@@ -138,11 +110,29 @@ export default function SurveySection({ recordId }: Props) {
         items={[
           {
             title: "운동 참여 태도",
-            control: <SelectorRadio value={attAll} onChange={setAttAll} />,
+
+            control: (
+              <SelectorRadio
+                value={attAll}
+                onChange={(v) => {
+                  setAttAll(v as Scale);
+                  setArmed((s) => ({ ...s, att: true }));
+                }}
+              />
+            ),
           },
           {
             title: "운동 수행 능력",
-            control: <SelectorRadio value={ablAll} onChange={setAblAll} />,
+
+            control: (
+              <SelectorRadio
+                value={ablAll}
+                onChange={(v) => {
+                  setAblAll(v as Scale);
+                  setArmed((s) => ({ ...s, abl: true }));
+                }}
+              />
+            ),
           },
           {
             title: "운동 중 불편함",
@@ -150,7 +140,10 @@ export default function SurveySection({ recordId }: Props) {
               <SelectorTarget
                 hasDiscomfort={discomfortAll.hasDiscomfort}
                 parts={discomfortAll.parts}
-                onChange={setDiscomfortAll}
+                onChange={(v) => {
+                  setDiscomfortAll(v);
+                  setArmed((s) => ({ ...s, trouble: true }));
+                }}
               />
             ),
           },
@@ -168,35 +161,29 @@ export default function SurveySection({ recordId }: Props) {
       {Banner}
 
       {/* 펼쳐지는 패널 */}
-      <Collapse in={open} unmountOnExit>
+      <Collapse in={open} /* keepMounted */>
         <Box sx={{ mt: 2, display: "grid", gap: 2 }}>
           {elders.map((elder) => (
             <SurveyElderCard
               key={elder.surveyId}
               elder={elder}
               onChange={handleChange}
+              presetAtt={armed.att ? attAll : undefined}
+              presetAbl={armed.abl ? ablAll : undefined}
+              presetTrouble={armed.trouble ? discomfortAll : undefined}
             />
           ))}
         </Box>
       </Collapse>
 
       {/* 하단 작성 완료 버튼 */}
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
-        <Button
-          variant={"contained"}
-          onClick={() => submit()}
-          disabled={isPending || Object.keys(pending).length === 0}
-          sx={(t) => ({
-            bgcolor: t.palette.primary.main,
-            "&:hover": { bgcolor: t.palette.primary.dark },
-            px: 3.5,
-            py: 1.25,
-            borderRadius: 1.5,
-          })}
-        >
-          {"작성 완료"}
-        </Button>
-      </Box>
+      <SurveyActionButton
+        recordId={recordId}
+        mode={mode}
+        elders={elders}
+        pending={pending}
+        afterSaveHref={"/record"}
+      />
     </>
   );
 }

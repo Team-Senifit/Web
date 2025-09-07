@@ -72,8 +72,8 @@ export default function RecordsList({ variant, all }: Props) {
           <>
             <Stack sx={{ mt: 3 }}>
               {list.map((it, idx) => {
-                const cta = it.surveysExist ? "자세히 보기" : "작성하기";
-                const href = it.surveysExist
+                const cta = it.surveyExist ? "자세히 보기" : "작성하기";
+                const href = it.surveyExist
                   ? `/record/detail/${it.recordId}`
                   : `/record/write/${it.recordId}`;
 
@@ -88,7 +88,7 @@ export default function RecordsList({ variant, all }: Props) {
                       <RecordButton
                         href={href}
                         cta={cta}
-                        surveysExist={it.surveysExist}
+                        surveysExist={it.surveyExist}
                       />
                     </Stack>
                     {idx < list.length - 1 && <Divider sx={{ my: 3 }} />}

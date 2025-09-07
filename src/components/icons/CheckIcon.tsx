@@ -2,6 +2,7 @@
 import * as React from "react";
 import { createSvgIcon } from "@mui/material/utils";
 import type { SvgIconProps } from "@mui/material/SvgIcon";
+import { useTheme } from "@mui/material/styles";
 
 const CheckIconBase = createSvgIcon(
   <svg
@@ -23,16 +24,25 @@ const CheckIconBase = createSvgIcon(
 
 export type CheckIconProps = SvgIconProps & {
   strokeWidth?: number | string;
+  active?: boolean;
 };
 
 const CheckIcon = React.forwardRef<SVGSVGElement, CheckIconProps>(
-  ({ strokeWidth = 1.5, sx, ...rest }, ref) => (
-    <CheckIconBase
-      ref={ref}
-      sx={{ ...sx, strokeWidth, "& *": { vectorEffect: "non-scaling-stroke" } }}
-      {...rest}
-    />
-  ),
+  ({ strokeWidth = 1.5, active = false, sx, ...rest }, ref) => {
+    const t = useTheme();
+    return (
+      <CheckIconBase
+        ref={ref}
+        sx={{
+          ...sx,
+          strokeWidth,
+          color: active ? t.palette.common.white : t.palette.label.disabled,
+          "& *": { vectorEffect: "non-scaling-stroke" },
+        }}
+        {...rest}
+      />
+    );
+  },
 );
 
 CheckIcon.displayName = "CheckIcon";

@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Stack, Typography } from "@mui/material";
-import GradientCard from "@/app/(with-container)/record/utils/GradientCard";
+import GradientCard from "@/app/(with-container)/record/panel/GradientCard";
 
 export default function AllCenterHero({ centerName }: { centerName: string }) {
   return (

@@ -7,14 +7,14 @@ export type RecordItem = {
   recordId: number;
   programId: number;
   centerId: number;
-  startTime: string;
-  endTime: string;
+  startedAt: string;
+  finishedAt: string;
   participantCount: number;
   routineKind: string;
   cognitiveKind: string;
   singingKind: string;
   durationKind: string;
-  surveysExist: boolean;
+  surveyExist: boolean;
 };
 
 // 날짜를 반환
@@ -88,43 +88,6 @@ export function translateSingingKind(value?: string): string {
       return "노래체조 포함";
     case "workout_notSelected":
       return "노래체조 미포함";
-    default:
-      return "";
-  }
-}
-
-export function ageFromBirthDate(birthISO?: string) {
-  if (!birthISO) return "";
-  const b = dayjs(birthISO);
-  const today = dayjs();
-  let age = today.year() - b.year();
-  if (
-    today.month() < b.month() ||
-    (today.month() === b.month() && today.date() < b.date())
-  ) {
-    age -= 1;
-  }
-  return `${age}세`;
-}
-
-export function genderLabel(g?: number) {
-  if (g === 1) return "남성";
-  if (g === 0) return "여성";
-  return "";
-}
-
-export function memberRankLabel(rank?: number) {
-  switch (rank) {
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-      return `${rank}등급`;
-    case 6:
-      return "인지지원등급";
-    case 0:
-      return "등급 외";
     default:
       return "";
   }
