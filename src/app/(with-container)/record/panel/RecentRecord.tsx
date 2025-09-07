@@ -14,10 +14,10 @@ import {
   Box,
 } from "@mui/material";
 import type { RecordItem } from "../utils/recordUtils";
-import RecordBrief from "../utils/RecordBrief";
+import RecordBrief from "./RecordBrief";
 import Image from "next/image";
 import recordLogo from "@/assets/logo/record-logo.png";
-import GradientCard from "../utils/GradientCard";
+import GradientCard from "./GradientCard";
 import SurveyIcon from "@/components/icons/SurveyIcon";
 
 export default function RecentRecord({
@@ -29,7 +29,7 @@ export default function RecentRecord({
   const [openDialog, setOpenDialog] = useState(false);
 
   const handleClickCard = () => {
-    if (latest?.surveysExist) {
+    if (latest?.surveyExist) {
       setOpenDialog(true);
       return;
     }
@@ -39,7 +39,7 @@ export default function RecentRecord({
   return (
     <>
       <GradientCard>
-        <Box
+        <Button
           onClick={handleClickCard}
           sx={{ position: "relative", flex: 1, cursor: "pointer" }}
         >
@@ -99,7 +99,7 @@ export default function RecentRecord({
               draggable={false}
             />
           </Box>
-        </Box>
+        </Button>
       </GradientCard>
 
       {/* 이미 작성된 경우 팝업 */}

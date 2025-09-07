@@ -5,7 +5,7 @@ import { getRecordServer } from "../../_server/getRecords";
 import SurveyIcon from "@/components/icons/SurveyIcon";
 import SurveySection from "../../panel/SurveySection";
 
-export default async function RecordWritePage({
+export default async function RecordUpdatePage({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -18,7 +18,7 @@ export default async function RecordWritePage({
     <Box sx={{ display: "grid", gap: 3 }}>
       <ReturnButton href={"/record"} />
 
-      <AboutRecording record={currentRecord} title={"작성 중인 수업"} />
+      <AboutRecording record={currentRecord} title={"수정 중인 수업"} />
 
       <Box
         sx={{
@@ -43,7 +43,7 @@ export default async function RecordWritePage({
 
         <Divider sx={{ my: 3 }} />
 
-        <SurveySection recordId={Number(id)} mode={"write"} />
+        <SurveySection recordId={Number(id)} mode={"update"} />
       </Box>
     </Box>
   );

@@ -3,7 +3,7 @@ import { getCenterName } from "../_server/getCenter";
 import { getRecordsServer } from "../_server/getRecords";
 import AllCenterHero from "./panel/AllCenterHero";
 import PastRecordsAll from "./panel/PastRecordsAll";
-import ReturnButton from "@/app/(with-footer)/my-center/members/panel/ReturnButton";
+import ReturnButton from "@/components/ReturnButton";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;

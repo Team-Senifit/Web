@@ -25,9 +25,9 @@ export default function RecordBrief({ record }: Props) {
     <Box sx={{ minWidth: 0 }}>
       {/* 날짜 + 시간 (시간만 주황색) */}
       <Typography variant={"Heading1"} fontWeight={600} noWrap>
-        {dateString(record.startTime, record.endTime)}{" "}
+        {dateString(record.startedAt, record.finishedAt)}{" "}
         <Box component={"span"} sx={{ color: (t) => t.palette.primary.main }}>
-          {timeString(record.startTime, record.endTime)}
+          {timeString(record.startedAt, record.finishedAt)}
         </Box>
       </Typography>
 
