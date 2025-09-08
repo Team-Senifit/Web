@@ -1,24 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  CardContent,
-  Typography,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  Box,
-} from "@mui/material";
+import { CardContent, Typography, Button, Box, Card } from "@mui/material";
 import type { RecordItem } from "../utils/recordUtils";
 import RecordBrief from "./RecordBrief";
 import Image from "next/image";
 import recordLogo from "@/assets/logo/record-logo.png";
 import GradientCard from "./GradientCard";
 import SurveyIcon from "@/components/icons/SurveyIcon";
+import useMedia from "@/hooks/useMedia";
+import SenifitDialog from "@/components/SenifitDialog";
 
 export default function RecentRecord({
   latest,
@@ -27,6 +19,7 @@ export default function RecentRecord({
 }) {
   const router = useRouter();
   const [openDialog, setOpenDialog] = useState(false);
+  const { isTablet, isPhone } = useMedia();
 
   const handleClickCard = () => {
     if (latest?.surveyExist) {
@@ -36,32 +29,39 @@ export default function RecentRecord({
     router.push(`/record/write/${latest?.recordId}`);
   };
 
+  // 모바일: 일반 Card/Box, 태블릿/데스크탑: GradientCard
+  // 저 모바일에서 사용하는 Card 태그에 패딩값 24px, gap 16px 필요함.
+  const Wrapper: React.ElementType = isPhone ? Card : GradientCard;
+
   return (
     <>
-      <GradientCard>
+      <Wrapper>
         <Button
           onClick={handleClickCard}
-          sx={{ position: "relative", flex: 1, cursor: "pointer" }}
+          sx={{ position: "relative", flex: 1, cursor: "pointer", p: 0 }}
         >
           <CardContent
             sx={{
-              p: 0,
+              p: isPhone ? 2 : 0,
               flex: 1,
               minWidth: 0,
               display: "flex",
               flexDirection: "column",
-              gap: "24px",
+              gap: isPhone ? 2 : "24px",
             }}
           >
-            <Box
-              sx={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 1,
-              }}
-            >
-              <Typography variant={"Title1"}>{"최근 수업 기록하기"}</Typography>
-              <SurveyIcon active={1} />
+            <Box sx={{ display: "inline-flex", alignItems: "center", gap: 1 }}>
+              <Typography
+                variant={isPhone ? "Title3" : isTablet ? "Title2" : "Title1"}
+              >
+                {"최근 수업 기록하기"}
+              </Typography>
+              <SurveyIcon
+                sx={{
+                  color: (t) => t.palette.primary.main,
+                  fontSize: isPhone ? 32 : 40, // 모바일 32px, 태블릿/데스크탑 40px
+                }}
+              />
             </Box>
 
             {latest ? (
@@ -76,6 +76,7 @@ export default function RecentRecord({
             )}
           </CardContent>
 
+          {/* 데스크탑에만 */}
           <Box
             sx={{
               position: "absolute",
@@ -100,36 +101,23 @@ export default function RecentRecord({
             />
           </Box>
         </Button>
-      </GradientCard>
+      </Wrapper>
 
       {/* 이미 작성된 경우 팝업 */}
-      <Dialog
-        open={openDialog}
+      <SenifitDialog
+        isOpen={openDialog}
         onClose={() => setOpenDialog(false)}
-        max-Width={"xs"}
-        fullWidth
-      >
-        <DialogTitle sx={{ pb: 1.5 }}>
-          {"이미 기록을 작성했습니다."}
-        </DialogTitle>
-        <DialogContent sx={{ pt: 0 }}>
-          <Typography variant={"Body2"} color={"text.secondary"}>
-            {"최근 수업이 이미 등록되어 있습니다."}
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button variant={"outlined"} onClick={() => setOpenDialog(false)}>
-            {"취소"}
-          </Button>
-          <Button
-            variant={"contained"}
-            component={Link}
-            href={latest ? `/record/detail/${latest.recordId}` : "/record"}
-          >
-            {"작성한 기록 보기"}
-          </Button>
-        </DialogActions>
-      </Dialog>
+        dialogType={"info"}
+        title={"이미 기록을 작성했습니다."}
+        body={"최근 수업이 이미 등록되어 있습니다."}
+        primaryText={"작성한 기록 보기"}
+        secondaryText={"취소"}
+        onPrimaryClick={() => {
+          setOpenDialog(false);
+          router.push(latest ? `/record/detail/${latest.recordId}` : "/record");
+        }}
+        onSecondaryClick={() => setOpenDialog(false)}
+      />
     </>
   );
 }
