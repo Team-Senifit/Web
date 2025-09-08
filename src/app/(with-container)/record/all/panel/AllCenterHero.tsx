@@ -16,8 +16,7 @@ export default function AllCenterHero({ centerName }: { centerName: string }) {
       <Box
         sx={{
           p: 3,
-          bgcolor:
-            "linear-gradient(270deg, var(--RedOrange-60, #FC7F36) 0%, #FF8A00 100%)",
+          background: `linear-gradient(270deg, var(--RedOrange-60, #FC7F36) 0%, #FF8A00 100%)`,
         }}
       >
         <Stack spacing={2}>
