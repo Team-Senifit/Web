@@ -79,6 +79,12 @@ const Page = () => {
   });
 
   useEffect(() => {
+    setSelectedProgram(routineDetail);
+
+    return () => {};
+  }, [routineDetail, setSelectedProgram]);
+
+  useEffect(() => {
     if (!type || !selectedRoutineRecord) {
       window.alert(
         "운동 프로그램을 선택해 주세요. (이후 토스트 틍으로... 수정해야합니다.)",
@@ -86,10 +92,8 @@ const Page = () => {
       router.push("/");
     }
 
-    return () => {
-      setSelectedProgram(routineDetail || null);
-    };
-  }, [type, router, setSelectedProgram, routineDetail, selectedRoutineRecord]);
+    return () => {};
+  }, [type, router, selectedRoutineRecord]);
 
   const videoTitle =
     type === "customized" ? "맞춤형 운동 프로그램" : routineDetail.name;
