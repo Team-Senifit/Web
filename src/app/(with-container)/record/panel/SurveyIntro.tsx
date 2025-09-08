@@ -11,7 +11,7 @@ export default function SurveyIntro() {
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
       <SurveyIcon
         sx={{
-          bgcolor: (t) => t.palette.label.neutral,
+          color: (t) => t.palette.label.neutral,
           fontSize: isPhone ? 10 : 24,
         }}
       />
