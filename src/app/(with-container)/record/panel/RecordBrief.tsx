@@ -11,10 +11,14 @@ import {
   translateCognitiveKind,
   translateSingingKind,
 } from "@/app/(with-container)/record/utils/recordUtils";
+import useMedia from "@/hooks/useMedia";
 
 type Props = { record: RecordItem };
 
 export default function RecordBrief({ record }: Props) {
+  const { isPhone } = useMedia();
+  const textVariant = isPhone ? "Headline1" : "Heading1";
+
   const chips = [
     translateDurationKind(record.durationKind),
     translateCognitiveKind(record.cognitiveKind),
@@ -24,7 +28,7 @@ export default function RecordBrief({ record }: Props) {
   return (
     <Box sx={{ minWidth: 0 }}>
       {/* 날짜 + 시간 (시간만 주황색) */}
-      <Typography variant={"Heading1"} fontWeight={600} noWrap>
+      <Typography variant={textVariant} fontWeight={600} noWrap>
         {dateString(record.startedAt, record.finishedAt)}{" "}
         <Box component={"span"} sx={{ color: (t) => t.palette.primary.main }}>
           {timeString(record.startedAt, record.finishedAt)}
@@ -33,7 +37,7 @@ export default function RecordBrief({ record }: Props) {
 
       <Stack spacing={1} sx={{ mt: 1 }}>
         {/* 참여 인원 (숫자만 주황색) */}
-        <Typography variant={"Heading1"} noWrap>
+        <Typography variant={textVariant} noWrap>
           {"참여인원 총"}{" "}
           <Box component={"span"} sx={{ color: (t) => t.palette.primary.main }}>
             {participantString(record)}
@@ -42,30 +46,32 @@ export default function RecordBrief({ record }: Props) {
         </Typography>
 
         {/* 프로그램 제목: routineKind */}
-        <Typography variant={"Heading1"}>
+        <Typography variant={textVariant}>
           {translateRoutineKind(record.routineKind)}
         </Typography>
 
-        {/* 운동 조합 (duration, cognitive, singing 순) */}
-        <Stack direction={"row"} spacing={1.5} sx={{ flexWrap: "wrap" }}>
-          {chips.map((label, idx) => (
-            <Box
-              key={idx}
-              sx={{
-                padding: "4px 12px",
-                borderRadius: "61px",
-                background: (t) => t.palette.fillVariants.colored,
-              }}
-            >
-              <Typography
-                variant={"Heading2"}
-                sx={{ color: (t) => t.palette.primary.main }}
+        {/* 운동 조합 칩: 모바일에서는 숨김 */}
+        {!isPhone && (
+          <Stack direction={"row"} spacing={1.5} sx={{ flexWrap: "wrap" }}>
+            {chips.map((label, idx) => (
+              <Box
+                key={idx}
+                sx={{
+                  padding: "4px 12px",
+                  borderRadius: "61px",
+                  background: (t) => t.palette.fillVariants.colored,
+                }}
               >
-                {label}
-              </Typography>
-            </Box>
-          ))}
-        </Stack>
+                <Typography
+                  variant={"Heading2"}
+                  sx={{ color: (t) => t.palette.primary.main }}
+                >
+                  {label}
+                </Typography>
+              </Box>
+            ))}
+          </Stack>
+        )}
       </Stack>
     </Box>
   );
