@@ -34,7 +34,7 @@
     "@next/eslint-plugin-next": "^15.5.2",
     "@storybook/addon-docs": "^9.0.18",
     "@storybook/nextjs": "^9.0.18",
-    "@tanstack/react-query-devtools": "^5.85.5",
+    "@tanstack/react-query-devtools": "^5.87.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

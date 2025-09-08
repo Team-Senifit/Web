@@ -1,7 +1,5 @@
-import axios from "axios";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
-import { mockRecords } from "./record.mock";
 dayjs.locale("ko");
 
 /* 타입 */
@@ -9,37 +7,15 @@ export type RecordItem = {
   recordId: number;
   programId: number;
   centerId: number;
-  startTime: string;
-  endTime: string;
+  startedAt: string;
+  finishedAt: string;
   participantCount: number;
   routineKind: string;
   cognitiveKind: string;
   singingKind: string;
   durationKind: string;
-  surveysExist: boolean;
+  surveyExist: boolean;
 };
-
-type RecordAPI = { status: number; message: string; data: RecordItem[] };
-
-const USE_MOCK =
-  typeof process !== "undefined" && process.env.NEXT_PUBLIC_USE_MOCK === "true";
-
-/** 공통 호출: mock 옵션 or .env 플래그 or 실패 시 => 더미 반환 */
-export async function getRecords(opts?: {
-  mock?: boolean;
-}): Promise<RecordItem[]> {
-  if (opts?.mock || USE_MOCK) return mockRecords;
-
-  try {
-    const { data } = await axios.get<RecordAPI>(`/api/record`, {
-      withCredentials: true,
-    });
-    return data?.data ?? [];
-  } catch {
-    // API 연동 전/실패 시 더미 사용
-    return mockRecords;
-  }
-}
 
 // 날짜를 반환
 export function dateString(startISO?: string, endISO?: string) {

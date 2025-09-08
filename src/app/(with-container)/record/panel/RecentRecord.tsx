@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  Card,
   CardContent,
   Typography,
   Dialog,
@@ -14,101 +13,94 @@ import {
   Button,
   Box,
 } from "@mui/material";
-import { getRecords, RecordItem } from "../utils/recordUtils";
+import type { RecordItem } from "../utils/recordUtils";
 import RecordBrief from "./RecordBrief";
+import Image from "next/image";
+import recordLogo from "@/assets/logo/record-logo.png";
+import GradientCard from "./GradientCard";
+import SurveyIcon from "@/components/icons/SurveyIcon";
 
-export default function RecentRecord() {
+export default function RecentRecord({
+  latest,
+}: {
+  latest: RecordItem | null;
+}) {
   const router = useRouter();
-
-  const [latest, setLatest] = useState<RecordItem | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
 
-  useEffect(() => {
-    let mounted = true;
-    (async () => {
-      const data = await getRecords();
-      if (mounted) setLatest(data[0] ?? null);
-    })();
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
   const handleClickCard = () => {
-    if (latest?.surveysExist) {
+    if (latest?.surveyExist) {
       setOpenDialog(true);
       return;
     }
-    router.push(`/record/detail/${latest?.recordId}`);
+    router.push(`/record/write/${latest?.recordId}`);
   };
 
   return (
     <>
-      <Card
-        onClick={handleClickCard}
-        sx={{
-          display: "flex",
-          height: 284,
-          p: "36px",
-          alignItems: "flex-start",
-          gap: "16px",
-          alignSelf: "stretch",
-          borderRadius: "12px",
-          background:
-            "linear-gradient(98deg, #FFFDFA 50.89%, #FFE3C2 100.93%, #FEDDCC 118.86%)",
-          boxShadow: "0 0 8px 0 rgba(12, 13, 13, 0.05)",
-          cursor: "pointer",
-        }}
-      >
-        <CardContent
-          sx={{
-            p: 0,
-            flex: 1,
-            minWidth: 0,
-            display: "flex",
-            flexDirection: "column",
-            gap: "24px",
-          }}
+      <GradientCard>
+        <Button
+          onClick={handleClickCard}
+          sx={{ position: "relative", flex: 1, cursor: "pointer" }}
         >
-          <Typography variant={"Title1"}>{"최근 수업 기록하기"}</Typography>
-
-          {latest ? (
-            <RecordBrief record={latest} />
-          ) : (
-            <Typography
-              variant={"Heading1"}
+          <CardContent
+            sx={{
+              p: 0,
+              flex: 1,
+              minWidth: 0,
+              display: "flex",
+              flexDirection: "column",
+              gap: "24px",
+            }}
+          >
+            <Box
               sx={{
-                color:
-                  "var(--Sementic-Color-Label-color-label-neutral, var(--Label-neutral, #646568))",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 1,
               }}
             >
-              {"아직 진행한 수업이 없어요"}
-            </Typography>
-          )}
-        </CardContent>
+              <Typography variant={"Title1"}>{"최근 수업 기록하기"}</Typography>
+              <SurveyIcon active={1} />
+            </Box>
 
-        {/* 오른쪽 이미지 임시 */}
-        <Box
-          sx={{
-            flexShrink: 0,
-            width: 240,
-            height: 212,
-            borderRadius: 2,
-            bgcolor: "rgba(255,255,255,0.6)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            overflow: "hidden",
-          }}
-        >
+            {latest ? (
+              <RecordBrief record={latest} />
+            ) : (
+              <Typography
+                variant={"Heading1"}
+                sx={{ color: (t) => t.palette.label.neutral }}
+              >
+                {"아직 진행한 수업이 없어요"}
+              </Typography>
+            )}
+          </CardContent>
+
           <Box
-            component={"img"}
-            src={"https://dummyimage.com/360x240/f8a94c/ffffff&text=IMAGE"}
-            alt={"placeholder"}
-            sx={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
-        </Box>
-      </Card>
+            sx={{
+              position: "absolute",
+              right: 36,
+              top: "50%",
+              transform: "translateY(-50%)",
+              width: { phone: 0, tablet: 0, desktop: 350 },
+              height: { phone: 0, tablet: 0, desktop: 350 },
+              pointerEvents: "none",
+              borderRadius: 2,
+              overflow: "hidden",
+            }}
+            aria-hidden
+          >
+            <Image
+              src={recordLogo}
+              alt={"기록 아이콘"}
+              fill
+              style={{ objectFit: "contain" }}
+              priority
+              draggable={false}
+            />
+          </Box>
+        </Button>
+      </GradientCard>
 
       {/* 이미 작성된 경우 팝업 */}
       <Dialog
