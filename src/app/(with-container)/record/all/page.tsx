@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
-import { getCenterName } from "../_server/getCenter";
-import { getRecordsServer } from "../_server/getRecords";
+import { getCenterName } from "../panel/server/getCenter";
+import { getRecordsServer } from "../panel/server/getRecords";
 import AllCenterHero from "./panel/AllCenterHero";
 import PastRecordsAll from "./panel/PastRecordsAll";
 import ReturnButton from "@/components/ReturnButton";

@@ -1,5 +1,5 @@
 import PastRecords from "./PastRecords";
-import { getRecordsServer } from "../_server/getRecords";
+import { getRecordsServer } from "./server/getRecords";
 
 export default async function PastRecordsSection() {
   const all = await getRecordsServer();

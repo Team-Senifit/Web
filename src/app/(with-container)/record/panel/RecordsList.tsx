@@ -11,7 +11,7 @@ import {
   Button,
 } from "@mui/material";
 import Link from "next/link";
-import type { RecordItem } from "./recordUtils";
+import type { RecordItem } from "../utils/recordUtils";
 import RecordBrief from "./RecordBrief";
 import RecordButton from "./RecordButton";
 import ReloadIcon from "@/components/icons/ReloadIcon";
