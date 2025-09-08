@@ -2,32 +2,41 @@
 
 import { Box, Typography } from "@mui/material";
 import { ReactNode } from "react";
+import useMedia from "@/hooks/useMedia";
 
 type Item = { title: string; control: ReactNode };
+type Props = { items: [Item, Item, Item]; step?: 0 | 1 | 2 };
 
-export default function SurveyCard({ items }: { items: [Item, Item, Item] }) {
+export default function SelectorCard({ items, step }: Props) {
+  const { isPhone, isTablet } = useMedia();
+  const titleVariant = isPhone ? "Headline1" : "Title3";
+  const cols = isTablet || isPhone ? 1 : 3;
+
+  const renderItems =
+    isPhone && typeof step === "number" ? [items[step]] : items;
+
   return (
     <Box
       sx={{
         display: "grid",
-        gridTemplateColumns: "1fr 1fr 1fr",
+        gridTemplateColumns: `repeat(${cols}, 1fr)`,
         gap: 2,
       }}
     >
-      {items.map((it, i) => (
+      {renderItems.map((it, i) => (
         <Box key={i}>
-          <Typography variant={"Title3"} sx={{ mb: 1 }}>
+          <Typography variant={titleVariant} sx={{ mb: 1 }}>
             {it.title}
           </Typography>
 
           {/* 컨트롤 박스 */}
           <Box
-            sx={{
+            sx={(t) => ({
               p: "20px",
               borderRadius: 1.5,
-              bgcolor: "fillVariants.alternative",
-              border: "2px solid var(--Border-normal, #F2F2F2)",
-            }}
+              bgcolor: t.palette.fillVariants.alternative,
+              border: `2px solid ${t.palette.borderVariants.normal}`,
+            })}
           >
             {it.control}
           </Box>

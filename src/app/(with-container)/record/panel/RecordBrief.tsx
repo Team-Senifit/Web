@@ -26,7 +26,14 @@ export default function RecordBrief({ record }: Props) {
   ].filter(Boolean);
 
   return (
-    <Box sx={{ minWidth: 0 }}>
+    <Box
+      sx={{
+        minWidth: 0,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+      }}
+    >
       {/* 날짜 + 시간 (시간만 주황색) */}
       <Typography variant={textVariant} fontWeight={600} noWrap>
         {dateString(record.startedAt, record.finishedAt)}{" "}
@@ -35,7 +42,7 @@ export default function RecordBrief({ record }: Props) {
         </Box>
       </Typography>
 
-      <Stack spacing={1} sx={{ mt: 1 }}>
+      <Stack spacing={1} sx={{ mt: 1, alignItems: "flex-start" }}>
         {/* 참여 인원 (숫자만 주황색) */}
         <Typography variant={textVariant} noWrap>
           {"참여인원 총"}{" "}

@@ -57,13 +57,13 @@ export default function RecordsList({ variant, all }: Props) {
       variant={"outlined"}
       sx={{
         p: 0,
-        borderRadius: "12px",
+        borderRadius: isPhone ? 0 : "12px",
         mb: 8,
         boxShadow: "0 0 8px 0 rgba(12, 13, 13, 0.05)",
       }}
     >
       {/* 패딩: 데스크탑/태블릿 48px, 모바일 24px */}
-      <CardContent sx={{ p: { phone: 3, tablet: 6, desktop: 6 } }}>
+      <CardContent sx={{ p: isPhone ? 3 : 6 }}>
         {/* Reload + 타이틀 */}
         <Stack spacing={1}>
           <Box
