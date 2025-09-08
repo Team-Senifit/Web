@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Button, Typography } from "@mui/material";
+import SurveyIcon from "@/components/icons/SurveyIcon";
 
 type Props = {
   href: string;
@@ -18,24 +19,23 @@ export default function RecordButton({ href, cta, surveysExist }: Props) {
       href={href}
       disableElevation
       sx={{
-        display: "flex",
+        display: "inline-flex",
         width: 237,
         padding: "16px 64px",
         justifyContent: "center",
         alignItems: "center",
-        gap: "8px",
+        gap: 1,
         borderRadius: "12px",
-        background: isDetail
-          ? "var(--Background-alternative, #F5F5F5)"
-          : "var(--Fill-colored, #FFF5F0)",
-        color: isDetail
-          ? "var(--Sementic-Color-Label-color-label-neutral, var(--Label-neutral, #646568))"
-          : "var(--Sementic-Color-Primary-color-primary-default, var(--Primary-default, #FB5F04))",
+        background: (t) =>
+          isDetail ? t.palette.background.default : t.palette.primary.main,
+        color: (t) => (isDetail ? t.palette.grey[600] : t.palette.static.white),
       }}
     >
       <Typography variant={"Heading1"} sx={{ color: "inherit" }}>
         {cta}
       </Typography>
+      {/* 작성하기일 때만 SurveyIcon 표시 */}
+      {cta === "작성하기" && <SurveyIcon active={2} />}
     </Button>
   );
 }
