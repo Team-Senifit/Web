@@ -52,22 +52,23 @@ jobs:
       - name: Known hosts
         run: ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
-      # 🔽 /tmp에 쓰지 않고, tar 스트림을 원격 릴리즈 폴더에 즉시 풀기
-      - name: Remote deploy (stream, extract, swap, restart)
+      - name: Remote prep (cleanup & prepare)
         env:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
+          SERVICE_USER: ubuntu 
         run: |
-          # 1) 원격에서 릴리즈 디렉토리 준비 + 사전 청소(공간 확보)
           ssh "$EC2_USER@$EC2_HOST" bash -se <<'PREP'
           set -euo pipefail
           APP_DIR="/srv/senifit-front"
-          # 릴리즈 디렉토리 생성
+
           mkdir -p "$APP_DIR/releases"
-          # 오래된 릴리즈(최신 3개 제외) 자동 정리
           cd "$APP_DIR/releases"
+
+          # 최신 3개만 보존
           ls -1t | tail -n +4 | xargs -r rm -rf
-          # 기존 릴리즈 중 current가 아닌 것들의 .next/cache, node_modules도 정리(추가 확보)
+
+          # current가 아닌 릴리즈의 캐시/모듈 정리 (추가 공간 확보)
           CURR="$(readlink -f "$APP_DIR/current" || true)"
           for d in "$APP_DIR"/releases/*; do
             [ -d "$d" ] || continue
@@ -77,26 +78,35 @@ jobs:
           done
           PREP
 
-          # 2) tar 스트리밍으로 새 릴리즈에 즉시 압축 해제 (중간 파일 無)
-          cat release.tgz | ssh "$EC2_USER@$EC2_HOST" "bash -se" <<'REMOTE'
+      - name: Remote deploy (stream, extract, swap, restart)
+        env:
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          RELEASE_NAME: ${{ env.RELEASE_NAME }}
+          SERVICE_USER: ubuntu 
+        run: |
+          # 중요: RELEASE_NAME을 원격 bash에 "환경변수"로 주입해서 set -u 에러 방지
+          cat release.tgz | ssh "$EC2_USER@$EC2_HOST" "RELEASE_NAME=$RELEASE_NAME SERVICE_USER=$SERVICE_USER bash -se" <<'REMOTE'
           set -euo pipefail
           APP_DIR="/srv/senifit-front"
           REL="${RELEASE_NAME}"
+
           mkdir -p "$APP_DIR/releases/$REL"
-          # STDIN으로 받은 tar를 곧바로 해제
+          # stdin으로 받은 tar를 바로 해제 (중간 파일 無)
           tar -xzf - -C "$APP_DIR/releases/$REL"
 
-          # 실행 사용자/그룹으로 소유권 정리 (ubuntu 대신 실제 서비스 계정으로 바꿔도 됨)
-          chown -R ubuntu:ubuntu "$APP_DIR/releases/$REL"
+          # 소유권 정리
+          chown -R "$SERVICE_USER:$SERVICE_USER" "$APP_DIR/releases/$REL"
 
           # 원자적 스와프
           ln -sfn "$APP_DIR/releases/$REL" "$APP_DIR/current"
 
-          # 서비스 재시작 및 로컬 헬스체크
+          # 재시작 & 로컬 헬스체크
           sudo systemctl daemon-reload
           sudo systemctl restart senifit-front
           curl -sS -I http://127.0.0.1:3000 | head -n1
           REMOTE
+
 
       - name: Public healthcheck
         run: |
