@@ -1,22 +1,21 @@
-import { Box, Divider, Typography } from "@mui/material";
-import ReturnButton from "@/components/ReturnButton";
+import { Box, Divider } from "@mui/material";
 import AboutRecording from "../../panel/AboutRecording";
 import { getRecordServer } from "../../panel/server/getRecords";
-import SurveyIcon from "@/components/icons/SurveyIcon";
 import SurveySection from "../../panel/SurveySection";
+import BackActionButton from "../../panel/BackActionButton";
+import SurveyIntro from "../../panel/SurveyIntro";
 
 export default async function RecordUpdatePage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  // 해당 recordId에 해당하는 레코드 데이터 가져오기
   const { id } = await params;
   const currentRecord = await getRecordServer(parseInt(id));
 
   return (
     <Box sx={{ display: "grid", gap: 3 }}>
-      <ReturnButton href={"/record"} />
+      <BackActionButton href={"/record"} />
 
       <AboutRecording record={currentRecord} title={"수정 중인 수업"} />
 
@@ -30,16 +29,7 @@ export default async function RecordUpdatePage({
           mb: 8,
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 1,
-          }}
-        >
-          <SurveyIcon active={3} />
-          <Typography variant={"Heading1"}>{"수업 기록 작성하기"}</Typography>
-        </Box>
+        <SurveyIntro />
 
         <Divider sx={{ my: 3 }} />
 

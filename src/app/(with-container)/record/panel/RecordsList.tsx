@@ -67,9 +67,7 @@ export default function RecordsList({ variant, all }: Props) {
         {/* Reload + 타이틀 */}
         <Stack spacing={1}>
           <Box
-            onClick={() =>
-              typeof window !== "undefined" && window.location.reload()
-            }
+            onClick={() => console.log("reload")} // router.refresh() 이거 넣을건데 일단 급하게 임시로..
             sx={{ cursor: "pointer", display: "inline-flex" }}
             aria-label={"reload"}
             role={"button"}
