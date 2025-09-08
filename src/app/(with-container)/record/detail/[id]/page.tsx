@@ -1,7 +1,7 @@
 import { Box, Divider, Typography } from "@mui/material";
 import ReturnButton from "@/components/ReturnButton";
 import AboutRecording from "../../panel/AboutRecording";
-import { getRecordServer } from "../../_server/getRecords";
+import { getRecordServer } from "../../panel/server/getRecords";
 import SurveyIcon from "@/components/icons/SurveyIcon";
 import SurveySection from "../../panel/SurveySection";
 
@@ -18,11 +18,7 @@ export default async function RecordDetailPage({
     <Box sx={{ display: "grid", gap: 3 }}>
       <ReturnButton href={"/record"} />
 
-      <AboutRecording
-        record={currentRecord}
-        title={"수업 정보"}
-        sx={{ padding: 0 }}
-      />
+      <AboutRecording record={currentRecord} title={"수업 정보"} />
 
       <Box
         sx={{

@@ -1,19 +1,6 @@
 import { createAxiosServer } from "@/apis/createAxiosServer";
-import { mockRecords } from "../utils/record.mock";
-
-export type RecordItem = {
-  recordId: number;
-  programId: number;
-  centerId: number;
-  startTime: string;
-  endTime: string;
-  participantCount: number;
-  routineKind: string;
-  cognitiveKind: string;
-  singingKind: string;
-  durationKind: string;
-  surveysExist: boolean;
-};
+import { mockRecords } from "../../utils/record.mock";
+import type { RecordItem } from "../../utils/recordUtils";
 
 type RecordAPI = { status: number; message: string; data: RecordItem[] };
 

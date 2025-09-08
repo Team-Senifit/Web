@@ -1,5 +1,5 @@
 import RecentRecord from "./RecentRecord";
-import { getRecordsServer } from "../_server/getRecords";
+import { getRecordsServer } from "./server/getRecords";
 
 export default async function RecentRecordSection() {
   const records = await getRecordsServer();

@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import CTAButton from "@/components/CTAButton";
 import type { Elder, ElderUpdatePayload } from "./SurveyElderCard";
+import { axiosClient } from "@/apis/axiosClient";
+import { isAuthError } from "@/apis/errors";
 
 type Mode = "write" | "detail" | "update";
 
@@ -49,8 +51,8 @@ export default function SurveyActionButton({
         return {
           surveyId: e.surveyId,
           troubleParts: mappedParts,
-          attitudeScore: p?.attitudeScore ?? e.attitudeScore,
-          abilityScore: p?.abilityScore ?? e.abilityScore,
+          attitudeScore: p?.attitudeScore ?? e.attitudeScore, // 0~4 점수 사용
+          abilityScore: p?.abilityScore ?? e.abilityScore, // 0~4 점수 사용
           hadTrouble: p?.hadTrouble ?? e.hadTrouble,
         };
       });
@@ -59,21 +61,21 @@ export default function SurveyActionButton({
         console.log("PUT request first element:", payload[0]);
       }
 
-      const res = await fetch(`/api/records/${recordId}/surveys`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const text = await res.text().catch(() => "");
-        throw new Error(`[${res.status}] ${res.statusText} ${text}`);
-      }
+      await axiosClient.put(`/records/${recordId}/surveys`, payload);
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["surveys", recordId] });
       router.push(afterSaveHref);
+    },
+    onError: (error) => {
+      // axiosClient 인터셉터가 401/403에서 AuthError를 throw함
+      if (error instanceof isAuthError) {
+        router.push("/login"); // 필요하면 next 파라미터 붙이기
+        return;
+      }
+      // 기타 에러는 콘솔/알림 등 처리
+      console.error(error);
+      alert("저장 중 오류가 발생했습니다.");
     },
   });
 
@@ -81,11 +83,9 @@ export default function SurveyActionButton({
     router.push(`/record/update/${recordId}`);
   };
 
-  // 페이지 타입별 버튼 구성
   const renderButtons = () => {
     switch (mode) {
       case "write":
-        // 작성 중인 수업
         return (
           <CTAButton
             text={"작성 완료"}
@@ -97,7 +97,6 @@ export default function SurveyActionButton({
           />
         );
       case "detail":
-        // 수업 정보
         return (
           <>
             <CTAButton
@@ -119,7 +118,6 @@ export default function SurveyActionButton({
           </>
         );
       case "update":
-        // 수정 중인 수업
         return (
           <CTAButton
             text={"저장하기"}
