@@ -77,35 +77,30 @@ jobs:
             fi
           done
           PREP
-
-      - name: Remote deploy (stream, extract, swap, restart)
+      - name: Remote deploy (stream extract, swap, restart)
         env:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
           RELEASE_NAME: ${{ env.RELEASE_NAME }}
-          SERVICE_USER: ubuntu 
+          SERVICE_USER: ${{ secrets.SERVICE_USER || 'ubuntu' }}
         run: |
-          # 중요: RELEASE_NAME을 원격 bash에 "환경변수"로 주입해서 set -u 에러 방지
-          cat release.tgz | ssh "$EC2_USER@$EC2_HOST" "RELEASE_NAME=$RELEASE_NAME SERVICE_USER=$SERVICE_USER bash -se" <<'REMOTE'
           set -euo pipefail
           APP_DIR="/srv/senifit-front"
           REL="${RELEASE_NAME}"
 
-          mkdir -p "$APP_DIR/releases/$REL"
-          # stdin으로 받은 tar를 바로 해제 (중간 파일 無)
-          tar -xzf - -C "$APP_DIR/releases/$REL"
+          # stdin은 tar 데이터만 흘러가야 하므로, 원격 명령은 '한 줄'로 전달
+          cat release.tgz | ssh -o StrictHostKeyChecking=yes "$EC2_USER@$EC2_HOST" \
+            "set -euo pipefail; APP_DIR='$APP_DIR'; REL='$REL'; \
+             mkdir -p \"\$APP_DIR/releases/\$REL\"; \
+             tar -xzf - -C \"\$APP_DIR/releases/\$REL\""
 
-          # 소유권 정리
-          chown -R "$SERVICE_USER:$SERVICE_USER" "$APP_DIR/releases/$REL"
-
-          # 원자적 스와프
-          ln -sfn "$APP_DIR/releases/$REL" "$APP_DIR/current"
-
-          # 재시작 & 로컬 헬스체크
-          sudo systemctl daemon-reload
-          sudo systemctl restart senifit-front
-          curl -sS -I http://127.0.0.1:3000 | head -n1
-          REMOTE
+          ssh -o StrictHostKeyChecking=yes "$EC2_USER@$EC2_HOST" \
+            "set -euo pipefail; APP_DIR='$APP_DIR'; REL='$REL'; SVC='$SERVICE_USER'; \
+             chown -R \"\$SVC:\$SVC\" \"\$APP_DIR/releases/\$REL\"; \
+             ln -sfn \"\$APP_DIR/releases/\$REL\" \"\$APP_DIR/current\"; \
+             sudo systemctl daemon-reload; \
+             sudo systemctl restart senifit-front; \
+             curl -sS -I http://127.0.0.1:3000 | head -n1"
 
 
       - name: Public healthcheck
