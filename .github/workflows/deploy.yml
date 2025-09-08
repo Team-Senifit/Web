@@ -2,15 +2,15 @@ name: CI/CD Deploy
 
 on:
   push:
-    branches: [ "develop" ]   # 배포 브랜치
-  workflow_dispatch: {}    # 수동 실행도 가능
+    branches: ["develop"]
+  workflow_dispatch: {}
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
       APP_DIR: /srv/senifit-front
-      RELEASE_NAME: ${{ github.sha }}      # 커밋 SHA로 릴리스 폴더명
+      RELEASE_NAME: ${{ github.sha }}
       NODE_ENV: production
       NEXT_PUBLIC_API_BASE: ${{ secrets.NEXT_PUBLIC_API_BASE }}
       NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
@@ -24,8 +24,8 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
-          cache: 'npm'
+          node-version: "22.x"
+          cache: "npm"
 
       - name: Install deps
         run: npm ci
@@ -33,13 +33,14 @@ jobs:
       - name: Build
         run: npm run build
 
-      # devDeps 제거해 산출물 슬림화 (next는 반드시 dependencies에 있어야 함)
+      # next는 dependencies에 있어야 함. devDeps는 제거해 산출물 슬림화
       - name: Prune devDependencies
         run: npm prune --omit=dev
 
       - name: Create deploy package
         run: |
           mkdir -p deploy
+          # 실행에 필요한 산출물만 포함 (.next, node_modules, 정적파일, 설정)
           cp -r .next node_modules package.json package-lock.json public next.config.* deploy/ 2>/dev/null || true
           tar -C deploy -czf release.tgz .
 
@@ -51,29 +52,51 @@ jobs:
       - name: Known hosts
         run: ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Upload artifact to EC2
-        run: scp -o StrictHostKeyChecking=yes release.tgz ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/tmp/senifit-front-${{ env.RELEASE_NAME }}.tgz
-
-      - name: Remote deploy (extract, swap, restart)
+      # 🔽 /tmp에 쓰지 않고, tar 스트림을 원격 릴리즈 폴더에 즉시 풀기
+      - name: Remote deploy (stream, extract, swap, restart)
+        env:
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} bash -s -- "${{ env.RELEASE_NAME }}" <<'EOF'
+          # 1) 원격에서 릴리즈 디렉토리 준비 + 사전 청소(공간 확보)
+          ssh "$EC2_USER@$EC2_HOST" bash -se <<'PREP'
           set -euo pipefail
-          REL="$1"
           APP_DIR="/srv/senifit-front"
-              
+          # 릴리즈 디렉토리 생성
+          mkdir -p "$APP_DIR/releases"
+          # 오래된 릴리즈(최신 3개 제외) 자동 정리
+          cd "$APP_DIR/releases"
+          ls -1t | tail -n +4 | xargs -r rm -rf
+          # 기존 릴리즈 중 current가 아닌 것들의 .next/cache, node_modules도 정리(추가 확보)
+          CURR="$(readlink -f "$APP_DIR/current" || true)"
+          for d in "$APP_DIR"/releases/*; do
+            [ -d "$d" ] || continue
+            if [ "$(readlink -f "$d")" != "$CURR" ]; then
+              rm -rf "$d/.next/cache" "$d/node_modules" || true
+            fi
+          done
+          PREP
+
+          # 2) tar 스트리밍으로 새 릴리즈에 즉시 압축 해제 (중간 파일 無)
+          cat release.tgz | ssh "$EC2_USER@$EC2_HOST" "bash -se" <<'REMOTE'
+          set -euo pipefail
+          APP_DIR="/srv/senifit-front"
+          REL="${RELEASE_NAME}"
           mkdir -p "$APP_DIR/releases/$REL"
-          tar -xzf "/tmp/senifit-front-${REL}.tgz" -C "$APP_DIR/releases/$REL"
-              
+          # STDIN으로 받은 tar를 곧바로 해제
+          tar -xzf - -C "$APP_DIR/releases/$REL"
+
+          # 실행 사용자/그룹으로 소유권 정리 (ubuntu 대신 실제 서비스 계정으로 바꿔도 됨)
           chown -R ubuntu:ubuntu "$APP_DIR/releases/$REL"
-              
+
+          # 원자적 스와프
           ln -sfn "$APP_DIR/releases/$REL" "$APP_DIR/current"
-              
+
+          # 서비스 재시작 및 로컬 헬스체크
           sudo systemctl daemon-reload
           sudo systemctl restart senifit-front
-              
           curl -sS -I http://127.0.0.1:3000 | head -n1
-          EOF
-              
+          REMOTE
 
       - name: Public healthcheck
         run: |
