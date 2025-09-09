@@ -114,7 +114,7 @@ const Page = () => {
       >
         <Button
           component={Link}
-          href={"/exercise/record"} // 기록 페이지로 이동
+          href={`/record/write/${id}`} // 기록 페이지로 이동
           variant={"contained"}
           disableElevation
           sx={{
