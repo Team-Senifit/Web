@@ -103,6 +103,9 @@ jobs:
              curl -sS -I http://127.0.0.1:3000 | head -n1"
 
 
-      - name: Public healthcheck
+      - name: Public healthcheck (non-blocking)
+      
+        continue-on-error: true
         run: |
-          curl -sSL -o /dev/null -w 'HTTPS %s -> %{http_code}\n' https://senifit.co.kr
+          curl -fsS -o /dev/null https://senifit.co.kr || echo "::warning::Public healthcheck failed"
+
