@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Divider, TextField, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import SelectorCard from "./SelectorCard";
 import SelectorRadio from "./SelectorRadio";
 import SelectorTarget from "./SelectorTarget";
@@ -9,6 +9,8 @@ import { calculateAge } from "@/utils/calculateAge";
 import dayjs from "dayjs";
 import { genderLabel, gradeLabel } from "@/types/IMember";
 import useMedia from "@/hooks/useMedia";
+import SenifitTextField from "@/components/SenifitTextField";
+import { useFormContext } from "react-hook-form";
 
 type Scale = "veryGood" | "good" | "neutral" | "bad" | "veryBad";
 const scoreOf: Record<Scale, number> = {
@@ -51,6 +53,8 @@ export type ElderUpdatePayload = {
   memo?: string;
 };
 
+type FormValues = { memo: string };
+
 export default function ElderSurveyCard({
   elder,
   onChange,
@@ -59,6 +63,8 @@ export default function ElderSurveyCard({
   presetTrouble,
   step,
 }: Props) {
+  const { control } = useFormContext<FormValues>();
+
   const scaleFromScore = (s?: number): Scale => {
     switch (s) {
       case 4:
@@ -220,13 +226,17 @@ export default function ElderSurveyCard({
 
         {/* 메모 */}
         <Box sx={{ mt: 1, width: "100%" }}>
-          <TextField
+          <SenifitTextField
+            name={"memo"}
+            control={control}
             placeholder={"특이사항이 있다면 메모를 작성해주세요. (선택사항)"}
             onChange={(e) => {
               setMemo(e.target.value);
               bubble({ memo: e.target.value });
             }}
-            sx={{ width: "100%", height: "24px", p: "16px", borderRadius: 1 }}
+            formControlProps={{
+              sx: { width: "100%" },
+            }}
           />
         </Box>
       </Box>

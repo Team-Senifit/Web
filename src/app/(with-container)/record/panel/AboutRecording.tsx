@@ -15,7 +15,7 @@ export default function AboutRecording({ record, title }: Props) {
   const { isPhone, isTablet } = useMedia();
   const titleVariant = isPhone ? "Heading1" : isTablet ? "Title2" : "Title1";
 
-  // 모바일: 흰 박스(p=24)
+  // 모바일: 흰 박스 (gradient 없는 대신에 padding 24px)
   if (isPhone) {
     return (
       <Box
@@ -29,6 +29,10 @@ export default function AboutRecording({ record, title }: Props) {
         <CardContent
           sx={{
             p: 0,
+            "&:last-child": {
+              // MUI CardContent의 기본 bottom padding 제거
+              pb: 0,
+            },
             display: "flex",
             flexDirection: "column",
             gap: "24px",
@@ -48,6 +52,10 @@ export default function AboutRecording({ record, title }: Props) {
         <CardContent
           sx={{
             p: 0,
+            "&:last-child": {
+              // MUI CardContent의 기본 bottom padding 제거
+              pb: 0,
+            },
             flex: 1,
             minWidth: 0,
             display: "flex",

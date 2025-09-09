@@ -12,7 +12,7 @@ export default function SurveyIntro() {
       <SurveyIcon
         sx={{
           color: (t) => t.palette.label.neutral,
-          fontSize: isPhone ? 10 : 24,
+          fontSize: isPhone ? 16 : 24,
         }}
       />
       <Typography variant={isPhone ? "Headline1" : "Heading1"}>

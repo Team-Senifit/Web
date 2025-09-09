@@ -11,6 +11,7 @@ import {
   Button,
 } from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { RecordItem } from "../utils/recordUtils";
 import RecordBrief from "./RecordBrief";
 import RecordButton from "./RecordButton";
@@ -33,6 +34,8 @@ export default function RecordsList({ variant, all }: Props) {
 
   const { isPhone, isTablet } = useMedia();
   const isColumn = isPhone || isTablet; // 데스크탑은 가로로 배치. 둘은 세로로 배치
+
+  const router = useRouter();
 
   useEffect(() => {
     setVisible(variant === "top3" ? 3 : BATCH);
@@ -67,7 +70,7 @@ export default function RecordsList({ variant, all }: Props) {
         {/* Reload + 타이틀 */}
         <Stack spacing={1}>
           <Box
-            onClick={() => console.log("reload")} // router.refresh() 이거 넣을건데 일단 급하게 임시로..
+            onClick={() => router.refresh()}
             sx={{ cursor: "pointer", display: "inline-flex" }}
             aria-label={"reload"}
             role={"button"}
