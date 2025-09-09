@@ -112,7 +112,7 @@ export default function RecentRecord({
   return (
     <>
       {isPhone ? (
-        // 모바일: GradientCard 미사용, 흰 박스 + padding 24
+        // 모바일: 흰 박스 (gradient 없는 대신에 padding 24px)
         <Box sx={{ bgcolor: (t) => t.palette.static.white }}>{content}</Box>
       ) : (
         // 태블릿/데스크탑: GradientCard 사용

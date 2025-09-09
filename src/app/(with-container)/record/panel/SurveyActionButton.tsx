@@ -100,7 +100,6 @@ export default function SurveyActionButton({
       <Box sx={{ mt: 3, display: "flex", gap: 1.5 }}>
         <Button
           onClick={mobileStepper.canPrev ? mobileStepper.onPrev : undefined}
-          disabled={!mobileStepper.canPrev}
           sx={{
             flex: 1,
             bgcolor: (t) => t.palette.fillVariants.colored,
@@ -127,7 +126,7 @@ export default function SurveyActionButton({
     );
   }
 
-  // 🖥️ 데스크탑/태블릿: 기존 버튼 렌더링
+  // 데스크탑/태블릿: 기존 버튼 렌더링
   const renderButtons = () => {
     switch (mode) {
       case "write":
