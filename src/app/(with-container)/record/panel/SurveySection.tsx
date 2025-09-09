@@ -65,34 +65,22 @@ export default function SurveySection({ recordId, mode }: Props) {
   const handleChange = (surveyId: number, payload: ElderUpdatePayload) =>
     setPending((prev) => ({ ...prev, [surveyId]: payload }));
 
-  // ✅ 모바일: 단일 스텝(공통 0→1→2 → 어르신 0→1→2)
-  const [phase, setPhase] = useState<"common" | "elder">("common");
+  // 모바일: 단일 스텝(공통 0→1→2 → 어르신 0→1→2)
   const [step, setStep] = useState<0 | 1 | 2>(0);
 
-  const canPrev = isPhone && !(phase === "common" && step === 0);
-  const isFinal = isPhone && phase === "elder" && step === 2;
+  const canPrev = isPhone && !(step === 0);
+  const isFinal = isPhone && step === 2;
 
   const onPrev = () => {
     if (!isPhone) return;
-    if (phase === "elder" && step === 0) {
-      setPhase("common");
-      setStep(2);
-      return;
-    }
+    if (step === 0) return;
     setStep((s) => (s === 0 ? 0 : ((s - 1) as 0 | 1 | 2)));
   };
 
   const onNext = () => {
     if (!isPhone) return;
-    if (phase === "common" && step < 2) {
-      setStep((s) => (s + 1) as 0 | 1 | 2);
-    } else if (phase === "common" && step === 2) {
-      setPhase("elder");
-      setOpen(true); // 어르신 영역 펼치기
-      setStep(0);
-    } else if (phase === "elder" && step < 2) {
-      setStep((s) => (s + 1) as 0 | 1 | 2);
-    }
+    if (step === 2) return;
+    setStep((s) => (s + 1) as 0 | 1 | 2);
     // 마지막 단계 저장은 ActionButton에서 처리
   };
 
@@ -104,7 +92,7 @@ export default function SurveySection({ recordId, mode }: Props) {
       </Typography>
 
       <SelectorCard
-        step={isPhone && phase === "common" ? step : undefined}
+        step={isPhone ? step : undefined}
         items={[
           {
             title: "운동 참여 태도",
@@ -187,7 +175,7 @@ export default function SurveySection({ recordId, mode }: Props) {
               presetAtt={armed.att ? attAll : undefined}
               presetAbl={armed.abl ? ablAll : undefined}
               presetTrouble={armed.trouble ? discomfortAll : undefined}
-              step={isPhone && phase === "elder" ? step : undefined} // ← 한 단계만 표시
+              step={isPhone ? step : undefined} // ← 한 단계씩 표시
             />
           ))}
         </Box>
