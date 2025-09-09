@@ -30,21 +30,28 @@ async function axiosQueryFn({
   queryKey: readonly unknown[];
   signal?: AbortSignal;
 }) {
-  const [endpoint, params] = queryKey as [string, Record<string, unknown>?];
+  const [raw, params] = queryKey as [string, Record<string, unknown>?];
+
+  if (typeof raw !== "string" || raw.length === 0) {
+    throw new Error(`Bad endpoint in queryKey: ${String(raw)}`);
+  }
+  // 절대 URL이면 그대로, 상대경로면 선행 슬래시 보장
+  const endpoint = raw.startsWith("http")
+    ? raw
+    : raw.startsWith("/")
+      ? raw
+      : `/${raw}`;
 
   const res = await axiosClient.get(endpoint, { params, signal });
   return res.data;
 }
 
 export default function QueryProviders({ children }: PropsWithChildren) {
-  // const router = useRouter();
-
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const locationRef = useRef({ pathname: "/", search: "" });
   const redirectingRef = useRef(false);
-  // const lastRedirectTimeRef = useRef(0);
 
   useEffect(() => {
     locationRef.current = {
