@@ -15,6 +15,7 @@ import type { RecordItem } from "../utils/recordUtils";
 import RecordBrief from "./RecordBrief";
 import RecordButton from "./RecordButton";
 import ReloadIcon from "@/components/icons/ReloadIcon";
+import useMedia from "@/hooks/useMedia";
 
 type Variant = "top3" | "all";
 
@@ -29,6 +30,9 @@ export default function RecordsList({ variant, all }: Props) {
   const [visible, setVisible] = useState(variant === "top3" ? 3 : BATCH);
   const loading = false;
   const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  const { isPhone, isTablet } = useMedia();
+  const isColumn = isPhone || isTablet; // 데스크탑은 가로로 배치. 둘은 세로로 배치
 
   useEffect(() => {
     setVisible(variant === "top3" ? 3 : BATCH);
@@ -53,15 +57,26 @@ export default function RecordsList({ variant, all }: Props) {
       variant={"outlined"}
       sx={{
         p: 0,
-        borderRadius: "12px",
+        borderRadius: isPhone ? 0 : "12px",
         mb: 8,
         boxShadow: "0 0 8px 0 rgba(12, 13, 13, 0.05)",
       }}
     >
-      <CardContent sx={{ p: 6 }}>
+      {/* 패딩: 데스크탑/태블릿 48px, 모바일 24px */}
+      <CardContent sx={{ p: isPhone ? 3 : 6 }}>
+        {/* Reload + 타이틀 */}
         <Stack spacing={1}>
-          <ReloadIcon />
-          <Typography variant={"Heading1"}>{"지난 수업 보기"}</Typography>
+          <Box
+            onClick={() => console.log("reload")} // router.refresh() 이거 넣을건데 일단 급하게 임시로..
+            sx={{ cursor: "pointer", display: "inline-flex" }}
+            aria-label={"reload"}
+            role={"button"}
+          >
+            <ReloadIcon />
+          </Box>
+          <Typography variant={isPhone ? "Headline1" : "Heading1"}>
+            {"지난 수업 보기"}
+          </Typography>
         </Stack>
 
         <Divider sx={{ mt: 3 }} />
@@ -80,9 +95,10 @@ export default function RecordsList({ variant, all }: Props) {
                 return (
                   <Box key={it.recordId}>
                     <Stack
-                      direction={"row"}
-                      alignItems={"center"}
-                      justifyContent={"space-between"}
+                      direction={isColumn ? "column" : "row"}
+                      alignItems={isColumn ? "flex-start" : "center"}
+                      justifyContent={isColumn ? "flex-start" : "space-between"}
+                      spacing={isPhone ? 2 : isTablet ? 3 : 0}
                     >
                       <RecordBrief record={it} />
                       <RecordButton
@@ -101,7 +117,6 @@ export default function RecordsList({ variant, all }: Props) {
           </>
         )}
 
-        {/* 하단 버튼: top3 에서만 노출 */}
         {variant === "top3" && (
           <>
             <Divider sx={{ mt: 3 }} />

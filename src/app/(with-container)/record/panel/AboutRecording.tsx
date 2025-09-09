@@ -4,16 +4,47 @@ import { CardContent, Typography, Box } from "@mui/material";
 import { RecordItem } from "@/app/(with-container)/record/utils/recordUtils";
 import RecordBrief from "@/app/(with-container)/record/panel/RecordBrief";
 import GradientCard from "@/app/(with-container)/record/panel/GradientCard";
+import useMedia from "@/hooks/useMedia";
 
 type Props = {
   record: RecordItem | null;
   title?: string;
 };
 
-export default function NowRecording({ record, title }: Props) {
+export default function AboutRecording({ record, title }: Props) {
+  const { isPhone, isTablet } = useMedia();
+  const titleVariant = isPhone ? "Heading1" : isTablet ? "Title2" : "Title1";
+
+  // 모바일: 흰 박스(p=24)
+  if (isPhone) {
+    return (
+      <Box
+        sx={{
+          p: 3,
+          bgcolor: "background.paper",
+          border: "1px solid",
+          borderColor: "divider",
+        }}
+      >
+        <CardContent
+          sx={{
+            p: 0,
+            display: "flex",
+            flexDirection: "column",
+            gap: "24px",
+          }}
+        >
+          <Typography variant={titleVariant}>{title}</Typography>
+          {record && <RecordBrief record={record} />}
+        </CardContent>
+      </Box>
+    );
+  }
+
+  // 태블릿/데스크탑: GradientCard 유지
   return (
     <GradientCard>
-      <Box sx={{ position: "relative", flex: 1 }}>
+      <Box>
         <CardContent
           sx={{
             p: 0,
@@ -24,7 +55,7 @@ export default function NowRecording({ record, title }: Props) {
             gap: "24px",
           }}
         >
-          <Typography variant={"Title1"}>{title}</Typography>
+          <Typography variant={titleVariant}>{title}</Typography>
           {record && <RecordBrief record={record} />}
         </CardContent>
       </Box>
