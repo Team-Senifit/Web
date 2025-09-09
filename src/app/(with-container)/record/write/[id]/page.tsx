@@ -5,7 +5,7 @@ import SurveySection from "../../panel/SurveySection";
 import BackActionButton from "../../panel/BackActionButton";
 import SurveyIntro from "../../panel/SurveyIntro";
 
-export default async function RecordWritePage({
+export default async function RecordUpdatePage({
   params,
 }: {
   params: Promise<{ id: string }>;
