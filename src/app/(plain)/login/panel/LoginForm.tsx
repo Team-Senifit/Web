@@ -11,6 +11,7 @@ import useMedia from "@/hooks/useMedia";
 import Logo from "@/assets/logo/senifit-logo.svg";
 import SenifitDialog from "@/components/SenifitDialog";
 import Link from "next/link";
+import { kakaoChannelLink } from "@/constants/kakaoCh";
 
 type LoginFormValues = { id: string; password: string };
 
@@ -161,12 +162,6 @@ export default function LoginForm() {
         <LoginContent />
       </Box>
 
-      {/* 로그인 실패 다이얼로그 */}
-      {/* <CustomFailDialog
-        open={failDialogOpen}
-        onClose={() => setFailDialogOpen(false)}
-        main={true}
-      /> */}
       <SenifitDialog
         isOpen={failDialogOpen}
         onClose={() => setFailDialogOpen(false)}
@@ -180,7 +175,8 @@ export default function LoginForm() {
         secondaryText={"문의하기"}
         secondaryButtonProps={{
           component: Link,
-          href: "http://pf.kakao.com/_rXiVn",
+          href: kakaoChannelLink,
+          rel: "noopener noreferrer",
         }}
       />
 
@@ -197,7 +193,8 @@ export default function LoginForm() {
         secondaryText={"문의하기"}
         secondaryButtonProps={{
           component: Link,
-          href: "http://pf.kakao.com/_rXiVn",
+          href: kakaoChannelLink,
+          rel: "noopener noreferrer",
         }}
       />
 
