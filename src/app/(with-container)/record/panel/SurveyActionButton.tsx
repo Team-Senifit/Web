@@ -26,7 +26,7 @@ type Props = {
   afterSaveHref?: string;
   gap?: number;
   alignRight?: boolean;
-  mobileStepper?: StepperProps; // ← 추가
+  mobileStepper?: StepperProps;
 };
 
 export default function SurveyActionButton({
@@ -54,18 +54,33 @@ export default function SurveyActionButton({
 
       const payload = elders.map((e) => {
         const p = pending[e.surveyId];
-        const rawParts = p?.troubleParts ?? e.troubleParts ?? [];
-        const mappedParts = rawParts.map(
-          (part) => troublePartMap[part] ?? part,
-        );
+
+        const hadTrouble = (p?.hadTrouble ?? e.hadTrouble) === true;
+
+        // 불편함이 없다면 parts는 무조건 빈 배열
+        const rawParts = hadTrouble
+          ? (p?.troubleParts ?? e.troubleParts ?? [])
+          : [];
+
+        const mappedParts = rawParts
+          .map((part) => troublePartMap[part])
+          .filter(Boolean) as string[];
+
         return {
           surveyId: e.surveyId,
           troubleParts: mappedParts,
           attitudeScore: p?.attitudeScore ?? e.attitudeScore,
           abilityScore: p?.abilityScore ?? e.abilityScore,
-          hadTrouble: p?.hadTrouble ?? e.hadTrouble,
+          hadTrouble,
+          memo: (p?.memo ?? e.memo ?? "").trim(),
         };
       });
+
+      console.log(
+        "[Survey] PUT /records/%s/surveys payload:",
+        recordId,
+        JSON.stringify(payload, null, 2),
+      );
 
       await axiosClient.put(`/records/${recordId}/surveys`, payload);
     },
@@ -73,7 +88,7 @@ export default function SurveyActionButton({
       qc.invalidateQueries({ queryKey: ["surveys", recordId] });
       router.push(afterSaveHref);
     },
-    onError: (error) => {
+    onError: (error: unknown) => {
       if (error instanceof isAuthError) {
         router.push("/login");
         return;
