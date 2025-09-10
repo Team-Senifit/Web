@@ -61,7 +61,6 @@ const Page = () => {
       ...selectedRoutineRecord,
       programId: selectedProgram[0].id,
       routineKind: "workout_programs_selections_byPersonal",
-      durationKind: data.duration,
       cognitiveKind: data.cognitive_workout_code,
       targetKind: data.primary_target_code,
       singingKind: data.singing_workout_code,
