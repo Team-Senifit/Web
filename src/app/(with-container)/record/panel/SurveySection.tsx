@@ -11,14 +11,19 @@ import SelectorRadio from "./SelectorRadio";
 import SelectorTarget from "./SelectorTarget";
 import SurveyActionButton from "./SurveyActionButton";
 import useMedia from "@/hooks/useMedia";
+import { useForm, FormProvider } from "react-hook-form";
 
 type Scale = "veryGood" | "good" | "neutral" | "bad" | "veryBad";
 type Mode = "write" | "detail" | "update";
 
 type Props = { recordId: number; mode: Mode };
 
+type FormValues = { memo?: string };
+
 export default function SurveySection({ recordId, mode }: Props) {
   const { isPhone, isTablet } = useMedia();
+
+  const methods = useForm<FormValues>({ defaultValues: { memo: "" } });
 
   // 타이틀 분기
   const bigTitleVariant = isPhone
@@ -85,7 +90,7 @@ export default function SurveySection({ recordId, mode }: Props) {
   };
 
   return (
-    <>
+    <FormProvider {...methods}>
       {/* ----- 전체 섹션 ----- */}
       <Typography variant={bigTitleVariant} sx={{ mb: 3 }}>
         {"이번 수업은 전체적으로 어땠나요?"}
@@ -200,6 +205,6 @@ export default function SurveySection({ recordId, mode }: Props) {
             : undefined
         }
       />
-    </>
+    </FormProvider>
   );
 }

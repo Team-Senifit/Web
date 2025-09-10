@@ -11,6 +11,7 @@ import GradientCard from "./GradientCard";
 import SurveyIcon from "@/components/icons/SurveyIcon";
 import useMedia from "@/hooks/useMedia";
 import SenifitDialog from "@/components/SenifitDialog";
+import ExercisePageInfoCard from "../../(exercise)/panel/ExercisePageInfoCard";
 
 export default function RecentRecord({
   latest,
@@ -74,7 +75,7 @@ export default function RecentRecord({
           <RecordBrief record={latest} />
         ) : (
           <Typography
-            variant={"Heading1"}
+            variant={isPhone ? "Headline1" : "Heading1"}
             sx={{ color: (t) => t.palette.label.neutral }}
           >
             {"아직 진행한 수업이 없어요"}
@@ -112,8 +113,15 @@ export default function RecentRecord({
   return (
     <>
       {isPhone ? (
-        // 모바일: 흰 박스 (gradient 없는 대신에 padding 24px)
-        <Box sx={{ bgcolor: (t) => t.palette.static.white }}>{content}</Box>
+        <>
+          <ExercisePageInfoCard
+            title={"기록"}
+            description={"수업 별로 기록하고\n열람할 수 있어요"}
+          />
+
+          {/* 모바일: 흰 박스 (gradient 없는 대신에 padding 24px) */}
+          <Box sx={{ bgcolor: (t) => t.palette.static.white }}>{content}</Box>
+        </>
       ) : (
         // 태블릿/데스크탑: GradientCard 사용
         <GradientCard>{content}</GradientCard>

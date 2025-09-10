@@ -11,6 +11,7 @@ import { genderLabel, gradeLabel } from "@/types/IMember";
 import useMedia from "@/hooks/useMedia";
 import SenifitTextField from "@/components/SenifitTextField";
 import { useFormContext } from "react-hook-form";
+import ProfileIcon from "@/components/icons/ProfileIcon";
 
 type Scale = "veryGood" | "good" | "neutral" | "bad" | "veryBad";
 const scoreOf: Record<Scale, number> = {
@@ -143,14 +144,17 @@ export default function ElderSurveyCard({
           borderRadius: 2,
           bgcolor: t.palette.fillVariants.alternative,
           p: 2,
-          border: `1px solid ${t.palette.borderVariants.normal}`,
+          border: `1px solid ${t.palette.borderVariants.normal}`, // 이거 수정해야하나요..??????????????????????????????
         })}
       >
         {/* 상단 정보: 모바일 2줄, 그 외 1줄 */}
         {isPhone ? (
           <Box sx={{ mb: 2 }}>
-            <Typography variant={infoVariant}>{elder.name}</Typography>
-            <Box sx={{ display: "flex", gap: 2, mt: 0.5 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+              <ProfileIcon sx={{ fontSize: 24 }} />
+              <Typography variant={infoVariant}>{elder.name}</Typography>
+            </Box>
+            <Box sx={{ display: "flex", gap: 2, mt: 1 }}>
               <Typography variant={infoVariant}>
                 {calculateAge(dayjs(elder.birthDate), { format: "YYYY-MM-DD" })}
               </Typography>
@@ -164,6 +168,7 @@ export default function ElderSurveyCard({
           </Box>
         ) : (
           <Box sx={{ display: "flex", gap: 2, alignItems: "center", mb: 2 }}>
+            <ProfileIcon sx={{ fontSize: 24 }} />
             <Typography variant={infoVariant}>{elder.name}</Typography>
             <Typography variant={infoVariant}>
               {calculateAge(dayjs(elder.birthDate), { format: "YYYY-MM-DD" })}
@@ -176,7 +181,6 @@ export default function ElderSurveyCard({
             </Typography>
           </Box>
         )}
-
         {/* 선택 카드: step이 주어지면 한 항목만 렌더 */}
         <SelectorCard
           step={step}
@@ -223,7 +227,6 @@ export default function ElderSurveyCard({
             },
           ]}
         />
-
         {/* 메모 */}
         <Box sx={{ mt: 1, width: "100%" }}>
           <SenifitTextField
