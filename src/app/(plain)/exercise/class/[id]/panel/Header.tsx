@@ -18,14 +18,6 @@ const Header = ({
 }) => {
   const { isPhone, isTablet } = useMedia();
 
-  const handleEnd = () => {
-    if (isEnd) {
-      onEnd();
-    } else {
-      window.close();
-    }
-  };
-
   return (
     <Stack
       direction={"row"}
@@ -63,7 +55,7 @@ const Header = ({
       </Stack>
       {isPhone ? (
         <Button
-          onClick={handleEnd}
+          onClick={onEnd}
           sx={{
             px: 2,
             py: 1,
@@ -75,7 +67,7 @@ const Header = ({
         </Button>
       ) : (
         <Button
-          onClick={handleEnd}
+          onClick={onEnd}
           sx={{
             px: 8,
             py: 2,
