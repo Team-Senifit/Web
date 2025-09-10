@@ -7,6 +7,7 @@ import { useClientReady } from "@/hooks/useClientReady";
 import { useMutation } from "@tanstack/react-query";
 import { axiosClient } from "@/apis/axiosClient";
 import { IResponse } from "@/types/IResponse";
+import LoadingFallback from "@/app/panel/LoadingFallback";
 
 const Page = () => {
   const isClientReady = useClientReady();
@@ -23,7 +24,6 @@ const Page = () => {
           routineKind: selectedRoutineRecord?.routineKind,
           cognitiveKind: selectedRoutineRecord?.cognitiveKind,
           singingKind: selectedRoutineRecord?.singingKind,
-          durationKind: selectedRoutineRecord?.durationKind,
           targetKind: selectedRoutineRecord?.targetKind,
         },
       );
@@ -45,7 +45,7 @@ const Page = () => {
     return () => {};
   }, [selectedProgram, router, isClientReady, selectedRoutineRecord, mutate]);
 
-  return null;
+  return <LoadingFallback />;
 };
 
 export default Page;

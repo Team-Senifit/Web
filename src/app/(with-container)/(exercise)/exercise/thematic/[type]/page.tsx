@@ -7,11 +7,7 @@ import { IPopularRoutine } from "@/types/IPopularRoutine";
 import VideoInfo from "../../panel/VideoInfo";
 import ReturnButton from "@/components/ReturnButton";
 import { useParams, useRouter } from "next/navigation";
-import {
-  thematicWorkoutCodesLabel,
-  workoutDurationsType,
-  WorkoutKind,
-} from "@/types/IRoutine";
+import { thematicWorkoutCodesLabel, WorkoutKind } from "@/types/IRoutine";
 import { useMutation } from "@tanstack/react-query";
 import { axiosClient } from "@/apis/axiosClient";
 import useProgramStore from "@/states/useProgramStore";
@@ -70,7 +66,6 @@ const Page = () => {
               setSelectedRoutineRecord({
                 ...selectedRoutineRecord,
                 programId: routine.id,
-                durationKind: workoutDurationsType[routine.duration],
               });
               router.push("/exercise/members");
             }}
