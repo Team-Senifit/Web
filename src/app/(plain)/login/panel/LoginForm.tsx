@@ -6,12 +6,13 @@ import { useForm } from "react-hook-form";
 import { login } from "@/apis/auth";
 import SenifitTextField from "../../../../components/SenifitTextField";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useMedia from "@/hooks/useMedia";
 import Logo from "@/assets/logo/senifit-logo.svg";
 import SenifitDialog from "@/components/SenifitDialog";
 import Link from "next/link";
 import { kakaoChannelLink } from "@/constants/kakaoCh";
+import { useToastStore } from "@/states/useToastStore";
 
 type LoginFormValues = { id: string; password: string };
 
@@ -20,6 +21,14 @@ export default function LoginForm() {
 
   const searchParams = useSearchParams();
   const next = searchParams.get("next") || "/";
+
+  const { setToastOpen } = useToastStore();
+
+  useEffect(() => {
+    if (next !== "/") {
+      setToastOpen({ message: "로그인이 필요한 서비스입니다." });
+    }
+  }, [next, setToastOpen]);
 
   const methods = useForm<LoginFormValues>({ mode: "onSubmit" });
   const {
@@ -157,11 +166,12 @@ export default function LoginForm() {
         justifyContent={"center"}
         alignItems={"center"}
         minHeight={"100vh"}
-        bgcolor={isPhone ? "transparent" : "static.black"}
+        sx={{
+          position: "relative",
+        }}
       >
         <LoginContent />
       </Box>
-
       <SenifitDialog
         isOpen={failDialogOpen}
         onClose={() => setFailDialogOpen(false)}
