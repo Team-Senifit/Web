@@ -156,6 +156,8 @@ export default function RecordsList({ variant, all }: Props) {
 }
 
 function EmptyState() {
+  const { isPhone } = useMedia();
+
   return (
     <Box
       sx={{
@@ -168,7 +170,7 @@ function EmptyState() {
       }}
     >
       <Typography
-        variant={"Heading1"}
+        variant={isPhone ? "Headline1" : "Heading1"}
         sx={{ color: (t) => t.palette.label.alternative }}
       >
         {"아직 진행한 수업이 없어요"}

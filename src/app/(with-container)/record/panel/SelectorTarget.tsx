@@ -1,9 +1,7 @@
 "use client";
 
-import CheckIcon from "@/components/icons/CheckIcon";
 import {
   Box,
-  Checkbox,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -12,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useMemo } from "react";
+import SenifitCheckbox from "@/components/SenifitCheckbox";
 
 const PARTS = ["어깨", "팔", "등", "다리", "배"] as const;
 
@@ -51,43 +50,6 @@ export default function TargetSelector({
       parts: next,
     });
   };
-
-  // 체크박스 아이콘
-  const UncheckedBox = (
-    <Box
-      sx={(t) => ({
-        width: "24px",
-        height: "24px",
-        padding: "3px",
-        borderRadius: "6px",
-        border: `1.5px solid ${t.palette.divider}`,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        bgcolor: t.palette.interaction.disabled,
-      })}
-    >
-      <CheckIcon active={false} />
-    </Box>
-  );
-
-  const CheckedBox = (
-    <Box
-      sx={(t) => ({
-        width: "24px",
-        height: "24px",
-        padding: "3px",
-        borderRadius: "6px",
-        border: `1.5px solid ${t.palette.divider}`,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        bgcolor: t.palette.primary.main,
-      })}
-    >
-      <CheckIcon active={true} />
-    </Box>
-  );
 
   return (
     <FormControl sx={{ width: "100%" }}>
@@ -157,14 +119,7 @@ export default function TargetSelector({
                 <FormControlLabel
                   key={p}
                   onChange={() => togglePart(p)}
-                  control={
-                    <Checkbox
-                      checked={checked}
-                      icon={UncheckedBox}
-                      checkedIcon={CheckedBox}
-                      sx={{ p: 0, mr: "4px" }}
-                    />
-                  }
+                  control={<SenifitCheckbox checked={checked} />}
                   label={<Typography variant={"Label1"}>{p}</Typography>}
                   sx={{ m: 0 }}
                 />

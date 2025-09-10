@@ -24,8 +24,7 @@ export default async function RecordDetailPage({
           p: 6,
           borderRadius: 2,
           bgcolor: "background.paper",
-          border: "1px solid",
-          borderColor: "divider",
+          boxShadow: "0 0 8px 0 rgba(12, 13, 13, 0.05)",
           mb: 8,
         }}
       >
