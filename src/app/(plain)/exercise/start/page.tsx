@@ -19,7 +19,7 @@ const Page = () => {
         "/records",
         {
           programId: selectedRoutineRecord?.programId,
-          participants: selectedRoutineRecord?.participants,
+          participants: selectedRoutineRecord?.participants || [],
           routineKind: selectedRoutineRecord?.routineKind,
           cognitiveKind: selectedRoutineRecord?.cognitiveKind,
           singingKind: selectedRoutineRecord?.singingKind,
