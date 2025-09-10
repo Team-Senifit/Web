@@ -75,7 +75,7 @@ export default function RecentRecord({
           <RecordBrief record={latest} />
         ) : (
           <Typography
-            variant={"Heading1"}
+            variant={isPhone ? "Headline1" : "Heading1"}
             sx={{ color: (t) => t.palette.label.neutral }}
           >
             {"아직 진행한 수업이 없어요"}
