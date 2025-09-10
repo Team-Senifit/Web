@@ -20,7 +20,7 @@ export interface ISenifitDialogProps {
   onClose: () => void;
   dialogType: "info" | "success" | "error";
   title: string;
-  body: string;
+  body?: string;
   primaryText?: string;
   secondaryText?: string;
   onPrimaryClick?: () => void;
@@ -116,6 +116,7 @@ export default function SenifitDialog({
           direction={"column"}
           alignItems={"center"}
           justifyContent={"center"}
+          // spacing={body ? 3 : 0}
           spacing={3}
         >
           <Stack
@@ -137,15 +138,17 @@ export default function SenifitDialog({
               {title}
             </Typography>
 
-            <Typography
-              id={descId}
-              variant={"Body1"}
-              align={"center"}
-              color={"text.primary"}
-              sx={{ whiteSpace: "pre-line" }}
-            >
-              {body}
-            </Typography>
+            {body && (
+              <Typography
+                id={descId}
+                variant={"Body1"}
+                align={"center"}
+                color={"text.primary"}
+                sx={{ whiteSpace: "pre-line" }}
+              >
+                {body}
+              </Typography>
+            )}
           </Stack>
 
           {/* 액션 영역 */}
@@ -153,6 +156,7 @@ export default function SenifitDialog({
             component={"footer"}
             width={"100%"}
             p={1.5}
+            pt={0}
             direction={"column"}
             spacing={1.5}
           >
@@ -163,8 +167,8 @@ export default function SenifitDialog({
                 {...primaryButtonProps}
                 sx={{
                   bgcolor: "primaryVariants.default",
-                  borderRadius: 2,
-                  height: 60,
+                  borderRadius: "0.75rem",
+                  py: 2,
                   "&:hover": { bgcolor: "primaryVariants.default" },
                   ...primaryButtonProps?.sx,
                 }}
@@ -182,8 +186,8 @@ export default function SenifitDialog({
                 {...secondaryButtonProps}
                 sx={{
                   bgcolor: "fillVariants.colored",
-                  borderRadius: 2,
-                  height: 60,
+                  borderRadius: "0.75rem",
+                  py: 2,
                   "&:hover": { bgcolor: "fillVariants.colored" },
                   ...secondaryButtonProps?.sx,
                 }}
