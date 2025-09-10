@@ -1,11 +1,14 @@
 import MessageCircleMoreIcon from "@/components/icons/MessageCircleMoreIcon";
 import PhoneCallIcon from "@/components/icons/PhoneCallIcon";
+import { kakaoChannelLink } from "@/constants/kakaoCh";
 import { Button, Container, Paper, Stack, Typography } from "@mui/material";
+import Link from "next/link";
 import React from "react";
 
 const Inquiry = ({
   title,
   icon,
+  href,
   buttonTextColor,
   buttonBgColor,
   buttonText,
@@ -13,6 +16,7 @@ const Inquiry = ({
 }: {
   title: React.ReactNode;
   icon: React.ReactNode;
+  href: string;
   buttonTextColor: string;
   buttonBgColor: string;
   buttonText: React.ReactNode;
@@ -33,6 +37,10 @@ const Inquiry = ({
       </Stack>
       <Stack spacing={1.5}>
         <Button
+          component={Link}
+          href={href}
+          target={"_blank"}
+          rel={"noopener noreferrer"}
           variant={"contained"}
           sx={{
             py: 2,
@@ -90,6 +98,7 @@ const Footer = () => {
                   sx={{ width: 40, height: 40, color: "primary.main" }}
                 />
               }
+              href={"tel:+827080657080"}
               buttonTextColor={"staticVariants.white"}
               buttonBgColor={"primary.main"}
               buttonText={"070-8065-7080"}
@@ -103,6 +112,7 @@ const Footer = () => {
                   sx={{ width: 40, height: 40, color: "primary.main" }}
                 />
               }
+              href={kakaoChannelLink}
               buttonTextColor={"label.normal"}
               buttonBgColor={"#FEE500"}
               buttonText={"카카오톡 채널 바로가기"}
