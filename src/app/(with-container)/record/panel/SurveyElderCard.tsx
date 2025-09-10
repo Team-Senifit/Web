@@ -33,6 +33,7 @@ export type Elder = {
   abilityScore: number;
   hadTrouble: boolean;
   updatedAt?: string;
+  memo?: string;
 };
 
 type PresetTrouble = { hasDiscomfort: "none" | "yes"; parts: string[] };
@@ -221,7 +222,7 @@ export default function ElderSurveyCard({
                     setTrouble(v);
                     bubble({
                       hadTrouble: v.hasDiscomfort === "yes",
-                      troubleParts: v.parts,
+                      troubleParts: v.hasDiscomfort === "yes" ? v.parts : [],
                     });
                   }}
                 />
