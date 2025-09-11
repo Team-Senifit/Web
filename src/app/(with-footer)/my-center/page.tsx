@@ -56,8 +56,8 @@ const Page = () => {
                     strokeWidth={2}
                   />
                 }
-                title={data.data.name}
-                content={"시니데이케어센터"}
+                title={"센터명"}
+                content={data.data.name}
               />
             </Grid>
             <Grid
@@ -75,7 +75,7 @@ const Page = () => {
                   />
                 }
                 title={"센터 위치"}
-                content={"서울 광진구 능동로 123 2층"}
+                content={data.data.location}
               />
             </Grid>
           </Grid>
