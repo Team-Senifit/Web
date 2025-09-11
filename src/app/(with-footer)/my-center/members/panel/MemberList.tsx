@@ -21,12 +21,10 @@ const Member = ({
   birthDate,
   memberRank,
   gender,
-  isTablet,
   isDesktop,
   mutate,
 }: IMember & {
   isDesktop: boolean;
-  isTablet: boolean;
   mutate: UseMutateFunction<void, Error, number, unknown>;
 }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -107,11 +105,10 @@ const Member = ({
               width: [1, "fit-content"],
               borderRadius: "9999px",
               wordBreak: "keep-all",
+              height: "2.5rem",
             }}
           >
-            <Typography variant={isTablet ? "Heading1" : "Headline1"}>
-              {"수정하기"}
-            </Typography>
+            <Typography variant={"Headline1"}>{"수정하기"}</Typography>
           </Button>
           <Button
             variant={"text"}
@@ -126,11 +123,10 @@ const Member = ({
               width: [1, "fit-content"],
               borderRadius: "9999px",
               wordBreak: "keep-all",
+              height: "2.5rem",
             }}
           >
-            <Typography variant={isTablet ? "Heading1" : "Headline1"}>
-              {"삭제하기"}
-            </Typography>
+            <Typography variant={"Headline1"}>{"삭제하기"}</Typography>
           </Button>
         </Stack>
       </Stack>
@@ -154,7 +150,7 @@ const Member = ({
 };
 
 const MemberList = ({ members }: { members: Array<IMember> }) => {
-  const { isTablet, isDesktop } = useMedia();
+  const { isDesktop } = useMedia();
 
   const queryClient = useQueryClient();
 
@@ -173,7 +169,6 @@ const MemberList = ({ members }: { members: Array<IMember> }) => {
         <Member
           key={member.memberId}
           isDesktop={isDesktop}
-          isTablet={isTablet}
           mutate={mutate}
           {...member}
         />
