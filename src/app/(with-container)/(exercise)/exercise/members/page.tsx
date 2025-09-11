@@ -121,7 +121,10 @@ const Page = () => {
                   }}
                   control={
                     <SenifitCheckbox
-                      checked={memberData.length === selectedMembers?.length}
+                      checked={
+                        memberData.length === selectedMembers?.length &&
+                        memberData.length > 0
+                      }
                       onChange={() => {
                         setValue(
                           "members",
@@ -292,6 +295,16 @@ const Page = () => {
                         label={<MemberInfo {...props} />}
                       />
                     ))}
+                    {memberData.length === 0 && (
+                      <Stack justifyContent={"center"} alignItems={"center"}>
+                        <Typography
+                          variant={isPhone ? "Headline1" : "Heading1"}
+                          sx={{ color: "label.alternative" }}
+                        >
+                          {"등록된 어르신이 없습니다."}
+                        </Typography>
+                      </Stack>
+                    )}
                   </Stack>
                 </FormControl>
               );
