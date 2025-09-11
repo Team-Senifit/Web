@@ -8,14 +8,15 @@ export default function LeftIcon() {
       sx={(t) => ({
         width: 64,
         height: 64,
-        p: "12px 10px 12px 14px",
+        p: "12px",
         display: "flex",
-        justifyContent: "flex-end",
+        justifyContent: "center",
         alignItems: "center",
         borderRadius: "100px",
         background: t.palette.static?.white ?? t.palette.common.white,
         boxShadow: "0 0 8px 0 rgba(12, 13, 13, 0.05)",
         transform: "rotate(180deg)",
+        lineHeight: 0,
       })}
     >
       <svg
