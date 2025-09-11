@@ -1,4 +1,4 @@
-import { ArrowForwardIos, ChevronLeft } from "@mui/icons-material";
+import { ChevronRight, ChevronLeft } from "@mui/icons-material";
 import { Box, IconButton, SxProps, Stack } from "@mui/material";
 import React, { useState, ReactNode } from "react";
 
@@ -70,7 +70,11 @@ const Carousel = <T,>({
         }}
         onClick={handleNext}
       >
-        <ArrowForwardIos />
+        <ChevronRight
+          sx={{
+            fontSize: "2.5rem",
+          }}
+        />
       </IconButton>
 
       {/* 캐러셀 트랙 */}
