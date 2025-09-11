@@ -2,7 +2,7 @@
 
 import ReturnButton from "@/components/ReturnButton";
 import { Button, Divider, Stack, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
 import PageInfoCard from "@/components/PageInfoCard";
 import { SettingsIcon } from "@/components/icons";
@@ -22,8 +22,10 @@ import { IResponse } from "@/types/IResponse";
 import { IRoutineDetail } from "@/types/IRoutineDetail";
 import useProgramStore from "@/states/useProgramStore";
 import { useRouter } from "next/navigation";
+import SenifitDialog from "@/components/SenifitDialog";
 
 const Page = () => {
+  const [openDialog, setOpenDialog] = useState(false);
   const { isPhone, isDesktop } = useMedia();
 
   const router = useRouter();
@@ -69,127 +71,143 @@ const Page = () => {
   };
 
   return (
-    <Stack spacing={[2, 3]}>
-      <ReturnButton href={"/"} />
-      <ExercisePageInfoCard
-        title={"맞춤형 운동 프로그램"}
-        description={
-          "몇 가지 옵션을 선택하면 우리 센터에 딱 맞는 맞춤형 프로그램을 진행할 수 있어요!"
-        }
-      />
-      <Stack
-        component={"form"}
-        onSubmit={handleSubmit(onSubmit)}
-        direction={"column"}
-        spacing={3}
-        sx={{
-          bgcolor: "background.paper",
-          p: [3],
-          borderRadius: [undefined, "0.75rem"],
-        }}
-      >
-        <PageInfoCard
-          icon={
-            <SettingsIcon
-              sx={{ color: "label.neutral", width: "1.5rem", height: "1.5rem" }}
-              strokeWidth={2}
-            />
+    <>
+      <Stack spacing={[2, 3]}>
+        <ReturnButton href={"/"} />
+        <ExercisePageInfoCard
+          title={"맞춤형 운동 프로그램"}
+          description={
+            "몇 가지 옵션을 선택하면 우리 센터에 딱 맞는 맞춤형 프로그램을 진행할 수 있어요!"
           }
-          title={"운동 옵션 선택하기"}
         />
-        <Divider sx={{ borderColor: "borderVariants.normal" }} />
-        <Field
-          required
-          label={"진행 시간"}
-          id={"exerciseGoal"}
-          isPhone={isPhone}
+        <Stack
+          component={"form"}
+          onSubmit={handleSubmit(onSubmit, () => {
+            setOpenDialog(true);
+          })}
+          direction={"column"}
+          spacing={3}
+          sx={{
+            bgcolor: "background.paper",
+            p: [3],
+            borderRadius: [undefined, "0.75rem"],
+          }}
         >
-          <SenifitToggleButtonGroupField
-            rules={{
-              required: true,
-            }}
-            control={control}
-            name={"duration"}
-            exclusive
-            options={durationOptions}
-            maxItemsPerRow={2}
+          <PageInfoCard
+            icon={
+              <SettingsIcon
+                sx={{
+                  color: "label.neutral",
+                  width: "1.5rem",
+                  height: "1.5rem",
+                }}
+                strokeWidth={2}
+              />
+            }
+            title={"운동 옵션 선택하기"}
           />
-        </Field>
-        <Field
-          required
-          label={"인지운동"}
-          id={"cognitive_workout_code"}
-          isPhone={isPhone}
-        >
-          <SenifitToggleButtonGroupField
-            rules={{
-              required: true,
-            }}
-            control={control}
-            name={"cognitive_workout_code"}
-            exclusive
-            options={cognitiveOptions}
-            maxItemsPerRow={{
-              phone: 2,
-              tablet: 4,
-            }}
-          />
-        </Field>
-        <Field
-          required
-          label={"주요 부위"}
-          id={"primary_target_code"}
-          isPhone={isPhone}
-        >
-          <SenifitToggleButtonGroupField
-            rules={{
-              required: true,
-            }}
-            control={control}
-            name={"primary_target_code"}
-            exclusive
-            options={primaryTargetOptions}
-            maxItemsPerRow={{
-              phone: 2,
-              tablet: 4,
-            }}
-          />
-        </Field>
-        <Field
-          required
-          label={"노래체조 여부"}
-          id={"singing_workout_code"}
-          isPhone={isPhone}
-        >
-          <SenifitToggleButtonGroupField
-            rules={{
-              required: true,
-            }}
-            control={control}
-            name={"singing_workout_code"}
-            exclusive
-            options={singingOptions}
-            maxItemsPerRow={2}
-          />
-        </Field>
-        <Stack direction={"row"} width={"100%"} justifyContent={"flex-end"}>
-          <Button
-            loading={isSubmitting}
-            type={"submit"}
-            variant={"contained"}
-            fullWidth={!isDesktop}
-            disableElevation
-            sx={{
-              borderRadius: "0.75rem",
-              px: 8,
-              py: 2,
-            }}
+          <Divider sx={{ borderColor: "borderVariants.normal" }} />
+          <Field
+            required
+            label={"진행 시간"}
+            id={"exerciseGoal"}
+            isPhone={isPhone}
           >
-            <Typography variant={"Heading1"}>{"다음"}</Typography>
-          </Button>
+            <SenifitToggleButtonGroupField
+              rules={{
+                required: true,
+              }}
+              control={control}
+              name={"duration"}
+              exclusive
+              options={durationOptions}
+              maxItemsPerRow={2}
+            />
+          </Field>
+          <Field
+            required
+            label={"인지운동"}
+            id={"cognitive_workout_code"}
+            isPhone={isPhone}
+          >
+            <SenifitToggleButtonGroupField
+              rules={{
+                required: true,
+              }}
+              control={control}
+              name={"cognitive_workout_code"}
+              exclusive
+              options={cognitiveOptions}
+              maxItemsPerRow={{
+                phone: 2,
+                tablet: 4,
+              }}
+            />
+          </Field>
+          <Field
+            required
+            label={"주요 부위"}
+            id={"primary_target_code"}
+            isPhone={isPhone}
+          >
+            <SenifitToggleButtonGroupField
+              rules={{
+                required: true,
+              }}
+              control={control}
+              name={"primary_target_code"}
+              exclusive
+              options={primaryTargetOptions}
+              maxItemsPerRow={{
+                phone: 2,
+                tablet: 4,
+              }}
+            />
+          </Field>
+          <Field
+            required
+            label={"노래체조 여부"}
+            id={"singing_workout_code"}
+            isPhone={isPhone}
+          >
+            <SenifitToggleButtonGroupField
+              rules={{
+                required: true,
+              }}
+              control={control}
+              name={"singing_workout_code"}
+              exclusive
+              options={singingOptions}
+              maxItemsPerRow={2}
+            />
+          </Field>
+          <Stack direction={"row"} width={"100%"} justifyContent={"flex-end"}>
+            <Button
+              loading={isSubmitting}
+              type={"submit"}
+              variant={"contained"}
+              fullWidth={!isDesktop}
+              disableElevation
+              sx={{
+                borderRadius: "0.75rem",
+                px: 8,
+                py: 2,
+              }}
+            >
+              <Typography variant={"Heading1"}>{"다음"}</Typography>
+            </Button>
+          </Stack>
         </Stack>
       </Stack>
-    </Stack>
+      <SenifitDialog
+        dialogType={"error"}
+        isOpen={openDialog}
+        onClose={() => setOpenDialog(false)}
+        title={"운동루틴 옵션을 선택해주세요."}
+        primaryText={"확인"}
+        onPrimaryClick={() => setOpenDialog(false)}
+      />
+    </>
   );
 };
 
