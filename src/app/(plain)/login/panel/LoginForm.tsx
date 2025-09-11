@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, Typography, Snackbar, Stack } from "@mui/material";
+import { Box, Button, Typography, Stack } from "@mui/material";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { login } from "@/apis/auth";
@@ -38,15 +38,16 @@ export default function LoginForm() {
   } = methods;
 
   const router = useRouter();
-  const [showSnackbar, setShowSnackbar] = useState(false);
   const [failDialogOpen, setFailDialogOpen] = useState(false);
   const [inquiryDialogOpen, setInquiryDialogOpen] = useState(false);
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
       await login(data);
-      setShowSnackbar(true);
-      setTimeout(() => router.push(next), 1000);
+      setToastOpen({
+        message: "로그인 성공! 오늘도 즐거운 시니핏 하세요!",
+      });
+      setTimeout(() => router.push(next), 500);
     } catch {
       setFailDialogOpen(true);
     }
@@ -206,13 +207,6 @@ export default function LoginForm() {
           href: kakaoChannelLink,
           rel: "noopener noreferrer",
         }}
-      />
-
-      {/* 성공 알림 */}
-      <Snackbar
-        open={showSnackbar}
-        autoHideDuration={1500}
-        message={"로그인 성공! 오늘도 즐거운 시니핏 하세요!"}
       />
     </form>
   );
