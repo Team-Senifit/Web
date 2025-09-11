@@ -23,11 +23,15 @@ interface IPCNavTabProps extends TabProps {
 }
 
 const PCNavTab = (props: IPCNavTabProps) => {
+  const { href, label, ...rest } = props;
   return (
     <Tab
-      component={Link}
-      label={<Typography variant={"Heading1"}>{props.label}</Typography>}
-      {...props}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      {...(rest as any)}
+      href={href}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      component={Link as any}
+      label={<Typography variant={"Heading1"}>{label}</Typography>}
       sx={{
         height: "100%",
         minWidth: "15rem",
@@ -50,8 +54,8 @@ const PCNav = () => {
   };
 
   const tabIconStyle: SxProps = {
-    width: "1.875rem",
-    height: "1.875rem",
+    width: "2rem",
+    height: "2rem",
     pr: 1,
   };
 
@@ -69,27 +73,28 @@ const PCNav = () => {
           alignItems: "center",
           gap: "0.625rem",
         },
+        // 탭 비선택 시 텍스트 색상
+        "& .MuiTab-root": { color: "interaction.inactive" },
+        // 탭 선택 시 텍스트 색상
+        "& .Mui-selected": { color: "primary.main" },
       }}
     >
       <PCNavTab
-        component={Link}
         label={"운동"}
         iconPosition={"start"}
-        icon={<HumanIcon sx={tabIconStyle} />}
+        icon={<HumanIcon sx={tabIconStyle} strokeWidth={2} />}
         href={"/"}
       />
       <PCNavTab
-        component={Link}
         label={"기록"}
         iconPosition={"start"}
-        icon={<ClipboardIcon sx={tabIconStyle} />}
+        icon={<ClipboardIcon sx={tabIconStyle} strokeWidth={2} />}
         href={"/record"}
       />
       <PCNavTab
-        component={Link}
         label={"우리 센터"}
         iconPosition={"start"}
-        icon={<HouseIcon sx={tabIconStyle} />}
+        icon={<HouseIcon sx={tabIconStyle} strokeWidth={2} />}
         href={"/my-center"}
       />
     </Tabs>

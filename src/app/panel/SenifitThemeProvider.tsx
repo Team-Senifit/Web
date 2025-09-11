@@ -279,6 +279,19 @@ const theme = createTheme({
       dimmer: "rgba(12,13,13,0.8)",
     },
   },
+  components: {
+    MuiButton: {
+      defaultProps: {
+        disableElevation: true,
+      },
+      styleOverrides: {
+        root: {
+          borderRadius: "0.75rem",
+          py: 2,
+        },
+      },
+    },
+  },
 });
 
 if (theme.components) {
