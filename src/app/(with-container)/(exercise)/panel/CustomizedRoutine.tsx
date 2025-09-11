@@ -18,7 +18,7 @@ const CustomizedRoutine = () => {
         display: "block",
         position: "relative",
         overflow: "hidden",
-        borderRadius: [0, 2],
+        borderRadius: [0, "0.75rem"],
         p: [3, 4.5],
         width: "100%",
         height: ["auto", "40rem", "43rem"],
