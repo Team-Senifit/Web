@@ -73,6 +73,10 @@ const PCNav = () => {
           alignItems: "center",
           gap: "0.625rem",
         },
+        // 탭 비선택 시 텍스트 색상
+        "& .MuiTab-root": { color: "interaction.inactive" },
+        // 탭 선택 시 텍스트 색상
+        "& .Mui-selected": { color: "primary.main" },
       }}
     >
       <PCNavTab
