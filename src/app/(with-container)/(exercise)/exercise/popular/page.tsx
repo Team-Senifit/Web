@@ -2,7 +2,7 @@
 
 import { Stack } from "@mui/material";
 import React, { useEffect } from "react";
-import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
+import GradationPageInfoCard from "../../../../../components/GradationPageInfoCard";
 import { IPopularRoutine } from "@/types/IPopularRoutine";
 import VideoInfo from "../panel/VideoInfo";
 import ReturnButton from "@/components/ReturnButton";
@@ -35,7 +35,7 @@ const Page = () => {
   return (
     <Stack direction={"column"} spacing={[2, 3]}>
       <ReturnButton href={"/"} />
-      <ExercisePageInfoCard
+      <GradationPageInfoCard
         title={"인기 운동 프로그램"}
         description={
           "시니핏에서 인기있는 운동 프로그램을 한 눈에!\n자세히 보기로 어떤 운동들이 있는지 확인해 보세요."

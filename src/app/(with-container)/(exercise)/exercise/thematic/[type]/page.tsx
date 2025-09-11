@@ -2,7 +2,7 @@
 
 import { Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import ExercisePageInfoCard from "../../../panel/ExercisePageInfoCard";
+import GradationPageInfoCard from "../../../../../../components/GradationPageInfoCard";
 import { IPopularRoutine } from "@/types/IPopularRoutine";
 import VideoInfo from "../../panel/VideoInfo";
 import ReturnButton from "@/components/ReturnButton";
@@ -41,7 +41,7 @@ const Page = () => {
   return (
     <Stack direction={"column"} spacing={[2, 3]}>
       <ReturnButton href={"/exercise/thematic"} />
-      <ExercisePageInfoCard
+      <GradationPageInfoCard
         title={`주제별 운동 프로그램 - ${thematicWorkoutCodesLabel[params.type as WorkoutKind]}`}
         description={
           "하고 싶은 주제를 선택하여\n운동 프로그램을 진행할 수 있어요"

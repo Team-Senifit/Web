@@ -4,15 +4,19 @@ import useMedia from "@/hooks/useMedia";
 import { Stack, Typography } from "@mui/material";
 import React from "react";
 
-interface IExercisePageInfoCardProps {
+interface IGradationPageInfoCardProps {
   title: string;
   description: string;
+  descriptionWhiteSpace?: Array<"normal" | "pre-line"> | "normal" | "pre-line";
+  accentDescription?: boolean;
 }
 
-const ExercisePageInfoCard = ({
+const GradationPageInfoCard = ({
   title,
   description,
-}: IExercisePageInfoCardProps) => {
+  descriptionWhiteSpace = "pre-line",
+  accentDescription = false,
+}: IGradationPageInfoCardProps) => {
   const { isPhone, isDesktop } = useMedia();
 
   return (
@@ -28,7 +32,9 @@ const ExercisePageInfoCard = ({
       <Typography
         variant={isPhone ? "Headline1" : "Title1"}
         sx={{
-          color: "white",
+          color: accentDescription
+            ? "primaryVariants.disabled"
+            : "static.white",
         }}
       >
         {title}
@@ -36,8 +42,11 @@ const ExercisePageInfoCard = ({
       <Typography
         variant={isDesktop ? "Heading1" : "Headline1"}
         sx={{
-          color: "primaryVariants.disabled",
-          whiteSpace: "pre-line",
+          color: accentDescription
+            ? "static.white"
+            : "primaryVariants.disabled",
+
+          whiteSpace: descriptionWhiteSpace,
         }}
       >
         {description}
@@ -46,4 +55,4 @@ const ExercisePageInfoCard = ({
   );
 };
 
-export default ExercisePageInfoCard;
+export default GradationPageInfoCard;

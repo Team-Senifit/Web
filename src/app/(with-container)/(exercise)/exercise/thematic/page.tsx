@@ -3,7 +3,7 @@
 import ReturnButton from "@/components/ReturnButton";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
-import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
+import GradationPageInfoCard from "../../../../../components/GradationPageInfoCard";
 import PageInfoCard from "@/components/PageInfoCard";
 import { ClipboardCheckIcon } from "@/components/icons";
 import Field from "../../panel/Field";
@@ -79,7 +79,7 @@ const Page = () => {
         onSubmit={handleSubmit(onSubmit, () => setOpenDialog(true))}
       >
         <ReturnButton href={"/"} />
-        <ExercisePageInfoCard
+        <GradationPageInfoCard
           title={"주제별 운동 프로그램"}
           description={
             "하고 싶은 주제를 선택하여\n운동 프로그램을 진행할 수 있어요"
