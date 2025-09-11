@@ -63,7 +63,7 @@ const Page = () => {
         handleDone(id, programId, seconds);
       } else if (type === "LOGIN_NEEDED") {
         router.push(
-          "/login?redirect=" + encodeURIComponent("/exercise/check-selected"),
+          "/login?next=" + encodeURIComponent("/exercise/check-selected"),
         );
       }
     });
