@@ -39,7 +39,7 @@ const Page = () => {
   if (routines.length === 0) return null;
 
   return (
-    <Stack direction={"column"} spacing={3}>
+    <Stack direction={"column"} spacing={[2, 3]}>
       <ReturnButton href={"/exercise/thematic"} />
       <ExercisePageInfoCard
         title={`주제별 운동 프로그램 - ${thematicWorkoutCodesLabel[params.type as WorkoutKind]}`}
@@ -53,6 +53,7 @@ const Page = () => {
         sx={{
           p: [3, 6],
           bgcolor: "background.paper",
+          boxShadow: ["none", "0 0 8px 0 rgba(12, 13, 13, 0.05)"],
           borderRadius: [0, "0.75rem"],
           width: "100%",
         }}
