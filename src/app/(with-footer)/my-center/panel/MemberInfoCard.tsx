@@ -9,6 +9,7 @@ import { Stack, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import Link from "next/link";
 import React from "react";
+import EmptyView from "./EmptyView";
 
 const MemberEditButton = () => {
   const { isPhone } = useMedia();
@@ -75,7 +76,7 @@ const MemberInfoCard = ({
         bgcolor: "background.paper",
         boxShadow: ["none", "0 0 8px 0 rgba(12, 13, 13, 0.05)"],
         width: 1,
-        height: ["16.25rem", "28rem"],
+        minHeight: ["16.25rem", "28rem"],
         borderRadius: [0, "0.75rem"],
         px: [3, 6],
         py: [3, 4.5],
@@ -121,6 +122,7 @@ const MemberInfoCard = ({
           {"입니다."}
         </Typography>
       </Stack>
+      {members.length === 0 && <EmptyView />}
 
       {isPhone ? (
         <MemberEditButton />
