@@ -14,6 +14,7 @@ export default async function RecordDetailPage({
 }) {
   const { id } = await params;
   const currentRecord = await getRecordServer(parseInt(id));
+  //
 
   const participantCount = currentRecord?.participantCount ?? 0;
 
