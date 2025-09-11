@@ -34,6 +34,7 @@ export function useVideoPlayer(
   const [current, setCurrent] = useState(0);
   const [buffered, setBuffered] = useState(0);
   const [scrub, setScrub] = useState<number | null>(null);
+  const [autoplayBlocked, setAutoplayBlocked] = useState(false);
 
   const { setToastOpen } = useToastStore();
 
@@ -79,12 +80,27 @@ export function useVideoPlayer(
       v.removeEventListener("progress", onProg);
       v.removeEventListener("volumechange", onVol);
     };
-  }, [videoRef, onPlayStateChange, onMuteChange, onTimeUpdateSec]);
+  }, [
+    videoRef,
+    onPlayStateChange,
+    onMuteChange,
+    onTimeUpdateSec,
+    setToastOpen,
+  ]);
 
   useEffect(() => {
     const v = videoRef.current;
     if (!v || !autoPlayOnSourceChange) return;
-    const playAfter = () => v.play().catch(() => {});
+
+    const playAfter = async () => {
+      setAutoplayBlocked(false);
+      try {
+        await v.play();
+      } catch {
+        setAutoplayBlocked(true);
+      }
+    };
+
     v.addEventListener("loadeddata", playAfter, { once: true });
     if (v.readyState >= 2) playAfter();
     return () => v.removeEventListener("loadeddata", playAfter);
@@ -131,6 +147,7 @@ export function useVideoPlayer(
     toggle,
     mute,
     seek,
+    autoplayBlocked,
   } as const;
 }
 
