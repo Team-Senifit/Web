@@ -18,7 +18,7 @@ import { ISenifitToggleOption } from "@/types/IToggleButton";
 import MemberRankPicker from "./edit-form/MemberRankPicker";
 import { transformValueToPayload } from "./transformData";
 import { IResponse } from "@/types/IResponse";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosClient } from "@/apis/axiosClient";
 import { useRouter } from "next/navigation";
 
@@ -89,6 +89,8 @@ const EditForm = ({
     formState: { isSubmitting },
   } = methods;
 
+  const queryClient = useQueryClient();
+
   const mutation = useMutation({
     mutationFn: async (payload: IMemberEditFormPayload) => {
       if (isEdit) {
@@ -101,16 +103,13 @@ const EditForm = ({
       }
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/centers/members"] });
       router.push("/my-center/members");
-    },
-    onError: () => {
-      // Handle error
     },
   });
 
   const onSubmit = async (formData: IMemberEditFormValue) => {
     const payload = transformValueToPayload(formData);
-    console.log(payload);
     await mutation.mutate(payload);
   };
 
