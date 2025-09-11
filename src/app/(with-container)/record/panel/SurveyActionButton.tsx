@@ -102,6 +102,37 @@ export default function SurveyActionButton({
 
   // 모바일: 스텝퍼 모드
   if (mobileStepper?.show) {
+    if (mode === "detail") {
+      return (
+        <Box sx={{ mt: 3, display: "flex", gap: 1.5 }}>
+          <Button
+            onClick={goEdit}
+            sx={{
+              flex: 1,
+              bgcolor: (t) => t.palette.fillVariants.colored,
+              color: (t) => t.palette.primary.main,
+              borderRadius: "12px",
+              py: 1.5,
+            }}
+          >
+            <Typography variant={"Heading1"}>{"수정하기"}</Typography>
+          </Button>
+          <Button
+            onClick={() => console.log("nothing")}
+            sx={{
+              flex: 1,
+              bgcolor: (t) => t.palette.primary.main,
+              color: (t) => t.palette.static.white,
+              borderRadius: "12px",
+              py: 1.5,
+            }}
+          >
+            <Typography variant={"Heading1"}>{"저장하기"}</Typography>
+          </Button>
+        </Box>
+      );
+    }
+
     const finalLabel = mode === "write" ? "작성 완료" : "저장하기";
     const nextLabel = mobileStepper.isFinal ? finalLabel : "다음";
 
