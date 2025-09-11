@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -7,8 +8,10 @@ import CTAButton from "@/components/CTAButton";
 import type { Elder, ElderUpdatePayload } from "./SurveyElderCard";
 import { axiosClient } from "@/apis/axiosClient";
 import { isAuthError } from "@/apis/errors";
+import SenifitDialog from "@/components/SenifitDialog";
 
 type Mode = "write" | "detail" | "update";
+type ConfirmKind = null | "editConfirm" | "saveConfirm";
 
 type StepperProps = {
   show: boolean;
@@ -98,6 +101,11 @@ export default function SurveyActionButton({
     },
   });
 
+  const [confirm, setConfirm] = useState<ConfirmKind>(null);
+
+  const openEditConfirm = () => setConfirm("editConfirm");
+  const openSaveConfirm = () => setConfirm("saveConfirm");
+  const closeConfirm = () => setConfirm(null);
   const goEdit = () => router.push(`/record/update/${recordId}`);
 
   // 모바일: 스텝퍼 모드
@@ -106,7 +114,7 @@ export default function SurveyActionButton({
       return (
         <Box sx={{ mt: 3, display: "flex", gap: 1.5 }}>
           <Button
-            onClick={goEdit}
+            onClick={openEditConfirm}
             sx={{
               flex: 1,
               bgcolor: (t) => t.palette.fillVariants.colored,
@@ -137,9 +145,16 @@ export default function SurveyActionButton({
     const nextLabel = mobileStepper.isFinal ? finalLabel : "다음";
 
     const handleNext = () => {
-      if (mobileStepper.isFinal)
-        save(); // 마지막이면 저장
-      else mobileStepper.onNext();
+      if (!mobileStepper.isFinal) {
+        mobileStepper.onNext();
+        return;
+      }
+      // 마지막 스텝
+      if (mode === "update") {
+        openSaveConfirm();
+      } else {
+        save();
+      }
     };
 
     return (
@@ -191,7 +206,7 @@ export default function SurveyActionButton({
           <>
             <CTAButton
               text={"수정하기"}
-              onClick={goEdit}
+              onClick={openEditConfirm}
               sx={{
                 bgcolor: (t) => t.palette.fillVariants.colored,
                 color: (t) => t.palette.primary.main,
@@ -211,7 +226,7 @@ export default function SurveyActionButton({
         return (
           <CTAButton
             text={"저장하기"}
-            onClick={() => save()}
+            onClick={openSaveConfirm}
             sx={{
               bgcolor: (t) => t.palette.primary.main,
               color: (t) => t.palette.static.white,
@@ -222,15 +237,45 @@ export default function SurveyActionButton({
   };
 
   return (
-    <Box
-      sx={{
-        mt: 3,
-        display: "flex",
-        justifyContent: alignRight ? "flex-end" : "flex-start",
-        gap,
-      }}
-    >
-      {renderButtons()}
-    </Box>
+    <>
+      <Box
+        sx={{
+          mt: 3,
+          display: "flex",
+          justifyContent: alignRight ? "flex-end" : "flex-start",
+          gap,
+        }}
+      >
+        {renderButtons()}
+      </Box>
+
+      <SenifitDialog
+        isOpen={confirm === "editConfirm"}
+        onClose={closeConfirm}
+        dialogType={"info"}
+        title={"기록을 수정하시겠습니까?"}
+        primaryText={"수정하기"}
+        secondaryText={"돌아가기"}
+        onPrimaryClick={() => {
+          closeConfirm();
+          goEdit();
+        }}
+        onSecondaryClick={closeConfirm}
+      />
+
+      <SenifitDialog
+        isOpen={confirm === "saveConfirm"}
+        onClose={closeConfirm}
+        dialogType={"info"}
+        title={"수정한 기록을 저장하시겠습니까?"}
+        primaryText={"저장하기"}
+        secondaryText={"돌아가기"}
+        onPrimaryClick={() => {
+          closeConfirm();
+          save();
+        }}
+        onSecondaryClick={closeConfirm}
+      />
+    </>
   );
 }

@@ -19,15 +19,19 @@ export default function RecentRecord({
   latest: RecordItem | null;
 }) {
   const router = useRouter();
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState<
+    null | "alreadyWritten" | "noSurvey"
+  >(null);
   const { isTablet, isPhone } = useMedia();
 
   const handleClickCard = () => {
     if (latest?.surveyExist) {
-      setOpenDialog(true);
+      setOpenDialog("alreadyWritten");
+      return;
+    } else {
+      setOpenDialog("noSurvey");
       return;
     }
-    router.push(`/record/write/${latest?.recordId}`);
   };
 
   // 공통 콘텐츠 (ButtonBase + CardContent)
@@ -128,18 +132,31 @@ export default function RecentRecord({
       )}
 
       <SenifitDialog
-        isOpen={openDialog}
-        onClose={() => setOpenDialog(false)}
-        dialogType={"info"}
+        isOpen={openDialog === "alreadyWritten"}
+        onClose={() => setOpenDialog(null)}
+        dialogType={"success"}
         title={"이미 기록을 작성했습니다."}
-        body={"최근 수업이 이미 등록되어 있습니다."}
         primaryText={"작성한 기록 보기"}
-        secondaryText={"취소"}
+        secondaryText={"돌아가기"}
         onPrimaryClick={() => {
-          setOpenDialog(false);
+          setOpenDialog(null);
           router.push(latest ? `/record/detail/${latest.recordId}` : "/record");
         }}
-        onSecondaryClick={() => setOpenDialog(false)}
+        onSecondaryClick={() => setOpenDialog(null)}
+      />
+
+      <SenifitDialog
+        isOpen={openDialog === "noSurvey"}
+        onClose={() => setOpenDialog(null)}
+        dialogType={"info"}
+        title={"작성된 기록이 없습니다.\n작성하시겠습니까?"}
+        primaryText={"작성하기"}
+        secondaryText={"돌아가기"}
+        onPrimaryClick={() => {
+          setOpenDialog(null);
+          router.push(latest ? `/record/write/${latest.recordId}` : "/record");
+        }}
+        onSecondaryClick={() => setOpenDialog(null)}
       />
     </>
   );
