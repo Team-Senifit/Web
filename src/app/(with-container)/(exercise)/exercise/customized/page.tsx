@@ -3,7 +3,7 @@
 import ReturnButton from "@/components/ReturnButton";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
+import GradationPageInfoCard from "../../../../../components/GradationPageInfoCard";
 import PageInfoCard from "@/components/PageInfoCard";
 import { SettingsIcon } from "@/components/icons";
 import useMedia from "@/hooks/useMedia";
@@ -74,7 +74,7 @@ const Page = () => {
     <>
       <Stack spacing={[2, 3]}>
         <ReturnButton href={"/"} />
-        <ExercisePageInfoCard
+        <GradationPageInfoCard
           title={"맞춤형 운동 프로그램"}
           description={
             "몇 가지 옵션을 선택하면 우리 센터에 딱 맞는 맞춤형 프로그램을 진행할 수 있어요!"
