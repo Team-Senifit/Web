@@ -2,7 +2,7 @@
 
 import ReturnButton from "@/components/ReturnButton";
 import { Button, Divider, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
 import PageInfoCard from "@/components/PageInfoCard";
 import { ClipboardCheckIcon } from "@/components/icons";
@@ -25,8 +25,10 @@ import {
 } from "@/types/IRoutine";
 import { IExerciseNewPayload } from "@/types/IRoutineDetail";
 import { useRouter } from "next/navigation";
+import SenifitDialog from "@/components/SenifitDialog";
 
 const Page = () => {
+  const [openDialog, setOpenDialog] = useState(false);
   const router = useRouter();
 
   const { isDesktop } = useMedia();
@@ -69,105 +71,115 @@ const Page = () => {
     router.push(`/exercise/thematic/${workoutKind}`);
   };
   return (
-    <Stack
-      direction={"column"}
-      spacing={3}
-      component={"form"}
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <ReturnButton href={"/"} />
-      <ExercisePageInfoCard
-        title={"주제별 운동 프로그램"}
-        description={
-          "하고 싶은 주제를 선택하여\n운동 프로그램을 진행할 수 있어요"
-        }
-      />
+    <>
       <Stack
+        direction={"column"}
         spacing={3}
-        sx={{
-          p: [3, 6],
-          bgcolor: "background.paper",
-          borderRadius: [undefined, "0.75rem"],
-        }}
+        component={"form"}
+        onSubmit={handleSubmit(onSubmit, () => setOpenDialog(true))}
       >
-        <PageInfoCard
-          icon={
-            <ClipboardCheckIcon
-              strokeWidth={2}
-              sx={{
-                color: "label.neutral",
+        <ReturnButton href={"/"} />
+        <ExercisePageInfoCard
+          title={"주제별 운동 프로그램"}
+          description={
+            "하고 싶은 주제를 선택하여\n운동 프로그램을 진행할 수 있어요"
+          }
+        />
+        <Stack
+          spacing={3}
+          sx={{
+            p: [3, 6],
+            bgcolor: "background.paper",
+            borderRadius: [undefined, "0.75rem"],
+          }}
+        >
+          <PageInfoCard
+            icon={
+              <ClipboardCheckIcon
+                strokeWidth={2}
+                sx={{
+                  color: "label.neutral",
+                }}
+              />
+            }
+            title={"주제 선택하기"}
+          />
+          <Divider sx={{ borderColor: "borderVariants.normal" }} />
+          <Field label={"인지운동"} id={""}>
+            <SenifitToggleButtonGroupField
+              name={"workout_kind"}
+              options={cognitiveOptionsThematic}
+              control={control}
+              maxItemsPerRow={{
+                phone: 1,
+                tablet: 2,
+                desktop: 4,
+              }}
+              buttonProps={{
+                sx: {
+                  wordBreak: "keep-all",
+                },
               }}
             />
-          }
-          title={"주제 선택하기"}
-        />
-        <Divider sx={{ borderColor: "borderVariants.normal" }} />
-        <Field label={"인지운동"} id={""}>
-          <SenifitToggleButtonGroupField
-            name={"workout_kind"}
-            options={cognitiveOptionsThematic}
-            control={control}
-            maxItemsPerRow={{
-              phone: 1,
-              tablet: 2,
-              desktop: 4,
-            }}
-            buttonProps={{
-              sx: {
-                wordBreak: "keep-all",
-              },
-            }}
-          />
-        </Field>
-        <Field label={"부위"} id={""}>
-          <SenifitToggleButtonGroupField
-            name={"workout_kind"}
-            options={primaryTargetOptionsThematic}
-            control={control}
-            maxItemsPerRow={{
-              phone: 1,
-              tablet: 2,
-              desktop: 4,
-            }}
-            buttonProps={{
-              sx: {
-                wordBreak: "keep-all",
-              },
-            }}
-          />
-        </Field>
-        <Field label={"노래 체조"} id={""}>
-          <SenifitToggleButtonGroupField
-            name={"workout_kind"}
-            options={singingOptionsThematic}
-            control={control}
-            maxItemsPerRow={{
-              phone: 1,
-              tablet: 2,
-              desktop: 4,
-            }}
-          />
-        </Field>
+          </Field>
+          <Field label={"부위"} id={""}>
+            <SenifitToggleButtonGroupField
+              name={"workout_kind"}
+              options={primaryTargetOptionsThematic}
+              control={control}
+              maxItemsPerRow={{
+                phone: 1,
+                tablet: 2,
+                desktop: 4,
+              }}
+              buttonProps={{
+                sx: {
+                  wordBreak: "keep-all",
+                },
+              }}
+            />
+          </Field>
+          <Field label={"노래 체조"} id={""}>
+            <SenifitToggleButtonGroupField
+              name={"workout_kind"}
+              options={singingOptionsThematic}
+              control={control}
+              maxItemsPerRow={{
+                phone: 1,
+                tablet: 2,
+                desktop: 4,
+              }}
+            />
+          </Field>
 
-        <Stack direction={"row"} width={"100%"} justifyContent={"flex-end"}>
-          <Button
-            // component={Link}
-            // href={`/exercise/thematic/${workoutKind}`}
-            type={"submit"}
-            variant={"contained"}
-            fullWidth={!isDesktop}
-            disableElevation
-            sx={{
-              borderRadius: "0.75rem",
-              px: 8,
-              py: 2,
-            }}
-          >
-            <Typography variant={"Heading1"}>{"다음"}</Typography>
-          </Button>
+          <Stack direction={"row"} width={"100%"} justifyContent={"flex-end"}>
+            <Button
+              // component={Link}
+              // href={`/exercise/thematic/${workoutKind}`}
+              type={"submit"}
+              variant={"contained"}
+              fullWidth={!isDesktop}
+              disableElevation
+              sx={{
+                borderRadius: "0.75rem",
+                px: 8,
+                py: 2,
+              }}
+            >
+              <Typography variant={"Heading1"}>{"다음"}</Typography>
+            </Button>
+          </Stack>
         </Stack>
       </Stack>
-    </Stack>
+      <SenifitDialog
+        dialogType={"error"}
+        isOpen={openDialog}
+        onClose={() => setOpenDialog(false)}
+        title={"운동루틴 옵션을 선택해주세요."}
+        primaryText={"확인"}
+        onPrimaryClick={() => setOpenDialog(false)}
+      />
+    </>
   );
 };
 

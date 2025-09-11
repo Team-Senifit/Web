@@ -48,13 +48,13 @@ const Unchecked = (
 
 const Checked = (
   <Box component={"span"} sx={{ ...baseBoxSx, bgcolor: "primary.main" }}>
-    <CheckIcon strokeWidth={4} sx={{ color: "static.white" }} />
+    <CheckIcon strokeWidth={4} sx={{ color: "white" }} />
   </Box>
 );
 
 const Indeterminate = (
   <Box component={"span"} sx={{ ...baseBoxSx, bgcolor: "primary.main" }}>
-    <MinusIcon strokeWidth={4} sx={{ color: "static.white" }} />
+    <MinusIcon strokeWidth={4} sx={{ color: "white" }} />
   </Box>
 );
 

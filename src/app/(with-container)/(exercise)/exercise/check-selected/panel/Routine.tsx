@@ -18,24 +18,18 @@ import React from "react";
 const Routine = ({
   type,
   routineDetail,
+  setOpenModal,
+  routineUrl,
 }: {
   type: "customized" | "popular" | ["thematic", WorkoutKind] | null;
   routineDetail: IRoutineDetail;
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  routineUrl: string;
 }) => {
   const { isPhone, isDesktop } = useMedia();
 
   const videoTitle =
     type === "customized" ? "맞춤형 운동 프로그램" : routineDetail.name;
-
-  let routineUrl: string;
-
-  if (type === "customized" || type === "popular") {
-    routineUrl = `/exercise/${type}`;
-  } else if (type === null) {
-    routineUrl = `/`;
-  } else {
-    routineUrl = `/exercise/thematic/${type[1]}`;
-  }
 
   const SelectRoutineAgainButton = () => {
     return (
@@ -122,10 +116,7 @@ const Routine = ({
           <Typography variant={"Heading1"}>{"이전"}</Typography>
         </Button>
         <Button
-          component={Link}
-          href={"/exercise/start"}
-          target={"_blank"}
-          rel={"noopener noreferrer"}
+          onClick={() => setOpenModal(true)}
           variant={"contained"}
           disableElevation
           sx={{
