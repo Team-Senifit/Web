@@ -33,7 +33,7 @@ const Page = () => {
   });
 
   return (
-    <Stack direction={"column"} spacing={3}>
+    <Stack direction={"column"} spacing={[2, 3]}>
       <ReturnButton href={"/"} />
       <ExercisePageInfoCard
         title={"인기 운동 프로그램"}

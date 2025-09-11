@@ -39,7 +39,7 @@ const Page = () => {
   if (routines.length === 0) return null;
 
   return (
-    <Stack direction={"column"} spacing={3}>
+    <Stack direction={"column"} spacing={[2, 3]}>
       <ReturnButton href={"/exercise/thematic"} />
       <ExercisePageInfoCard
         title={`주제별 운동 프로그램 - ${thematicWorkoutCodesLabel[params.type as WorkoutKind]}`}

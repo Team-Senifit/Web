@@ -74,7 +74,7 @@ const Page = () => {
     <>
       <Stack
         direction={"column"}
-        spacing={3}
+        spacing={[2, 3]}
         component={"form"}
         onSubmit={handleSubmit(onSubmit, () => setOpenDialog(true))}
       >
