@@ -104,6 +104,7 @@ const EditForm = ({
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/centers/members"] });
+      queryClient.invalidateQueries({ queryKey: ["/centers"] });
       router.push("/my-center/members");
     },
   });
