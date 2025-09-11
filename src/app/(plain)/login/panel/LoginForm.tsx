@@ -22,6 +22,7 @@ import { kakaoChannelLink } from "@/constants/kakaoCh";
 import { useToastStore } from "@/states/useToastStore";
 import EyeIcon from "@/components/icons/EyeIcon";
 import EyeOffIcon from "@/components/icons/EyeOffIcon";
+import BackgroundImage from "@/assets/images/login-background.png";
 
 type LoginFormValues = { id: string; password: string };
 
@@ -76,16 +77,22 @@ export default function LoginForm() {
   };
 
   const LoginContent = () => (
-    <Box
-      width={{ phone: "100%", tablet: 552, desktop: 552 }}
-      px={{ phone: 2.5, tablet: 5, desktop: 5 }}
-      py={{ phone: 4, tablet: 5, desktop: 5 }}
-      borderRadius={"0.75rem"}
-      display={"flex"}
+    <Stack
       flexDirection={"column"}
       justifyContent={"center"}
       alignItems={"center"}
-      bgcolor={"static.white"}
+      sx={{
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        bgcolor: "background.paper",
+        borderRadius: [0, "0.75rem"],
+        px: [2.5, 5],
+        py: [4, 5],
+        width: ["100%", 552],
+        height: ["100vh", "fit-content"],
+      }}
     >
       <Box mb={2}>
         <Image src={Logo} alt={"시니핏 로고"} />
@@ -192,20 +199,40 @@ export default function LoginForm() {
           {"로그인이 되지 않나요?"}
         </Typography>
       </Button>
-    </Box>
+    </Stack>
   );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box
-        display={"flex"}
-        justifyContent={"center"}
-        alignItems={"center"}
-        minHeight={"100vh"}
         sx={{
           position: "relative",
+          width: "100vw",
+          height: "100vh",
         }}
       >
+        <Box
+          component={Image}
+          src={BackgroundImage}
+          alt={"배경 이미지"}
+          sizes={"100vw"}
+          priority
+          fill
+          sx={{
+            zIndex: -1,
+            pointerEvents: "none",
+          }}
+        />
+        <Box
+          sx={{
+            // background: linear-gradient(180deg, rgba(12, 13, 13, 0.90) 0%, rgba(12, 13, 13, 0.50) 100%), url(<path-to-image>) lightgray -116px -122.341px / 116.111% 123.895% no-repeat;
+            position: "absolute",
+            inset: 0,
+            pointerEvents: "none",
+            background:
+              "linear-gradient(180deg, rgba(12, 13, 13, 0.90) 0%, rgba(12, 13, 13, 0.50) 100%)",
+          }}
+        />
         <LoginContent />
       </Box>
       <SenifitDialog
