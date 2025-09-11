@@ -99,8 +99,7 @@ jobs:
              chown -R \"\$SVC:\$SVC\" \"\$APP_DIR/releases/\$REL\"; \
              ln -sfn \"\$APP_DIR/releases/\$REL\" \"\$APP_DIR/current\"; \
              sudo systemctl daemon-reload; \
-             sudo systemctl restart senifit-front; \
-             curl -sS -I http://127.0.0.1:3000 | head -n1"
+             sudo systemctl restart senifit-front; 
 
 
       - name: Public healthcheck (non-blocking)

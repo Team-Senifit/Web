@@ -9,7 +9,7 @@ import React, {
   useImperativeHandle,
   useCallback,
 } from "react";
-import { Box, Stack, useMediaQuery } from "@mui/material";
+import { Box, Stack, useMediaQuery, Typography } from "@mui/material";
 import { VideoFlash, VideoControls } from "./video-player";
 import useVideoPlayer from "@/hooks/useVideoPlayer";
 
@@ -316,6 +316,39 @@ const VideoPlayer = forwardRef<IVideoHandle, IVideoPlayerProps>(
               }}
               visible={controlsVisible}
             />
+
+            {/* Unmute overlay for autoplay-muted start */}
+            {muted && playing && (
+              <Box
+                onClick={() => {
+                  mute(false);
+                  showControls();
+                }}
+                role={"button"}
+                tabIndex={0}
+                sx={{
+                  position: "absolute",
+                  inset: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  pointerEvents: "auto",
+                }}
+              >
+                <Box
+                  sx={{
+                    bgcolor: "rgba(0,0,0,0.5)",
+                    color: "common.white",
+                    px: 2,
+                    py: 1,
+                    borderRadius: "999px",
+                    cursor: "pointer",
+                  }}
+                >
+                  <Typography variant={"button"}>{"소리 켜기"}</Typography>
+                </Box>
+              </Box>
+            )}
           </Box>
         </Box>
       </Stack>

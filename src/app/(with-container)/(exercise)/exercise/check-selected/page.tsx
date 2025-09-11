@@ -2,7 +2,7 @@
 
 import { ButtonProps, Stack } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
+import GradationPageInfoCard from "../../../../../components/GradationPageInfoCard";
 import useProgramStore from "@/states/useProgramStore";
 import { IRoutineDetail } from "@/types/IRoutineDetail";
 import { IResponse } from "@/types/IResponse";
@@ -97,7 +97,7 @@ const Page = () => {
   return (
     <>
       <Stack direction={"column"} spacing={[3]}>
-        <ExercisePageInfoCard
+        <GradationPageInfoCard
           title={"수업 전 체크"}
           description={
             "수업시작 전,\n선택한 운동 프로그램과 참여 어르신을 확인해 주세요!"
