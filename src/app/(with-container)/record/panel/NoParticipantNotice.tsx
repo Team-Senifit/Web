@@ -26,10 +26,11 @@ export default function NoParticipantNotice() {
         sx={{
           display: "block",
           textAlign: "center",
-          whiteSpace: "pre-line !important",
+          whiteSpace: "pre-line",
         }}
       >
-        {"참여한 어르신이 없는 경우,\n개별기록이 제공되지 않습니다."}
+        {"참여한 어르신이 없는 경우"}
+        <br /> {"개별기록이 제공되지 않습니다."}
       </Typography>
     </Box>
   );
