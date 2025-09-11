@@ -14,6 +14,7 @@ import {
 import dayjs from "dayjs";
 import Link from "next/link";
 import React, { useState } from "react";
+import EmptyView from "./EmptyView";
 
 const Member = ({
   memberId: id,
@@ -174,6 +175,7 @@ const MemberList = ({ members }: { members: Array<IMember> }) => {
           {...member}
         />
       ))}
+      {members.length === 0 && <EmptyView />}
     </>
   );
 };
