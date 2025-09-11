@@ -14,7 +14,7 @@ const Toast = () => {
       open={open}
       onClose={setToastClose}
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      autoHideDuration={6000}
+      autoHideDuration={3000}
       sx={{
         px: "1.5rem",
       }}

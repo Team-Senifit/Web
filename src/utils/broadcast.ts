@@ -73,19 +73,20 @@ export function notifyClassDone(payload: {
 }
 
 export function notifyLogout() {
+  // write to localStorage first so storage events are definitely queued
   try {
-    const bc = new BroadcastChannel(CHANNEL);
-    bc.postMessage({ type: "LOGOUT" });
-    bc.close();
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ type: "LOGIN_NEEDED", at: Date.now() }),
+    );
   } catch {
     // ignore
   }
 
   try {
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({ type: "LOGOUT", at: Date.now() }),
-    );
+    const bc = new BroadcastChannel(CHANNEL);
+    bc.postMessage({ type: "LOGIN_NEEDED" });
+    bc.close();
   } catch {
     // ignore
   }
