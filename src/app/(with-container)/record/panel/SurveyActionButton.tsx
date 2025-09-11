@@ -125,18 +125,6 @@ export default function SurveyActionButton({
           >
             <Typography variant={"Heading1"}>{"수정하기"}</Typography>
           </Button>
-          <Button
-            onClick={() => console.log("nothing")}
-            sx={{
-              flex: 1,
-              bgcolor: (t) => t.palette.primary.main,
-              color: (t) => t.palette.static.white,
-              borderRadius: "12px",
-              py: 1.5,
-            }}
-          >
-            <Typography variant={"Heading1"}>{"저장하기"}</Typography>
-          </Button>
         </Box>
       );
     }
@@ -203,24 +191,14 @@ export default function SurveyActionButton({
         );
       case "detail":
         return (
-          <>
-            <CTAButton
-              text={"수정하기"}
-              onClick={openEditConfirm}
-              sx={{
-                bgcolor: (t) => t.palette.fillVariants.colored,
-                color: (t) => t.palette.primary.main,
-              }}
-            />
-            <CTAButton
-              text={"저장하기"}
-              onClick={() => console.log("nothing")}
-              sx={{
-                bgcolor: (t) => t.palette.primary.main,
-                color: (t) => t.palette.static.white,
-              }}
-            />
-          </>
+          <CTAButton
+            text={"수정하기"}
+            onClick={openEditConfirm}
+            sx={{
+              bgcolor: (t) => t.palette.fillVariants.colored,
+              color: (t) => t.palette.primary.main,
+            }}
+          />
         );
       case "update":
         return (
