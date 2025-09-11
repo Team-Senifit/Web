@@ -1,15 +1,21 @@
 "use client";
 
 import { Grid } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import ExercisePageInfoCard from "./panel/ExercisePageInfoCard";
 import CustomizedRoutine from "./panel/CustomizedRoutine";
 import useMedia from "@/hooks/useMedia";
 import PopularRoutine from "./panel/PopularRoutine";
 import ThematicRoutine from "./panel/ThematicRoutine";
+import useProgramStore from "@/states/useProgramStore";
 
 const Page = () => {
   const { isPhone } = useMedia();
+
+  const { clearStore } = useProgramStore();
+  useEffect(() => {
+    clearStore();
+  }, [clearStore]);
   return (
     <Grid container spacing={3}>
       {isPhone && (

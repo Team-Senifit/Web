@@ -1,16 +1,18 @@
 "use client";
 
-import { Box, Button, Typography, Snackbar, Stack } from "@mui/material";
+import { Box, Button, Typography, Stack } from "@mui/material";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { login } from "@/apis/auth";
 import SenifitTextField from "../../../../components/SenifitTextField";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useMedia from "@/hooks/useMedia";
 import Logo from "@/assets/logo/senifit-logo.svg";
 import SenifitDialog from "@/components/SenifitDialog";
 import Link from "next/link";
+import { kakaoChannelLink } from "@/constants/kakaoCh";
+import { useToastStore } from "@/states/useToastStore";
 
 type LoginFormValues = { id: string; password: string };
 
@@ -20,6 +22,14 @@ export default function LoginForm() {
   const searchParams = useSearchParams();
   const next = searchParams.get("next") || "/";
 
+  const { setToastOpen } = useToastStore();
+
+  useEffect(() => {
+    if (next !== "/") {
+      setToastOpen({ message: "로그인이 필요한 서비스입니다." });
+    }
+  }, [next, setToastOpen]);
+
   const methods = useForm<LoginFormValues>({ mode: "onSubmit" });
   const {
     handleSubmit,
@@ -28,15 +38,16 @@ export default function LoginForm() {
   } = methods;
 
   const router = useRouter();
-  const [showSnackbar, setShowSnackbar] = useState(false);
   const [failDialogOpen, setFailDialogOpen] = useState(false);
   const [inquiryDialogOpen, setInquiryDialogOpen] = useState(false);
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
       await login(data);
-      setShowSnackbar(true);
-      setTimeout(() => router.push(next), 1000);
+      setToastOpen({
+        message: "로그인 성공! 오늘도 즐거운 시니핏 하세요!",
+      });
+      setTimeout(() => router.push(next), 500);
     } catch {
       setFailDialogOpen(true);
     }
@@ -156,17 +167,12 @@ export default function LoginForm() {
         justifyContent={"center"}
         alignItems={"center"}
         minHeight={"100vh"}
-        bgcolor={isPhone ? "transparent" : "static.black"}
+        sx={{
+          position: "relative",
+        }}
       >
         <LoginContent />
       </Box>
-
-      {/* 로그인 실패 다이얼로그 */}
-      {/* <CustomFailDialog
-        open={failDialogOpen}
-        onClose={() => setFailDialogOpen(false)}
-        main={true}
-      /> */}
       <SenifitDialog
         isOpen={failDialogOpen}
         onClose={() => setFailDialogOpen(false)}
@@ -180,7 +186,8 @@ export default function LoginForm() {
         secondaryText={"문의하기"}
         secondaryButtonProps={{
           component: Link,
-          href: "http://pf.kakao.com/_rXiVn",
+          href: kakaoChannelLink,
+          rel: "noopener noreferrer",
         }}
       />
 
@@ -197,15 +204,9 @@ export default function LoginForm() {
         secondaryText={"문의하기"}
         secondaryButtonProps={{
           component: Link,
-          href: "http://pf.kakao.com/_rXiVn",
+          href: kakaoChannelLink,
+          rel: "noopener noreferrer",
         }}
-      />
-
-      {/* 성공 알림 */}
-      <Snackbar
-        open={showSnackbar}
-        autoHideDuration={1500}
-        message={"로그인 성공! 오늘도 즐거운 시니핏 하세요!"}
       />
     </form>
   );

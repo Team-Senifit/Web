@@ -10,7 +10,6 @@ import { IResponse } from "@/types/IResponse";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import useProgramStore from "@/states/useProgramStore";
 import { useRouter } from "next/navigation";
-import { workoutDurationsType } from "@/types/IRoutine";
 
 const Page = () => {
   const router = useRouter();
@@ -62,7 +61,6 @@ const Page = () => {
                 ...selectedRoutineRecord,
                 programId: routine.id,
                 routineKind: "workout_programs_selections_byPopular",
-                durationKind: workoutDurationsType[routine.duration],
                 cognitiveKind: "workout_notSelected",
                 targetKind: "workout_notSelected",
                 singingKind: "workout_notSelected",
