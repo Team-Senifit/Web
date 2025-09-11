@@ -11,6 +11,7 @@ import { genderLabel, gradeLabel } from "@/types/IMember";
 import useMedia from "@/hooks/useMedia";
 import SenifitTextField from "@/components/SenifitTextField";
 import { useFormContext } from "react-hook-form";
+import ProfileIcon from "@/components/icons/ProfileIcon";
 
 type Scale = "veryGood" | "good" | "neutral" | "bad" | "veryBad";
 const scoreOf: Record<Scale, number> = {
@@ -32,6 +33,7 @@ export type Elder = {
   abilityScore: number;
   hadTrouble: boolean;
   updatedAt?: string;
+  memo?: string;
 };
 
 type PresetTrouble = { hasDiscomfort: "none" | "yes"; parts: string[] };
@@ -53,7 +55,7 @@ export type ElderUpdatePayload = {
   memo?: string;
 };
 
-type FormValues = { memo: string };
+type FormValues = { [key: string]: string };
 
 export default function ElderSurveyCard({
   elder,
@@ -63,7 +65,7 @@ export default function ElderSurveyCard({
   presetTrouble,
   step,
 }: Props) {
-  const { control } = useFormContext<FormValues>();
+  const { control, getValues } = useFormContext<FormValues>();
 
   const scaleFromScore = (s?: number): Scale => {
     switch (s) {
@@ -87,7 +89,6 @@ export default function ElderSurveyCard({
     hasDiscomfort: elder.hadTrouble ? "yes" : "none",
     parts: elder.troubleParts ?? [],
   });
-  const [memo, setMemo] = useState("");
 
   const { isPhone, isTablet } = useMedia();
   const infoVariant = isPhone
@@ -97,13 +98,16 @@ export default function ElderSurveyCard({
       : "Heading1";
 
   // 각 입력이 바뀔 때마다 상위에 변화를 올려줘서 "작성완료" 시 최신 상태를 보낼 수 있게 함
+  const fieldName = `memo-${elder.surveyId}`;
+
   const bubble = (next?: Partial<ElderUpdatePayload>) => {
+    const currentMemo = getValues(fieldName) || "";
     onChange(elder.surveyId, {
       attitudeScore: scoreOf[att],
       abilityScore: scoreOf[abl],
       hadTrouble: trouble.hasDiscomfort === "yes",
       troubleParts: trouble.parts,
-      memo,
+      memo: currentMemo,
       ...next,
     });
   };
@@ -143,14 +147,17 @@ export default function ElderSurveyCard({
           borderRadius: 2,
           bgcolor: t.palette.fillVariants.alternative,
           p: 2,
-          border: `1px solid ${t.palette.borderVariants.normal}`,
+          border: `1px solid ${t.palette.borderVariants.normal}`, // 이거 수정해야하나요..??????????????????????????????
         })}
       >
         {/* 상단 정보: 모바일 2줄, 그 외 1줄 */}
         {isPhone ? (
           <Box sx={{ mb: 2 }}>
-            <Typography variant={infoVariant}>{elder.name}</Typography>
-            <Box sx={{ display: "flex", gap: 2, mt: 0.5 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+              <ProfileIcon sx={{ fontSize: 24 }} />
+              <Typography variant={infoVariant}>{elder.name}</Typography>
+            </Box>
+            <Box sx={{ display: "flex", gap: 2, mt: 1 }}>
               <Typography variant={infoVariant}>
                 {calculateAge(dayjs(elder.birthDate), { format: "YYYY-MM-DD" })}
               </Typography>
@@ -164,6 +171,7 @@ export default function ElderSurveyCard({
           </Box>
         ) : (
           <Box sx={{ display: "flex", gap: 2, alignItems: "center", mb: 2 }}>
+            <ProfileIcon sx={{ fontSize: 24 }} />
             <Typography variant={infoVariant}>{elder.name}</Typography>
             <Typography variant={infoVariant}>
               {calculateAge(dayjs(elder.birthDate), { format: "YYYY-MM-DD" })}
@@ -176,7 +184,6 @@ export default function ElderSurveyCard({
             </Typography>
           </Box>
         )}
-
         {/* 선택 카드: step이 주어지면 한 항목만 렌더 */}
         <SelectorCard
           step={step}
@@ -215,7 +222,7 @@ export default function ElderSurveyCard({
                     setTrouble(v);
                     bubble({
                       hadTrouble: v.hasDiscomfort === "yes",
-                      troubleParts: v.parts,
+                      troubleParts: v.hasDiscomfort === "yes" ? v.parts : [],
                     });
                   }}
                 />
@@ -223,15 +230,13 @@ export default function ElderSurveyCard({
             },
           ]}
         />
-
         {/* 메모 */}
         <Box sx={{ mt: 1, width: "100%" }}>
           <SenifitTextField
-            name={"memo"}
+            name={`memo-${elder.surveyId}`}
             control={control}
             placeholder={"특이사항이 있다면 메모를 작성해주세요. (선택사항)"}
             onChange={(e) => {
-              setMemo(e.target.value);
               bubble({ memo: e.target.value });
             }}
             formControlProps={{
