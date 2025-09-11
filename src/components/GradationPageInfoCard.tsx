@@ -21,7 +21,7 @@ const GradationPageInfoCard = ({
 
   return (
     <Stack
-      spacing={2}
+      gap={2}
       sx={{
         borderRadius: [0, "0.75rem"],
         px: [3, 6],
