@@ -89,7 +89,7 @@ const Page = () => {
           spacing={3}
           sx={{
             bgcolor: "background.paper",
-            p: [3],
+            p: [3, 6],
             borderRadius: [undefined, "0.75rem"],
           }}
         >

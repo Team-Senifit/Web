@@ -8,13 +8,13 @@ import { IRoutineDetail } from "@/types/IRoutineDetail";
 import { IResponse } from "@/types/IResponse";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { createBroadcastListener } from "@/utils/broadcast";
 import Members from "./panel/Members";
 import Routine from "./panel/Routine";
 import SenifitDialog from "@/components/SenifitDialog";
 import Link from "next/link";
 
-const CHANNEL = "class-status";
-const STORAGE_KEY = "__bc_class-status";
+// broadcast handled via utils/broadcast
 
 const Page = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -36,39 +36,39 @@ const Page = () => {
   const handled = useRef<Set<string>>(new Set()); // 중복 방지
 
   useEffect(() => {
-    // 1) BroadcastChannel 만들기 (mount마다 새로 생성)
-    const bc = new BroadcastChannel(CHANNEL);
-
-    const handleDone = (id: string, programId: string, seconds: number) => {
+    const handleDone = (
+      id: string,
+      programId?: string | number,
+      seconds?: number,
+    ) => {
       if (handled.current.has(id)) return;
       handled.current.add(id);
-      router.push(`/exercise/done/${programId}?seconds=${seconds}`);
+      router.push(`/exercise/done/${programId ?? ""}?seconds=${seconds ?? 0}`);
     };
 
-    const onBc = (e: MessageEvent) => {
-      // eslint-disable-next-line
-      const { type, id, programId, seconds } = (e as any).data || {};
-      if (type === "CLASS_DONE" && typeof id === "string")
+    const dispose = createBroadcastListener((data: unknown) => {
+      const parsed = (data as Record<string, unknown>) || {};
+      const type = parsed.type as string | undefined;
+      const id = parsed.id as string | undefined;
+      const programId = parsed.programId as string | number | undefined;
+      const secondsRaw = parsed.seconds;
+      let seconds: number | undefined;
+      if (typeof secondsRaw === "number") {
+        seconds = secondsRaw as number;
+      } else if (typeof secondsRaw === "string" && secondsRaw.trim() !== "") {
+        seconds = Number(secondsRaw);
+      }
+
+      if (type === "CLASS_DONE" && typeof id === "string") {
         handleDone(id, programId, seconds);
-    };
-    bc.addEventListener("message", onBc);
+      } else if (type === "LOGOUT") {
+        router.push(
+          "/login?redirect=" + encodeURIComponent("/exercise/check-selected"),
+        );
+      }
+    });
 
-    // 2) storage 폴백 (구형/특수환경 대비)
-    const onStorage = (e: StorageEvent) => {
-      if (e.key !== STORAGE_KEY || !e.newValue) return;
-      try {
-        const { type, id, programId, seconds } = JSON.parse(e.newValue);
-        if (type === "CLASS_DONE" && typeof id === "string")
-          handleDone(id, programId, seconds);
-      } catch {}
-    };
-    window.addEventListener("storage", onStorage);
-
-    return () => {
-      bc.removeEventListener("message", onBc);
-      bc.close(); // 이 이펙트가 만든 인스턴스만 닫힘 (StrictMode 안전)
-      window.removeEventListener("storage", onStorage);
-    };
+    return () => dispose();
   }, [router]);
 
   const {
