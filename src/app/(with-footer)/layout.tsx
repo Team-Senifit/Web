@@ -16,7 +16,7 @@ export default function WithContainerLayout({
         sx={{
           pt: [9, 12, 20.75],
           px: [0, 3],
-          pb: [11, 12, 0],
+          pb: [14, 15, 6],
           boxSizing: "border-box",
         }}
       >
