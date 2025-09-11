@@ -227,6 +227,7 @@ export default function WorkoutVideoPlaylist({
               py: 2,
               px: [0, 4, 8],
               bgcolor: "fillVariants.colored",
+              "& .Mui-disabled": { color: "primaryVariants.disabled" },
             }}
             onClick={prev}
             disabled={index === 0}

@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
+import GradationPageInfoCard from "../../../../../components/GradationPageInfoCard";
 import PageInfoCard from "@/components/PageInfoCard";
 import { SquareUserRoundIcon } from "@/components/icons";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -84,7 +84,7 @@ const Page = () => {
   return (
     <>
       <Stack direction={"column"} spacing={3}>
-        <ExercisePageInfoCard
+        <GradationPageInfoCard
           title={"참여 어르신 선택하기"}
           description={"운동에 참여할 어르신을 선택해 주세요."}
         />

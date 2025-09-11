@@ -1,9 +1,8 @@
 "use client";
 
 import InfoCard from "./panel/InfoCard";
-import { Box, Grid, Stack } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import MemberInfoCard from "./panel/MemberInfoCard";
-import PageInfoCard from "./panel/PageInfoCard";
 import { HouseIcon, MapPinHouseIcon } from "@/components/icons";
 import CTAButton from "@/components/CTAButton";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
@@ -13,6 +12,7 @@ import { axiosClient } from "@/apis/axiosClient";
 import { useRouter } from "next/navigation";
 import SenifitDialog from "@/components/SenifitDialog";
 import { useState } from "react";
+import GradationPageInfoCard from "@/components/GradationPageInfoCard";
 
 const Page = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -33,8 +33,13 @@ const Page = () => {
 
   return (
     <>
-      <Box>
-        <PageInfoCard />
+      <Stack direction={"column"} spacing={3}>
+        <GradationPageInfoCard
+          title={"우리 센터"}
+          description={"센터에 등록된 어르신을 관리할 수 있어요."}
+          descriptionWhiteSpace={["pre-line", "normal"]}
+          accentDescription
+        />
         <Grid container spacing={[2, 3]} columns={14}>
           <Grid
             container
@@ -107,7 +112,7 @@ const Page = () => {
             </Stack>
           </Grid>
         </Grid>
-      </Box>
+      </Stack>
       <SenifitDialog
         dialogType={"error"}
         isOpen={dialogOpen}

@@ -75,7 +75,9 @@ const Header = ({
               color: "statusVariants.negative",
             }}
           >
-            <Typography variant={"Headline1"}>{"종료"}</Typography>
+            <Typography variant={"Headline1"}>
+              {isEnd ? "종료" : "중단"}
+            </Typography>
           </Button>
         ) : (
           <Button

@@ -3,7 +3,7 @@
 import { Box, Stack, Typography } from "@mui/material";
 import GradientCard from "@/app/(with-container)/record/panel/GradientCard";
 import useMedia from "@/hooks/useMedia";
-import ExercisePageInfoCard from "@/app/(with-container)/(exercise)/panel/ExercisePageInfoCard";
+import GradationPageInfoCard from "@/components/GradationPageInfoCard";
 
 export default function AllCenterHero({ centerName }: { centerName: string }) {
   const { isPhone, isTablet } = useMedia();
@@ -14,7 +14,7 @@ export default function AllCenterHero({ centerName }: { centerName: string }) {
   if (isPhone) {
     // 모바일: GradientCard 미사용, padding 24, 배경색 따로 사용
     return (
-      <ExercisePageInfoCard
+      <GradationPageInfoCard
         title={"지난 수업 기록 전체보기"}
         description={
           "지금까지 우리 센터에서 진행한 수업의\n기록을 확인하고 작성할 수 있어요"

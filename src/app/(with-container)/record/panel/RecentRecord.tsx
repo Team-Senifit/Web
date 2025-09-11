@@ -11,7 +11,7 @@ import GradientCard from "./GradientCard";
 import SurveyIcon from "@/components/icons/SurveyIcon";
 import useMedia from "@/hooks/useMedia";
 import SenifitDialog from "@/components/SenifitDialog";
-import ExercisePageInfoCard from "../../(exercise)/panel/ExercisePageInfoCard";
+import GradationPageInfoCard from "../../../../components/GradationPageInfoCard";
 
 export default function RecentRecord({
   latest,
@@ -118,7 +118,7 @@ export default function RecentRecord({
     <>
       {isPhone ? (
         <>
-          <ExercisePageInfoCard
+          <GradationPageInfoCard
             title={"기록"}
             description={"수업 별로 기록하고\n열람할 수 있어요"}
           />
