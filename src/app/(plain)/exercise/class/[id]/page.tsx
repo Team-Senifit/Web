@@ -25,10 +25,10 @@ const Page = () => {
   }, [selectedProgram, router, isClientReady]);
 
   useDeadlineTrigger({
-    at: dayjs().add(selectedProgram?.duration || 0, "second"),
+    at: dayjs().add(selectedProgram?.duration || 0, "minute"),
     onFire: () =>
       setToastOpen({
-        message: `목표수업시간 ${selectedProgram?.duration ? Math.floor(selectedProgram?.duration / 60) : 0}분이 되었어요!`,
+        message: `목표수업시간 ${selectedProgram?.duration ? Math.floor(selectedProgram?.duration) : 0}분이 되었어요!`,
       }),
     enabled: !!selectedProgram,
   });
