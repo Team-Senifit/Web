@@ -2,7 +2,7 @@
 
 import { Grid } from "@mui/material";
 import React, { useEffect } from "react";
-import ExercisePageInfoCard from "./panel/ExercisePageInfoCard";
+import GradationPageInfoCard from "../../../components/GradationPageInfoCard";
 import CustomizedRoutine from "./panel/CustomizedRoutine";
 import useMedia from "@/hooks/useMedia";
 import PopularRoutine from "./panel/PopularRoutine";
@@ -20,7 +20,7 @@ const Page = () => {
     <Grid container spacing={3}>
       {isPhone && (
         <Grid size={12}>
-          <ExercisePageInfoCard
+          <GradationPageInfoCard
             title={"운동"}
             description={"시니핏이 제공하는\n운동 프로그램을 진행해요"}
           />
