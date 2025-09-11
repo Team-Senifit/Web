@@ -120,8 +120,15 @@ export default function TargetSelector({
                   key={p}
                   onChange={() => togglePart(p)}
                   control={<SenifitCheckbox checked={checked} />}
-                  label={<Typography variant={"Label1"}>{p}</Typography>}
-                  sx={{ m: 0 }}
+                  label={
+                    <Typography variant={"Label1"} sx={{ ml: "4px" }}>
+                      {p}
+                    </Typography>
+                  }
+                  sx={{
+                    m: 0,
+                    "& .MuiFormControlLabel-label": { marginLeft: 0 },
+                  }}
                 />
               );
             })}
