@@ -36,11 +36,7 @@ export default function SelectorCard({ items, step }: Props) {
               borderRadius: 1.5,
               bgcolor: t.palette.fillVariants.alternative,
               border: `2px solid ${t.palette.borderVariants.normal}`,
-              width: isTablet
-                ? it.title === "운동 참여 태도" || it.title === "운동 수행 능력"
-                  ? "372px"
-                  : "296px"
-                : "100%",
+              width: isTablet ? "372px" : "100%",
             })}
           >
             {it.control}
