@@ -221,6 +221,8 @@ export default function LoginForm() {
           sx={{
             zIndex: -1,
             pointerEvents: "none",
+            filter: "blur(6px)",
+            transform: "scale(1.05)",
           }}
         />
         <Box
