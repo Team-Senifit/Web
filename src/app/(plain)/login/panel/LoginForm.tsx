@@ -225,7 +225,6 @@ export default function LoginForm() {
         />
         <Box
           sx={{
-            // background: linear-gradient(180deg, rgba(12, 13, 13, 0.90) 0%, rgba(12, 13, 13, 0.50) 100%), url(<path-to-image>) lightgray -116px -122.341px / 116.111% 123.895% no-repeat;
             position: "absolute",
             inset: 0,
             pointerEvents: "none",
