@@ -33,6 +33,7 @@ export type Elder = {
   abilityScore: number;
   hadTrouble: boolean;
   updatedAt?: string;
+  memo?: string;
 };
 
 type PresetTrouble = { hasDiscomfort: "none" | "yes"; parts: string[] };
@@ -54,7 +55,7 @@ export type ElderUpdatePayload = {
   memo?: string;
 };
 
-type FormValues = { memo: string };
+type FormValues = { [key: string]: string };
 
 export default function ElderSurveyCard({
   elder,
@@ -64,7 +65,7 @@ export default function ElderSurveyCard({
   presetTrouble,
   step,
 }: Props) {
-  const { control } = useFormContext<FormValues>();
+  const { control, getValues } = useFormContext<FormValues>();
 
   const scaleFromScore = (s?: number): Scale => {
     switch (s) {
@@ -88,7 +89,6 @@ export default function ElderSurveyCard({
     hasDiscomfort: elder.hadTrouble ? "yes" : "none",
     parts: elder.troubleParts ?? [],
   });
-  const [memo, setMemo] = useState("");
 
   const { isPhone, isTablet } = useMedia();
   const infoVariant = isPhone
@@ -98,13 +98,16 @@ export default function ElderSurveyCard({
       : "Heading1";
 
   // 각 입력이 바뀔 때마다 상위에 변화를 올려줘서 "작성완료" 시 최신 상태를 보낼 수 있게 함
+  const fieldName = `memo-${elder.surveyId}`;
+
   const bubble = (next?: Partial<ElderUpdatePayload>) => {
+    const currentMemo = getValues(fieldName) || "";
     onChange(elder.surveyId, {
       attitudeScore: scoreOf[att],
       abilityScore: scoreOf[abl],
       hadTrouble: trouble.hasDiscomfort === "yes",
       troubleParts: trouble.parts,
-      memo,
+      memo: currentMemo,
       ...next,
     });
   };
@@ -219,7 +222,7 @@ export default function ElderSurveyCard({
                     setTrouble(v);
                     bubble({
                       hadTrouble: v.hasDiscomfort === "yes",
-                      troubleParts: v.parts,
+                      troubleParts: v.hasDiscomfort === "yes" ? v.parts : [],
                     });
                   }}
                 />
@@ -230,11 +233,10 @@ export default function ElderSurveyCard({
         {/* 메모 */}
         <Box sx={{ mt: 1, width: "100%" }}>
           <SenifitTextField
-            name={"memo"}
+            name={`memo-${elder.surveyId}`}
             control={control}
             placeholder={"특이사항이 있다면 메모를 작성해주세요. (선택사항)"}
             onChange={(e) => {
-              setMemo(e.target.value);
               bubble({ memo: e.target.value });
             }}
             formControlProps={{
