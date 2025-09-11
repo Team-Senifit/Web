@@ -25,12 +25,17 @@ export default function RecentRecord({
   const { isTablet, isPhone } = useMedia();
 
   const handleClickCard = () => {
-    if (latest?.surveyExist) {
+    const hasParticipants = (latest?.participantCount ?? 0) > 0;
+
+    if (!hasParticipants) {
       setOpenDialog("alreadyWritten");
       return;
+    }
+
+    if (latest?.surveyExist) {
+      setOpenDialog("alreadyWritten");
     } else {
       setOpenDialog("noSurvey");
-      return;
     }
   };
 

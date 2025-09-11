@@ -8,10 +8,16 @@ type Props = {
   href: string;
   cta: "자세히 보기" | "작성하기";
   surveysExist: boolean;
+  participantCount?: number;
 };
 
-export default function RecordButton({ href, cta, surveysExist }: Props) {
-  const isDetail = surveysExist;
+export default function RecordButton({
+  href,
+  cta,
+  surveysExist,
+  participantCount = 0,
+}: Props) {
+  const isDetail = participantCount === 0 ? true : surveysExist;
 
   return (
     <Button
