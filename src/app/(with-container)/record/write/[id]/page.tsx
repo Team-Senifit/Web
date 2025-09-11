@@ -28,7 +28,7 @@ export default async function RecordUpdatePage({
           mb: 8,
         }}
       >
-        <SurveyIntro />
+        <SurveyIntro title={"수업 기록 작성하기"} />
 
         <Divider sx={{ my: 3 }} />
 

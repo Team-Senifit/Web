@@ -4,6 +4,7 @@ import { getRecordServer } from "../../panel/server/getRecords";
 import SurveySection from "../../panel/SurveySection";
 import BackActionButton from "../../panel/BackActionButton";
 import SurveyIntro from "../../panel/SurveyIntro";
+import RoutineImage from "../../panel/RoutineImage";
 
 export default async function RecordDetailPage({
   params,
@@ -19,6 +20,8 @@ export default async function RecordDetailPage({
 
       <AboutRecording record={currentRecord} title={"수업 정보"} />
 
+      <RoutineImage routines={currentRecord?.routines ?? []} />
+
       <Box
         sx={{
           p: 6,
@@ -28,7 +31,7 @@ export default async function RecordDetailPage({
           mb: 8,
         }}
       >
-        <SurveyIntro />
+        <SurveyIntro title={"수업 기록 확인하기"} />
 
         <Divider sx={{ my: 3 }} />
 

@@ -2,7 +2,25 @@ import dayjs from "dayjs";
 import "dayjs/locale/ko";
 dayjs.locale("ko");
 
-/* 타입 */
+export type RoutineItem = {
+  id: number;
+  name: string;
+  thumbnail_path: string;
+};
+
+export type SurveyItem = {
+  surveyId: number;
+  name: string;
+  birthDate: string;
+  gender: number;
+  memberRank: number;
+  troubleParts: { target: string }[];
+  attitudeScore: number;
+  abilityScore: number;
+  memo: string;
+  hadTrouble: boolean;
+};
+
 export type RecordItem = {
   recordId: number;
   programId: number;
@@ -15,6 +33,11 @@ export type RecordItem = {
   singingKind: string;
   durationKind: string;
   surveyExist: boolean;
+};
+
+export type RecordDetail = RecordItem & {
+  routines: RoutineItem[];
+  surveys: SurveyItem[];
 };
 
 // 날짜를 반환
