@@ -1,35 +1,20 @@
 "use client";
 
-import { Button, Divider, Stack, Typography } from "@mui/material";
+import { Stack } from "@mui/material";
 import React, { useEffect, useRef } from "react";
 import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
-import PageInfoCard from "@/components/PageInfoCard";
-import { CirclePlayIcon, SquareUserRoundIcon } from "@/components/icons";
 import useProgramStore from "@/states/useProgramStore";
-import { calculateAge } from "@/utils/calculateAge";
-import dayjs from "dayjs";
-import { genderLabel, gradeLabel } from "@/types/IMember";
-import CTAButton from "@/components/CTAButton";
-import useMedia from "@/hooks/useMedia";
 import { IRoutineDetail } from "@/types/IRoutineDetail";
 import { IResponse } from "@/types/IResponse";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import Tag from "@/components/Tag";
-import {
-  calisthenicTargetCodesLabel,
-  cognitiveWorkoutCodesLabel,
-} from "@/types/IRoutine";
-import Carousel from "@/components/Carousel";
-import VideoCard from "@/components/VideoCard";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import Members from "./panel/Members";
+import Routine from "./panel/Routine";
 
 const CHANNEL = "class-status";
 const STORAGE_KEY = "__bc_class-status";
 
 const Page = () => {
-  const { isPhone, isDesktop } = useMedia();
-
   const { type, selectedMembers, setSelectedProgram, selectedRoutineRecord } =
     useProgramStore();
 
@@ -95,49 +80,6 @@ const Page = () => {
     return () => {};
   }, [type, router, selectedRoutineRecord]);
 
-  const videoTitle =
-    type === "customized" ? "맞춤형 운동 프로그램" : routineDetail.name;
-
-  let routineUrl: string;
-
-  if (type === "customized" || type === "popular") {
-    routineUrl = `/exercise/${type}`;
-  } else if (type === null) {
-    routineUrl = `/`;
-  } else {
-    routineUrl = `/exercise/thematic/${type[1]}`;
-  }
-
-  const SelectMemberAgainButton = () => {
-    return (
-      <CTAButton
-        href={"/exercise/members"}
-        variant={"text"}
-        text={"참여 어르신 다시 선택하기"}
-        sx={{
-          bgcolor: "fillVariants.colored",
-          wordBreak: "keep-all",
-          px: [0, 0, 8],
-        }}
-      />
-    );
-  };
-
-  const SelectRoutineAgainButton = () => {
-    return (
-      <CTAButton
-        href={routineUrl}
-        variant={"text"}
-        text={"운동 옵션 다시 선택하기"}
-        sx={{
-          bgcolor: "fillVariants.colored",
-          wordBreak: "keep-all",
-          px: [0, 0, 8],
-        }}
-      />
-    );
-  };
-
   return (
     <Stack direction={"column"} spacing={[3]}>
       <ExercisePageInfoCard
@@ -146,149 +88,8 @@ const Page = () => {
           "수업시작 전,\n선택한 운동 프로그램과 참여 어르신을 확인해 주세요!"
         }
       />
-      <Stack
-        direction={"column"}
-        spacing={3}
-        p={[3, 6]}
-        sx={{
-          bgcolor: "background.paper",
-          borderRadius: [undefined, "0.75rem"],
-        }}
-      >
-        <PageInfoCard
-          icon={
-            <SquareUserRoundIcon
-              strokeWidth={2}
-              sx={{
-                color: "label.neutral",
-                width: "1.5rem",
-                height: "1.5rem",
-              }}
-            />
-          }
-          endAction={<SelectMemberAgainButton />}
-          title={"센터 정보"}
-        />
-        <Divider sx={{ borderColor: "borderVariants.normal" }} />
-        <Typography variant={!isPhone ? "Title2" : "Headline1"}>
-          {"참여인원 총 "}
-          <Typography
-            component={"span"}
-            variant={!isPhone ? "Title2" : "Headline1"}
-            sx={{ color: "primary.main" }}
-          >
-            {selectedMembers?.length ?? 0}
-          </Typography>
-          {"명"}
-        </Typography>
-        <Typography
-          variant={!isPhone ? "Heading1" : "Headline1"}
-          sx={{
-            color: "labelVariants.neutral",
-            width: "100%",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {selectedMembers?.map((member, idx) => {
-            return `${member.name}(${calculateAge(
-              dayjs(member.birthDate),
-            )}/${genderLabel[member.gender]}/${gradeLabel[member.memberRank]})${
-              idx === selectedMembers.length - 1 ? "" : ", "
-            }`;
-          })}
-        </Typography>
-        {!isDesktop && <SelectMemberAgainButton />}
-      </Stack>
-      <Stack
-        direction={"column"}
-        spacing={3}
-        p={[3, 6]}
-        sx={{
-          bgcolor: "background.paper",
-          borderRadius: [undefined, "0.75rem"],
-        }}
-      >
-        <PageInfoCard
-          icon={
-            <CirclePlayIcon
-              strokeWidth={2}
-              sx={{
-                color: "label.neutral",
-                width: "1.5rem",
-                height: "1.5rem",
-              }}
-            />
-          }
-          endAction={<SelectRoutineAgainButton />}
-          title={"맞춤형 운동 프로그램"}
-        />
-        <Divider sx={{ borderColor: "borderVariants.normal" }} />
-        <Stack spacing={1}>
-          <Typography variant={!isPhone ? "Title2" : "Headline1"}>
-            {videoTitle}
-          </Typography>
-          <Stack direction={"row"} spacing={1.5} pt={1}>
-            <Tag label={`${routineDetail.duration}분`} />
-            {routineDetail.cognitive_workout_code !== "workout_notSelected" && (
-              <Tag
-                label={`${cognitiveWorkoutCodesLabel[routineDetail.cognitive_workout_code]}`}
-              />
-            )}
-            {routineDetail.primary_target_code !== "workout_notSelected" && (
-              <Tag
-                label={`${calisthenicTargetCodesLabel[routineDetail.primary_target_code]}`}
-              />
-            )}
-            {routineDetail.singing_workout_code !== "workout_notSelected" && (
-              <Tag label={"노래체조 포함"} />
-            )}
-          </Stack>
-          <Carousel
-            items={routineDetail.videos}
-            renderItem={(video, index) => <VideoCard key={index} {...video} />}
-            itemWidth={216}
-            gap={4}
-            padding={4}
-          />
-        </Stack>
-
-        {!isDesktop && <SelectRoutineAgainButton />}
-        <Divider sx={{ borderColor: "borderVariants.normal" }} />
-        <Stack direction={"row"} justifyContent={"space-between"} spacing={3}>
-          <Button
-            component={Link}
-            href={"/exercise/members"}
-            variant={"text"}
-            sx={{
-              bgcolor: "fillVariants.colored",
-              borderRadius: "0.75rem",
-              py: 2,
-              px: [0, 8],
-              flex: [1, "unset"],
-            }}
-          >
-            <Typography variant={"Heading1"}>{"이전"}</Typography>
-          </Button>
-          <Button
-            component={Link}
-            href={"/exercise/start"}
-            target={"_blank"}
-            rel={"noopener noreferrer"}
-            variant={"contained"}
-            disableElevation
-            sx={{
-              borderRadius: "0.75rem",
-              py: 2,
-              px: [0, 8],
-              flex: [1, "unset"],
-            }}
-          >
-            <Typography variant={"Heading1"}>{"수업 시작"}</Typography>
-          </Button>
-        </Stack>
-      </Stack>
+      <Members selectedMembers={selectedMembers} />
+      <Routine type={type} routineDetail={routineDetail} />
     </Stack>
   );
 };
