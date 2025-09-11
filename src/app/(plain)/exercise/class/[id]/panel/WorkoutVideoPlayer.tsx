@@ -7,6 +7,7 @@ import useMedia from "@/hooks/useMedia";
 import Header from "./Header";
 import { useParams } from "next/navigation";
 import { useTimer } from "@/hooks/useTimer";
+import { notifyClassDone } from "@/utils/broadcast";
 
 export interface IWorkoutVideo {
   id: number;
@@ -69,41 +70,12 @@ export default function WorkoutVideoPlaylist({
 
   const { seconds } = useTimer();
 
-  const CHANNEL = "class-status";
-  const STORAGE_KEY = "__bc_class-status";
-
   const { id: programId } = useParams();
 
   const notifyDone = () => {
-    // eslint-disable-next-line
-    const id = (crypto as any).randomUUID?.() ?? String(Date.now());
-
-    try {
-      const bc = new BroadcastChannel(CHANNEL);
-      bc.postMessage({
-        type: "CLASS_DONE",
-        id,
-        programId,
-        seconds,
-        at: Date.now(),
-      });
-      bc.close();
-      window.close();
-      // eslint-disable-next-line
-    } catch (e) {}
-
-    try {
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({
-          type: "CLASS_DONE",
-          id,
-          programId,
-          seconds,
-          at: Date.now(),
-        }),
-      );
-    } catch {}
+    const pid = Array.isArray(programId) ? programId[0] : programId;
+    notifyClassDone({ programId: pid, seconds });
+    window.close();
   };
 
   const initialIndex = useMemo(() => {
