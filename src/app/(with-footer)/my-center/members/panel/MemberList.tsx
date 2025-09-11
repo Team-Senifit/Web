@@ -160,6 +160,7 @@ const MemberList = ({ members }: { members: Array<IMember> }) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/centers/members"] });
+      queryClient.invalidateQueries({ queryKey: ["/centers"] });
     },
   });
 
