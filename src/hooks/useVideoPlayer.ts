@@ -1,3 +1,4 @@
+import { useToastStore } from "@/states/useToastStore";
 import { useEffect, useState, useCallback } from "react";
 
 const bufferedEnd = (v: HTMLVideoElement) => {
@@ -34,6 +35,8 @@ export function useVideoPlayer(
   const [buffered, setBuffered] = useState(0);
   const [scrub, setScrub] = useState<number | null>(null);
 
+  const { setToastOpen } = useToastStore();
+
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
@@ -44,6 +47,7 @@ export function useVideoPlayer(
     };
     const onPause = () => {
       setPlaying(false);
+      setToastOpen({ message: "영상을 정지했습니다." });
       onPlayStateChange?.(false);
     };
     const onTime = () => {

@@ -7,6 +7,8 @@ import { useClientReady } from "@/hooks/useClientReady";
 import { useMutation } from "@tanstack/react-query";
 import { axiosClient } from "@/apis/axiosClient";
 import { IResponse } from "@/types/IResponse";
+import LoadingFallback from "@/app/panel/LoadingFallback";
+import { notifyLogout } from "@/utils/broadcast";
 
 const Page = () => {
   const isClientReady = useClientReady();
@@ -19,11 +21,10 @@ const Page = () => {
         "/records",
         {
           programId: selectedRoutineRecord?.programId,
-          participants: selectedRoutineRecord?.participants,
+          participants: selectedRoutineRecord?.participants || [],
           routineKind: selectedRoutineRecord?.routineKind,
           cognitiveKind: selectedRoutineRecord?.cognitiveKind,
           singingKind: selectedRoutineRecord?.singingKind,
-          durationKind: selectedRoutineRecord?.durationKind,
           targetKind: selectedRoutineRecord?.targetKind,
         },
       );
@@ -31,6 +32,15 @@ const Page = () => {
     },
     onSuccess: (data: IResponse<{ id: number }>) => {
       router.push(`/exercise/class/${data.data.id}`);
+    },
+    onError: () => {
+      // LOGIN_NEEDED broadcast하기
+      notifyLogout();
+      setTimeout(() => {
+        try {
+          window.close();
+        } catch {}
+      }, 150);
     },
   });
 
@@ -45,7 +55,7 @@ const Page = () => {
     return () => {};
   }, [selectedProgram, router, isClientReady, selectedRoutineRecord, mutate]);
 
-  return null;
+  return <LoadingFallback />;
 };
 
 export default Page;

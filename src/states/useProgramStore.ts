@@ -6,11 +6,11 @@ import { persist, createJSONStorage } from "zustand/middleware";
 
 interface IProgramStore {
   selectedProgram: IRoutineDetail | null;
-  selectedMembers: IMember[] | null;
+  selectedMembers: IMember[];
   type: "customized" | "popular" | ["thematic", WorkoutKind] | null;
   selectedRoutineRecord: Partial<IExerciseNewPayload> | null;
   setSelectedProgram: (program: IRoutineDetail | null) => void;
-  setSelectedMembers: (members: IMember[] | null) => void;
+  setSelectedMembers: (members: IMember[]) => void;
   setType: (
     type: "customized" | "popular" | ["thematic", WorkoutKind] | null,
   ) => void;
@@ -24,7 +24,7 @@ const useProgramStore = create<IProgramStore>()(
   persist(
     (set) => ({
       selectedProgram: null,
-      selectedMembers: null,
+      selectedMembers: [],
       type: null,
       selectedRoutineRecord: null,
       setSelectedRoutineRecord: (record) =>
@@ -35,7 +35,7 @@ const useProgramStore = create<IProgramStore>()(
       clearStore: () =>
         set({
           selectedProgram: null,
-          selectedMembers: null,
+          selectedMembers: [],
           type: null,
           selectedRoutineRecord: null,
         }),
