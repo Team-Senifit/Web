@@ -5,7 +5,7 @@ import SurveySection from "../../panel/SurveySection";
 import BackActionButton from "../../panel/BackActionButton";
 import SurveyIntro from "../../panel/SurveyIntro";
 import RoutineImage from "../../panel/RoutineImage";
-import NoParticipantNotice from "../../panel/NoparticipantNotice";
+import NoParticipantNotice from "../../panel/NoParticipantNotice";
 
 export default async function RecordDetailPage({
   params,
