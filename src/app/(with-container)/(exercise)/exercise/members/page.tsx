@@ -185,7 +185,10 @@ const Page = () => {
                 }}
                 control={
                   <SenifitCheckbox
-                    checked={memberData.length === selectedMembers?.length}
+                    checked={
+                      memberData.length === selectedMembers?.length &&
+                      memberData.length > 0
+                    }
                     onChange={() => {
                       setValue(
                         "members",
