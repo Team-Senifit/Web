@@ -4,7 +4,11 @@ import { Box, Typography } from "@mui/material";
 import SurveyIcon from "@/components/icons/SurveyIcon";
 import useMedia from "@/hooks/useMedia";
 
-export default function SurveyIntro() {
+type SurveyIntroProps = {
+  title?: string;
+};
+
+export default function SurveyIntro({ title }: SurveyIntroProps) {
   const { isPhone } = useMedia();
 
   return (
@@ -16,7 +20,7 @@ export default function SurveyIntro() {
         }}
       />
       <Typography variant={isPhone ? "Headline1" : "Heading1"}>
-        {"수업 기록 작성하기"}
+        {title}
       </Typography>
     </Box>
   );

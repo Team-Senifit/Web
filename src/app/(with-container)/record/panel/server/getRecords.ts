@@ -1,5 +1,10 @@
 import { createAxiosServer } from "@/apis/createAxiosServer";
-import type { RecordItem } from "../../utils/recordUtils";
+import type {
+  RecordItem,
+  RecordDetail,
+  RoutineItem,
+  SurveyItem,
+} from "../../utils/recordUtils";
 import { isAuthError, AuthError } from "@/apis/errors";
 import type { AxiosError } from "axios";
 
@@ -25,8 +30,22 @@ export async function getRecordsServer(): Promise<RecordItem[]> {
   }
 }
 
-export async function getRecordServer(id: number): Promise<RecordItem | null> {
-  const api = await createAxiosServer(); // 서버에서만 실행됨
-  const { data } = await api.get<RecordAPI>("/records");
-  return data?.data?.find((r) => r.recordId === id) ?? null;
+type RecordDetailAPI = {
+  status: number;
+  message: string;
+  data: {
+    record: RecordItem;
+    routines: RoutineItem[];
+    surveys: SurveyItem[];
+  };
+};
+
+export async function getRecordServer(
+  id: number,
+): Promise<RecordDetail | null> {
+  const api = await createAxiosServer();
+  const { data } = await api.get<RecordDetailAPI>(`/records/${id}/surveys`);
+  if (!data?.data?.record) return null;
+  const { record, routines, surveys } = data.data;
+  return { ...record, routines, surveys };
 }
