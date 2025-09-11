@@ -57,7 +57,6 @@ export default function RecordsList({ variant, all }: Props) {
 
   return (
     <Card
-      variant={"outlined"}
       sx={{
         p: 0,
         borderRadius: isPhone ? 0 : "12px",
