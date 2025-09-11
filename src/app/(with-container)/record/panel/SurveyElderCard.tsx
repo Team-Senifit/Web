@@ -147,7 +147,7 @@ export default function ElderSurveyCard({
           borderRadius: 2,
           bgcolor: t.palette.fillVariants.alternative,
           p: 2,
-          border: `1px solid ${t.palette.borderVariants.normal}`, // 이거 수정해야하나요..??????????????????????????????
+          border: `1px solid ${t.palette.borderVariants.normal}`, // 이거 수정해야하나요? boxShadow 값이 피그마에 없길래...
         })}
       >
         {/* 상단 정보: 모바일 2줄, 그 외 1줄 */}

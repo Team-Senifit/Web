@@ -5,6 +5,7 @@ import SurveySection from "../../panel/SurveySection";
 import BackActionButton from "../../panel/BackActionButton";
 import SurveyIntro from "../../panel/SurveyIntro";
 import RoutineImage from "../../panel/RoutineImage";
+import NoParticipantNotice from "../../panel/NoparticipantNotice";
 
 export default async function RecordDetailPage({
   params,
@@ -13,6 +14,8 @@ export default async function RecordDetailPage({
 }) {
   const { id } = await params;
   const currentRecord = await getRecordServer(parseInt(id));
+
+  const participantCount = currentRecord?.participantCount ?? 0;
 
   return (
     <Box sx={{ display: "grid", gap: 3 }}>
@@ -35,7 +38,11 @@ export default async function RecordDetailPage({
 
         <Divider sx={{ my: 3 }} />
 
-        <SurveySection recordId={Number(id)} mode={"detail"} />
+        {participantCount === 0 ? (
+          <NoParticipantNotice />
+        ) : (
+          <SurveySection recordId={Number(id)} mode={"detail"} />
+        )}
       </Box>
     </Box>
   );
