@@ -61,7 +61,7 @@ const Page = () => {
 
       if (type === "CLASS_DONE" && typeof id === "string") {
         handleDone(id, programId, seconds);
-      } else if (type === "LOGOUT") {
+      } else if (type === "LOGIN_NEEDED") {
         router.push(
           "/login?redirect=" + encodeURIComponent("/exercise/check-selected"),
         );
