@@ -21,9 +21,7 @@ export default function AboutRecording({ record, title }: Props) {
       <Box
         sx={{
           p: 3,
-          bgcolor: "background.paper",
-          border: "1px solid",
-          borderColor: "divider",
+          bgcolor: "background.normal",
         }}
       >
         <CardContent

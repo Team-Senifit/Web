@@ -1,6 +1,5 @@
 "use client";
 
-import SenifitCheckbox from "@/components/SenifitCheckbox";
 import {
   Box,
   FormControl,
@@ -11,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useMemo } from "react";
+import SenifitCheckbox from "@/components/SenifitCheckbox";
 
 const PARTS = ["어깨", "팔", "등", "다리", "배"] as const;
 
