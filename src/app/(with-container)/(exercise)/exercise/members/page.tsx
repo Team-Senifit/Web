@@ -9,7 +9,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import ExercisePageInfoCard from "../../panel/ExercisePageInfoCard";
 import PageInfoCard from "@/components/PageInfoCard";
 import { SquareUserRoundIcon } from "@/components/icons";
@@ -23,8 +23,10 @@ import useMedia from "@/hooks/useMedia";
 import { useRouter } from "next/navigation";
 import useProgramStore from "@/states/useProgramStore";
 import Link from "next/link";
+import SenifitDialog from "@/components/SenifitDialog";
 
 const Page = () => {
+  const [openDialog, setOpenDialog] = useState(false);
   const { isPhone, isDesktop } = useMedia();
 
   const router = useRouter();
@@ -54,13 +56,17 @@ const Page = () => {
 
   const { control, watch, setValue, handleSubmit } = useForm<{
     members: number[];
-  }>({});
+  }>({
+    defaultValues: {
+      members: [],
+    },
+  });
 
   const selectedMembers = watch("members");
 
   const onSubmit = (data: { members: number[] }) => {
     if (!data.members?.length) {
-      setSelectedMembers(null);
+      setSelectedMembers([]);
     } else {
       const selectedMembers = memberData.filter((m) =>
         data.members?.includes(m.memberId),
@@ -71,44 +77,108 @@ const Page = () => {
         participants: selectedMembers.map((m) => m.memberId),
       });
     }
+    setOpenDialog(false);
     router.push("/exercise/check-selected");
   };
 
   return (
-    <Stack direction={"column"} spacing={3}>
-      <ExercisePageInfoCard
-        title={"참여 어르신 선택하기"}
-        description={"운동에 참여할 어르신을 선택해 주세요."}
-      />
-      <Stack
-        component={"form"}
-        onSubmit={handleSubmit(onSubmit)}
-        direction={"column"}
-        spacing={3}
-        p={[3, 6]}
-        sx={{
-          bgcolor: "background.paper",
-          borderRadius: [undefined, "0.75rem"],
-          width: "100%",
-        }}
-      >
-        <PageInfoCard
-          icon={
-            <SquareUserRoundIcon
-              strokeWidth={2}
-              sx={{
-                color: "label.neutral",
-                width: "1.5rem",
-                height: "1.5rem",
-              }}
-            />
-          }
-          endAction={
-            <Stack direction={"row"} spacing={1}>
+    <>
+      <Stack direction={"column"} spacing={3}>
+        <ExercisePageInfoCard
+          title={"참여 어르신 선택하기"}
+          description={"운동에 참여할 어르신을 선택해 주세요."}
+        />
+        <Stack
+          id={"member-selection-form"}
+          component={"form"}
+          onSubmit={handleSubmit(onSubmit)}
+          direction={"column"}
+          spacing={3}
+          p={[3, 6]}
+          sx={{
+            bgcolor: "background.paper",
+            borderRadius: [undefined, "0.75rem"],
+            width: "100%",
+          }}
+        >
+          <PageInfoCard
+            icon={
+              <SquareUserRoundIcon
+                strokeWidth={2}
+                sx={{
+                  color: "label.neutral",
+                  width: "1.5rem",
+                  height: "1.5rem",
+                }}
+              />
+            }
+            endAction={
+              <Stack direction={"row"} spacing={1}>
+                <FormControlLabel
+                  sx={{
+                    gap: 1,
+                    px: 2,
+                  }}
+                  control={
+                    <SenifitCheckbox
+                      checked={memberData.length === selectedMembers?.length}
+                      onChange={() => {
+                        setValue(
+                          "members",
+                          memberData.map((m) => m.memberId),
+                        );
+                      }}
+                      sx={{
+                        padding: "0 !important",
+                      }}
+                    />
+                  }
+                  slotProps={{
+                    typography: {
+                      variant: "Title2",
+                      sx: { color: "label.normal" },
+                    },
+                  }}
+                  label={"전체 선택"}
+                />
+                <FormControlLabel
+                  sx={{
+                    gap: 1,
+                    px: 2,
+                  }}
+                  control={
+                    <SenifitCheckbox
+                      checked={selectedMembers?.length === 0}
+                      onChange={() => {
+                        setValue("members", []);
+                      }}
+                      sx={{
+                        padding: "0 !important",
+                      }}
+                    />
+                  }
+                  slotProps={{
+                    typography: {
+                      variant: "Title2",
+                      sx: { color: "label.normal" },
+                    },
+                  }}
+                  label={"전체 해제"}
+                />
+              </Stack>
+            }
+            title={"참여 어르신 선택하기"}
+          />
+          {!isDesktop && (
+            <Stack
+              direction={"row"}
+              width={"100%"}
+              spacing={2}
+              justifyContent={["flex-start", "flex-end"]}
+            >
               <FormControlLabel
                 sx={{
                   gap: 1,
-                  px: 2,
                 }}
                 control={
                   <SenifitCheckbox
@@ -126,7 +196,7 @@ const Page = () => {
                 }
                 slotProps={{
                   typography: {
-                    variant: "Title2",
+                    variant: "Headline1",
                     sx: { color: "label.normal" },
                   },
                 }}
@@ -135,7 +205,6 @@ const Page = () => {
               <FormControlLabel
                 sx={{
                   gap: 1,
-                  px: 2,
                 }}
                 control={
                   <SenifitCheckbox
@@ -150,177 +219,131 @@ const Page = () => {
                 }
                 slotProps={{
                   typography: {
-                    variant: "Title2",
+                    variant: "Headline1",
                     sx: { color: "label.normal" },
                   },
                 }}
                 label={"전체 해제"}
               />
             </Stack>
-          }
-          title={"참여 어르신 선택하기"}
-        />
-        {!isDesktop && (
-          <Stack
-            direction={"row"}
-            width={"100%"}
-            spacing={2}
-            justifyContent={["flex-start", "flex-end"]}
-          >
-            <FormControlLabel
-              sx={{
-                gap: 1,
-              }}
-              control={
-                <SenifitCheckbox
-                  checked={memberData.length === selectedMembers?.length}
-                  onChange={() => {
-                    setValue(
-                      "members",
-                      memberData.map((m) => m.memberId),
-                    );
-                  }}
-                  sx={{
-                    padding: "0 !important",
-                  }}
-                />
-              }
-              slotProps={{
-                typography: {
-                  variant: "Headline1",
-                  sx: { color: "label.normal" },
-                },
-              }}
-              label={"전체 선택"}
-            />
-            <FormControlLabel
-              sx={{
-                gap: 1,
-              }}
-              control={
-                <SenifitCheckbox
-                  checked={selectedMembers?.length === 0}
-                  onChange={() => {
-                    setValue("members", []);
-                  }}
-                  sx={{
-                    padding: "0 !important",
-                  }}
-                />
-              }
-              slotProps={{
-                typography: {
-                  variant: "Headline1",
-                  sx: { color: "label.normal" },
-                },
-              }}
-              label={"전체 해제"}
-            />
-          </Stack>
-        )}
-        <Divider sx={{ borderColor: "borderVariants.normal" }} />
-        <Typography
-          variant={isPhone ? "Headline1" : "Title2"}
-          sx={{ color: "label.normal" }}
-        >
-          {"총 "}
+          )}
+          <Divider sx={{ borderColor: "borderVariants.normal" }} />
           <Typography
-            component={"span"}
             variant={isPhone ? "Headline1" : "Title2"}
-            sx={{ color: "primary.main" }}
+            sx={{ color: "label.normal" }}
           >
-            {selectedMembers?.length ?? 0}
+            {"총 "}
+            <Typography
+              component={"span"}
+              variant={isPhone ? "Headline1" : "Title2"}
+              sx={{ color: "primary.main" }}
+            >
+              {selectedMembers?.length ?? 0}
+            </Typography>
+            {"명"}
           </Typography>
-          {"명"}
-        </Typography>
-        <Controller
-          name={"members"}
-          control={control}
-          render={({ field }) => {
-            const selected = field.value ?? [];
-            const toggle = (val: number) => {
-              const exists = selected.includes(val);
-              const next = exists
-                ? selected.filter((x) => x !== val)
-                : [...selected, val];
-              field.onChange(next);
-            };
+          <Controller
+            name={"members"}
+            control={control}
+            render={({ field }) => {
+              const selected = field.value ?? [];
+              const toggle = (val: number) => {
+                const exists = selected.includes(val);
+                const next = exists
+                  ? selected.filter((x) => x !== val)
+                  : [...selected, val];
+                field.onChange(next);
+              };
 
-            return (
-              <FormControl
-                component={"fieldset"}
-                variant={"standard"}
-                sx={{ width: "100%" }}
-              >
-                <Stack component={FormGroup} direction={"column"} spacing={3}>
-                  {memberData.map((props) => (
-                    <FormControlLabel
-                      sx={{
-                        width: "100%",
-                        "& .MuiFormControlLabel-label": {
+              return (
+                <FormControl
+                  component={"fieldset"}
+                  variant={"standard"}
+                  sx={{ width: "100%" }}
+                >
+                  <Stack component={FormGroup} direction={"column"} spacing={3}>
+                    {memberData.map((props) => (
+                      <FormControlLabel
+                        sx={{
                           width: "100%",
-                        },
-                        gap: 4,
-                      }}
-                      key={props.memberId}
-                      control={
-                        <SenifitCheckbox
-                          checked={selected.includes(props.memberId)}
-                          onChange={() => toggle(props.memberId)}
-                          sx={{
-                            padding: "0 !important",
-                          }}
-                        />
-                      }
-                      slots={{
-                        typography: "div",
-                      }}
-                      slotProps={{
-                        typography: {
-                          sx: { width: "100%" },
-                        },
-                      }}
-                      label={<MemberInfo {...props} />}
-                    />
-                  ))}
-                </Stack>
-              </FormControl>
-            );
-          }}
-        />
-        <Divider sx={{ borderColor: "borderVariants.normal" }} />
-        <Stack direction={"row"} justifyContent={"space-between"} spacing={3}>
-          <Button
-            component={Link}
-            href={returnPath}
-            variant={"text"}
-            sx={{
-              flex: 1,
-              bgcolor: "fillVariants.colored",
-              borderRadius: "0.75rem",
-              py: 2,
-              maxWidth: "10.5rem",
+                          "& .MuiFormControlLabel-label": {
+                            width: "100%",
+                          },
+                          gap: 4,
+                        }}
+                        key={props.memberId}
+                        control={
+                          <SenifitCheckbox
+                            checked={selected.includes(props.memberId)}
+                            onChange={() => toggle(props.memberId)}
+                            sx={{
+                              padding: "0 !important",
+                            }}
+                          />
+                        }
+                        slots={{
+                          typography: "div",
+                        }}
+                        slotProps={{
+                          typography: {
+                            sx: { width: "100%" },
+                          },
+                        }}
+                        label={<MemberInfo {...props} />}
+                      />
+                    ))}
+                  </Stack>
+                </FormControl>
+              );
             }}
-          >
-            <Typography variant={"Heading1"}>{"이전"}</Typography>
-          </Button>
-          <Button
-            type={"submit"}
-            variant={"contained"}
-            color={"primary"}
-            disableElevation
-            sx={{
-              flex: 1,
-              borderRadius: "0.75rem",
-              py: 2,
-              maxWidth: "10.5rem",
-            }}
-          >
-            <Typography variant={"Heading1"}>{"다음"}</Typography>
-          </Button>
+          />
+          <Divider sx={{ borderColor: "borderVariants.normal" }} />
+          <Stack direction={"row"} justifyContent={"space-between"} spacing={3}>
+            <Button
+              component={Link}
+              href={returnPath}
+              variant={"text"}
+              sx={{
+                flex: 1,
+                bgcolor: "fillVariants.colored",
+                borderRadius: "0.75rem",
+                py: 2,
+                maxWidth: "10.5rem",
+              }}
+            >
+              <Typography variant={"Heading1"}>{"이전"}</Typography>
+            </Button>
+            <Button
+              onClick={() => setOpenDialog(true)}
+              variant={"contained"}
+              color={"primary"}
+              disableElevation
+              sx={{
+                flex: 1,
+                borderRadius: "0.75rem",
+                py: 2,
+                maxWidth: "10.5rem",
+              }}
+            >
+              <Typography variant={"Heading1"}>{"다음"}</Typography>
+            </Button>
+          </Stack>
         </Stack>
       </Stack>
-    </Stack>
+      <SenifitDialog
+        dialogType={"success"}
+        isOpen={openDialog}
+        onClose={() => setOpenDialog(false)}
+        title={`선택한 어르신은 총 ${selectedMembers.length}명 입니다.\n이대로 진행할까요?`}
+        primaryText={"네, 선택할게요"}
+        primaryButtonProps={{
+          type: "submit",
+          form: "member-selection-form",
+        }}
+        secondaryText={"다시 선택"}
+        onSecondaryClick={() => setOpenDialog(false)}
+      />
+    </>
   );
 };
 

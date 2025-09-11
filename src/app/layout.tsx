@@ -7,6 +7,8 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import QueryProviders from "./panel/QueryClientProvider";
 import { AuthErrorBoundary } from "./panel/ErrorBoundary";
+import LoadingFallback from "./panel/LoadingFallback";
+import Toast from "./panel/Toast";
 
 // dayjs locale 설정, time zone 설정
 dayjs.locale("ko");
@@ -27,10 +29,13 @@ export default function RootLayout({
   return (
     <html lang={"ko"}>
       <body>
-        <Suspense fallback={null}>
+        <Suspense fallback={<LoadingFallback />}>
           <QueryProviders>
             <AuthErrorBoundary>
-              <SenifitThemeProvider>{children}</SenifitThemeProvider>
+              <SenifitThemeProvider>
+                {children}
+                <Toast />
+              </SenifitThemeProvider>
             </AuthErrorBoundary>
           </QueryProviders>
         </Suspense>
