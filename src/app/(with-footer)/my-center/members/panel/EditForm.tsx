@@ -168,6 +168,7 @@ const EditForm = ({
       onSubmit={handleSubmit(onSubmit)}
       sx={{
         bgcolor: "background.paper",
+        boxShadow: ["none", "0 0 8px 0 rgba(12, 13, 13, 0.05)"],
         p: [3, 6],
         borderRadius: [0, 1.5],
       }}

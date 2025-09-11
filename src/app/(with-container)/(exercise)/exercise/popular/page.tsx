@@ -48,6 +48,7 @@ const Page = () => {
           p: [3, 6],
           bgcolor: "background.paper",
           borderRadius: [0, "0.75rem"],
+          boxShadow: ["none", "0 0 8px 0 rgba(12, 13, 13, 0.05)"],
           width: "100%",
         }}
       >
