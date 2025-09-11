@@ -27,6 +27,7 @@ const InfoCard = ({
         py: [3, 4.5],
         width: 1, // width, height에서는 1이 100%를 의미
         minHeight: ["11rem", "12.75rem", "13.25rem"],
+        boxShadow: ["none", "0 0 8px 0 rgba(12, 13, 13, 0.05)"],
       }}
     >
       <Stack

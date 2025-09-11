@@ -90,6 +90,7 @@ const Page = () => {
           sx={{
             p: [3, 6],
             bgcolor: "background.paper",
+            boxShadow: ["none", "0 0 8px 0 rgba(12, 13, 13, 0.05)"],
             borderRadius: [undefined, "0.75rem"],
           }}
         >
