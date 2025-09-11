@@ -1,6 +1,13 @@
 "use client";
 
-import { Box, Button, Typography, Stack } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Stack,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { login } from "@/apis/auth";
@@ -13,6 +20,8 @@ import SenifitDialog from "@/components/SenifitDialog";
 import Link from "next/link";
 import { kakaoChannelLink } from "@/constants/kakaoCh";
 import { useToastStore } from "@/states/useToastStore";
+import EyeIcon from "@/components/icons/EyeIcon";
+import EyeOffIcon from "@/components/icons/EyeOffIcon";
 
 type LoginFormValues = { id: string; password: string };
 
@@ -40,6 +49,7 @@ export default function LoginForm() {
   const router = useRouter();
   const [failDialogOpen, setFailDialogOpen] = useState(false);
   const [inquiryDialogOpen, setInquiryDialogOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
@@ -59,12 +69,18 @@ export default function LoginForm() {
       ? "비밀번호를 입력하세요."
       : undefined;
 
+  const eyeIconStyle = {
+    width: "1.5rem",
+    height: "1.5rem",
+    color: "label.normal",
+  };
+
   const LoginContent = () => (
     <Box
       width={{ phone: "100%", tablet: 552, desktop: 552 }}
       px={{ phone: 2.5, tablet: 5, desktop: 5 }}
       py={{ phone: 4, tablet: 5, desktop: 5 }}
-      borderRadius={1.5}
+      borderRadius={"0.75rem"}
       display={"flex"}
       flexDirection={"column"}
       justifyContent={"center"}
@@ -83,7 +99,7 @@ export default function LoginForm() {
       >
         {"누구나 진행할 수 있는, "}
         <br />
-        {"검증된 노인 운동 콘텐츠"}{" "}
+        {"검증된 노인 운동 콘텐츠"}
         <span style={{ color: "primaryVariants.default" }}>{"시니핏"}</span>
       </Typography>
 
@@ -96,15 +112,34 @@ export default function LoginForm() {
           control={control}
           fullWidth
           sx={{ height: 55, mb: 1 }}
+          autoComplete={"username"}
         />
         <SenifitTextField
           placeholder={"비밀번호를 입력하세요."}
           name={"password"}
-          type={"password"}
+          type={showPassword ? "text" : "password"}
           rules={{ required: true }}
           control={control}
           fullWidth
           sx={{ height: 55, mt: 1.25 }}
+          autoComplete={"password"}
+          endAdornment={
+            <InputAdornment position={"end"}>
+              <IconButton
+                aria-label={
+                  showPassword ? "hide the password" : "display the password"
+                }
+                onClick={() => setShowPassword((prev) => !prev)}
+                edge={"end"}
+              >
+                {showPassword ? (
+                  <EyeIcon sx={eyeIconStyle} />
+                ) : (
+                  <EyeOffIcon sx={eyeIconStyle} />
+                )}
+              </IconButton>
+            </InputAdornment>
+          }
         />
         {errorText !== undefined && (
           <Typography

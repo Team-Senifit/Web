@@ -1,0 +1,44 @@
+"use client";
+import * as React from "react";
+import { createSvgIcon } from "@mui/material/utils";
+import type { SvgIconProps } from "@mui/material/SvgIcon";
+
+const EyeIconBase = createSvgIcon(
+  <svg xmlns={"http://www.w3.org/2000/svg"} fill={"none"}>
+    <path
+      d={
+        "M1.71833 10.2901C1.64888 10.103 1.64888 9.89715 1.71833 9.71006C2.39475 8.06993 3.54293 6.66759 5.01731 5.6808C6.49169 4.69402 8.22587 4.16724 10 4.16724C11.7741 4.16724 13.5083 4.69402 14.9827 5.6808C16.4571 6.66759 17.6052 8.06993 18.2817 9.71006C18.3511 9.89715 18.3511 10.103 18.2817 10.2901C17.6052 11.9302 16.4571 13.3325 14.9827 14.3193C13.5083 15.3061 11.7741 15.8329 10 15.8329C8.22587 15.8329 6.49169 15.3061 5.01731 14.3193C3.54293 13.3325 2.39475 11.9302 1.71833 10.2901Z"
+      }
+      stroke={"currentColor"}
+      stroke-linecap={"round"}
+      stroke-linejoin={"round"}
+    />
+    <path
+      d={
+        "M10 12.5C11.3807 12.5 12.5 11.3807 12.5 10C12.5 8.61929 11.3807 7.5 10 7.5C8.61929 7.5 7.5 8.61929 7.5 10C7.5 11.3807 8.61929 12.5 10 12.5Z"
+      }
+      stroke={"currentColor"}
+      stroke-linecap={"round"}
+      stroke-linejoin={"round"}
+    />
+  </svg>,
+  "EyeIconBase",
+);
+
+export type EyeIconProps = SvgIconProps & {
+  strokeWidth?: number | string;
+};
+
+const EyeIcon = React.forwardRef<SVGSVGElement, EyeIconProps>(
+  ({ strokeWidth = 1.5, sx, ...rest }, ref) => (
+    <EyeIconBase
+      ref={ref}
+      sx={{ ...sx, strokeWidth, "& *": { vectorEffect: "non-scaling-stroke" } }}
+      {...rest}
+    />
+  ),
+);
+
+EyeIcon.displayName = "EyeIcon";
+
+export default EyeIcon;
