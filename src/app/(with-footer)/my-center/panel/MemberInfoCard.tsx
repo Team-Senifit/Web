@@ -1,27 +1,38 @@
 "use client";
 
-import CTAButton from "@/components/CTAButton";
 import { SquareUserRoundIcon } from "@/components/icons";
 import useMedia from "@/hooks/useMedia";
 import { gradeLabel, type IMember } from "@/types/IMember";
 import { calculateAge } from "@/utils/calculateAge";
-import { Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import Link from "next/link";
 import React from "react";
+import EmptyView from "./EmptyView";
 
-const MemberEditButton = () => {
+const MemberEditButton = ({ disabled }: { disabled: boolean }) => {
   const { isPhone } = useMedia();
   return (
-    <CTAButton
-      fullWidth={isPhone}
+    <Button
       component={Link}
+      variant={"text"}
       href={"/my-center/members"}
+      disabled={disabled}
+      fullWidth={isPhone}
       sx={{
+        py: 2,
+        px: 8,
+        borderRadius: "0.75rem",
         bgcolor: "fillVariants.colored",
       }}
-      text={"관리하기"}
-    />
+    >
+      <Typography
+        variant={"Heading1"}
+        sx={{ color: disabled ? "primary.light" : "primary.main" }}
+      >
+        {"관리하기"}
+      </Typography>
+    </Button>
   );
 };
 
@@ -75,7 +86,7 @@ const MemberInfoCard = ({
         bgcolor: "background.paper",
         boxShadow: ["none", "0 0 8px 0 rgba(12, 13, 13, 0.05)"],
         width: 1,
-        height: ["16.25rem", "28rem"],
+        minHeight: ["16.25rem", "28rem"],
         borderRadius: [0, "0.75rem"],
         px: [3, 6],
         py: [3, 4.5],
@@ -105,7 +116,7 @@ const MemberInfoCard = ({
               {"센터인원"}
             </Typography>
           </Stack>
-          {!isPhone && <MemberEditButton />}
+          {!isPhone && <MemberEditButton disabled={members.length === 0} />}
         </Stack>
 
         <Typography
@@ -121,9 +132,10 @@ const MemberInfoCard = ({
           {"입니다."}
         </Typography>
       </Stack>
+      {members.length === 0 && <EmptyView />}
 
       {isPhone ? (
-        <MemberEditButton />
+        <MemberEditButton disabled={members.length === 0} />
       ) : (
         members.length !== 0 && (
           <Stack direction={"column"} spacing={[2, 1.5]}>

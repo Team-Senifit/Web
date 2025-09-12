@@ -102,7 +102,7 @@ const Footer = () => {
               buttonTextColor={"staticVariants.white"}
               buttonBgColor={"primary.main"}
               buttonText={"070-8065-7080"}
-              footnote={`평일 00:00~00:00\n주말 및 공휴일 휴무`}
+              footnote={`평일 10:00~18:00\n주말 및 공휴일 휴무`}
             />
             <Inquiry
               title={"카카오톡 문의"}
@@ -116,7 +116,7 @@ const Footer = () => {
               buttonTextColor={"label.normal"}
               buttonBgColor={"#FEE500"}
               buttonText={"카카오톡 채널 바로가기"}
-              footnote={`카카오톡 상단 돋보기 아이콘을 누르고\nSGEE를 검색해 보세요.`}
+              footnote={`카카오톡 상단 돋보기 아이콘을 누르고\n시니핏을 검색해 보세요.`}
             />
           </Stack>
           <Stack
