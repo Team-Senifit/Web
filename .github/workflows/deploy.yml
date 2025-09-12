@@ -5,6 +5,10 @@ on:
     branches: ["develop"]
   workflow_dispatch: {}
 
+concurrency:
+  group: deploy-develop
+  cancel-in-progress: true
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -39,6 +43,7 @@ jobs:
 
       - name: Create deploy package
         run: |
+          set -euo pipefail
           mkdir -p deploy
           # 실행에 필요한 산출물만 포함 (.next, node_modules, 정적파일, 설정)
           cp -r .next node_modules package.json package-lock.json public next.config.* deploy/ 2>/dev/null || true
@@ -50,13 +55,15 @@ jobs:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
       - name: Known hosts
-        run: ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts
 
       - name: Remote prep (cleanup & prepare)
         env:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
-          SERVICE_USER: ubuntu 
         run: |
           ssh "$EC2_USER@$EC2_HOST" bash -se <<'PREP'
           set -euo pipefail
@@ -77,34 +84,32 @@ jobs:
             fi
           done
           PREP
+
       - name: Remote deploy (stream extract, swap, restart)
         env:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
           RELEASE_NAME: ${{ env.RELEASE_NAME }}
-          SERVICE_USER: ${{ secrets.SERVICE_USER || 'ubuntu' }}
+          SERVICE_USER: ${{ secrets.SERVICE_USER }}
         run: |
           set -euo pipefail
           APP_DIR="/srv/senifit-front"
           REL="${RELEASE_NAME}"
+          SVC="${SERVICE_USER:-ubuntu}"
 
-          # stdin은 tar 데이터만 흘러가야 하므로, 원격 명령은 '한 줄'로 전달
           cat release.tgz | ssh -o StrictHostKeyChecking=yes "$EC2_USER@$EC2_HOST" \
             "set -euo pipefail; APP_DIR='$APP_DIR'; REL='$REL'; \
              mkdir -p \"\$APP_DIR/releases/\$REL\"; \
              tar -xzf - -C \"\$APP_DIR/releases/\$REL\""
 
           ssh -o StrictHostKeyChecking=yes "$EC2_USER@$EC2_HOST" \
-            "set -euo pipefail; APP_DIR='$APP_DIR'; REL='$REL'; SVC='$SERVICE_USER'; \
+            "set -euo pipefail; APP_DIR='$APP_DIR'; REL='$REL'; SVC='$SVC'; \
              chown -R \"\$SVC:\$SVC\" \"\$APP_DIR/releases/\$REL\"; \
              ln -sfn \"\$APP_DIR/releases/\$REL\" \"\$APP_DIR/current\"; \
              sudo systemctl daemon-reload; \
-             sudo systemctl restart senifit-front; 
-
+             sudo systemctl restart senifit-front"
 
       - name: Public healthcheck (non-blocking)
-      
         continue-on-error: true
         run: |
           curl -fsS -o /dev/null https://senifit.co.kr || echo "::warning::Public healthcheck failed"
-
