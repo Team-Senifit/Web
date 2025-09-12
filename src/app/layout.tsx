@@ -28,7 +28,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang={"ko"}>
-      <body>
+      <body
+        style={{
+          margin: 0,
+          padding: 0,
+          boxSizing: "border-box",
+          height: "100dvh",
+        }}
+      >
         <Suspense fallback={<LoadingFallback />}>
           <QueryProviders>
             <AuthErrorBoundary>
