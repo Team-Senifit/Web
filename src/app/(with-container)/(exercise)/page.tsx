@@ -60,10 +60,10 @@ const Page = () => {
       <SenifitDialog
         isOpen={openModal}
         onClose={() => setOpenModal(false)}
-        dialogType={"info"}
-        title={"베타 테스트 안내"}
+        dialogType={"success"}
+        title={"베타 테스트 무료 체험 안내"}
         body={"베타 테스트 기간 동안\n모든 기능을 무료로 이용하실 수 있습니다."}
-        primaryText={"로그인 하기"}
+        primaryText={"로그인 바로가기"}
         primaryButtonProps={{
           component: Link,
           href: "/login",
