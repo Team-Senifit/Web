@@ -1,7 +1,7 @@
 "use client";
 
 import useMedia from "@/hooks/useMedia";
-import { IPopularRoutine } from "@/types/IPopularRoutine";
+import { IHomePopularRoutineResponse } from "@/types/IPopularRoutine";
 import { Button, Stack, Typography } from "@mui/material";
 import React from "react";
 import VideoInfoCard from "./VideoInfoCard";
@@ -13,9 +13,11 @@ const PopularRoutine = () => {
   const { isPhone } = useMedia();
 
   const {
-    data: { data: popularRoutine },
-  } = useSuspenseQuery<IResponse<Array<IPopularRoutine>>>({
-    queryKey: ["/programs/recommendation/by-popular"],
+    data: {
+      data: { popularRoutineList: popularRoutine },
+    },
+  } = useSuspenseQuery<IResponse<IHomePopularRoutineResponse>>({
+    queryKey: ["/ui/home"],
   });
 
   return (
