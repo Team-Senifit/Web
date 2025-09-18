@@ -1,54 +1,81 @@
 "use client";
 
 import { Grid } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import GradationPageInfoCard from "../../../components/GradationPageInfoCard";
 import CustomizedRoutine from "./panel/CustomizedRoutine";
 import useMedia from "@/hooks/useMedia";
 import PopularRoutine from "./panel/PopularRoutine";
 import ThematicRoutine from "./panel/ThematicRoutine";
 import useProgramStore from "@/states/useProgramStore";
+import SenifitDialog from "@/components/SenifitDialog";
+import Link from "next/link";
+import { kakaoChannelLink } from "@/constants/kakaoCh";
 
 const Page = () => {
   const { isPhone } = useMedia();
+  const [openModal, setOpenModal] = useState(false);
 
   const { clearStore } = useProgramStore();
+
   useEffect(() => {
     clearStore();
+    setOpenModal(true);
   }, [clearStore]);
+
   return (
-    <Grid container spacing={3}>
-      {isPhone && (
-        <Grid size={12}>
-          <GradationPageInfoCard
-            title={"운동"}
-            description={"시니핏이 제공하는\n운동 프로그램을 진행해요"}
-          />
+    <>
+      <Grid container spacing={3}>
+        {isPhone && (
+          <Grid size={12}>
+            <GradationPageInfoCard
+              title={"운동"}
+              description={"시니핏이 제공하는\n운동 프로그램을 진행해요"}
+            />
+          </Grid>
+        )}
+        <Grid
+          size={{
+            phone: 12,
+            desktop: 6,
+          }}
+        >
+          <CustomizedRoutine />
         </Grid>
-      )}
-      <Grid
-        size={{
-          phone: 12,
-          desktop: 6,
-        }}
-      >
-        <CustomizedRoutine />
+        <Grid
+          container
+          size={{
+            phone: 12,
+            desktop: 6,
+          }}
+        >
+          <Grid size={12}>
+            <PopularRoutine />
+          </Grid>
+          <Grid size={12}>
+            <ThematicRoutine />
+          </Grid>
+        </Grid>
       </Grid>
-      <Grid
-        container
-        size={{
-          phone: 12,
-          desktop: 6,
+      <SenifitDialog
+        isOpen={openModal}
+        onClose={() => setOpenModal(false)}
+        dialogType={"info"}
+        title={"베타 테스트 안내"}
+        body={"베타 테스트 기간 동안\n모든 기능을 무료로 이용하실 수 있습니다."}
+        primaryText={"로그인 하기"}
+        primaryButtonProps={{
+          component: Link,
+          href: "/login",
         }}
-      >
-        <Grid size={12}>
-          <PopularRoutine />
-        </Grid>
-        <Grid size={12}>
-          <ThematicRoutine />
-        </Grid>
-      </Grid>
-    </Grid>
+        secondaryText={"회원가입 문의하기"}
+        secondaryButtonProps={{
+          component: Link,
+          href: kakaoChannelLink,
+          rel: "noopener noreferrer",
+        }}
+      />
+    </>
   );
 };
 
