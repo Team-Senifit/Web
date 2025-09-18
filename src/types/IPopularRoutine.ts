@@ -11,3 +11,7 @@ export interface IPopularRoutine {
   specialized_workout_code: string;
   thumbnail_path: string;
 }
+
+export interface IHomePopularRoutineResponse {
+  popularRoutineList: Array<IPopularRoutine>;
+}
