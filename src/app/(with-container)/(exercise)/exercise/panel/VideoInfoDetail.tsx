@@ -20,7 +20,7 @@ const VideoInfoDetail = ({ videos }: { videos: IWorkoutVideo[] }) => {
         <Carousel
           items={videos}
           renderItem={(video, index) => <VideoCard key={index} {...video} />}
-          itemWidth={216}
+          itemWidth={240}
           gap={4}
           padding={4}
         />
