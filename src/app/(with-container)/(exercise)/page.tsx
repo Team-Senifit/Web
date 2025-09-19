@@ -1,6 +1,6 @@
 "use client";
 
-import { Grid } from "@mui/material";
+import { ButtonProps, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import GradationPageInfoCard from "../../../components/GradationPageInfoCard";
 import CustomizedRoutine from "./panel/CustomizedRoutine";
@@ -93,11 +93,14 @@ const Page = () => {
           href: "/login",
         }}
         secondaryText={"회원가입 문의하기"}
-        secondaryButtonProps={{
-          component: Link,
-          href: kakaoChannelLink,
-          rel: "noopener noreferrer",
-        }}
+        secondaryButtonProps={
+          {
+            component: Link,
+            href: kakaoChannelLink,
+            target: "_blank",
+            rel: "noopener noreferrer",
+          } as ButtonProps
+        }
       />
     </>
   );
