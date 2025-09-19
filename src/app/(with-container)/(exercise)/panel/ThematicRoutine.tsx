@@ -6,13 +6,15 @@ import Link from "next/link";
 import Button from "node_modules/@mui/material/Button/Button";
 import React from "react";
 
-const ThematicRoutine = () => {
+const ThematicRoutine = ({ authenticated }: { authenticated: boolean }) => {
   const { isPhone } = useMedia();
   return (
     <Button
       fullWidth
       component={Link}
-      href={"/exercise/thematic"}
+      href={
+        authenticated ? "/exercise/thematic" : "/login?next=/exercise/thematic"
+      }
       sx={{
         display: "block",
         justifyContent: "flex-start",

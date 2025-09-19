@@ -230,7 +230,7 @@ export default function SurveyActionButton({
       <SenifitDialog
         isOpen={confirm === "editConfirm"}
         onClose={closeConfirm}
-        dialogType={"info"}
+        dialogType={"question"}
         title={"기록을 수정하시겠습니까?"}
         primaryText={"수정하기"}
         secondaryText={"돌아가기"}
@@ -244,7 +244,7 @@ export default function SurveyActionButton({
       <SenifitDialog
         isOpen={confirm === "saveConfirm"}
         onClose={closeConfirm}
-        dialogType={"info"}
+        dialogType={"question"}
         title={"수정한 기록을 저장하시겠습니까?"}
         primaryText={"저장하기"}
         secondaryText={"돌아가기"}
