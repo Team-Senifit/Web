@@ -35,7 +35,7 @@ const SenifitAccordion = ({
     <Accordion
       sx={{
         borderRadius: "0.75rem !important",
-        backgroundColor: "background.default",
+        backgroundColor: "fillVariants.alternative",
         boxShadow: "none",
         "&:before": { display: "none" },
         "&.Mui-expanded": { margin: 0, borderRadius: "0.75rem" },
@@ -48,7 +48,8 @@ const SenifitAccordion = ({
         "&:last-of-type": {
           borderRadius: "0.75rem !important",
         },
-        border: "2px solid",
+        borderWidth: "2px",
+        borderStyle: "solid",
         borderColor: "borderVariants.normal",
         ...accordionSx,
       }}
@@ -56,7 +57,7 @@ const SenifitAccordion = ({
       <AccordionSummary
         expandIcon={<ExpandMore sx={{ color: expandIconColor }} />}
         sx={{
-          backgroundColor: "background.default",
+          backgroundColor: "fillVariants.alternative",
           height: minHeight,
           "& .MuiAccordionSummary-content": {
             width: "fit-content",
@@ -67,7 +68,8 @@ const SenifitAccordion = ({
           borderRadius: "0.75rem 0.75rem",
           "&.Mui-expanded": {
             borderRadius: "0.75rem 0.75rem",
-            borderBottom: "2px solid",
+            borderBottomWidth: "2px",
+            borderBottomStyle: "solid",
             borderColor: "borderVariants.normal",
           },
           ...summarySx,
@@ -85,7 +87,7 @@ const SenifitAccordion = ({
 
       <AccordionDetails
         sx={{
-          backgroundColor: "background.default",
+          backgroundColor: "fillVariants.alternative",
           borderRadius: "0 0 0.75rem 0.75rem",
           p: 0,
           ...detailsSx,
