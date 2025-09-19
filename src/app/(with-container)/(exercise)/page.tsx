@@ -14,6 +14,7 @@ import { kakaoChannelLink } from "@/constants/kakaoCh";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { IResponse } from "@/types/IResponse";
 import { IHealthCheck } from "@/types/IHealthCheck";
+import dayjs from "dayjs";
 
 const Page = () => {
   const { isPhone } = useMedia();
@@ -32,10 +33,17 @@ const Page = () => {
   }, [clearStore]);
 
   useEffect(() => {
-    if (data && !data.authenticated) {
+    const betaModalShownDate =
+      window.localStorage.getItem("betaModalShownDate");
+    if (
+      data.authenticated === false && // 로그인이 안되어있고
+      (!betaModalShownDate || !dayjs().isSame(betaModalShownDate, "day")) // 오늘 날짜에 모달을 본적이 없으면
+    ) {
       setOpenModal(true);
-    } else {
-      setOpenModal(false);
+      window.localStorage.setItem(
+        "betaModalShownDate",
+        dayjs().format("YYYY-MM-DD"),
+      );
     }
   }, [data]);
 

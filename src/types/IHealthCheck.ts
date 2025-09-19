@@ -1,4 +1,4 @@
 export interface IHealthCheck {
-  alive: true;
-  authenticated: true;
+  alive: boolean;
+  authenticated: boolean;
 }
