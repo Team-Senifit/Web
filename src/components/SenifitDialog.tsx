@@ -7,33 +7,19 @@ import {
   Typography,
   Button,
   Stack,
-  ButtonProps,
 } from "@mui/material";
 import {
   CircleCheckBigIcon,
   CircleQuestionMarkIcon,
   TriangleAlertIcon,
 } from "./icons";
-
-export interface ISenifitDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-  dialogType: "info" | "success" | "error";
-  title: string;
-  body?: string;
-  primaryText?: string;
-  secondaryText?: string;
-  onPrimaryClick?: () => void;
-  onSecondaryClick?: () => void;
-  primaryButtonProps?: ButtonProps;
-  secondaryButtonProps?: ButtonProps;
-}
+import { ISenifitDialogProps } from "@/types/IDialog";
 
 const iconByType: Record<
   ISenifitDialogProps["dialogType"],
   { node: React.ReactNode }
 > = {
-  info: {
+  question: {
     node: (
       <CircleQuestionMarkIcon
         strokeWidth={3}

@@ -257,7 +257,7 @@ export default function LoginForm() {
       <SenifitDialog
         isOpen={inquiryDialogOpen}
         onClose={() => setInquiryDialogOpen(false)}
-        dialogType={"error"}
+        dialogType={"question"}
         title={"로그인이 되지 않나요?"}
         body={
           "로그인 정보에 대한 자세한 문의는\nSGEE 협회로 문의해주시기 바랍니다."
