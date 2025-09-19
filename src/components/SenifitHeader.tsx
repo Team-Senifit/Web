@@ -4,6 +4,7 @@ import React from "react";
 import useMedia from "@/hooks/useMedia";
 import {
   Box,
+  Button,
   Container,
   Stack,
   SxProps,
@@ -139,7 +140,9 @@ const SenifitHeader = () => {
           boxSizing: "border-box",
         }}
       >
-        <Image src={Logo} alt={"시니핏 로고"} />
+        <Button component={Link} href={"/"} sx={{ p: 0, minWidth: "auto" }}>
+          <Image src={Logo} alt={"시니핏 로고"} />
+        </Button>
         <PCNav />
       </Container>
     </Box>
