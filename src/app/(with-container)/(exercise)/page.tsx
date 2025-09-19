@@ -11,6 +11,9 @@ import useProgramStore from "@/states/useProgramStore";
 import SenifitDialog from "@/components/SenifitDialog";
 import Link from "next/link";
 import { kakaoChannelLink } from "@/constants/kakaoCh";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { IResponse } from "@/types/IResponse";
+import { IHealthCheck } from "@/types/IHealthCheck";
 
 const Page = () => {
   const { isPhone } = useMedia();
@@ -18,10 +21,23 @@ const Page = () => {
 
   const { clearStore } = useProgramStore();
 
+  const {
+    data: { data },
+  } = useSuspenseQuery<IResponse<IHealthCheck>>({
+    queryKey: ["/health"],
+  });
+
   useEffect(() => {
     clearStore();
-    setOpenModal(true);
   }, [clearStore]);
+
+  useEffect(() => {
+    if (data && !data.authenticated) {
+      setOpenModal(true);
+    } else {
+      setOpenModal(false);
+    }
+  }, [data]);
 
   return (
     <>
