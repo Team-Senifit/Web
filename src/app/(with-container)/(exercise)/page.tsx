@@ -64,7 +64,7 @@ const Page = () => {
             desktop: 6,
           }}
         >
-          <CustomizedRoutine />
+          <CustomizedRoutine authenticated={data.authenticated} />
         </Grid>
         <Grid
           container
@@ -74,10 +74,10 @@ const Page = () => {
           }}
         >
           <Grid size={12}>
-            <PopularRoutine />
+            <PopularRoutine authenticated={data.authenticated} />
           </Grid>
           <Grid size={12}>
-            <ThematicRoutine />
+            <ThematicRoutine authenticated={data.authenticated} />
           </Grid>
         </Grid>
       </Grid>

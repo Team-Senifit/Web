@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { IResponse } from "@/types/IResponse";
 
-const PopularRoutine = () => {
+const PopularRoutine = ({ authenticated }: { authenticated: boolean }) => {
   const { isPhone } = useMedia();
 
   const {
@@ -24,7 +24,9 @@ const PopularRoutine = () => {
     <Button
       fullWidth
       component={Link}
-      href={"/exercise/popular"}
+      href={
+        authenticated ? "/exercise/popular" : "/login?next=/exercise/popular"
+      }
       sx={{
         display: "block",
         justifyContent: "flex-start",
