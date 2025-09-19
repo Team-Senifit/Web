@@ -45,7 +45,7 @@ const Page = () => {
         dayjs().format("YYYY-MM-DD"),
       );
     }
-  }, [data]);
+  }, [data.authenticated]);
 
   return (
     <>
