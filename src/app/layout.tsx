@@ -6,7 +6,6 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import QueryProviders from "./panel/QueryClientProvider";
-import { AuthErrorBoundary } from "./panel/ErrorBoundary";
 import LoadingFallback from "./panel/LoadingFallback";
 import Toast from "./panel/Toast";
 
@@ -38,12 +37,10 @@ export default function RootLayout({
       >
         <Suspense fallback={<LoadingFallback />}>
           <QueryProviders>
-            <AuthErrorBoundary>
-              <SenifitThemeProvider>
-                {children}
-                <Toast />
-              </SenifitThemeProvider>
-            </AuthErrorBoundary>
+            <SenifitThemeProvider>
+              {children}
+              <Toast />
+            </SenifitThemeProvider>
           </QueryProviders>
         </Suspense>
       </body>

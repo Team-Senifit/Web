@@ -153,7 +153,7 @@ export default function RecentRecord({
       <SenifitDialog
         isOpen={openDialog === "noSurvey"}
         onClose={() => setOpenDialog(null)}
-        dialogType={"info"}
+        dialogType={"question"}
         title={"작성된 기록이 없습니다.\n작성하시겠습니까?"}
         primaryText={"작성하기"}
         secondaryText={"돌아가기"}

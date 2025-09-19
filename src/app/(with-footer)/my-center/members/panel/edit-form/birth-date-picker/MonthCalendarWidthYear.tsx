@@ -18,7 +18,6 @@ const MonthCalendarWidthYear = ({
   setMonth: (value: number | null) => void;
 }) => {
   if (year === null) return null;
-  console.log("month", month);
   return (
     <Stack>
       <CalendarTitle
@@ -56,7 +55,8 @@ const MonthCalendarWidthYear = ({
             }}
             value={month ? dayjs(`${year}-${month}-01`) : null}
             onChange={(value) => {
-              setMonth(value ? value.month() : null);
+              if (value === null) return;
+              setMonth(value.month() + 1);
             }}
           />
         </Box>
