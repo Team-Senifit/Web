@@ -115,7 +115,9 @@ const BirthDatePicker = ({ isEdit }: { isEdit: boolean }) => {
               setYear={(value) => setValue("year", value)}
               month={month}
               setMonth={(value) => {
-                setValue("month", value ? value + 1 : null);
+                setValue("month", value, {
+                  shouldDirty: true,
+                });
                 setDepth("day");
               }}
             />

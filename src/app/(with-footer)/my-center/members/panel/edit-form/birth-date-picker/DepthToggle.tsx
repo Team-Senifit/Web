@@ -5,6 +5,7 @@ import SenifitToggleButtonGroup from "@/components/SenifitToggleButtonGroup";
 import { Box, Typography } from "@mui/material";
 import useMedia from "@/hooks/useMedia";
 import { ISenifitToggleOption } from "@/types/IToggleButton";
+import { useToastStore } from "@/states/useToastStore";
 
 export type Depth = "year" | "month" | "day";
 
@@ -33,6 +34,8 @@ const DepthToggle = ({
 
   const textVariant = isPhone ? "Headline1" : "Heading2";
 
+  const { setToastOpen } = useToastStore();
+
   const options = [
     {
       value: "year",
@@ -44,7 +47,7 @@ const DepthToggle = ({
       value: "month",
       label: (
         <DepthLabel
-          text={month ? `${month}월` : "생월"}
+          text={month !== undefined ? `${month}월` : "생월"}
           variant={textVariant}
         />
       ),
@@ -67,7 +70,21 @@ const DepthToggle = ({
       <SenifitToggleButtonGroup<Depth>
         fullWidth
         value={depth}
-        onChange={(v: Depth) => setDepth(v)}
+        onChange={(depth: Depth) => {
+          if (depth === "month" && !year) {
+            setToastOpen({
+              message: "생년을 먼저 선택해주세요.",
+            });
+            return;
+          }
+          if (depth === "day" && !year && !month) {
+            setToastOpen({
+              message: "생년 또는 생월을 먼저 선택해주세요.",
+            });
+            return;
+          }
+          setDepth(depth);
+        }}
         exclusive
         options={options}
       />
