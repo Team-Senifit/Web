@@ -1,9 +1,14 @@
-import { IWorkoutVideo } from "@/types/IRoutineDetail";
 import { Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 
-const VideoCard = ({ thumbnail_path, name }: IWorkoutVideo) => {
+const VideoCard = ({
+  thumbnail_path,
+  name,
+}: {
+  thumbnail_path: string;
+  name: string;
+}) => {
   return (
     <Stack direction={"column"} spacing={2}>
       <Image
@@ -17,6 +22,7 @@ const VideoCard = ({ thumbnail_path, name }: IWorkoutVideo) => {
           aspectRatio: "1 / 1",
           pointerEvents: "none",
           objectFit: "cover",
+          borderRadius: "0.75rem",
         }}
       />
       <Typography
