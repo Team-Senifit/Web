@@ -12,7 +12,7 @@
 ## 개요
 
 > (주) 튼튼한거북이 기획
-> 개발 기간 25.7 ~ 25.10
+> 개발 기간 25.7 ~ 
 
 ### 배포 링크
 
@@ -126,3 +126,7 @@ $ npm run build
 <img display=inline-block src="https://img.shields.io/badge/discord-5462EB?style=for-the-badge&logo=discord&logoColor=white">
 
 </div>
+
+## 기여 가이드
+
+docs/CONTRIBUTORS.md에 간단한 프로젝트 정책 개요를, docs/DEVELOPER.md에 자가서명인증서 발급 방법 등을 정리해두었습니다. 확인 후 작업 부탁드립니다.
