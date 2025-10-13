@@ -2,6 +2,7 @@
 
 import useMedia from "@/hooks/useMedia";
 import { useToastStore } from "@/states/useToastStore";
+import { autoHideDurationMap } from "@/types/IToast";
 import { Alert, Snackbar, Typography } from "@mui/material";
 import React from "react";
 
@@ -14,7 +15,7 @@ const Toast = () => {
       open={open}
       onClose={setToastClose}
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      autoHideDuration={3000}
+      autoHideDuration={autoHideDurationMap["normal"]}
       sx={{
         maxWidth: "1200px",
         mx: "auto",
