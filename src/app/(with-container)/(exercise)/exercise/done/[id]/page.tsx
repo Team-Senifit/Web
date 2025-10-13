@@ -11,11 +11,15 @@ import useProgramStore from "@/states/useProgramStore";
 import { formatTime } from "@/stories/utils/formatTime";
 import useMedia from "@/hooks/useMedia";
 import Link from "next/link";
+import { isAuthError } from "@/apis/errors";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const { id } = useParams();
 
   const { isTablet, isDesktop } = useMedia();
+
+  const router = useRouter();
 
   const searchParams = useSearchParams();
   const seconds = Number(searchParams.get("seconds")) || 0;
@@ -24,6 +28,11 @@ const Page = () => {
   const { mutate } = useMutation({
     mutationFn: async () => {
       await axiosClient.put(`/records/${id}`);
+    },
+    onError: (error) => {
+      if (isAuthError(error)) {
+        router.push(`/login?next=/exercise/done/${id}`);
+      }
     },
   });
 
