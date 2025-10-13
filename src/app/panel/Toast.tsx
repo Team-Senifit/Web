@@ -11,12 +11,13 @@ const Toast = () => {
 
   return (
     <Snackbar
-      open={open}
+      open={!open}
       onClose={setToastClose}
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       autoHideDuration={3000}
       sx={{
-        px: "1.5rem",
+        maxWidth: "1200px",
+        mx: "auto",
       }}
     >
       <Alert
