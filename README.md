@@ -1,9 +1,8 @@
 # 단 1분 만에 노인 운동 전문가처럼, 시니핏
 
 <center>
-    <img src="https://senifit.co.kr/_next/static/media/senifit-logo.978bf302.svg" height="48px"  />
-
-    <a href="https://myhits.vercel.app"><img src="https://myhits.vercel.app/api/hit/https%3A%2F%2Fgithub.com%2FTeam-Senifit%2FWeb?color=green&label=hits&size=medium" alt="hits" /></a>
+<img src="https://senifit.co.kr/_next/static/media/senifit-logo.978bf302.svg" height="48px"  />
+<a href="https://myhits.vercel.app"><img src="https://myhits.vercel.app/api/hit/https%3A%2F%2Fgithub.com%2FTeam-Senifit%2FWeb?color=green&label=hits&size=medium" alt="hits" /></a>
 </center>
 
 ---
