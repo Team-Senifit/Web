@@ -1,15 +1,11 @@
+import { AutoHide, IToast } from "@/types/IToast";
 import { create } from "zustand";
-
-interface IToast {
-  message: string;
-  open: boolean;
-  setToastOpen: ({ message }: { message: string }) => void;
-  setToastClose: () => void;
-}
 
 export const useToastStore = create<IToast>((set) => ({
   message: "",
   open: false,
-  setToastOpen: (toast) => set({ ...toast, open: true }),
+  autoHide: "normal",
+  setToastOpen: (toast, autoHide = "normal" as AutoHide) =>
+    set({ ...toast, open: true, autoHide }),
   setToastClose: () => set({ open: false }),
 }));

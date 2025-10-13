@@ -119,12 +119,12 @@ export default function WorkoutVideoPlaylist({
   const { setToastOpen } = useToastStore();
 
   const prev = useCallback(() => {
-    setToastOpen({ message: "이전 영상을 재생합니다." });
+    setToastOpen({ message: "이전 영상을 재생합니다.", autoHide: "short" });
     go(index - 1);
   }, [go, index, setToastOpen]);
 
   const next = useCallback(() => {
-    setToastOpen({ message: "다음 영상을 재생합니다." });
+    setToastOpen({ message: "다음 영상을 재생합니다.", autoHide: "short" });
     go(index + 1);
   }, [go, index, setToastOpen]);
 
