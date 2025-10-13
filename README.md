@@ -1,17 +1,16 @@
 # 단 1분 만에 노인 운동 전문가처럼, 시니핏
 
 <center>
-<img src="https://senifit.co.kr/_next/static/media/senifit-logo.978bf302.svg" height="48px"  />
+    <img src="https://senifit.co.kr/_next/static/media/senifit-logo.978bf302.svg" height="48px"  />
 
-[![hits](https://myhits.vercel.app/api/hit/https%3A%2F%2Fgithub.com%2FTeam-Senifit%2FWeb?color=green&label=hits&size=medium)](https://myhits.vercel.app)
-
+    <a href="https://myhits.vercel.app"><img src="https://myhits.vercel.app/api/hit/https%3A%2F%2Fgithub.com%2FTeam-Senifit%2FWeb?color=green&label=hits&size=medium" alt="hits" /></a>
 </center>
 
 ---
 
 ## 개요
 
-> (주) 튼튼한거북이 기획
+> (주) 튼튼한거북이 기획<br />
 > 개발 기간 25.7 ~ 
 
 ### 배포 링크
