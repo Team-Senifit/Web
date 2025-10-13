@@ -19,7 +19,7 @@ const Header = ({
 }) => {
   const [openDialog, setOpenDialog] = useState(false);
 
-  const { isPhone, isTablet } = useMedia();
+  const { isPhone } = useMedia();
 
   const handleButtonClick = () => {
     if (isEnd) {
@@ -62,7 +62,7 @@ const Header = ({
           <Timer
             duration={duration}
             seconds={seconds}
-            variant={isPhone ? "Headline1" : isTablet ? "Title2" : "Title1"}
+            variant={isPhone ? "Headline1" : "Title2"}
           />
         </Stack>
         {isPhone ? (
@@ -90,7 +90,7 @@ const Header = ({
               borderRadius: "0.75rem",
             }}
           >
-            <Typography variant={"Heading1"}>
+            <Typography variant={"Headline1"}>
               {isEnd ? "수업 종료" : "수업 중단"}
             </Typography>
           </Button>

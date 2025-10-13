@@ -7,7 +7,7 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import QueryProviders from "./panel/QueryClientProvider";
 import LoadingFallback from "./panel/LoadingFallback";
-import Toast from "./panel/Toast";
+import Toast from "@/components/Toast";
 
 // dayjs locale 설정, time zone 설정
 dayjs.locale("ko");
