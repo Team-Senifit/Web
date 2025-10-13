@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "typeRoots": [
+      "src/@types",
+      "node_modules/@types"
+    ],
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -22,6 +27,21 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.d.ts",
+    ".next/types/**/*.ts",
+    "global.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    ".storybook",
+    "storybook-static",
+    // "**/*.stories.*",
+    "**/*.story.*",
+    "**/*.test.*"
+  ]
 }

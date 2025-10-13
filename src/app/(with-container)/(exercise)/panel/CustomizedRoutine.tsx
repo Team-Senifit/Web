@@ -1,0 +1,85 @@
+"use client";
+
+import { Box, Button, Stack, Typography } from "@mui/material";
+import Image from "next/image";
+import React from "react";
+import bgImage from "@/assets/images/customized-routine.png";
+import useMedia from "@/hooks/useMedia";
+import Tag from "@/components/Tag";
+import Link from "next/link";
+
+const CustomizedRoutine = ({ authenticated }: { authenticated: boolean }) => {
+  const { isPhone } = useMedia();
+  return (
+    <Button
+      component={Link}
+      href={
+        authenticated
+          ? "/exercise/customized"
+          : "/login?next=/exercise/customized"
+      }
+      sx={{
+        display: "block",
+        position: "relative",
+        overflow: "hidden",
+        borderRadius: [0, "0.75rem"],
+        p: [3, 4.5],
+        width: "100%",
+        height: ["auto", "40rem", "43rem"],
+        bgcolor: "background.paper",
+        background: [
+          "background.paper",
+          "linear-gradient(330deg, #F6C167 3.8%, #FF8A00 46.58%, #FC7F36 84.69%)",
+        ],
+      }}
+    >
+      {!isPhone && (
+        <Box
+          component={Image}
+          src={bgImage}
+          alt={""}
+          width={640}
+          height={640}
+          sx={{
+            width: "40rem",
+            height: "40rem",
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            aspectRatio: "1 / 1",
+            pointerEvents: "none",
+          }}
+          priority
+        />
+      )}
+
+      {/* Foreground content */}
+      <Stack spacing={1} sx={{ position: "relative", zIndex: 1 }}>
+        <Stack direction={"row"} spacing={1}>
+          <Typography
+            variant={isPhone ? "Title3" : "Display1"}
+            sx={{
+              color: ["label.normal", "static.white"],
+              whiteSpace: ["normal", "pre-line"],
+            }}
+          >
+            {"맞춤형\n운동 프로그램"}
+          </Typography>
+          {isPhone && <Tag label={"추천"} />}
+        </Stack>
+
+        <Typography
+          variant={isPhone ? "Headline1" : "Heading1"}
+          sx={{
+            color: ["label.neutral", "static.white"],
+            whiteSpace: "pre-line",
+          }}
+        >
+          {"우리 센터에 딱 맞는 맞춤형 프로그램을\n진행할 수 있어요!"}
+        </Typography>
+      </Stack>
+    </Button>
+  );
+};
+
+export default CustomizedRoutine;

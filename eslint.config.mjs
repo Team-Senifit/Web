@@ -1,48 +1,86 @@
-// .eslintrc.mjs
-import { dirname } from "path";
-import { fileURLToPath } from "url";
+import js from "@eslint/js";
 import { FlatCompat } from "@eslint/eslintrc";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
+import tsParser from "@typescript-eslint/parser";
+import tseslint from "@typescript-eslint/eslint-plugin";
+import react from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
+import jsxA11y from "eslint-plugin-jsx-a11y";
+import prettier from "eslint-plugin-prettier";
+import nextPlugin from "@next/eslint-plugin-next"; // ✅ 추가
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const compat = new FlatCompat({ baseDirectory: __dirname });
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+  recommendedConfig: js.configs.recommended,
+});
 
 export default [
-  ...compat.extends(
-    "next/core-web-vitals",
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier"
-  ),
   {
+    // 전역 ignore
+    ignores: [
+      "eslint.config.*",
+      "next.config.*",
+      ".storybook/**",
+      "storybook-static/**",
+      "**/*.stories.@(js|jsx|ts|tsx|mdx)",
+      "**/*.story.@(js|jsx|ts|tsx|mdx)",
+    ],
+  },
+
+  // ✅ Next 권장 설정을 가장 먼저 적용(문서 권장)
+  ...compat.config({
+    extends: ["next/core-web-vitals", "next/typescript", "prettier"],
+  }),
+
+  {
+    // ✅ 커스텀 룰 적용 블록 - 여기서 @next/next도 등록
+    files: ["**/*.{js,jsx,ts,tsx}"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+        ecmaFeatures: { jsx: true },
+        projectService: true,
+      },
+    },
+    plugins: {
+      "@next/next": nextPlugin,
+      "@typescript-eslint": tseslint,
+      react,
+      "react-hooks": reactHooks,
+      "jsx-a11y": jsxA11y,
+      prettier,
+    },
     rules: {
-      // Prettier 관련
       "prettier/prettier": "error",
-      // unused-vars
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": ["error"],
-      // explicit returns
-      "@typescript-eslint/explicit-function-return-type": ["warn"],
-      // no any
-      "@typescript-eslint/no-explicit-any": ["error"],
-      // React-specific
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+      "@typescript-eslint/no-restricted-types": [
+        "error",
+        {
+          types: {
+            "React.FC": { message: "React.FC는 사용하지 마세요." },
+            "React.FunctionComponent": {
+              message: "React.FunctionComponent는 사용하지 마세요.",
+            },
+          },
+        },
+      ],
       "react/no-unescaped-entities": "off",
       "react/display-name": "off",
       "react/prop-types": "off",
-      // 모든 JSX prop 값을 중괄호로 감싸도록 강제
       "react/jsx-curly-brace-presence": [
         "error",
-        { props: "always", children: "never" },
+        { props: "always", children: "always" },
       ],
-    },
-    env: {
-      browser: true,
-      node: true,
-      es6: true,
-    },
-    settings: {
-      react: { version: "detect" },
     },
   },
 ];
