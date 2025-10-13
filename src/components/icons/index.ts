@@ -1,0 +1,15 @@
+export { default as HumanIcon } from "./HumanIcon";
+export { default as ClipboardIcon } from "./ClipboardIcon";
+export { default as HouseIcon } from "./HouseIcon";
+export { default as MapPinHouseIcon } from "./MapPinHouseIcon";
+export { default as SquareUserRoundIcon } from "./SquareUserRoundIcon";
+export { default as UndoIcon } from "./UndoIcon";
+export { default as CalendarIcon } from "./CalendarIcon";
+export { default as CrossIcon } from "./CrossIcon";
+export { default as TriangleAlertIcon } from "./TriangleAlertIcon";
+export { default as CircleQuestionMarkIcon } from "./CircleQuestionMarkIcon";
+export { default as CircleCheckBigIcon } from "./CircleCheckBigIcon";
+export { default as SettingsIcon } from "./SettingsIcon";
+export { default as ClipboardCheckIcon } from "./ClipboardCheckIcon";
+export { default as CheckIcon } from "./CheckIcon";
+export { default as CirclePlayIcon } from "./CirclePlayIcon";

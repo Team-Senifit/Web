@@ -1,0 +1,139 @@
+"use client";
+import { useState } from "react";
+import { CalendarIcon } from "../../../../../../components/icons";
+import { Button, Modal, Paper, Stack, Typography } from "@mui/material";
+import { LunarSolarToggle, Title } from "./birth-date-picker";
+import DepthToggle, { Depth } from "./birth-date-picker/DepthToggle";
+import DecadeCalendar from "./birth-date-picker/DecadeCalendar";
+import dayjs from "dayjs";
+import MonthCalendarWidthYear from "./birth-date-picker/MonthCalendarWidthYear";
+import DateCalendarWithTitle from "./birth-date-picker/DateCalendarWithTitle";
+import BirthDateField from "./birth-date-picker/BirthDateField";
+import { useFormContext } from "react-hook-form";
+import { IMemberEditFormValue } from "@/types/IMember";
+import { calculateAge } from "@/utils/calculateAge";
+
+const BirthDatePicker = ({ isEdit }: { isEdit: boolean }) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [depth, setDepth] = useState<Depth>("year");
+
+  const { watch, setValue, control } = useFormContext<IMemberEditFormValue>();
+
+  const year = watch("year");
+  const month = watch("month");
+  const day = watch("day");
+
+  const isSolar = watch("isSolar");
+
+  const age =
+    year && month && day
+      ? calculateAge(dayjs(`${year}-${month ? month - 1 : 0}-${day}`))
+      : 0;
+
+  return (
+    <>
+      <Stack direction={"column"} spacing={1.5} id={"birthDate"}>
+        {year && month && day && (
+          <BirthDateField control={control} age={age} isSolar={isSolar} />
+        )}
+        <Button
+          onClick={() => setIsOpen(true)}
+          sx={{
+            bgcolor: "fillVariants.colored",
+            width: "16rem",
+            py: 2,
+            px: 6,
+            borderRadius: "0.75rem",
+          }}
+          startIcon={
+            <CalendarIcon
+              sx={{ width: "1.5rem", height: "1.5rem" }}
+              strokeWidth={2}
+            />
+          }
+        >
+          <Typography variant={"Headline1"} sx={{ color: "primary.main" }}>
+            {`생년월일 ${isEdit ? "수정하기" : "입력하기"}`}
+          </Typography>
+        </Button>
+      </Stack>
+
+      <Modal
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: ["flex-end", "center"],
+        }}
+        aria-labelledby={"year-month-day-picker-title"}
+      >
+        <Paper
+          sx={{
+            width: [1, "34.5rem"],
+            height: ["36.25rem"],
+            borderRadius: "0.75rem",
+            borderBottomRightRadius: [0, "0.75rem"],
+            borderBottomLeftRadius: [0, "0.75rem"],
+          }}
+        >
+          <Title closeDatePicker={() => setIsOpen(false)} />
+          <DepthToggle
+            depth={depth}
+            setDepth={setDepth}
+            year={year}
+            month={month}
+            day={day}
+          />
+          {/* RHF 연결 이후 처리 */}
+          <LunarSolarToggle
+            calendarType={isSolar}
+            setCalendarType={(isSolar: boolean) => setValue("isSolar", isSolar)}
+          />
+          {depth === "day" ? (
+            <DateCalendarWithTitle
+              year={year}
+              month={month}
+              day={day}
+              onChange={(newValue) => {
+                console.log("newValue", newValue?.format("YYYY-MM-DD"));
+                setValue("day", newValue ? newValue.date() : null, {
+                  shouldDirty: true,
+                });
+                setValue("month", newValue ? newValue.month() + 1 : null, {
+                  shouldDirty: true,
+                });
+                setValue("year", newValue ? newValue.year() : null, {
+                  shouldDirty: true,
+                });
+              }}
+            />
+          ) : depth === "month" ? (
+            <MonthCalendarWidthYear
+              year={year}
+              setYear={(value) => setValue("year", value)}
+              month={month}
+              setMonth={(value) => {
+                setValue("month", value, {
+                  shouldDirty: true,
+                });
+                setDepth("day");
+              }}
+            />
+          ) : (
+            <DecadeCalendar
+              value={year ? dayjs(`${year}-01-01`) : null}
+              onChange={(value) => {
+                setValue("year", value ? value.year() : null);
+                setDepth("month");
+              }}
+            />
+          )}
+        </Paper>
+      </Modal>
+    </>
+  );
+};
+
+export default BirthDatePicker;

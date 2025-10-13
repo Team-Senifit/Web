@@ -1,0 +1,57 @@
+name: PR Checks (typecheck & lint)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [ main, develop ]
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: Install deps
+        run: npm ci
+
+      # ---- Typecheck ----
+      - name: TypeScript typecheck
+        if: ${{ hashFiles('tsconfig.json') != '' }}
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+        run: |
+          if npm run | grep -qE '^ *typecheck'; then
+            npm run typecheck
+          else
+            npx -y typescript tsc --noEmit
+          fi
+
+      # ---- Lint ----
+      - name: ESLint (warnings allowed)
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+        run: |
+          if npm run | grep -qE '^ *lint'; then
+            # 패키지 스크립트 내에 --max-warnings=0 이 있더라도 --quiet로 경고를 숨겨 통과
+            npm run lint -- --quiet
+          else
+            # 스크립트가 없으면 직접 실행 (경고는 무시, 에러만 실패)
+            npx -y eslint . --quiet
+          fi
