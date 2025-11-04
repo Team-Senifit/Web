@@ -8,12 +8,16 @@ import useMedia from "@/hooks/useMedia";
 import Tag from "@/components/Tag";
 import Link from "next/link";
 
-const CustomizedRoutine = () => {
+const CustomizedRoutine = ({ authenticated }: { authenticated: boolean }) => {
   const { isPhone } = useMedia();
   return (
     <Button
       component={Link}
-      href={"/exercise/customized"}
+      href={
+        authenticated
+          ? "/exercise/customized"
+          : "/login?next=/exercise/customized"
+      }
       sx={{
         display: "block",
         position: "relative",

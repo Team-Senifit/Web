@@ -1,6 +1,6 @@
 import { ChevronRight, ChevronLeft } from "@mui/icons-material";
 import { Box, IconButton, SxProps, Stack } from "@mui/material";
-import React, { useState, ReactNode } from "react";
+import React, { useState, ReactNode, useRef } from "react";
 
 interface ICarouselProps<T> {
   items: T[];
@@ -13,11 +13,12 @@ interface ICarouselProps<T> {
 const Carousel = <T,>({
   items,
   renderItem,
-  itemWidth = 216,
-  gap = 4,
-  padding = 4,
+  itemWidth = 240, // px
+  gap = 4, // spacing
+  padding = 4, // spacing
 }: ICarouselProps<T>) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   const iconButtonStyle: SxProps = {
     position: "absolute",
@@ -36,15 +37,15 @@ const Carousel = <T,>({
   };
 
   const handlePrevious = () => {
-    setCurrentSlide(Math.max(0, currentSlide - 1));
+    setCurrentSlide((prev) => Math.max(0, prev - 1));
   };
 
   const handleNext = () => {
-    setCurrentSlide(Math.min(items.length - 1, currentSlide + 1));
+    setCurrentSlide((prev) => Math.min(items.length - 1, prev + 1));
   };
 
   return (
-    <Box sx={{ position: "relative", overflow: "hidden" }}>
+    <Box ref={containerRef} sx={{ position: "relative", overflow: "hidden" }}>
       {/* 이전 버튼 */}
       <IconButton
         sx={{
@@ -81,8 +82,8 @@ const Carousel = <T,>({
       <Stack
         direction={"row"}
         sx={{
-          transform: `translateX(-${currentSlide * itemWidth}px)`,
-          transition: "transform 0.3s ease",
+          transform: `translateX(-${currentSlide * (itemWidth + gap * 8)}px)`,
+          transition: "transform 0.3s ease-in-out",
           gap,
           p: padding,
         }}

@@ -73,7 +73,7 @@ export default function WorkoutVideoPlaylist({
 
   const { id: programId } = useParams();
 
-  const notifyDone = () => {
+  const notifyDone = (): void => {
     const pid = Array.isArray(programId) ? programId[0] : programId;
     notifyClassDone({ programId: pid, seconds });
     window.close();
@@ -119,12 +119,12 @@ export default function WorkoutVideoPlaylist({
   const { setToastOpen } = useToastStore();
 
   const prev = useCallback(() => {
-    setToastOpen({ message: "이전 영상을 재생합니다." });
+    setToastOpen({ message: "이전 영상을 재생합니다.", autoHide: "short" });
     go(index - 1);
   }, [go, index, setToastOpen]);
 
   const next = useCallback(() => {
-    setToastOpen({ message: "다음 영상을 재생합니다." });
+    setToastOpen({ message: "다음 영상을 재생합니다.", autoHide: "short" });
     go(index + 1);
   }, [go, index, setToastOpen]);
 
@@ -212,7 +212,9 @@ export default function WorkoutVideoPlaylist({
           width: "100%",
         }}
       >
-        {!isPhone && <Typography variant={"Title2"}>{current.name}</Typography>}
+        {!isPhone && (
+          <Typography variant={"Heading1"}>{current.name}</Typography>
+        )}
 
         <Stack
           direction={"row"}
@@ -232,7 +234,7 @@ export default function WorkoutVideoPlaylist({
             onClick={prev}
             disabled={index === 0}
           >
-            <Typography variant={"Heading1"}>{"이전"}</Typography>
+            <Typography variant={"Headline1"}>{"이전"}</Typography>
           </Button>
           <Button
             disableElevation
@@ -245,7 +247,7 @@ export default function WorkoutVideoPlaylist({
             }}
             onClick={videos.length - 1 === index ? notifyDone : next}
           >
-            <Typography variant={"Heading1"}>
+            <Typography variant={"Headline1"}>
               {videos.length - 1 === index ? "종료" : "다음"}
             </Typography>
           </Button>

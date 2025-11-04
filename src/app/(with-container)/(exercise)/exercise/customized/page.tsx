@@ -26,6 +26,7 @@ import SenifitDialog from "@/components/SenifitDialog";
 
 const Page = () => {
   const [openDialog, setOpenDialog] = useState(false);
+  const [openErrorDialog, setOpenErrorDialog] = useState(false);
   const { isPhone, isDesktop } = useMedia();
 
   const router = useRouter();
@@ -58,7 +59,10 @@ const Page = () => {
       data,
     );
     setType("customized");
-    console.log(selectedProgram);
+    if (selectedProgram.length === 0) {
+      setOpenErrorDialog(true);
+      return;
+    }
     setSelectedRoutineRecord({
       ...selectedRoutineRecord,
       programId: selectedProgram[0].id,
@@ -209,6 +213,15 @@ const Page = () => {
         title={"운동루틴 옵션을 선택해주세요."}
         primaryText={"확인"}
         onPrimaryClick={() => setOpenDialog(false)}
+      />
+      <SenifitDialog
+        dialogType={"error"}
+        isOpen={openErrorDialog}
+        onClose={() => setOpenErrorDialog(false)}
+        title={"조건에 맞는 프로그램이 없어요."}
+        body={"다른 옵션으로 선택하여 다시 시도해주세요."}
+        primaryText={"확인"}
+        onPrimaryClick={() => setOpenErrorDialog(false)}
       />
     </>
   );

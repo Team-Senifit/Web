@@ -1,214 +1,130 @@
-## 프로젝트 실행 방법
+# 단 1분 만에 노인 운동 전문가처럼, 시니핏
+
+<center>
+<img src="https://senifit.co.kr/_next/static/media/senifit-logo.978bf302.svg" height="48px"  />
+<a href="https://myhits.vercel.app"><img src="https://myhits.vercel.app/api/hit/https%3A%2F%2Fgithub.com%2FTeam-Senifit%2FWeb?color=green&label=hits&size=medium" alt="hits" /></a>
+</center>
+
+---
+
+## 개요
+
+> (주) 튼튼한거북이 기획<br />
+> 개발 기간 25.7 ~ 
+
+### 배포 링크
+
+[https://senifit.co.kr/](https://senifit.co.kr/)
+
+### 프론트엔드 팀
+
+|프로필|이름|역할|담당|
+|:---:|:---:|:---:|---|
+| <img src="https://avatars.githubusercontent.com/u/177602235?v=4" width="48px" height="48px" /> |[김현수](https://github.com/HYUN-SIUU)| 팀원 | 로그인 페이지, 기록 탭 개발 |
+| <img src="https://avatars.githubusercontent.com/u/91731260?v=4" width="48px" height="48px" /> | [나현](https://github.com/SaltySalt77) | 팀원 | 디자인 시스템, 운동 탭, 우리 센터 탭 개발 |
+
+## 프로젝트 소개
+
+### 배경 및 필요성
+
+대한민국은 이미 초고령화 사회에 진입했습니다. 노인 인구가 증가함에 따라 노인 복지 시설, 요양원 등 관련 기관의 수요가 늘어나고 있으며, 동시에 부모님을 케어해야 하는 가족들의 부담도 커지고 있습니다.
+노인의 건강한 삶을 위해 가장 중요한 요소 중 하나는 바로 운동입니다. 그러나 현재 노인복지시설에서는 ▲전문 강사 수급의 어려움 ▲예산 부족 문제로 인해 체계적이고 지속적인 운동 프로그램을 운영하기 어렵습니다. 특히 지방으로 갈수록 이러한 문제는 더욱 심각해지고 있습니다.
+따라서 전문적이면서도 경제적인 노인 맞춤형 운동 프로그램의 필요성이 대두되고 있습니다.
+
+
+---
+
+### 프로젝트 개요
+
+시니핏은 이러한 문제를 해결하기 위해 탄생한 맞춤형 노인 운동 콘텐츠 플랫폼입니다.
+
+- 다양한 운동 형태와 흥미 유도형 콘텐츠 제공
+- 신체 건강뿐 아니라 인지 자극 운동까지 포함
+- 맞춤형 알고리즘 기반 운동 추천 및 기록 관리
+
+시니핏은 단순한 운동 서비스가 아니라, 데이터 기반으로 점점 더 개인화되는 노인 운동 프로그램을 제공함으로써 시설과 보호자의 부담을 줄이고, 어르신들의 삶의 질을 높이고자 합니다.
+
+
+---
+
+### 주요 기능
+1. 맞춤형 운동 프로그램 제공
+    진행 시간, 인지 운동 여부, 주요 운동 부위, 노래체조 포함 여부 등을 선택하면 이에 맞는 운동 프로그램을 자동 생성합니다.
+    조건에 따라 최적화된 영상이 재생되어 어르신들이 즐겁고 안전하게 운동할 수 있습니다.
+    인기 루틴, 부위별 루틴 등 다양한 카테고리 제공으로 선택의 폭을 넓힙니다.
+
+2. 운동 기록 관리
+
+    루틴 완료 후 ▲운동 참여 태도 ▲운동 수행 능력 ▲운동 중 불편 사항 등을 기록할 수 있습니다.
+    개별 어르신별 기록 기능을 통해 개인별 맞춤 데이터가 축적됩니다.
+    축적된 데이터는 이후 운동 추천 및 관리에 반영되어 점차 정교해지는 프로그램을 제공합니다.
+
+### 프로젝트 목표
+
+시니핏은 복지사와 보호자들의 부담을 덜고, 언제 어디서든 어르신과 함께할 수 있는 운동 솔루션을 제공하는 것을 목표로 합니다.
+
+이를 통해 전국의 모든 어르신이 시니핏과 함께 
+1. 운동의 즐거움
+2. 신체 능력 향상
+3. 인지 능력 개선
+
+을 경험하며, 더 건강하고 활기찬 노년을 누릴 수 있도록 하는 것이 시니핏의 비전입니다.
+
+### 시작 가이드
+
+#### 요구 사항
+
+웹 앱 빌드를 위해서는 다음을 필요로 합니다.
+
+- Node.js >= 22.0.0
+- Npm >= 10.6.0
+
+#### 설치 및 실행 방법
+
+프론트엔드 실행을 위해서는 자가서명 인증서를 발급해둔 게 있어야합니다. 
 
 ```shell
-$ npm install # 프로젝트 관련 모듈 설치
-$ npm run dev:https # 이는 초기 설정을 필요로 합니다. 아래의 가이드를 보고 초기 설정을 진행해주세요.
+$ git clone git@github.com:Team-Senifit/Web.git Senifit_FE
+$ cd Senifit_FE
+$ npm install
+$ npm run dev:https
 ```
 
-## 작업 규칙
-
-### 작업 시작 순서
-1. 지라에서 할당된 백로그를 확인하고, IN PROGRESS 상태로 변경한다.
-2. 지라에서 브랜치를 레포에 생성한다. 브랜치 네이밍 규칙은 아래를 참고한다.
-3. 기능명세서와 UI 디자인(혹은 와이어 프레임)을 기반으로 subtask나 설명을 추가한다.
-4. 로컬에서 작업을 시작한다.
-
-### 브랜치 네이밍 규칙
-!!git-flow를 따르고 있습니다!!
-
-| 브랜치| 역할| 생성 시점 | 병합 대상／삭제 시점 | 네이밍 예시 |
-|---|---|---|---|---|
-| **main**| 운영 환경에 배포된 코드를 항상 반영 | 최초 초기화| 삭제하지 않음| `main`|
-| **develop** | 다음 배포를 위한 개발 통합 공간 | `main` 초기화 직후 | 배포 준비 완료 시 `main`·`develop` 병합 | `develop` |
-| **feature-**| 개별 기능 개발| `develop` 브랜치에서 기능 시작 시 | 기능 완료 시 `develop`에 병합 | `feature-login-page`|
-| **release-**| 배포 전 최종 점검·버전 태깅 및 준비| 배포 일정 직전 | 준비 완료 시 `main`·`develop` 병합 | `release-v1.2.0` |
-| **hotfix-** | 운영 중인 버전의 치명적 버그 긴급 수정 | `main` 브랜치에서 버그 발견 시| 수정 완료 시 `main`·`develop` 병합 | `hotfix-critical-fix` |
-
-
-### commit convention
-커밋 컨벤션이 포함된 .gitmessage.txt 파일을 생성해두었습니다. 적용 방법은 아래를 참고해주세요.
-
-| Type | Description|
-| --- | --- |
-| **Feat** | 새로운 기능 추가 |
-| **Fix**| 버그 수정|
-| **Docs** | 문서 수정|
-| **Style**| 코드 formatting, 세미콜론 누락, 코드 자체의 변경이 없는 경우 |
-| **Refactor** | 코드 리팩토링|
-| **Test** | 테스트 코드, 리팩토링 테스트 코드 추가 |
-| **Chore**| 패키지 매니저 수정, 그 외 기타 수정 (예: .gitignore) |
-| **Design** | CSS 등 사용자 UI 디자인 변경 |
-| **Comment**| 필요한 주석 추가 및 변경 |
-| **Rename** | 파일 또는 폴더 명을 수정하거나 옮기는 작업만인 경우|
-| **Remove** | 파일을 삭제하는 작업만 수행한 경우 |
-| **!BREAKING CHANGE** | 커다란 API 변경의 경우 |
-| **!HOTFIX**| 급하게 치명적인 버그를 고쳐야 하는 경우|
-
-#### `.gitmessage.txt` 적용 법 (클론된 레포에만 적용)
+#### 빌드 방법
 
 ```shell
-$ git config commit.template .gitmessage.txt
+$ npm run build
 ```
 
-이후 터미널에서 `git commit`하고 엔터 누르면 메시지가 뜹니다. 혹시 nano 에디터가 뜬다면 다음 명령어를 입력해주세요. 글로벌로 적용됩니다.
+### 기술 스택
 
-```shell
-$ git config --global core.editor "code --wait" # vscode 사용 시 (강추)
-$ git config --global core.editor "vim" # vim 사용 시
-```
+#### 환경
 
-### pull request 규칙
+<div>
+<img display=inline-block src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+<img display=inline-block src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
+</div>
 
-1. 제목은 항시 `[작업 페이지] 작업 내용 한 줄 요약`으로 작성한다.
-2. 본문은 템플릿을 따라 성실히 작성한다.
-3. pr이 커지지 않도록 작업일이 2~3일을 넘어가면 pr을 꼭 올린다.
+#### 프론트엔드
 
-### 코드 리뷰 규칙
-1. 코드를 꼼꼼히 읽고 궁금한 점이나 제안사항이 있다면 코멘드로 단다.
-2. 문제가 없다면 Approve를 선택하여 submit한다.
-3. 문제가 있다면 Request changes를 선택하여 submit한다.
+<div>
+<img display=inline-block src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> 
+<img display=inline-block src="https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3&logoColor=white"> 
+<img display=inline-block src="https://img.shields.io/badge/typescript-2D79C7?style=for-the-badge&logo=typescript&logoColor=white"> 
+<img display=inline-block src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
+<img display=inline-block src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white"> 
+<img display=inline-block src="https://img.shields.io/badge/mui-007FFF?style=for-the-badge&logo=mui&logoColor=white"> 
+<img display=inline-block src="https://img.shields.io/badge/storybook-FF4785?style=for-the-badge&logo=storybook&logoColor=white"> 
+</div>
 
-### Storybook에 관하여
+#### 소통
 
-공용컴포넌트의 쉬운 관리를 위해 스토리북을 도입하였습니다. 다음의 명령어를 통해 `localhost:6006`로 확인할 수 있으니 참고부탁드리겠습니다.
+<div>
+<img display=inline-block src="https://img.shields.io/badge/notion-F6F5F4?style=for-the-badge&logo=notion&logoColor=black">
+<img display=inline-block src="https://img.shields.io/badge/discord-5462EB?style=for-the-badge&logo=discord&logoColor=white">
 
-```shell
-$ npm run storybook
-```
+</div>
 
+## 기여 가이드
 
----
-
-## 🔐 로컬 HTTPS 개발 가이드 (macOS & Windows)
-
-프론트는 **https://localhost:3000** 으로 접속하고, 내부적으로는 프록시가 Next(dev:3001)와 백엔드(`NEXT_PUBLIC_API_URL`)로 라우팅됩니다.  
-프로젝트에는 `scripts/dev-proxy.mjs`가 포함되어 있으며, 아래 절차로 자가서명 인증서를 만들고 서버를 실행하세요.
-
-### 0) 사전 준비
-- Node.js 18+ (권장 20+)
-- 개발 의존성 설치(없다면)
-  ```bash
-  npm i -D concurrently http-proxy dotenv
-  ```
-- `.env` 설정 (필수)
-  ```dotenv
-  # 백엔드 엔드포인트(베이스 경로 포함 가능). 예: https://api.example.com/api
-  NEXT_PUBLIC_API_URL=https://dev.api.example.com/api
-
-  # 선택: 프론트에서 사용할 프록시 프리픽스(기본 /api)
-  # API_PREFIX=/api
-  ```
-
-> 프런트에서 API는 반드시 **/api/** 경로로 호출하세요. 예) `fetch('/api/users')`
-
----
-
-### 1) macOS: 자가서명 인증서 발급
-
-#### ✅ 방법 A: mkcert (가장 간단, 신뢰 자동)
-```bash
-brew install mkcert nss        # nss는 Firefox 신뢰에 필요(선택)
-mkcert -install                # 로컬 루트 CA 설치(한 번만)
-mkdir -p certs
-mkcert -key-file certs/localhost-key.pem -cert-file certs/localhost.pem localhost 127.0.0.1 ::1
-```
-- 생성 파일: `certs/localhost-key.pem`, `certs/localhost.pem`
-
-#### 🔁 방법 B: OpenSSL (대안)
-> 경고 배너가 뜰 수 있음. Keychain에서 해당 인증서를 "항상 신뢰"로 바꾸면 해결됩니다.
-```bash
-brew install openssl
-mkdir -p certs
-openssl req -x509 -nodes -days 825 -newkey rsa:2048   -keyout certs/localhost-key.pem -out certs/localhost.pem   -subj "/CN=localhost"   -addext "subjectAltName=DNS:localhost,IP:127.0.0.1,IP:::1"
-```
-
----
-
-### 2) Windows: 자가서명 인증서 발급
-
-#### ✅ 방법 A: mkcert (권장)
-- Chocolatey
-  ```powershell
-  choco install mkcert -y
-  mkcert -install
-  mkdir certs
-  mkcert -key-file certs/localhost-key.pem -cert-file certs/localhost.pem localhost 127.0.0.1 ::1
-  ```
-- Scoop
-  ```powershell
-  scoop install mkcert
-  mkcert -install
-  mkdir certs
-  mkcert -key-file certs/localhost-key.pem -cert-file certs/localhost.pem localhost 127.0.0.1 ::1
-  ```
-
-#### 🔁 방법 B: OpenSSL (대안)
-```powershell
-choco install openssl -y
-mkdir certs
-# 한 줄로 실행하세요 (PowerShell)
-openssl req -x509 -nodes -days 825 -newkey rsa:2048 -keyout certs/localhost-key.pem -out certs/localhost.pem -subj "/CN=localhost" -addext "subjectAltName=DNS:localhost,IP:127.0.0.1,IP:::1"
-```
-> Windows에서 WSL2로 개발 중이면 브라우저가 Windows에 설치된 인증서를 신뢰합니다. 이 경우 **Windows 호스트에서 mkcert를 실행해 생성한 PEM 파일을 프로젝트 폴더로 복사**하는 것을 권장합니다.
-
----
-
-### 3) 서버 실행
-
-`package.json` 스크립트가 아래와 같다고 가정합니다.
-```jsonc
-{
-  "scripts": {
-    "dev": "next dev -p 3001",
-    "proxy": "node scripts/dev-proxy.mjs",
-    "dev:https": "concurrently -k -n NEXT,SSL \"npm run dev\" \"npm run proxy\""
-  }
-}
-```
-
-실행:
-```bash
-npm run dev:https
-```
-접속:
-- 프론트: https://localhost:3000  
-- client 컴포넌트에서 API 호출: `/api/...` → `.env`의 `NEXT_PUBLIC_API_URL`로 프록시
-- server 컴포넌트에서 API 호출: createAxiosServer로 인스턴스 생성 후, 인스턴스에 주소를 `/...` -> `.env`의 `NEXT_PUBLIC_API_URL`로 
-!! 이때 앞에 백엔드 서버 URL이나 `/api`를 앞에 붙이면 안됩니다. endpoint만 넣어야합니다 !!
-
-```tsx
-const api = await createAxiosServer();
-const { data } = await api.get("/centers");
-```
----
-
-### 4) 트러블슈팅
-
-- **`ENOENT: ./certs/localhost-key.pem`**  
-  → 인증서가 없거나 경로가 다릅니다. 위의 발급 과정을 다시 진행하고, 파일이 **프로젝트 루트의 `certs/`**에 있는지 확인하세요.
-
-- **브라우저 "안전하지 않음"/경고 페이지**  
-  → OpenSSL 방식은 신뢰루트 자동설치가 없습니다. 가능한 **mkcert 사용**을 권장합니다.
-
-- **`ETIMEDOUT/ECONNREFUSED` (백엔드 연결 실패)**  
-  → `.env`의 `NEXT_PUBLIC_API_URL`이 접근 가능한지 확인하세요.
-    - 백엔드가 로컬(예: 127.0.0.1:8080)에서만 리슨하면 외부 접속 불가 → `0.0.0.0` 바인딩 필요
-    - EC2/Nginx/ALB 환경이면 공개 포트(80/443)로 접근하거나 보안그룹/방화벽을 열어야 합니다.
-    - 임시 우회(SSH 터널):
-      ```bash
-      ssh -N -L 18080:127.0.0.1:8080 ubuntu@<server-ip>
-      # 이후
-      NEXT_PUBLIC_API_URL=http://localhost:18080/api npm run dev:https
-      ```
-
-- **쿠키가 저장되지 않음**  
-  → 개발 프록시가 HTTPS를 제공하므로 `Secure` 쿠키 요건은 충족됩니다. 다만 도메인이 다르면 서드파티로 간주될 수 있습니다. 개발 중에는 브라우저가 `localhost`를 1st‑party로 취급하므로, 프론트는 항상 `https://localhost:3000`을 사용하고 API는 `/api/...`로만 호출하세요.
-
----
-
-### 5) 확인 체크리스트
-- [ ] `certs/localhost-key.pem`, `certs/localhost.pem` 존재
-- [ ] `.env`에 `NEXT_PUBLIC_API_URL` 설정
-- [ ] `npm run dev:https` 실행 후 `https://localhost:3000` 접속 OK
-- [ ] API 호출은 `/api/...` 경로로만 사용
-
+docs/CONTRIBUTORS.md에 간단한 프로젝트 정책 개요를, docs/DEVELOPER.md에 자가서명인증서 발급 방법 등을 정리해두었습니다. 확인 후 작업 부탁드립니다.
