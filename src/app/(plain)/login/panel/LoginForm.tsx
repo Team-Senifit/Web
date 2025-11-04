@@ -106,7 +106,7 @@ export default function LoginForm() {
       >
         {"누구나 진행할 수 있는, "}
         <br />
-        {"검증된 노인 운동 콘텐츠"}
+        {"검증된 노인 운동 콘텐츠 "}
         <span style={{ color: "primaryVariants.default" }}>{"시니핏"}</span>
       </Typography>
 
