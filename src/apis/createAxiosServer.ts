@@ -27,7 +27,7 @@ export async function createAxiosServer(opts?: {
   forwardCookies?: boolean; // default: true
   extraHeaders?: Record<string, string | number | boolean | undefined>;
 }): Promise<AxiosInstance> {
-  // ✅ 헤더 의존 대신 env 기반으로 절대 baseURL 생성
+  // 헤더 의존 대신 env 기반으로 절대 baseURL 생성
   const baseURL = new URL(API_PREFIX, SITE_URL).toString(); // e.g. https://localhost:3000/api
 
   // 쿠키 전달 (SSR 세션 유지용)
