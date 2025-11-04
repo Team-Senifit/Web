@@ -12,7 +12,7 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { login } from "@/apis/auth";
 import SenifitTextField from "../../../../components/SenifitTextField";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import useMedia from "@/hooks/useMedia";
 import Logo from "@/assets/logo/senifit-logo.svg";
@@ -47,7 +47,7 @@ export default function LoginForm() {
     formState: { errors },
   } = methods;
 
-  const router = useRouter();
+  // const router = useRouter();
   const [failDialogOpen, setFailDialogOpen] = useState(false);
   const [inquiryDialogOpen, setInquiryDialogOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -58,7 +58,8 @@ export default function LoginForm() {
       setToastOpen({
         message: "로그인 성공! 오늘도 즐거운 시니핏 하세요!",
       });
-      setTimeout(() => router.push(next), 500);
+      setTimeout(() => (window.location.href = next), 500);
+      // 새로고침이 되어야 쿠키가 작동되는거 같아서, router.push(next) 대신에 저 코드로 대체
     } catch {
       setFailDialogOpen(true);
     }
