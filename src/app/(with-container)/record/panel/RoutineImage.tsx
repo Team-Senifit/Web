@@ -1,10 +1,12 @@
 "use client";
 
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { useRef, useMemo } from "react";
 import RightIcon from "@/components/icons/RightIcon";
 import LeftIcon from "@/components/icons/LeftIcon";
 import useMedia from "@/hooks/useMedia";
+import Carousel from "@/components/Carousel";
+import VideoCard from "@/components/VideoCard";
 
 type Routine = {
   id: number;
@@ -76,46 +78,19 @@ export default function RoutineImage({ routines }: { routines: Routine[] }) {
       )}
 
       {/* 썸네일 리스트 */}
-      <Box
-        ref={scrollerRef}
-        sx={{
-          display: "flex",
-          gap: 4,
-          overflowX: "auto",
-          scrollBehavior: "smooth",
-          pr: 8,
-          pl: 8,
-          "&::-webkit-scrollbar": { height: 8 },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "rgba(0,0,0,0.15)",
-            borderRadius: 4,
-          },
-        }}
-      >
-        {(routines ?? []).map((r) => (
-          <Box key={r.id} sx={{ minWidth: 240, maxWidth: 240 }}>
-            <Box
-              component={"img"}
-              src={r.thumbnail_path}
-              alt={r.name}
-              sx={{
-                width: 240,
-                height: 240,
-                objectFit: "cover",
-                display: "block",
-                borderRadius: 1.5,
-                backgroundColor: "rgba(0,0,0,0.03)",
-              }}
-            />
-            <Typography
-              variant={"Heading1"}
-              sx={{ mt: 2, textAlign: "center" }}
-            >
-              {r.name}
-            </Typography>
-          </Box>
-        ))}
-      </Box>
+      <Carousel
+        items={routines}
+        renderItem={(routine, index) => (
+          <VideoCard
+            key={index}
+            name={routine.name}
+            thumbnail_path={routine.thumbnail_path}
+          />
+        )}
+        itemWidth={240}
+        gap={4}
+        padding={4}
+      />
     </Box>
   );
 }
