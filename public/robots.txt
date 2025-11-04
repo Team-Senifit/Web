@@ -1,0 +1,13 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /api/*
+Disallow: /login/*
+Disallow: /_next/*
+Disallow: /static/*
+
+# Host
+Host: https://senifit.co.kr
+
+# Sitemaps
+Sitemap: https://senifit.co.kr/sitemap.xml
