@@ -100,25 +100,24 @@ declare module "@mui/material/styles" {
     };
   }
 
-  interface PaletteOptions
-    extends Pick<
-      MuiPaletteOptions,
-      | "common"
-      | "primary"
-      | "secondary"
-      | "error"
-      | "warning"
-      | "info"
-      | "success"
-      | "mode"
-      | "contrastThreshold"
-      | "tonalOffset"
-      | "divider"
-      | "background"
-      | "text"
-      | "action"
-      | "grey"
-    > {
+  interface PaletteOptions extends Pick<
+    MuiPaletteOptions,
+    | "common"
+    | "primary"
+    | "secondary"
+    | "error"
+    | "warning"
+    | "info"
+    | "success"
+    | "mode"
+    | "contrastThreshold"
+    | "tonalOffset"
+    | "divider"
+    | "background"
+    | "text"
+    | "action"
+    | "grey"
+  > {
     static?: {
       white?: string;
       black?: string;
