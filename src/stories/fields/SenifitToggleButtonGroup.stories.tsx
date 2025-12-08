@@ -45,11 +45,10 @@ export const Exclusive: Story = {
 
 type ABC = "A" | "B" | "C";
 
-interface IMultiWrapperProps
-  extends Omit<
-    IMultiProps<ABC>,
-    "value" | "onChange" | "options" | "exclusive"
-  > {}
+interface IMultiWrapperProps extends Omit<
+  IMultiProps<ABC>,
+  "value" | "onChange" | "options" | "exclusive"
+> {}
 
 const MultiWrapper = ({
   sizeVariant = "sm",

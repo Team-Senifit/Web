@@ -22,8 +22,10 @@ export interface IVideoHandle {
   getEl: () => HTMLVideoElement | null;
 }
 
-export interface IVideoPlayerProps
-  extends Omit<React.VideoHTMLAttributes<HTMLVideoElement>, "onTimeUpdate"> {
+export interface IVideoPlayerProps extends Omit<
+  React.VideoHTMLAttributes<HTMLVideoElement>,
+  "onTimeUpdate"
+> {
   src: string;
   length: number;
   poster?: string;
