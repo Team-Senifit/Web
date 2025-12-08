@@ -1,10 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "typeRoots": [
-      "src/@types",
-      "node_modules/@types"
-    ],
+    "typeRoots": ["src/@types", "node_modules/@types"],
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
