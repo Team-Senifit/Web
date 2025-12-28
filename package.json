@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3001",
+    "dev": "next dev --experimental-https --experimental-https-key ./certs/localhost-key.pem --experimental-https-cert ./certs/localhost.pem",
     "proxy": "node scripts/dev-proxy.mjs",
-    "dev:https": "concurrently -k -n NEXT,SSL \"npm run dev\" \"npm run proxy\"",
+    "dev:https": "concurrently -k -n NEXT,SSL \"next dev -p 3001\" \"npm run proxy\"",
     "build": "next build && next-sitemap --config next-sitemap.config.mjs",
     "start": "next start",
     "typecheck": "tsc --noEmit",
