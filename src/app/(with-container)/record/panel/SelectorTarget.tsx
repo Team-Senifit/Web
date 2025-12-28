@@ -123,7 +123,9 @@ export default function TargetSelector({
                 <FormControlLabel
                   key={p}
                   onChange={() => togglePart(p)}
-                  control={<SenifitCheckbox checked={checked} readOnly={readOnly} />}
+                  control={
+                    <SenifitCheckbox checked={checked} readOnly={readOnly} />
+                  }
                   label={
                     <Typography variant={"Label1"} sx={{ ml: "4px" }}>
                       {p}
