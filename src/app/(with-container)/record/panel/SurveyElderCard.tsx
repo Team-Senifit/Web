@@ -4,7 +4,7 @@ import { Box, Divider, Typography } from "@mui/material";
 import SelectorCard from "./SelectorCard";
 import SelectorRadio from "./SelectorRadio";
 import SelectorTarget from "./SelectorTarget";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { calculateAge } from "@/utils/calculateAge";
 import dayjs from "dayjs";
 import { genderLabel, gradeLabel } from "@/types/IMember";
@@ -102,32 +102,44 @@ export default function ElderSurveyCard({
   // 각 입력이 바뀔 때마다 상위에 변화를 올려줘서 "작성완료" 시 최신 상태를 보낼 수 있게 함
   const fieldName = `memo-${elder.surveyId}`;
 
-  const bubble = (next?: Partial<ElderUpdatePayload>) => {
-    if (readOnly) return;
-    const currentMemo = getValues(fieldName) || "";
-    onChange(elder.surveyId, {
-      attitudeScore: scoreOf[att],
-      abilityScore: scoreOf[abl],
-      hadTrouble: trouble.hasDiscomfort === "yes",
-      troubleParts: trouble.parts,
-      memo: currentMemo,
-      ...next,
-    });
-  };
+  const bubble = useCallback(
+    (next?: Partial<ElderUpdatePayload>) => {
+      if (readOnly) return;
+      const currentMemo = getValues(fieldName) || "";
+      onChange(elder.surveyId, {
+        attitudeScore: scoreOf[att],
+        abilityScore: scoreOf[abl],
+        hadTrouble: trouble.hasDiscomfort === "yes",
+        troubleParts: trouble.parts,
+        memo: currentMemo,
+        ...next,
+      });
+    },
+    [
+      readOnly,
+      getValues,
+      fieldName,
+      onChange,
+      elder.surveyId,
+      att,
+      abl,
+      trouble,
+    ],
+  );
 
   useEffect(() => {
     if (presetAtt) {
       setAtt(presetAtt);
       bubble({ attitudeScore: scoreOf[presetAtt] });
     }
-  }, [presetAtt]);
+  }, [presetAtt, bubble]);
 
   useEffect(() => {
     if (presetAbl) {
       setAbl(presetAbl);
       bubble({ abilityScore: scoreOf[presetAbl] });
     }
-  }, [presetAbl]);
+  }, [presetAbl, bubble]);
 
   useEffect(() => {
     if (presetTrouble) {
@@ -137,11 +149,11 @@ export default function ElderSurveyCard({
         troubleParts: presetTrouble.parts,
       });
     }
-  }, [presetTrouble]);
+  }, [presetTrouble, bubble]);
 
   useEffect(() => {
     bubble();
-  }, []);
+  }, [bubble]);
 
   return (
     <>
