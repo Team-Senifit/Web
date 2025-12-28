@@ -4,7 +4,7 @@ import { Box, Divider, Typography } from "@mui/material";
 import SelectorCard from "./SelectorCard";
 import SelectorRadio from "./SelectorRadio";
 import SelectorTarget from "./SelectorTarget";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { calculateAge } from "@/utils/calculateAge";
 import dayjs from "dayjs";
 import { genderLabel, gradeLabel } from "@/types/IMember";
@@ -45,6 +45,7 @@ type Props = {
   presetAbl?: Scale;
   presetTrouble?: PresetTrouble;
   step?: 0 | 1 | 2;
+  readOnly?: boolean;
 };
 
 export type ElderUpdatePayload = {
@@ -64,6 +65,7 @@ export default function ElderSurveyCard({
   presetAbl,
   presetTrouble,
   step,
+  readOnly,
 }: Props) {
   const { control, getValues } = useFormContext<FormValues>();
 
@@ -100,31 +102,44 @@ export default function ElderSurveyCard({
   // 각 입력이 바뀔 때마다 상위에 변화를 올려줘서 "작성완료" 시 최신 상태를 보낼 수 있게 함
   const fieldName = `memo-${elder.surveyId}`;
 
-  const bubble = (next?: Partial<ElderUpdatePayload>) => {
-    const currentMemo = getValues(fieldName) || "";
-    onChange(elder.surveyId, {
-      attitudeScore: scoreOf[att],
-      abilityScore: scoreOf[abl],
-      hadTrouble: trouble.hasDiscomfort === "yes",
-      troubleParts: trouble.parts,
-      memo: currentMemo,
-      ...next,
-    });
-  };
+  const bubble = useCallback(
+    (next?: Partial<ElderUpdatePayload>) => {
+      if (readOnly) return;
+      const currentMemo = getValues(fieldName) || "";
+      onChange(elder.surveyId, {
+        attitudeScore: scoreOf[att],
+        abilityScore: scoreOf[abl],
+        hadTrouble: trouble.hasDiscomfort === "yes",
+        troubleParts: trouble.parts,
+        memo: currentMemo,
+        ...next,
+      });
+    },
+    [
+      readOnly,
+      getValues,
+      fieldName,
+      onChange,
+      elder.surveyId,
+      att,
+      abl,
+      trouble,
+    ],
+  );
 
   useEffect(() => {
     if (presetAtt) {
       setAtt(presetAtt);
       bubble({ attitudeScore: scoreOf[presetAtt] });
     }
-  }, [presetAtt]);
+  }, [presetAtt, bubble]);
 
   useEffect(() => {
     if (presetAbl) {
       setAbl(presetAbl);
       bubble({ abilityScore: scoreOf[presetAbl] });
     }
-  }, [presetAbl]);
+  }, [presetAbl, bubble]);
 
   useEffect(() => {
     if (presetTrouble) {
@@ -134,11 +149,11 @@ export default function ElderSurveyCard({
         troubleParts: presetTrouble.parts,
       });
     }
-  }, [presetTrouble]);
+  }, [presetTrouble, bubble]);
 
   useEffect(() => {
     bubble();
-  }, []);
+  }, [bubble]);
 
   return (
     <>
@@ -147,7 +162,7 @@ export default function ElderSurveyCard({
           borderRadius: 2,
           bgcolor: t.palette.fillVariants.alternative,
           p: 2,
-          border: `1px solid ${t.palette.borderVariants.normal}`, // 이거 수정해야하나요? boxShadow 값이 피그마에 없길래...
+          border: `1px solid ${t.palette.borderVariants.normal}`,
         })}
       >
         {/* 상단 정보: 모바일 2줄, 그 외 1줄 */}
@@ -197,6 +212,7 @@ export default function ElderSurveyCard({
                     setAtt(v as Scale);
                     bubble({ attitudeScore: scoreOf[v as Scale] });
                   }}
+                  readOnly={readOnly}
                 />
               ),
             },
@@ -209,6 +225,7 @@ export default function ElderSurveyCard({
                     setAbl(v as Scale);
                     bubble({ abilityScore: scoreOf[v as Scale] });
                   }}
+                  readOnly={readOnly}
                 />
               ),
             },
@@ -225,6 +242,7 @@ export default function ElderSurveyCard({
                       troubleParts: v.hasDiscomfort === "yes" ? v.parts : [],
                     });
                   }}
+                  readOnly={readOnly}
                 />
               ),
             },
@@ -242,6 +260,7 @@ export default function ElderSurveyCard({
             formControlProps={{
               sx: { width: "100%" },
             }}
+            readOnly={readOnly}
           />
         </Box>
       </Box>

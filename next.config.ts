@@ -17,7 +17,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "https://3.37.83.72:8443/:path*",
+        destination: "https://api.senifit.co.kr:8443/:path*",
       },
     ];
   },
