@@ -22,6 +22,7 @@ type DiscomfortSelectorProps = {
     hasDiscomfort: "none" | "yes";
     parts: string[];
   }) => void;
+  readOnly?: boolean;
 };
 
 export default function TargetSelector({
@@ -29,6 +30,7 @@ export default function TargetSelector({
   hasDiscomfort = "none",
   parts = [],
   onChange,
+  readOnly,
 }: DiscomfortSelectorProps) {
   // 체크가 하나라도 있으면 자동으로 "있음" 버튼이 선택되도록
   const computedHas = useMemo<"none" | "yes">(
@@ -37,11 +39,13 @@ export default function TargetSelector({
   );
 
   const setHas = (v: "none" | "yes") => {
+    if (readOnly) return;
     if (v === "none") onChange?.({ hasDiscomfort: "none", parts: [] });
     else onChange?.({ hasDiscomfort: "yes", parts });
   };
 
   const togglePart = (p: string) => {
+    if (readOnly) return;
     const next = parts.includes(p)
       ? parts.filter((x) => x !== p)
       : [...parts, p];
@@ -85,7 +89,7 @@ export default function TargetSelector({
               <Typography variant={"Label1"} sx={{ mb: "8px" }}>
                 {"없음"}
               </Typography>
-              <Radio value={"none"} />
+              <Radio value={"none"} readOnly={readOnly} />
             </Box>
             <Box
               sx={{
@@ -98,7 +102,7 @@ export default function TargetSelector({
               <Typography variant={"Label1"} sx={{ mb: "8px" }}>
                 {"있음"}
               </Typography>
-              <Radio value={"yes"} />
+              <Radio value={"yes"} readOnly={readOnly} />
             </Box>
           </RadioGroup>
         </Box>
@@ -119,7 +123,7 @@ export default function TargetSelector({
                 <FormControlLabel
                   key={p}
                   onChange={() => togglePart(p)}
-                  control={<SenifitCheckbox checked={checked} />}
+                  control={<SenifitCheckbox checked={checked} readOnly={readOnly} />}
                   label={
                     <Typography variant={"Label1"} sx={{ ml: "4px" }}>
                       {p}
@@ -128,6 +132,7 @@ export default function TargetSelector({
                   sx={{
                     m: 0,
                     "& .MuiFormControlLabel-label": { marginLeft: 0 },
+                    ...(readOnly && { cursor: "default" }),
                   }}
                 />
               );
