@@ -35,12 +35,29 @@ async function axiosQueryFn({
   if (typeof raw !== "string" || raw.length === 0) {
     throw new Error(`Bad endpoint in queryKey: ${String(raw)}`);
   }
-  // 절대 URL이면 그대로, 상대경로면 선행 슬래시 보장
-  const endpoint = raw.startsWith("http")
-    ? raw
-    : raw.startsWith("/")
-      ? raw
-      : `/${raw}`;
+
+  // 1. 서버 환경(SSR)인지 확인
+  const isServer = typeof window === "undefined";
+
+  // 환경 변수에서 값 가져오기
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://localhost:3000";
+  const apiBase = process.env.NEXT_PUBLIC_API_BASE || "/api";
+
+  let endpoint = raw;
+
+  if (!raw.startsWith("http")) {
+    // 1. "/"로 시작하지 않으면 붙여줌
+    const path = raw.startsWith("/") ? raw : `/${raw}`;
+
+    if (isServer) {
+      // 2. 서버일 때는 SITE_URL + API_BASE + path 전체 경로 조립
+      // 예: https://localhost:3000 + /api + /health
+      endpoint = `${siteUrl}${apiBase}${path}`;
+    } else {
+      // 3. 클라이언트일 때는 axiosClient의 baseURL(/api)이 있으므로 path만 전달
+      endpoint = path;
+    }
+  }
 
   const res = await axiosClient.get(endpoint, { params, signal });
   return res.data;
