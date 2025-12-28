@@ -1,7 +1,7 @@
 "use client";
 
 import { Box } from "@mui/material";
-import { useRef, useMemo } from "react";
+// import { useRef, useMemo } from "react";
 // import RightIcon from "@/components/icons/RightIcon";
 // import LeftIcon from "@/components/icons/LeftIcon";
 import useMedia from "@/hooks/useMedia";
