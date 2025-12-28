@@ -2,8 +2,8 @@
 
 import { Box } from "@mui/material";
 import { useRef, useMemo } from "react";
-import RightIcon from "@/components/icons/RightIcon";
-import LeftIcon from "@/components/icons/LeftIcon";
+// import RightIcon from "@/components/icons/RightIcon";
+// import LeftIcon from "@/components/icons/LeftIcon";
 import useMedia from "@/hooks/useMedia";
 import Carousel from "@/components/Carousel";
 import VideoCard from "@/components/VideoCard";
@@ -43,7 +43,7 @@ export default function RoutineImage({ routines }: { routines: Routine[] }) {
       }}
     >
       {/* 좌우 화살표 */}
-      {hasScroll && (
+      {/* {hasScroll && (
         <>
           <Box
             onClick={() => scrollBy(-320)}
@@ -75,7 +75,7 @@ export default function RoutineImage({ routines }: { routines: Routine[] }) {
             <RightIcon />
           </Box>
         </>
-      )}
+      )} */}
 
       {/* 썸네일 리스트 */}
       <Carousel

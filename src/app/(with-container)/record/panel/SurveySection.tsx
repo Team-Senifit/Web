@@ -22,6 +22,7 @@ type FormValues = { [key: string]: string };
 
 export default function SurveySection({ recordId, mode }: Props) {
   const { isPhone, isTablet } = useMedia();
+  const readOnly = mode === "detail";
 
   const methods = useForm<FormValues>({ defaultValues: {} });
 
@@ -32,7 +33,7 @@ export default function SurveySection({ recordId, mode }: Props) {
       ? "Title2"
       : "Title1";
 
-  // 공통(전체) 섹션
+  // 공통(전체) 섹션 (얘를 수정하면, 어르신들 모두 공통으로 수정됨)
   const [attAll, setAttAll] = useState<Scale>("veryGood");
   const [ablAll, setAblAll] = useState<Scale>("veryGood");
   const [discomfortAll, setDiscomfortAll] = useState<{
@@ -48,7 +49,7 @@ export default function SurveySection({ recordId, mode }: Props) {
     trouble: false,
   });
 
-  // 어르신 섹션
+  // 어르신 섹션 (어르신들 각각의 컴포넌트를 open할지 말지를 결정)
   const [open, setOpen] = useState(false);
   const [pending, setPending] = useState<Record<number, ElderUpdatePayload>>(
     {},
@@ -80,7 +81,7 @@ export default function SurveySection({ recordId, mode }: Props) {
           memo?: string;
         } & Elder;
 
-        // 서버 troubleParts → 한글 배열로 변환
+        // 서버 troubleParts -> 한글 배열로 변환
         const normalizedParts = Array.isArray(raw.troubleParts)
           ? raw.troubleParts
               .map((p) => (typeof p === "string" ? p : p.target))
@@ -108,7 +109,7 @@ export default function SurveySection({ recordId, mode }: Props) {
   const handleChange = (surveyId: number, payload: ElderUpdatePayload) =>
     setPending((prev) => ({ ...prev, [surveyId]: payload }));
 
-  // 모바일: 단일 스텝(공통 0→1→2 → 어르신 0→1→2)
+  // 모바일: 단일 스텝(공통 0→1→2 → 어르신 0→1→2) (화면이 작아서, 3개의 설문 요소를 각각의 페이지에서 수행)
   const [step, setStep] = useState<0 | 1 | 2>(0);
 
   const canPrev = isPhone && !(step === 0);
@@ -146,6 +147,7 @@ export default function SurveySection({ recordId, mode }: Props) {
                   setAttAll(v as Scale);
                   setArmed((s) => ({ ...s, att: true }));
                 }}
+                readOnly={readOnly}
               />
             ),
           },
@@ -158,6 +160,7 @@ export default function SurveySection({ recordId, mode }: Props) {
                   setAblAll(v as Scale);
                   setArmed((s) => ({ ...s, abl: true }));
                 }}
+                readOnly={readOnly}
               />
             ),
           },
@@ -171,6 +174,7 @@ export default function SurveySection({ recordId, mode }: Props) {
                   setDiscomfortAll(v);
                   setArmed((s) => ({ ...s, trouble: true }));
                 }}
+                readOnly={readOnly}
               />
             ),
           },
@@ -219,6 +223,7 @@ export default function SurveySection({ recordId, mode }: Props) {
               presetAbl={armed.abl ? ablAll : undefined}
               presetTrouble={armed.trouble ? discomfortAll : undefined}
               step={isPhone ? step : undefined} // ← 한 단계씩 표시
+              readOnly={readOnly}
             />
           ))}
         </Box>
