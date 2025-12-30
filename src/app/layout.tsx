@@ -18,6 +18,28 @@ dayjs.tz.setDefault("Asia/Seoul");
 export const metadata: Metadata = {
   title: "시니핏",
   description: "시니핏은 시니어를 위한 맞춤형 운동 프로그램을 제공합니다.",
+  openGraph: {
+    title: "시니핏",
+    description: "시니핏은 시니어를 위한 맞춤형 운동 프로그램을 제공합니다.",
+    url: "https://senifit.co.kr",
+    siteName: "시니핏",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 800,
+        height: 600,
+        alt: "시니핏 로고",
+      },
+    ],
+    locale: "ko_KR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "시니핏",
+    description: "시니핏은 시니어를 위한 맞춤형 운동 프로그램을 제공합니다.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({
