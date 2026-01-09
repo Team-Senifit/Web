@@ -63,7 +63,8 @@ export default function SurveySection({ recordId, mode }: Props) {
     queryFn: async () => {
       // 서버 환경(SSR)에서 상대 경로 fetch가 실패하는 문제를 해결하기 위해 BASE_URL 처리
       const isServer = typeof window === "undefined";
-      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://localhost:3000";
+      const siteUrl =
+        process.env.NEXT_PUBLIC_SITE_URL || "https://localhost:3000";
       const apiBase = process.env.NEXT_PUBLIC_API_BASE || "/api";
       const baseUrl = isServer ? `${siteUrl}${apiBase}` : "/api";
 
