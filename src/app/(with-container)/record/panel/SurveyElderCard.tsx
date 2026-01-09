@@ -156,7 +156,8 @@ export default function ElderSurveyCard({
   useEffect(() => {
     if (
       presetTrouble &&
-      (presetTrouble.hasDiscomfort !== lastPresetTrouble.current?.hasDiscomfort ||
+      (presetTrouble.hasDiscomfort !==
+        lastPresetTrouble.current?.hasDiscomfort ||
         presetTrouble.parts !== lastPresetTrouble.current?.parts)
     ) {
       lastPresetTrouble.current = presetTrouble;

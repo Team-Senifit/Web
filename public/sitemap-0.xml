@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>https://senifit.co.kr/apple-icon.png</loc><lastmod>2025-12-30T09:14:29.483Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://senifit.co.kr/icon0.svg</loc><lastmod>2025-12-30T09:14:29.485Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://senifit.co.kr/icon1.png</loc><lastmod>2025-12-30T09:14:29.485Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://senifit.co.kr/exercise/customized</loc><lastmod>2025-12-30T09:14:29.485Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://senifit.co.kr/exercise/popular</loc><lastmod>2025-12-30T09:14:29.485Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://senifit.co.kr/exercise/thematic</loc><lastmod>2025-12-30T09:14:29.485Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://senifit.co.kr/exercise/start</loc><lastmod>2025-12-30T09:14:29.485Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://senifit.co.kr</loc><lastmod>2025-12-30T09:14:29.485Z</lastmod><changefreq>daily</changefreq><priority>1</priority></url>
-<url><loc>https://senifit.co.kr/login</loc><lastmod>2025-12-30T09:14:29.485Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://senifit.co.kr/exercise/check-selected</loc><lastmod>2025-12-30T09:14:29.485Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://senifit.co.kr/my-center/members/add</loc><lastmod>2025-12-30T09:14:29.485Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://senifit.co.kr/exercise/members</loc><lastmod>2025-12-30T09:14:29.485Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://senifit.co.kr/my-center/members</loc><lastmod>2025-12-30T09:14:29.485Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://senifit.co.kr/my-center</loc><lastmod>2025-12-30T09:14:29.485Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://senifit.co.kr/exercise/start</loc><lastmod>2026-01-09T12:59:31.507Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://senifit.co.kr/icon1.png</loc><lastmod>2026-01-09T12:59:31.510Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://senifit.co.kr/apple-icon.png</loc><lastmod>2026-01-09T12:59:31.510Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://senifit.co.kr</loc><lastmod>2026-01-09T12:59:31.510Z</lastmod><changefreq>daily</changefreq><priority>1</priority></url>
+<url><loc>https://senifit.co.kr/icon0.svg</loc><lastmod>2026-01-09T12:59:31.510Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://senifit.co.kr/login</loc><lastmod>2026-01-09T12:59:31.510Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://senifit.co.kr/exercise/customized</loc><lastmod>2026-01-09T12:59:31.510Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://senifit.co.kr/exercise/check-selected</loc><lastmod>2026-01-09T12:59:31.510Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://senifit.co.kr/exercise/popular</loc><lastmod>2026-01-09T12:59:31.510Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://senifit.co.kr/exercise/thematic</loc><lastmod>2026-01-09T12:59:31.510Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://senifit.co.kr/my-center/members</loc><lastmod>2026-01-09T12:59:31.510Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://senifit.co.kr/my-center/members/add</loc><lastmod>2026-01-09T12:59:31.510Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://senifit.co.kr/my-center</loc><lastmod>2026-01-09T12:59:31.510Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://senifit.co.kr/exercise/members</loc><lastmod>2026-01-09T12:59:31.510Z</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>
