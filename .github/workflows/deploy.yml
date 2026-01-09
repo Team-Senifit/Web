@@ -74,10 +74,10 @@ jobs:
           
           APP_DIR="/srv/senifit-front"
           echo "==== Cleanup Old Releases ===="
-          # 폴더가 없으면 생성 (재귀 chown은 피함)
+          # 폴더가 없으면 생성
           if [ ! -d "$APP_DIR/releases" ]; then
-            sudo mkdir -p "$APP_DIR/releases"
-            sudo chown $USER:$USER "$APP_DIR" "$APP_DIR/releases"
+            sudo mkdir -p "$APP_DIR/releases" "$APP_DIR/shared"
+            sudo chown $USER:$USER "$APP_DIR" "$APP_DIR/releases" "$APP_DIR/shared"
           fi
           
           cd "$APP_DIR/releases"
