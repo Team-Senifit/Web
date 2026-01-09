@@ -133,7 +133,7 @@ jobs:
 
           ssh -o StrictHostKeyChecking=yes "$EC2_USER@$EC2_HOST" \
             "set -euo pipefail; APP_DIR='$APP_DIR'; REL='$REL'; SVC='$SVC'; \
-             chown -R \"\$SVC:\$SVC\" \"\$APP_DIR/releases/\$REL\"; \
+             echo '==== Finalizing Release ===='; \
              ln -sfn \"\$APP_DIR/releases/\$REL\" \"\$APP_DIR/current\"; \
              sudo systemctl daemon-reload; \
              sudo systemctl restart senifit-front"
