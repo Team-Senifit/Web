@@ -67,7 +67,11 @@ jobs:
         run: |
           ssh "$EC2_USER@$EC2_HOST" bash -se <<'PREP'
           set -euo pipefail
+          echo "DEBUG: Current User is $(whoami)"
           APP_DIR="/srv/senifit-front"
+          
+          echo "DEBUG: Checking directory $APP_DIR"
+          ls -ld "$APP_DIR" || echo "DEBUG: Directory $APP_DIR does not exist"
 
           mkdir -p "$APP_DIR/releases"
           cd "$APP_DIR/releases"
