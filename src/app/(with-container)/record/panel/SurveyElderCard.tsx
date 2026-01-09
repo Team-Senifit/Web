@@ -4,7 +4,7 @@ import { Box, Divider, Typography } from "@mui/material";
 import SelectorCard from "./SelectorCard";
 import SelectorRadio from "./SelectorRadio";
 import SelectorTarget from "./SelectorTarget";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { calculateAge } from "@/utils/calculateAge";
 import dayjs from "dayjs";
 import { genderLabel, gradeLabel } from "@/types/IMember";
@@ -91,6 +91,16 @@ export default function ElderSurveyCard({
     hasDiscomfort: elder.hadTrouble ? "yes" : "none",
     parts: elder.troubleParts ?? [],
   });
+  const [isMounted, setIsMounted] = useState(false);
+
+  // 부모가 바뀔 때만 실행되도록 함.
+  const lastPresetAtt = useRef<Scale | undefined>(presetAtt);
+  const lastPresetAbl = useRef<Scale | undefined>(presetAbl);
+  const lastPresetTrouble = useRef<PresetTrouble | undefined>(presetTrouble);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const { isPhone, isTablet } = useMedia();
   const infoVariant = isPhone
@@ -128,21 +138,28 @@ export default function ElderSurveyCard({
   );
 
   useEffect(() => {
-    if (presetAtt) {
+    if (presetAtt && presetAtt !== lastPresetAtt.current) {
+      lastPresetAtt.current = presetAtt;
       setAtt(presetAtt);
       bubble({ attitudeScore: scoreOf[presetAtt] });
     }
   }, [presetAtt, bubble]);
 
   useEffect(() => {
-    if (presetAbl) {
+    if (presetAbl && presetAbl !== lastPresetAbl.current) {
+      lastPresetAbl.current = presetAbl;
       setAbl(presetAbl);
       bubble({ abilityScore: scoreOf[presetAbl] });
     }
   }, [presetAbl, bubble]);
 
   useEffect(() => {
-    if (presetTrouble) {
+    if (
+      presetTrouble &&
+      (presetTrouble.hasDiscomfort !== lastPresetTrouble.current?.hasDiscomfort ||
+        presetTrouble.parts !== lastPresetTrouble.current?.parts)
+    ) {
+      lastPresetTrouble.current = presetTrouble;
       setTrouble(presetTrouble);
       bubble({
         hadTrouble: presetTrouble.hasDiscomfort === "yes",
@@ -174,7 +191,11 @@ export default function ElderSurveyCard({
             </Box>
             <Box sx={{ display: "flex", gap: 2, mt: 1 }}>
               <Typography variant={infoVariant}>
-                {calculateAge(dayjs(elder.birthDate), { format: "YYYY-MM-DD" })}
+                {isMounted
+                  ? calculateAge(dayjs(elder.birthDate), {
+                      format: "YYYY-MM-DD",
+                    })
+                  : ""}
               </Typography>
               <Typography variant={infoVariant}>
                 {genderLabel[elder.gender]}
@@ -189,7 +210,9 @@ export default function ElderSurveyCard({
             <ProfileIcon sx={{ fontSize: 24 }} />
             <Typography variant={infoVariant}>{elder.name}</Typography>
             <Typography variant={infoVariant}>
-              {calculateAge(dayjs(elder.birthDate), { format: "YYYY-MM-DD" })}
+              {isMounted
+                ? calculateAge(dayjs(elder.birthDate), { format: "YYYY-MM-DD" })
+                : ""}
             </Typography>
             <Typography variant={infoVariant}>
               {genderLabel[elder.gender]}
