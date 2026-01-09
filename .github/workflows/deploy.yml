@@ -74,7 +74,13 @@ jobs:
           
           APP_DIR="/srv/senifit-front"
           echo "==== Cleanup Old Releases ===="
-          cd "$APP_DIR/releases" || mkdir -p "$APP_DIR/releases" && cd "$APP_DIR/releases"
+          # 폴더가 없으면 생성 (재귀 chown은 피함)
+          if [ ! -d "$APP_DIR/releases" ]; then
+            sudo mkdir -p "$APP_DIR/releases"
+            sudo chown $USER:$USER "$APP_DIR" "$APP_DIR/releases"
+          fi
+          
+          cd "$APP_DIR/releases"
           
           # 최신 3개 제외 나머지 리스트업
           OLD_RELEASES=$(ls -1t | tail -n +4)
@@ -121,7 +127,8 @@ jobs:
 
           cat release.tgz | ssh -o StrictHostKeyChecking=yes "$EC2_USER@$EC2_HOST" \
             "set -euo pipefail; APP_DIR='$APP_DIR'; REL='$REL'; \
-             mkdir -p \"\$APP_DIR/releases/\$REL\"; \
+             sudo mkdir -p \"\$APP_DIR/releases/\$REL\"; \
+             sudo chown \$USER:\$USER \"\$APP_DIR/releases/\$REL\"; \
              tar -xzf - -C \"\$APP_DIR/releases/\$REL\""
 
           ssh -o StrictHostKeyChecking=yes "$EC2_USER@$EC2_HOST" \
