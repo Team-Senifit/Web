@@ -12,6 +12,8 @@ import SelectorTarget from "./SelectorTarget";
 import SurveyActionButton from "./SurveyActionButton";
 import useMedia from "@/hooks/useMedia";
 import { useForm, FormProvider } from "react-hook-form";
+import { AuthError } from "@/apis/errors";
+import { useCallback } from "react";
 
 type Scale = "veryGood" | "good" | "neutral" | "bad" | "veryBad";
 type Mode = "write" | "detail" | "update";
@@ -59,9 +61,17 @@ export default function SurveySection({ recordId, mode }: Props) {
   const { data: elders = [] } = useSuspenseQuery<Elder[]>({
     queryKey: ["surveys", recordId],
     queryFn: async () => {
-      const res = await fetch(`/api/records/${recordId}/surveys`, {
+      // 서버 환경(SSR)에서 상대 경로 fetch가 실패하는 문제를 해결하기 위해 BASE_URL 처리
+      const isServer = typeof window === "undefined";
+      const siteUrl =
+        process.env.NEXT_PUBLIC_SITE_URL || "https://localhost:3000";
+      const apiBase = process.env.NEXT_PUBLIC_API_BASE || "/api";
+      const baseUrl = isServer ? `${siteUrl}${apiBase}` : "/api";
+
+      const res = await fetch(`${baseUrl}/records/${recordId}/surveys`, {
         credentials: "include",
       });
+      if (res.status === 401) throw new AuthError();
       if (!res.ok) throw new Error(`[${res.status}] ${res.statusText}`);
       const json = await res.json();
 
@@ -106,8 +116,11 @@ export default function SurveySection({ recordId, mode }: Props) {
     methods.reset(defaults);
   }, [elders, methods]);
 
-  const handleChange = (surveyId: number, payload: ElderUpdatePayload) =>
-    setPending((prev) => ({ ...prev, [surveyId]: payload }));
+  const handleChange = useCallback(
+    (surveyId: number, payload: ElderUpdatePayload) =>
+      setPending((prev) => ({ ...prev, [surveyId]: payload })),
+    [],
+  );
 
   // 모바일: 단일 스텝(공통 0→1→2 → 어르신 0→1→2) (화면이 작아서, 3개의 설문 요소를 각각의 페이지에서 수행)
   const [step, setStep] = useState<0 | 1 | 2>(0);
