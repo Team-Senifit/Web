@@ -66,7 +66,7 @@ export default function SurveyActionButton({
           : [];
 
         const mappedParts = rawParts
-          .map((part) => troublePartMap[part])
+          .map((part) => troublePartMap[part] || part)
           .filter(Boolean) as string[];
 
         return {
@@ -92,8 +92,9 @@ export default function SurveyActionButton({
       router.push(afterSaveHref);
     },
     onError: (error: unknown) => {
-      if (error instanceof isAuthError) {
-        router.push("/login");
+      if (isAuthError(error)) {
+        const next = window.location.pathname + window.location.search;
+        router.push(`/login?next=${encodeURIComponent(next)}`);
         return;
       }
       console.error(error);
