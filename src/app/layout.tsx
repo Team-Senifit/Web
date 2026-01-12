@@ -16,6 +16,7 @@ dayjs.extend(timezone);
 dayjs.tz.setDefault("Asia/Seoul");
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://senifit.co.kr"),
   title: "시니핏",
   description: "시니핏은 시니어를 위한 맞춤형 운동 프로그램을 제공합니다.",
   openGraph: {
@@ -39,6 +40,11 @@ export const metadata: Metadata = {
     title: "시니핏",
     description: "시니핏은 시니어를 위한 맞춤형 운동 프로그램을 제공합니다.",
     images: ["/og-image.png"],
+  },
+  verification: {
+    other: {
+      "naver-site-verification": "67fa042a3147505c9d35bd75c00b4d0b015ac1b7",
+    },
   },
 };
 
