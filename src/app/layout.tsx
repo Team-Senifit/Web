@@ -8,6 +8,7 @@ import timezone from "dayjs/plugin/timezone";
 import QueryProviders from "./panel/QueryClientProvider";
 import LoadingFallback from "./panel/LoadingFallback";
 import Toast from "@/components/Toast";
+import Script from "next/script";
 
 // dayjs locale 설정, time zone 설정
 dayjs.locale("ko");
@@ -55,6 +56,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang={"ko"}>
+      <head>
+        {/* Google Tag Manager */}
+        <Script
+          id={"google-tag-manager"}
+          strategy={"afterInteractive"}
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TSB9PTJB');`,
+          }}
+        />
+        {/* End Google Tag Manager */}
+      </head>
       <body
         style={{
           margin: 0,
@@ -63,6 +79,16 @@ export default function RootLayout({
           height: "100dvh",
         }}
       >
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src={"https://www.googletagmanager.com/ns.html?id=GTM-TSB9PTJB"}
+            height={"0"}
+            width={"0"}
+            style={{ display: "none", visibility: "hidden" }}
+          ></iframe>
+        </noscript>
+        {/* End Google Tag Manager (noscript) */}
         <Suspense fallback={<LoadingFallback />}>
           <QueryProviders>
             <SenifitThemeProvider>
