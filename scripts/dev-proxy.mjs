@@ -22,7 +22,7 @@ try {
   API_BASE_URL = new URL(apiBase);
 } catch {
   console.error(
-    `❌ NEXT_PUBLIC_API_URL 값이 올바른 URL이 아닙니다: ${apiBase}`
+    `❌ NEXT_PUBLIC_API_URL 값이 올바른 URL이 아닙니다: ${apiBase}`,
   );
   process.exit(1);
 }
@@ -91,7 +91,7 @@ const server = https.createServer(
     const target = routeAndRewrite(req);
     req.__target = target; // ✅ 에러 로그에 타겟 표시
     proxy.web(req, res, { target });
-  }
+  },
 );
 
 // HMR/WebSocket

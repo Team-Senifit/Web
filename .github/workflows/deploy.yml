@@ -67,19 +67,47 @@ jobs:
         run: |
           ssh "$EC2_USER@$EC2_HOST" bash -se <<'PREP'
           set -euo pipefail
+          
+          echo "==== System Health Check ===="
+          df -h /
+          free -m
+          
           APP_DIR="/srv/senifit-front"
-
-          mkdir -p "$APP_DIR/releases"
+          echo "==== Cleanup Old Releases ===="
+          # 폴더가 없으면 생성
+          if [ ! -d "$APP_DIR/releases" ]; then
+            sudo mkdir -p "$APP_DIR/releases" "$APP_DIR/shared"
+            sudo chown $USER:$USER "$APP_DIR" "$APP_DIR/releases" "$APP_DIR/shared"
+          fi
+          
           cd "$APP_DIR/releases"
-
-          # 최신 3개만 보존
-          ls -1t | tail -n +4 | xargs -r rm -rf
-
-          # current가 아닌 릴리즈의 캐시/모듈 정리 (추가 공간 확보)
+          
+          # 최신 3개 제외 나머지 리스트업
+          OLD_RELEASES=$(ls -1t | tail -n +4)
+          
+          if [ -z "$OLD_RELEASES" ]; then
+            echo "No old releases to clean up."
+          else
+            for rel in $OLD_RELEASES; do
+              echo "Removing old release: $rel"
+              # current와 중복 여부 체크 (안전을 위해)
+              CURR="$(readlink -f "$APP_DIR/current" || true)"
+              REL_PATH="$(readlink -f "$rel")"
+              if [ "$REL_PATH" != "$CURR" ]; then
+                rm -rf "$rel" || echo "Warning: Failed to remove $rel"
+              else
+                echo "Skipping current release: $rel"
+              fi
+            done
+          fi
+          
+          # current가 아닌 릴리즈 내부의 캐시 정리
+          echo "==== Optimizing Passive Releases ===="
           CURR="$(readlink -f "$APP_DIR/current" || true)"
           for d in "$APP_DIR"/releases/*; do
             [ -d "$d" ] || continue
             if [ "$(readlink -f "$d")" != "$CURR" ]; then
+              echo "Cleaning cache/modules in inactive release: $(basename "$d")"
               rm -rf "$d/.next/cache" "$d/node_modules" || true
             fi
           done
@@ -99,12 +127,13 @@ jobs:
 
           cat release.tgz | ssh -o StrictHostKeyChecking=yes "$EC2_USER@$EC2_HOST" \
             "set -euo pipefail; APP_DIR='$APP_DIR'; REL='$REL'; \
-             mkdir -p \"\$APP_DIR/releases/\$REL\"; \
+             sudo mkdir -p \"\$APP_DIR/releases/\$REL\"; \
+             sudo chown \$USER:\$USER \"\$APP_DIR/releases/\$REL\"; \
              tar -xzf - -C \"\$APP_DIR/releases/\$REL\""
 
           ssh -o StrictHostKeyChecking=yes "$EC2_USER@$EC2_HOST" \
             "set -euo pipefail; APP_DIR='$APP_DIR'; REL='$REL'; SVC='$SVC'; \
-             chown -R \"\$SVC:\$SVC\" \"\$APP_DIR/releases/\$REL\"; \
+             echo '==== Finalizing Release ===='; \
              ln -sfn \"\$APP_DIR/releases/\$REL\" \"\$APP_DIR/current\"; \
              sudo systemctl daemon-reload; \
              sudo systemctl restart senifit-front"

@@ -9,7 +9,7 @@ import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import prettier from "eslint-plugin-prettier";
-import nextPlugin from "@next/eslint-plugin-next"; // ✅ 추가
+import nextPlugin from "@next/eslint-plugin-next";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -32,13 +32,13 @@ export default [
     ],
   },
 
-  // ✅ Next 권장 설정을 가장 먼저 적용(문서 권장)
+  // Next 권장 설정을 가장 먼저 적용(문서 권장)
   ...compat.config({
     extends: ["next/core-web-vitals", "next/typescript", "prettier"],
   }),
 
   {
-    // ✅ 커스텀 룰 적용 블록 - 여기서 @next/next도 등록
+    // 커스텀 룰 적용 블록 - 여기서 @next/next도 등록
     files: ["**/*.{js,jsx,ts,tsx}"],
     languageOptions: {
       parser: tsParser,

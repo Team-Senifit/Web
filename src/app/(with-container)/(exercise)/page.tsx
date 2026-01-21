@@ -10,7 +10,8 @@ import ThematicRoutine from "./panel/ThematicRoutine";
 import useProgramStore from "@/states/useProgramStore";
 import SenifitDialog from "@/components/SenifitDialog";
 import Link from "next/link";
-import { kakaoChannelLink } from "@/constants/kakaoCh";
+// import { kakaoChannelLink } from "@/constants/kakaoCh";
+import { signupGoogleForm } from "@/constants/signupGF";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { IResponse } from "@/types/IResponse";
 import { IHealthCheck } from "@/types/IHealthCheck";
@@ -87,16 +88,16 @@ const Page = () => {
         dialogType={"success"}
         title={"베타 테스트 무료 체험 안내"}
         body={"베타 테스트 기간 동안\n모든 기능을 무료로 이용하실 수 있습니다."}
-        primaryText={"로그인 바로가기"}
+        primaryText={"로그인 바로가기"} // 해당 창에서 로그인 페이지로
         primaryButtonProps={{
           component: Link,
           href: "/login",
         }}
-        secondaryText={"회원가입 문의하기"}
+        secondaryText={"회원가입 문의하기"} // 새창 띄어서 구글폼으로
         secondaryButtonProps={
           {
             component: Link,
-            href: kakaoChannelLink,
+            href: signupGoogleForm,
             target: "_blank",
             rel: "noopener noreferrer",
           } as ButtonProps

@@ -7,7 +7,7 @@ import { calculateAge } from "@/utils/calculateAge";
 import { Button, Stack, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import Link from "next/link";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import EmptyView from "./EmptyView";
 
 const MemberEditButton = ({ disabled }: { disabled: boolean }) => {
@@ -37,7 +37,11 @@ const MemberEditButton = ({ disabled }: { disabled: boolean }) => {
 };
 
 const Member = ({ name, birthDate, memberRank, gender }: IMember) => {
-  const age = calculateAge(dayjs(birthDate));
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  const age = isMounted ? calculateAge(dayjs(birthDate)) : "";
   return (
     <Stack direction={"row"} spacing={[1, 2]} alignItems={"center"}>
       <Typography

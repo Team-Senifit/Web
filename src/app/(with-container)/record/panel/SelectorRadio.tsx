@@ -7,6 +7,7 @@ type SurveyScaleProps = {
   label?: string;
   value?: "veryGood" | "good" | "neutral" | "bad" | "veryBad";
   onChange?: (v: SurveyScaleProps["value"]) => void;
+  readOnly?: boolean;
 };
 
 const OPTIONS = [
@@ -21,6 +22,7 @@ export default function SurveyScale({
   label,
   value = "veryGood",
   onChange,
+  readOnly,
 }: SurveyScaleProps) {
   const name = useId();
   return (
@@ -48,9 +50,21 @@ export default function SurveyScale({
             <Typography variant={"Label1"}>{o.label}</Typography>
             <Radio
               checked={value === o.key}
-              onChange={() => onChange?.(o.key as SurveyScaleProps["value"])}
+              onChange={() => {
+                if (readOnly) return;
+                onChange?.(o.key as SurveyScaleProps["value"]);
+              }}
               name={name}
               value={o.key}
+              readOnly={readOnly}
+              sx={{
+                ...(readOnly && {
+                  cursor: "default",
+                  "&.Mui-checked": {
+                    color: "primary.main",
+                  },
+                }),
+              }}
             />
           </Box>
         ))}
