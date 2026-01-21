@@ -18,10 +18,11 @@ export interface ISelectOption<T extends TOptionValue> {
 }
 
 /** 공용 Select 베이스 props */
-export interface IBaseSelectProps<T extends TOptionValue> extends Omit<
-  SelectProps<T>,
-  "multiple" | "value" | "onChange" | "renderValue" | "native"
-> {
+export interface IBaseSelectProps<T extends TOptionValue>
+  extends Omit<
+    SelectProps<T>,
+    "multiple" | "value" | "onChange" | "renderValue" | "native"
+  > {
   options: ISelectOption<T>[];
   placeholder?: ReactNode;
   /** 메뉴 Paper / List 개별 커스텀 */
@@ -30,18 +31,16 @@ export interface IBaseSelectProps<T extends TOptionValue> extends Omit<
 }
 
 /** 단일 선택 */
-export interface ISingleSelectProps<
-  T extends TOptionValue,
-> extends IBaseSelectProps<T> {
+export interface ISingleSelectProps<T extends TOptionValue>
+  extends IBaseSelectProps<T> {
   multiple?: false;
   value: T | "";
   onChange: (v: T) => void;
 }
 
 /** 다중 선택 */
-export interface IMultiSelectProps<
-  T extends TOptionValue,
-> extends IBaseSelectProps<T> {
+export interface IMultiSelectProps<T extends TOptionValue>
+  extends IBaseSelectProps<T> {
   multiple: true;
   value: T[];
   onChange: (v: T[]) => void;
