@@ -13,7 +13,7 @@ import {
 } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import EmptyView from "./EmptyView";
 
 const Member = ({
@@ -28,7 +28,12 @@ const Member = ({
   isDesktop: boolean;
   mutate: UseMutateFunction<void, Error, number, unknown>;
 }) => {
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const ageContent = isMounted ? `${calculateAge(dayjs(birthDate))}세` : "";
   return (
     <>
       <Stack
@@ -65,7 +70,7 @@ const Member = ({
                 width: { phone: "3rem", desktop: "3.5rem" },
               }}
             >
-              {`${calculateAge(dayjs(birthDate))}세`}
+              {ageContent}
             </Typography>
             <Typography
               variant={isDesktop ? "Heading1" : "Headline1"}
