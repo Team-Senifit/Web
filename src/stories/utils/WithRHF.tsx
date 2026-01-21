@@ -10,7 +10,9 @@ const StorybookFormProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const methods = useForm();
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(action("[React Hooks Form] Submit"))}>
+      <form
+        onSubmit={methods.handleSubmit(action("[React Hooks Form] Submit"))}
+      >
         {children}
       </form>
     </FormProvider>
