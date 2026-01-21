@@ -14,9 +14,7 @@ export interface ISenifitToggleButtonGroupFieldProps<
   T extends string | number | boolean,
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->
-  extends
-    Omit<ISenifitToggleButtonGroupProps<T>, "value" | "onChange">,
+> extends Omit<ISenifitToggleButtonGroupProps<T>, "value" | "onChange">,
     Pick<
       UseControllerProps<TFieldValues, TName>,
       "name" | "control" | "rules"
