@@ -105,7 +105,13 @@ export default function WorkoutVideoPlaylist({
       let target = next;
 
       if (next >= len) {
-        if (!loop) return; // 마지막에서 멈춤
+        if (!loop) {
+          // 마지막 영상까지 끝나면 자동으로 완료 처리
+          const pid = Array.isArray(programId) ? programId[0] : programId;
+          notifyClassDone({ programId: pid, seconds });
+          window.close();
+          return;
+        }
         target = 0;
       } else if (next < 0) {
         target = 0;
@@ -114,7 +120,7 @@ export default function WorkoutVideoPlaylist({
       setIndex(target);
       onIndexChange?.(target, videos[target]);
     },
-    [videos, loop, onIndexChange],
+    [videos, loop, onIndexChange, programId, seconds],
   );
   const { setToastOpen } = useToastStore();
 
@@ -184,7 +190,7 @@ export default function WorkoutVideoPlaylist({
           aspectRatio={"16 / 9"}
           fitViewport
           viewportOffsetPx={viewportOffsetPx} // ← 헤더+푸터를 고려해서 남은 영역만 차지
-          onEnded={next} // 한 영상 끝나면 다음으로
+          onEnded={next} // 한 영상 끝나면 다음으로(마지막이면 자동 종료는 go()에서 처리)
           // onTimeUpdateSec={(cur, dur) => { /* 필요 시 진행률 상태 외부에 전달 */ }}
         />
       </Stack>
