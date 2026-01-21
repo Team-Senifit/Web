@@ -1,9 +1,9 @@
 "use client";
 
 import { Box } from "@mui/material";
-import { useRef, useMemo } from "react";
-import RightIcon from "@/components/icons/RightIcon";
-import LeftIcon from "@/components/icons/LeftIcon";
+// import { useRef, useMemo } from "react";
+// import RightIcon from "@/components/icons/RightIcon";
+// import LeftIcon from "@/components/icons/LeftIcon";
 import useMedia from "@/hooks/useMedia";
 import Carousel from "@/components/Carousel";
 import VideoCard from "@/components/VideoCard";
@@ -15,16 +15,6 @@ type Routine = {
 };
 
 export default function RoutineImage({ routines }: { routines: Routine[] }) {
-  const scrollerRef = useRef<HTMLDivElement | null>(null);
-
-  const hasScroll = useMemo(() => (routines?.length ?? 0) > 0, [routines]);
-
-  const scrollBy = (delta: number) => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    el.scrollBy({ left: delta, behavior: "smooth" });
-  };
-
   // 모바일에서는 숨김, 태블릿/데스크탑에서만 표시
   const { isPhone } = useMedia();
   if (isPhone) return null;
@@ -42,42 +32,8 @@ export default function RoutineImage({ routines }: { routines: Routine[] }) {
         overflow: "hidden",
       }}
     >
-      {/* 좌우 화살표 */}
-      {hasScroll && (
-        <>
-          <Box
-            onClick={() => scrollBy(-320)}
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: 16,
-              transform: "translateY(-50%)",
-              cursor: "pointer",
-              zIndex: 1,
-            }}
-            aria-label={"scroll left"}
-          >
-            <LeftIcon />
-          </Box>
-
-          <Box
-            onClick={() => scrollBy(320)}
-            sx={{
-              position: "absolute",
-              top: "50%",
-              right: 16,
-              transform: "translateY(-50%)",
-              cursor: "pointer",
-              zIndex: 1,
-            }}
-            aria-label={"scroll right"}
-          >
-            <RightIcon />
-          </Box>
-        </>
-      )}
-
       {/* 썸네일 리스트 */}
+
       <Carousel
         items={routines}
         renderItem={(routine, index) => (

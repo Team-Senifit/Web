@@ -22,11 +22,14 @@ import { kakaoChannelLink } from "@/constants/kakaoCh";
 import { useToastStore } from "@/states/useToastStore";
 import EyeIcon from "@/components/icons/EyeIcon";
 import EyeOffIcon from "@/components/icons/EyeOffIcon";
+import InquiryButton from "@/components/InquiryButton";
 import BackgroundImage from "@/assets/images/login-background.png";
 
 type LoginFormValues = { id: string; password: string };
 
 export default function LoginForm() {
+  const signUpLink = "https://forms.gle/7zWgYjysswZ8ZjwE8";
+
   const { isPhone } = useMedia();
 
   const searchParams = useSearchParams();
@@ -183,23 +186,21 @@ export default function LoginForm() {
         </Typography>
       </Button>
 
-      <Button
+      <InquiryButton
         onClick={() => setInquiryDialogOpen(true)}
-        disableElevation
-        sx={{
-          mt: 0,
-          width: 166,
-          height: 32,
-          p: "4px 8px",
-          bgcolor: "fillVariants.colored",
-          borderRadius: 2,
-          mx: "auto",
-        }}
-      >
-        <Typography variant={"Headline2"} color={"primaryVariants.default"}>
-          {"로그인이 되지 않나요?"}
-        </Typography>
-      </Button>
+        mt={0}
+        width={200}
+        height={32}
+        text={"로그인이 되지 않나요?"}
+      />
+
+      <InquiryButton
+        onClick={() => window.open(signUpLink, "_blank")}
+        mt={1.5}
+        width={200}
+        height={32}
+        text={"시니핏 가입문의"}
+      />
     </Stack>
   );
 
