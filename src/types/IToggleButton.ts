@@ -12,10 +12,8 @@ export interface IResponsiveMaxItems {
 }
 
 /** 개별 토글 버튼 공용 props */
-export interface ISenifitToggleButtonProps extends Omit<
-  MuiButtonProps,
-  "onChange"
-> {
+export interface ISenifitToggleButtonProps
+  extends Omit<MuiButtonProps, "onChange"> {
   /** 버튼 높이 프리셋 */
   sizeVariant?: SizeVariant;
   /** 그룹 내에서 각 버튼을 가변 폭(flex:1)으로 확장할지 여부 */
@@ -70,9 +68,8 @@ export interface IBaseProps<T extends string | number | boolean> {
 }
 
 /** 단일 선택(Exclusive) 모드용 props */
-export interface IExclusiveProps<
-  T extends string | number | boolean,
-> extends IBaseProps<T> {
+export interface IExclusiveProps<T extends string | number | boolean>
+  extends IBaseProps<T> {
   /** true 또는 생략 시 단일 선택 모드 */
   exclusive?: true;
   /** 현재 선택 값 */
@@ -82,9 +79,8 @@ export interface IExclusiveProps<
 }
 
 /** 다중 선택(Multi) 모드용 props */
-export interface IMultiProps<
-  T extends string | number | boolean,
-> extends IBaseProps<T> {
+export interface IMultiProps<T extends string | number | boolean>
+  extends IBaseProps<T> {
   /** false일 때만 다중 선택 모드로 동작 */
   exclusive: false;
   /** 현재 선택 값 배열 */

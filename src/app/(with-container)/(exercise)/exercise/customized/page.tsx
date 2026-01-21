@@ -2,7 +2,7 @@
 
 import ReturnButton from "@/components/ReturnButton";
 import { Button, Divider, Stack, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import GradationPageInfoCard from "../../../../../components/GradationPageInfoCard";
 import PageInfoCard from "@/components/PageInfoCard";
 import { SettingsIcon } from "@/components/icons";
@@ -36,6 +36,8 @@ const Page = () => {
     setSelectedProgram,
     selectedRoutineRecord,
     setSelectedRoutineRecord,
+    customizedForm,
+    setCustomizedForm,
   } = useProgramStore();
 
   useEffect(() => {
@@ -46,12 +48,25 @@ const Page = () => {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { isSubmitting },
   } = useForm<ICustomizedRoutineField>({
     mode: "onSubmit",
+    defaultValues: customizedForm ?? undefined,
   });
 
+  // zustand persist rehydrate 이후에도 폼이 초기화되지 않도록 1회 동기화
+  const didInitRef = useRef(false);
+  useEffect(() => {
+    if (didInitRef.current) return;
+    if (!customizedForm) return;
+    reset(customizedForm as ICustomizedRoutineField);
+    didInitRef.current = true;
+  }, [customizedForm, reset]);
+
   const onSubmit = async (data: ICustomizedRoutineField) => {
+    // 체크 페이지에서 돌아왔을 때 옵션 UI 복원을 위해 저장
+    setCustomizedForm(data);
     const {
       data: { data: selectedProgram },
     } = await axiosClient.post<IResponse<Array<IRoutineDetail>>>(

@@ -9,7 +9,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import GradationPageInfoCard from "../../../../../components/GradationPageInfoCard";
 import PageInfoCard from "@/components/PageInfoCard";
 import { SquareUserRoundIcon } from "@/components/icons";
@@ -33,10 +33,16 @@ const Page = () => {
 
   const {
     type,
+    selectedMembers: storedSelectedMembers,
     setSelectedMembers,
     setSelectedRoutineRecord,
     selectedRoutineRecord,
   } = useProgramStore();
+
+  const storedMemberIds = useMemo(
+    () => storedSelectedMembers.map((m) => m.memberId),
+    [storedSelectedMembers],
+  );
 
   let returnPath = "";
 
@@ -58,9 +64,19 @@ const Page = () => {
     members: number[];
   }>({
     defaultValues: {
-      members: [],
+      // 체크 페이지에서 돌아왔을 때 기존 선택 복원
+      members: storedMemberIds,
     },
   });
+
+  // zustand persist rehydrate 이후에도 폼이 초기화되지 않도록 1회 동기화
+  const didInitRef = useRef(false);
+  useEffect(() => {
+    if (didInitRef.current) return;
+    if (storedMemberIds.length === 0) return;
+    setValue("members", storedMemberIds, { shouldDirty: false });
+    didInitRef.current = true;
+  }, [storedMemberIds, setValue]);
 
   const selectedMembers = watch("members");
 
