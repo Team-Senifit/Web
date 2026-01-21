@@ -76,7 +76,10 @@ export default function WorkoutVideoPlaylist({
   const notifyDone = useCallback((): void => {
     const pid = Array.isArray(programId) ? programId[0] : programId;
     notifyClassDone({ programId: pid, seconds });
-    window.close();
+    // 브로드캐스트가 부모 탭에 전달될 시간 확보
+    window.setTimeout(() => {
+      window.close();
+    }, 50);
   }, [programId, seconds]);
 
   const initialIndex = useMemo(() => {
@@ -105,13 +108,7 @@ export default function WorkoutVideoPlaylist({
       let target = next;
 
       if (next >= len) {
-        if (!loop) {
-          // 마지막 영상까지 끝나면 자동으로 완료 처리
-          const pid = Array.isArray(programId) ? programId[0] : programId;
-          notifyClassDone({ programId: pid, seconds });
-          window.close();
-          return;
-        }
+        if (!loop) return notifyDone();
         target = 0;
       } else if (next < 0) {
         target = 0;
@@ -120,7 +117,7 @@ export default function WorkoutVideoPlaylist({
       setIndex(target);
       onIndexChange?.(target, videos[target]);
     },
-    [videos, loop, onIndexChange, programId, seconds],
+    [videos, loop, notifyDone, onIndexChange],
   );
   const { setToastOpen } = useToastStore();
 
