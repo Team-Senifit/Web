@@ -35,6 +35,7 @@ const Page = () => {
 
   const {
     setSelectedRoutineRecord,
+    hasHydrated,
     thematicWorkoutKind,
     setThematicWorkoutKind,
   } = useProgramStore();
@@ -56,6 +57,7 @@ const Page = () => {
   }, [thematicWorkoutKind, reset]);
 
   const onSubmit = (data: IThematicRoutineField) => {
+    if (!hasHydrated) return;
     const workoutKind = data.workout_kind;
     setThematicWorkoutKind(workoutKind);
 
@@ -85,6 +87,8 @@ const Page = () => {
 
     router.push(`/exercise/thematic/${workoutKind}`);
   };
+
+  if (!hasHydrated) return null;
   return (
     <>
       <Stack
