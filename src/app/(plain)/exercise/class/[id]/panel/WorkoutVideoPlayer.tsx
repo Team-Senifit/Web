@@ -73,11 +73,11 @@ export default function WorkoutVideoPlaylist({
 
   const { id: programId } = useParams();
 
-  const notifyDone = (): void => {
+  const notifyDone = useCallback((): void => {
     const pid = Array.isArray(programId) ? programId[0] : programId;
     notifyClassDone({ programId: pid, seconds });
     window.close();
-  };
+  }, [programId, seconds]);
 
   const initialIndex = useMemo(() => {
     if (initialId == null) return 0;
@@ -105,7 +105,13 @@ export default function WorkoutVideoPlaylist({
       let target = next;
 
       if (next >= len) {
-        if (!loop) return; // 마지막에서 멈춤
+        if (!loop) {
+          // 마지막 영상까지 끝나면 자동으로 완료 처리
+          const pid = Array.isArray(programId) ? programId[0] : programId;
+          notifyClassDone({ programId: pid, seconds });
+          window.close();
+          return;
+        }
         target = 0;
       } else if (next < 0) {
         target = 0;
@@ -114,7 +120,7 @@ export default function WorkoutVideoPlaylist({
       setIndex(target);
       onIndexChange?.(target, videos[target]);
     },
-    [videos, loop, onIndexChange],
+    [videos, loop, onIndexChange, programId, seconds],
   );
   const { setToastOpen } = useToastStore();
 
@@ -124,9 +130,14 @@ export default function WorkoutVideoPlaylist({
   }, [go, index, setToastOpen]);
 
   const next = useCallback(() => {
+    const isLast = index === videos.length - 1;
+    if (isLast && !loop) {
+      notifyDone();
+      return;
+    }
     setToastOpen({ message: "다음 영상을 재생합니다.", autoHide: "short" });
     go(index + 1);
-  }, [go, index, setToastOpen]);
+  }, [go, index, loop, notifyDone, setToastOpen, videos.length]);
 
   // src 바뀌면 자동 재생 시도(사용자 제스처 이후 연속 재생 안정화)
   useEffect(() => {
@@ -184,7 +195,7 @@ export default function WorkoutVideoPlaylist({
           aspectRatio={"16 / 9"}
           fitViewport
           viewportOffsetPx={viewportOffsetPx} // ← 헤더+푸터를 고려해서 남은 영역만 차지
-          onEnded={next} // 한 영상 끝나면 다음으로
+          onEnded={next} // 한 영상 끝나면 다음으로(마지막이면 자동 종료는 go()에서 처리)
           // onTimeUpdateSec={(cur, dur) => { /* 필요 시 진행률 상태 외부에 전달 */ }}
         />
       </Stack>
