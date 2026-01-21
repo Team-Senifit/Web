@@ -102,9 +102,19 @@ const EditForm = ({
         await axiosClient.post<IResponse<string>>(`/centers/members`, payload);
       }
     },
-    onSuccess: () => {
+    onSuccess: async () => {
+      // refetchOnMount:false 환경에서도 목록이 즉시 반영되도록,
+      // 이동 전에 최신 데이터를 가져와 캐시를 업데이트한다.
       queryClient.invalidateQueries({ queryKey: ["/centers/members"] });
       queryClient.invalidateQueries({ queryKey: ["/centers"] });
+
+      try {
+        const res = await axiosClient.get("/centers/members");
+        queryClient.setQueryData(["/centers/members"], res.data);
+      } catch {
+        // 네트워크 실패 시에도 기존 invalidate는 유지됨
+      }
+
       router.push("/my-center/members");
     },
   });
