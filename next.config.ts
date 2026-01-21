@@ -1,9 +1,11 @@
 import type { NextConfig } from "next";
 
-// /api 프록시 타겟: .env의 NEXT_PUBLIC_API_URL 사용 (없으면 로컬 기본값)
+// /api 프록시 타겟: .env의 NEXT_PUBLIC_API_URL 사용 (없으면 기본 API 도메인)
 // - 예: NEXT_PUBLIC_API_URL=https://localhost:8443
 // - 예: NEXT_PUBLIC_API_URL=https://dev.api.example.com/api  (베이스 경로 포함 가능)
-const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "https://localhost:8443")
+const API_BASE_URL = (
+  process.env.NEXT_PUBLIC_API_URL || "https://api.senifit.co.kr:8443"
+)
   .trim()
   .replace(/\/+$/, ""); // trailing slash 제거
 

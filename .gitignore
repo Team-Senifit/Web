@@ -50,3 +50,4 @@ storybook-static
 **/localhost.pem
 
 /certs
+certificates

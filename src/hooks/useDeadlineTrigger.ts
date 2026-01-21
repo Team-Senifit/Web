@@ -39,5 +39,6 @@ export const useDeadlineTrigger = ({
     }, delay);
 
     return () => window.clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enabled, onFire, depKey]);
 };

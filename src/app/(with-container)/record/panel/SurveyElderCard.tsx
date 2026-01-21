@@ -4,7 +4,7 @@ import { Box, Divider, Typography } from "@mui/material";
 import SelectorCard from "./SelectorCard";
 import SelectorRadio from "./SelectorRadio";
 import SelectorTarget from "./SelectorTarget";
-import { useEffect, useRef, useState } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { calculateAge } from "@/utils/calculateAge";
 import dayjs from "dayjs";
 import { genderLabel, gradeLabel } from "@/types/IMember";
@@ -45,6 +45,7 @@ type Props = {
   presetAbl?: Scale;
   presetTrouble?: PresetTrouble;
   step?: 0 | 1 | 2;
+  readOnly?: boolean;
 };
 
 export type ElderUpdatePayload = {
@@ -64,6 +65,7 @@ export default function ElderSurveyCard({
   presetAbl,
   presetTrouble,
   step,
+  readOnly,
 }: Props) {
   const { control, getValues } = useFormContext<FormValues>();
 
@@ -89,6 +91,16 @@ export default function ElderSurveyCard({
     hasDiscomfort: elder.hadTrouble ? "yes" : "none",
     parts: elder.troubleParts ?? [],
   });
+  const [isMounted, setIsMounted] = useState(false);
+
+  // 부모가 바뀔 때만 실행되도록 함.
+  const lastPresetAtt = useRef<Scale | undefined>(presetAtt);
+  const lastPresetAbl = useRef<Scale | undefined>(presetAbl);
+  const lastPresetTrouble = useRef<PresetTrouble | undefined>(presetTrouble);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const { isPhone, isTablet } = useMedia();
   const infoVariant = isPhone
@@ -100,48 +112,66 @@ export default function ElderSurveyCard({
   // 각 입력이 바뀔 때마다 상위에 변화를 올려줘서 "작성완료" 시 최신 상태를 보낼 수 있게 함
   const fieldName = `memo-${elder.surveyId}`;
 
-  const bubble = (next?: Partial<ElderUpdatePayload>) => {
-    const currentMemo = getValues(fieldName) || "";
-    onChange(elder.surveyId, {
-      attitudeScore: scoreOf[att],
-      abilityScore: scoreOf[abl],
-      hadTrouble: trouble.hasDiscomfort === "yes",
-      troubleParts: trouble.parts,
-      memo: currentMemo,
-      ...next,
-    });
-  };
-  // eslint(exhaustive-deps) 대응: effect에서 bubble을 직접 캡처하지 않기 위한 ref
-  const bubbleRef = useRef(bubble);
-  bubbleRef.current = bubble;
+  const bubble = useCallback(
+    (next?: Partial<ElderUpdatePayload>) => {
+      if (readOnly) return;
+      const currentMemo = getValues(fieldName) || "";
+      onChange(elder.surveyId, {
+        attitudeScore: scoreOf[att],
+        abilityScore: scoreOf[abl],
+        hadTrouble: trouble.hasDiscomfort === "yes",
+        troubleParts: trouble.parts,
+        memo: currentMemo,
+        ...next,
+      });
+    },
+    [
+      readOnly,
+      getValues,
+      fieldName,
+      onChange,
+      elder.surveyId,
+      att,
+      abl,
+      trouble,
+    ],
+  );
 
   useEffect(() => {
-    if (presetAtt) {
+    if (presetAtt && presetAtt !== lastPresetAtt.current) {
+      lastPresetAtt.current = presetAtt;
       setAtt(presetAtt);
-      bubbleRef.current({ attitudeScore: scoreOf[presetAtt] });
+      bubble({ attitudeScore: scoreOf[presetAtt] });
     }
-  }, [presetAtt]);
+  }, [presetAtt, bubble]);
 
   useEffect(() => {
-    if (presetAbl) {
+    if (presetAbl && presetAbl !== lastPresetAbl.current) {
+      lastPresetAbl.current = presetAbl;
       setAbl(presetAbl);
-      bubbleRef.current({ abilityScore: scoreOf[presetAbl] });
+      bubble({ abilityScore: scoreOf[presetAbl] });
     }
-  }, [presetAbl]);
+  }, [presetAbl, bubble]);
 
   useEffect(() => {
-    if (presetTrouble) {
+    if (
+      presetTrouble &&
+      (presetTrouble.hasDiscomfort !==
+        lastPresetTrouble.current?.hasDiscomfort ||
+        presetTrouble.parts !== lastPresetTrouble.current?.parts)
+    ) {
+      lastPresetTrouble.current = presetTrouble;
       setTrouble(presetTrouble);
-      bubbleRef.current({
+      bubble({
         hadTrouble: presetTrouble.hasDiscomfort === "yes",
         troubleParts: presetTrouble.parts,
       });
     }
-  }, [presetTrouble]);
+  }, [presetTrouble, bubble]);
 
   useEffect(() => {
-    bubbleRef.current();
-  }, []);
+    bubble();
+  }, [bubble]);
 
   return (
     <>
@@ -150,7 +180,7 @@ export default function ElderSurveyCard({
           borderRadius: 2,
           bgcolor: t.palette.fillVariants.alternative,
           p: 2,
-          border: `1px solid ${t.palette.borderVariants.normal}`, // 이거 수정해야하나요? boxShadow 값이 피그마에 없길래...
+          border: `1px solid ${t.palette.borderVariants.normal}`,
         })}
       >
         {/* 상단 정보: 모바일 2줄, 그 외 1줄 */}
@@ -162,7 +192,11 @@ export default function ElderSurveyCard({
             </Box>
             <Box sx={{ display: "flex", gap: 2, mt: 1 }}>
               <Typography variant={infoVariant}>
-                {calculateAge(dayjs(elder.birthDate), { format: "YYYY-MM-DD" })}
+                {isMounted
+                  ? calculateAge(dayjs(elder.birthDate), {
+                      format: "YYYY-MM-DD",
+                    })
+                  : ""}
               </Typography>
               <Typography variant={infoVariant}>
                 {genderLabel[elder.gender]}
@@ -177,7 +211,9 @@ export default function ElderSurveyCard({
             <ProfileIcon sx={{ fontSize: 24 }} />
             <Typography variant={infoVariant}>{elder.name}</Typography>
             <Typography variant={infoVariant}>
-              {calculateAge(dayjs(elder.birthDate), { format: "YYYY-MM-DD" })}
+              {isMounted
+                ? calculateAge(dayjs(elder.birthDate), { format: "YYYY-MM-DD" })
+                : ""}
             </Typography>
             <Typography variant={infoVariant}>
               {genderLabel[elder.gender]}
@@ -200,6 +236,7 @@ export default function ElderSurveyCard({
                     setAtt(v as Scale);
                     bubble({ attitudeScore: scoreOf[v as Scale] });
                   }}
+                  readOnly={readOnly}
                 />
               ),
             },
@@ -212,6 +249,7 @@ export default function ElderSurveyCard({
                     setAbl(v as Scale);
                     bubble({ abilityScore: scoreOf[v as Scale] });
                   }}
+                  readOnly={readOnly}
                 />
               ),
             },
@@ -228,6 +266,7 @@ export default function ElderSurveyCard({
                       troubleParts: v.hasDiscomfort === "yes" ? v.parts : [],
                     });
                   }}
+                  readOnly={readOnly}
                 />
               ),
             },
@@ -245,6 +284,7 @@ export default function ElderSurveyCard({
             formControlProps={{
               sx: { width: "100%" },
             }}
+            readOnly={readOnly}
           />
         </Box>
       </Box>
