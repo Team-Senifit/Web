@@ -33,6 +33,7 @@ const Page = () => {
 
   const {
     type,
+    hasHydrated,
     selectedMembers: storedSelectedMembers,
     setSelectedMembers,
     setSelectedRoutineRecord,
@@ -79,6 +80,9 @@ const Page = () => {
   }, [storedMemberIds, setValue]);
 
   const selectedMembers = watch("members");
+
+  // rehydrate 전엔 이전 선택이 비어 보일 수 있어, 실수로 '다음'을 눌러 선택이 초기화되는 문제를 방지
+  if (!hasHydrated) return null;
 
   const onSubmit = (data: { members: number[] }) => {
     if (!data.members?.length) {
