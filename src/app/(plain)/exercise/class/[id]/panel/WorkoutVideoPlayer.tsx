@@ -73,11 +73,11 @@ export default function WorkoutVideoPlaylist({
 
   const { id: programId } = useParams();
 
-  const notifyDone = (): void => {
+  const notifyDone = useCallback((): void => {
     const pid = Array.isArray(programId) ? programId[0] : programId;
     notifyClassDone({ programId: pid, seconds });
     window.close();
-  };
+  }, [programId, seconds]);
 
   const initialIndex = useMemo(() => {
     if (initialId == null) return 0;
@@ -130,9 +130,14 @@ export default function WorkoutVideoPlaylist({
   }, [go, index, setToastOpen]);
 
   const next = useCallback(() => {
+    const isLast = index === videos.length - 1;
+    if (isLast && !loop) {
+      notifyDone();
+      return;
+    }
     setToastOpen({ message: "다음 영상을 재생합니다.", autoHide: "short" });
     go(index + 1);
-  }, [go, index, setToastOpen]);
+  }, [go, index, loop, notifyDone, setToastOpen, videos.length]);
 
   // src 바뀌면 자동 재생 시도(사용자 제스처 이후 연속 재생 안정화)
   useEffect(() => {
