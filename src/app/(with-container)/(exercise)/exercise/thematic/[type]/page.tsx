@@ -19,8 +19,12 @@ const Page = () => {
 
   const [routines, setRoutines] = useState<IPopularRoutine[]>([]);
 
-  const { setType, setSelectedRoutineRecord, selectedRoutineRecord } =
-    useProgramStore();
+  const {
+    setType,
+    setSelectedRoutineRecord,
+    selectedRoutineRecord,
+    setThematicWorkoutKind,
+  } = useProgramStore();
 
   const { mutate } = useMutation({
     mutationFn: () =>
@@ -33,8 +37,10 @@ const Page = () => {
   });
 
   useEffect(() => {
+    // /exercise/thematic 에서 뒤로 갈 때 선택값 복원용
+    setThematicWorkoutKind(params.type);
     mutate();
-  }, [mutate]);
+  }, [mutate, params.type, setThematicWorkoutKind]);
 
   if (routines.length === 0) return null;
 
