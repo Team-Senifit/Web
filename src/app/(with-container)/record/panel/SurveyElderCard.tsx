@@ -4,7 +4,7 @@ import { Box, Divider, Typography } from "@mui/material";
 import SelectorCard from "./SelectorCard";
 import SelectorRadio from "./SelectorRadio";
 import SelectorTarget from "./SelectorTarget";
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { calculateAge } from "@/utils/calculateAge";
 import dayjs from "dayjs";
 import { genderLabel, gradeLabel } from "@/types/IMember";
@@ -111,25 +111,28 @@ export default function ElderSurveyCard({
       ...next,
     });
   };
+  // eslint(exhaustive-deps) 대응: effect에서 bubble을 직접 캡처하지 않기 위한 ref
+  const bubbleRef = useRef(bubble);
+  bubbleRef.current = bubble;
 
   useEffect(() => {
     if (presetAtt) {
       setAtt(presetAtt);
-      bubble({ attitudeScore: scoreOf[presetAtt] });
+      bubbleRef.current({ attitudeScore: scoreOf[presetAtt] });
     }
   }, [presetAtt]);
 
   useEffect(() => {
     if (presetAbl) {
       setAbl(presetAbl);
-      bubble({ abilityScore: scoreOf[presetAbl] });
+      bubbleRef.current({ abilityScore: scoreOf[presetAbl] });
     }
   }, [presetAbl]);
 
   useEffect(() => {
     if (presetTrouble) {
       setTrouble(presetTrouble);
-      bubble({
+      bubbleRef.current({
         hadTrouble: presetTrouble.hasDiscomfort === "yes",
         troubleParts: presetTrouble.parts,
       });
@@ -137,7 +140,7 @@ export default function ElderSurveyCard({
   }, [presetTrouble]);
 
   useEffect(() => {
-    bubble();
+    bubbleRef.current();
   }, []);
 
   return (
