@@ -26,7 +26,8 @@ export const useDeadlineTrigger = ({
     if (!enabled) return;
     if (firedRef.current) return;
 
-    const target = dayjs.isDayjs(at) ? at : dayjs(at);
+    // depKey(ms) 기준으로만 재계산해서 exhaustive-deps 경고를 피함
+    const target = dayjs(depKey);
     if (!target.isValid()) return; // 잘못된 입력 보호
 
     const delay = Math.max(0, target.valueOf() - Date.now());
