@@ -6,6 +6,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 interface IProgramStore {
+  hasHydrated: boolean;
   selectedProgram: IRoutineDetail | null;
   selectedMembers: IMember[];
   type: "customized" | "popular" | ["thematic", WorkoutKind] | null;
@@ -29,18 +30,21 @@ interface IProgramStore {
   ) => void;
   setThematicWorkoutKind: (kind: WorkoutKind | null) => void;
   setCustomizedForm: (form: Partial<ICustomizedRoutineField> | null) => void;
+  setHasHydrated: (v: boolean) => void;
   clearStore: () => void;
 }
 
 const useProgramStore = create<IProgramStore>()(
   persist(
     (set) => ({
+      hasHydrated: false,
       selectedProgram: null,
       selectedMembers: [],
       type: null,
       selectedRoutineRecord: null,
       thematicWorkoutKind: null,
       customizedForm: null,
+      setHasHydrated: (v) => set({ hasHydrated: v }),
       setSelectedRoutineRecord: (record) =>
         set({ selectedRoutineRecord: record }),
       setSelectedProgram: (program) => set({ selectedProgram: program }),
@@ -50,6 +54,7 @@ const useProgramStore = create<IProgramStore>()(
       setCustomizedForm: (form) => set({ customizedForm: form }),
       clearStore: () =>
         set({
+          hasHydrated: true, // clear 시에도 UI 입력 차단은 하지 않음
           selectedProgram: null,
           selectedMembers: [],
           type: null,
@@ -61,6 +66,9 @@ const useProgramStore = create<IProgramStore>()(
     {
       name: "program-store",
       storage: createJSONStorage(() => localStorage),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     },
   ),
 );

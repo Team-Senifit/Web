@@ -36,6 +36,7 @@ const Page = () => {
     setSelectedProgram,
     selectedRoutineRecord,
     setSelectedRoutineRecord,
+    hasHydrated,
     customizedForm,
     setCustomizedForm,
   } = useProgramStore();
@@ -65,6 +66,7 @@ const Page = () => {
   }, [customizedForm, reset]);
 
   const onSubmit = async (data: ICustomizedRoutineField) => {
+    if (!hasHydrated) return;
     // 체크 페이지에서 돌아왔을 때 옵션 UI 복원을 위해 저장
     setCustomizedForm(data);
     const {
@@ -89,6 +91,7 @@ const Page = () => {
     router.push("/exercise/members");
   };
 
+  if (!hasHydrated) return null;
   return (
     <>
       <Stack spacing={[2, 3]}>
