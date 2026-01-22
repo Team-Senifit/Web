@@ -7,15 +7,27 @@ import { Alert, Snackbar, Typography } from "@mui/material";
 import React from "react";
 
 const Toast = () => {
-  const { message, open, setToastClose } = useToastStore();
+  const { message, open, autoHide, setToastClose } = useToastStore();
   const { isPhone } = useMedia();
+
+  React.useEffect(() => {
+    if (!open) return;
+
+    const duration =
+      autoHideDurationMap[autoHide] || autoHideDurationMap.normal;
+    const timer = setTimeout(() => {
+      setToastClose();
+    }, duration);
+
+    return () => clearTimeout(timer);
+  }, [open, autoHide, setToastClose]);
 
   return (
     <Snackbar
       open={open}
       onClose={setToastClose}
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      autoHideDuration={autoHideDurationMap["normal"]}
+      // autoHideDuration={autoHideDurationMap["normal"]}
       sx={{
         maxWidth: "1200px",
         mx: "auto",
