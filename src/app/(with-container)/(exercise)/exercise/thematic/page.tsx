@@ -2,7 +2,7 @@
 
 import ReturnButton from "@/components/ReturnButton";
 import { Button, Divider, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import GradationPageInfoCard from "../../../../../components/GradationPageInfoCard";
 import PageInfoCard from "@/components/PageInfoCard";
 import { ClipboardCheckIcon } from "@/components/icons";
@@ -33,16 +33,33 @@ const Page = () => {
 
   const { isDesktop } = useMedia();
 
-  const { setSelectedRoutineRecord } = useProgramStore();
+  const {
+    setSelectedRoutineRecord,
+    hasHydrated,
+    thematicWorkoutKind,
+    setThematicWorkoutKind,
+  } = useProgramStore();
 
-  const { control, handleSubmit } = useForm<IThematicRoutineField>({
+  const { control, handleSubmit, reset } = useForm<IThematicRoutineField>({
     defaultValues: {
-      workout_kind: "workout_kinds_cognitive_kinds_taekwondo",
+      workout_kind:
+        thematicWorkoutKind ?? "workout_kinds_cognitive_kinds_taekwondo",
     },
   });
 
+  // zustand persist rehydrate 이후에도 폼이 초기화되지 않도록 1회 동기화
+  const didInitRef = useRef(false);
+  useEffect(() => {
+    if (didInitRef.current) return;
+    if (!thematicWorkoutKind) return;
+    reset({ workout_kind: thematicWorkoutKind });
+    didInitRef.current = true;
+  }, [thematicWorkoutKind, reset]);
+
   const onSubmit = (data: IThematicRoutineField) => {
+    if (!hasHydrated) return;
     const workoutKind = data.workout_kind;
+    setThematicWorkoutKind(workoutKind);
 
     const routineKind: ROUTINE_TYPES = "workout_programs_selections_byTarget";
     const cognitiveKind: COGNITIVE_WORKOUT_CODES = workoutKind.includes(
@@ -70,6 +87,8 @@ const Page = () => {
 
     router.push(`/exercise/thematic/${workoutKind}`);
   };
+
+  if (!hasHydrated) return null;
   return (
     <>
       <Stack

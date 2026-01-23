@@ -9,7 +9,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import GradationPageInfoCard from "../../../../../components/GradationPageInfoCard";
 import PageInfoCard from "@/components/PageInfoCard";
 import { SquareUserRoundIcon } from "@/components/icons";
@@ -33,10 +33,17 @@ const Page = () => {
 
   const {
     type,
+    hasHydrated,
+    selectedMembers: storedSelectedMembers,
     setSelectedMembers,
     setSelectedRoutineRecord,
     selectedRoutineRecord,
   } = useProgramStore();
+
+  const storedMemberIds = useMemo(
+    () => storedSelectedMembers.map((m) => m.memberId),
+    [storedSelectedMembers],
+  );
 
   let returnPath = "";
 
@@ -58,11 +65,24 @@ const Page = () => {
     members: number[];
   }>({
     defaultValues: {
-      members: [],
+      // 체크 페이지에서 돌아왔을 때 기존 선택 복원
+      members: storedMemberIds,
     },
   });
 
+  // zustand persist rehydrate 이후에도 폼이 초기화되지 않도록 1회 동기화
+  const didInitRef = useRef(false);
+  useEffect(() => {
+    if (didInitRef.current) return;
+    if (storedMemberIds.length === 0) return;
+    setValue("members", storedMemberIds, { shouldDirty: false });
+    didInitRef.current = true;
+  }, [storedMemberIds, setValue]);
+
   const selectedMembers = watch("members");
+
+  // rehydrate 전엔 이전 선택이 비어 보일 수 있어, 실수로 '다음'을 눌러 선택이 초기화되는 문제를 방지
+  if (!hasHydrated) return null;
 
   const onSubmit = (data: { members: number[] }) => {
     if (!data.members?.length) {
