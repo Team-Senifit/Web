@@ -8,6 +8,7 @@ import Header from "./Header";
 import { useParams } from "next/navigation";
 import { useTimer } from "@/hooks/useTimer";
 import { notifyClassDone } from "@/utils/broadcast";
+import { axiosClient } from "@/apis/axiosClient";
 
 export interface IWorkoutVideo {
   id: number;
@@ -70,13 +71,28 @@ export default function WorkoutVideoPlaylist({
 
   const { seconds } = useTimer();
 
-  const { id: programId } = useParams();
+  const { id } = useParams();
+  const programId = id; // 기존 코드 호환성을 위해 유지
 
   const notifyDone = (): void => {
     const pid = Array.isArray(programId) ? programId[0] : programId;
     notifyClassDone({ programId: pid, seconds });
     window.close();
   };
+
+  useEffect(() => {
+    const recordId = Array.isArray(id) ? id[0] : id;
+    if (!recordId) return;
+
+    // 30초마다 finishedAt 업데이트를 위한 하트비트
+    const interval = setInterval(() => {
+      axiosClient.put(`/records/${recordId}`).catch((err) => {
+        console.error("Heartbeat failed:", err);
+      });
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [id]);
 
   const initialIndex = useMemo(() => {
     if (initialId == null) return 0;

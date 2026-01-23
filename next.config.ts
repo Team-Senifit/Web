@@ -5,7 +5,15 @@ const nextConfig: NextConfig = {
   typescript: { ignoreBuildErrors: true },
   images: {
     remotePatterns: [
-      { protocol: "https", hostname: "api.senifit.co.kr", port: "8443" },
+      {
+        protocol: "https",
+        hostname: process.env.NEXT_PUBLIC_API_URL
+          ? new URL(process.env.NEXT_PUBLIC_API_URL).hostname
+          : "api.senifit.co.kr",
+        port: process.env.NEXT_PUBLIC_API_URL
+          ? new URL(process.env.NEXT_PUBLIC_API_URL).port
+          : "8443",
+      },
       { protocol: "https", hostname: "picsum.photos" },
       {
         protocol: "https",
@@ -17,7 +25,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "https://api.senifit.co.kr:8443/:path*",
+        destination: `${process.env.NEXT_PUBLIC_API_URL || "https://api.senifit.co.kr:8443"}/:path*`,
       },
     ];
   },
