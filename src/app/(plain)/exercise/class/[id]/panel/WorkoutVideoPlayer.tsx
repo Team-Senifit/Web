@@ -7,6 +7,7 @@ import useMedia from "@/hooks/useMedia";
 import Header from "./Header";
 import { useParams } from "next/navigation";
 import { useTimer } from "@/hooks/useTimer";
+import dayjs from "dayjs";
 import { notifyClassDone } from "@/utils/broadcast";
 import { axiosClient } from "@/apis/axiosClient";
 // import { useToastStore } from "@/states/useToastStore";
@@ -85,12 +86,30 @@ export default function WorkoutVideoPlaylist({
     const recordId = Array.isArray(id) ? id[0] : id;
     if (!recordId) return;
 
+    const isDev =
+      process.env.NODE_ENV === "development" ||
+      window.location.hostname === "localhost";
+
+    const pulse = () => {
+      axiosClient
+        .put(`/records/${recordId}`)
+        .then(() => {
+          if (isDev) {
+            console.log(
+              `[Heartbeat] Updated at: ${dayjs().format("HH:mm:ss")}`,
+            );
+          }
+        })
+        .catch((err) => {
+          console.error("Heartbeat failed:", err);
+        });
+    };
+
+    // 운동 시작 시 즉시 첫 하트비트 전송
+    pulse();
+
     // 30초마다 finishedAt 업데이트를 위한 하트비트
-    const interval = setInterval(() => {
-      axiosClient.put(`/records/${recordId}`).catch((err) => {
-        console.error("Heartbeat failed:", err);
-      });
-    }, 30000);
+    const interval = setInterval(pulse, 30000);
 
     return () => clearInterval(interval);
   }, [id]);
