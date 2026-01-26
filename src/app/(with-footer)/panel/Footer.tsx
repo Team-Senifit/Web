@@ -141,6 +141,9 @@ const Footer = () => {
             <Button
               component={"a"}
               variant={"text"}
+              href={"https://strongturtle.notion.site/privacy-policy"}
+              target={"_blank"}
+              rel={"noopener noreferrer"}
               sx={{
                 width: "fit-content",
                 color: "label.normal",
