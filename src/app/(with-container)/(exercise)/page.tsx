@@ -16,8 +16,10 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { IResponse } from "@/types/IResponse";
 import { IHealthCheck } from "@/types/IHealthCheck";
 import dayjs from "dayjs";
+import { useClientReady } from "@/hooks/useClientReady";
+import LoadingFallback from "@/app/panel/LoadingFallback";
 
-const Page = () => {
+function ClientContent() {
   const { isPhone } = useMedia();
   const [openModal, setOpenModal] = useState(false);
 
@@ -105,6 +107,15 @@ const Page = () => {
       />
     </>
   );
+}
+
+const Page = () => {
+  // 이 페이지는 /health(auth) 결과에 따라 href가 바뀌어서
+  // SSR(쿠키 미전달)과 CSR(쿠키 포함) 결과가 달라지면 hydration mismatch가 발생할 수 있음.
+  // 따라서 마운트 후에만 실제 UI를 렌더링한다.
+  const isClientReady = useClientReady();
+  if (!isClientReady) return <LoadingFallback />;
+  return <ClientContent />;
 };
 
 export default Page;
