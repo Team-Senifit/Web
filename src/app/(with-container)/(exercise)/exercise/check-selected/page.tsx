@@ -121,8 +121,6 @@ const Page = () => {
           {
             component: Link,
             href: "/exercise/start",
-            target: "_blank",
-            rel: "noopener noreferrer",
           } as ButtonProps
         }
         secondaryText={type === "customized" ? "수정하기" : "돌아가기"}
