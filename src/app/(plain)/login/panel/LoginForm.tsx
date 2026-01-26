@@ -15,7 +15,7 @@ import SenifitTextField from "../../../../components/SenifitTextField";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import useMedia from "@/hooks/useMedia";
-import Logo from "@/assets/logo/senifit-logo.svg";
+import Logo from "@/assets/logo/Logo.svg";
 import SenifitDialog from "@/components/SenifitDialog";
 import Link from "next/link";
 import { kakaoChannelLink } from "@/constants/kakaoCh";

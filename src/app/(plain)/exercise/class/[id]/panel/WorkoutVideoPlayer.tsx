@@ -9,7 +9,7 @@ import { useParams } from "next/navigation";
 import { useTimer } from "@/hooks/useTimer";
 import { notifyClassDone } from "@/utils/broadcast";
 import { axiosClient } from "@/apis/axiosClient";
-import { useToastStore } from "@/states/useToastStore";
+// import { useToastStore } from "@/states/useToastStore";
 
 export interface IWorkoutVideo {
   id: number;
@@ -138,12 +138,12 @@ export default function WorkoutVideoPlaylist({
     },
     [videos, loop, onIndexChange, programId, seconds],
   );
-  const { setToastOpen } = useToastStore();
+  // const { setToastOpen } = useToastStore();
 
   const prev = useCallback(() => {
-    setToastOpen({ message: "이전 영상을 재생합니다.", autoHide: "short" });
+    // setToastOpen({ message: "이전 영상을 재생합니다.", autoHide: "short" });
     go(index - 1);
-  }, [go, index, setToastOpen]);
+  }, [go, index]);
 
   const next = useCallback(() => {
     const isLast = index === videos.length - 1;
@@ -151,9 +151,9 @@ export default function WorkoutVideoPlaylist({
       notifyDone();
       return;
     }
-    setToastOpen({ message: "다음 영상을 재생합니다.", autoHide: "short" });
+    // setToastOpen({ message: "다음 영상을 재생합니다.", autoHide: "short" });
     go(index + 1);
-  }, [go, index, loop, notifyDone, setToastOpen, videos.length]);
+  }, [go, index, loop, notifyDone, videos.length]);
 
   // src 바뀌면 자동 재생 시도(사용자 제스처 이후 연속 재생 안정화)
   useEffect(() => {
