@@ -111,14 +111,18 @@ export default function SurveySection({ recordId, mode }: Props) {
 
   useEffect(() => {
     const defaults = Object.fromEntries(
-      elders.map((e) => [`memo-${e.surveyId}`, e.memo ?? ""]),
+      elders
+        .filter((e) => e.surveyId !== null)
+        .map((e) => [`memo-${e.surveyId}`, e.memo ?? ""]),
     );
     methods.reset(defaults);
   }, [elders, methods]);
 
   const handleChange = useCallback(
-    (surveyId: number, payload: ElderUpdatePayload) =>
-      setPending((prev) => ({ ...prev, [surveyId]: payload })),
+    (surveyId: number, payload: ElderUpdatePayload) => {
+      if (surveyId === null) return;
+      setPending((prev) => ({ ...prev, [surveyId]: payload }));
+    },
     [],
   );
 
@@ -227,9 +231,9 @@ export default function SurveySection({ recordId, mode }: Props) {
 
       <Collapse in={open}>
         <Box sx={{ mt: 2, display: "grid", gap: 2 }}>
-          {elders.map((elder) => (
+          {elders.map((elder, idx) => (
             <SurveyElderCard
-              key={elder.surveyId}
+              key={elder.surveyId ?? `deleted-elder-${idx}`}
               elder={elder}
               onChange={handleChange}
               presetAtt={armed.att ? attAll : undefined}
