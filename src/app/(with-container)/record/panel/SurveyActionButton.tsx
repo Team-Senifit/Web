@@ -55,29 +55,31 @@ export default function SurveyActionButton({
         배: "workout_kinds_calisthenic_targets_abs",
       };
 
-      const payload = elders.map((e) => {
-        const p = pending[e.surveyId];
+      const payload = elders
+        .filter((e) => e.surveyId !== null)
+        .map((e) => {
+          const p = pending[e.surveyId as number];
 
-        const hadTrouble = (p?.hadTrouble ?? e.hadTrouble) === true;
+          const hadTrouble = (p?.hadTrouble ?? e.hadTrouble) === true;
 
-        // 불편함이 없다면 parts는 무조건 빈 배열
-        const rawParts = hadTrouble
-          ? (p?.troubleParts ?? e.troubleParts ?? [])
-          : [];
+          // 불편함이 없다면 parts는 무조건 빈 배열
+          const rawParts = hadTrouble
+            ? (p?.troubleParts ?? e.troubleParts ?? [])
+            : [];
 
-        const mappedParts = rawParts
-          .map((part) => troublePartMap[part] || part)
-          .filter(Boolean) as string[];
+          const mappedParts = rawParts
+            .map((part) => troublePartMap[part] || part)
+            .filter(Boolean) as string[];
 
-        return {
-          surveyId: e.surveyId,
-          troubleParts: mappedParts,
-          attitudeScore: p?.attitudeScore ?? e.attitudeScore,
-          abilityScore: p?.abilityScore ?? e.abilityScore,
-          hadTrouble,
-          memo: (p?.memo ?? e.memo ?? "").trim(),
-        };
-      });
+          return {
+            surveyId: e.surveyId,
+            troubleParts: mappedParts,
+            attitudeScore: p?.attitudeScore ?? e.attitudeScore,
+            abilityScore: p?.abilityScore ?? e.abilityScore,
+            hadTrouble,
+            memo: (p?.memo ?? e.memo ?? "").trim(),
+          };
+        });
 
       console.log(
         "[Survey] PUT /records/%s/surveys payload:",
