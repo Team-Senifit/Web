@@ -10,6 +10,7 @@ import { useTimer } from "@/hooks/useTimer";
 import { notifyClassDone } from "@/utils/broadcast";
 import { axiosClient } from "@/apis/axiosClient";
 import { useToastStore } from "@/states/useToastStore";
+import SenifitDialog from "@/components/SenifitDialog";
 
 export interface IWorkoutVideo {
   id: number;
@@ -95,6 +96,33 @@ export default function WorkoutVideoPlaylist({
     return () => clearInterval(interval);
   }, [id]);
 
+  // 이탈 방지 로직 (브라우저 종료/새로고침)
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, []);
+
+  // 이탈 방지 로직 (뒤로 가기)
+  useEffect(() => {
+    // 현재 상태를 push하여 뒤로 가기 시 popstate가 트리거되게 함
+    window.history.pushState(null, "", window.location.href);
+
+    const handlePopState = () => {
+      // 뒤로 가기 버튼을 눌렀을 때 다이얼로그를 띄움
+      setOpenExitDialog(true);
+      // 다시 pushState를 해서 현재 페이지를 유지 (사용자가 '나가기'를 누를 때까지)
+      window.history.pushState(null, "", window.location.href);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
   const initialIndex = useMemo(() => {
     if (initialId == null) return 0;
     const i = videos.findIndex((v) => v.id === initialId);
@@ -102,6 +130,7 @@ export default function WorkoutVideoPlaylist({
   }, [videos, initialId]);
 
   const [index, setIndex] = useState<number>(initialIndex);
+  const [openExitDialog, setOpenExitDialog] = useState(false);
   const handleRef = useRef<IVideoHandle>(null);
 
   const current = videos[index];
@@ -280,6 +309,29 @@ export default function WorkoutVideoPlaylist({
           </Button>
         </Stack>
       </Stack>
+
+      {/* 이탈 확인 다이얼로그 */}
+      <SenifitDialog
+        isOpen={openExitDialog}
+        onClose={() => setOpenExitDialog(false)}
+        dialogType={"error"}
+        title={"사이트에서 나가시겠습니까?"}
+        body={"변경사항이 저장되지 않을 수 있습니다"}
+        primaryText={"나가기"}
+        onPrimaryClick={() => {
+          // 실제로 나가는 처리 (이 경우 창을 닫거나 이전 페이지로 이동)
+          // 여기서는 window.close() 또는 history.go(-2) 등을 고려할 수 있으나
+          // 보통 이 페이지는 새로 띄워진 창이므로 window.close()가 적절할 수 있음
+          try {
+            window.close();
+          } catch {
+            // 창이 닫히지 않는 경우 (직접 URL 입력 등) 홈으로 이동
+            window.location.href = "/";
+          }
+        }}
+        secondaryText={"취소"}
+        onSecondaryClick={() => setOpenExitDialog(false)}
+      />
     </Box>
   );
 }
