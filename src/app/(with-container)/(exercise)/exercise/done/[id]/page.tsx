@@ -107,7 +107,7 @@ const Page = () => {
             }}
           >
             <Box component={"span"}>{`${formatTime(seconds ?? 0)}`}</Box>
-            {` / ${formatTime(selectedProgram?.duration ?? 0)}`}
+            {` / ${formatTime((selectedProgram?.duration ?? 0) * 60)}`}
           </Typography>
         </Stack>
       </Stack>
