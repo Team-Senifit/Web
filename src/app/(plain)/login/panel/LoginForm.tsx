@@ -24,11 +24,11 @@ import EyeIcon from "@/components/icons/EyeIcon";
 import EyeOffIcon from "@/components/icons/EyeOffIcon";
 import InquiryButton from "@/components/InquiryButton";
 import BackgroundImage from "@/assets/images/login-background.png";
+import { signupGoogleForm } from "@/constants/signupGF";
 
 type LoginFormValues = { id: string; password: string };
 
 export default function LoginForm() {
-  const signUpLink = "https://forms.gle/7zWgYjysswZ8ZjwE8";
 
   const { isPhone } = useMedia();
 
@@ -195,7 +195,7 @@ export default function LoginForm() {
       />
 
       <InquiryButton
-        onClick={() => window.open(signUpLink, "_blank")}
+        onClick={() => window.open(signupGoogleForm, "_blank")}
         mt={1.5}
         width={200}
         height={32}
