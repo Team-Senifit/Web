@@ -124,12 +124,7 @@ const Page = () => {
           } as ButtonProps
         }
         secondaryText={type === "customized" ? "수정하기" : "돌아가기"}
-        secondaryButtonProps={
-          {
-            component: Link,
-            href: routineUrl,
-          } as ButtonProps
-        }
+        onSecondaryClick={() => setOpenModal(false)}
       />
     </>
   );
