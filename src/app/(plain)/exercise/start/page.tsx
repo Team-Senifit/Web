@@ -34,13 +34,9 @@ const Page = () => {
       router.push(`/exercise/class/${data.data.id}`);
     },
     onError: () => {
-      // LOGIN_NEEDED broadcast하기
+      // 단일 탭 흐름: 로그인 페이지로 이동
       notifyLogout();
-      setTimeout(() => {
-        try {
-          window.close();
-        } catch {}
-      }, 150);
+      router.replace("/login?next=" + encodeURIComponent("/exercise/start"));
     },
   });
 
