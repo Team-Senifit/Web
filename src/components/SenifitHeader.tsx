@@ -13,7 +13,7 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
-import Logo from "@/assets/logo/senifit-logo.svg";
+import Logo from "@/assets/logo/Logo.svg";
 import Image from "next/image";
 import { ClipboardIcon, HouseIcon, HumanIcon } from "./icons";
 import Link from "next/link";
