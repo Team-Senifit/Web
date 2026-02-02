@@ -102,6 +102,7 @@ export default function SurveySection({ recordId, mode }: Props) {
         return {
           ...raw,
           troubleParts: normalizedParts,
+          isDeleted: Boolean(raw.isDeleted) || raw.surveyId === null,
         };
       });
 

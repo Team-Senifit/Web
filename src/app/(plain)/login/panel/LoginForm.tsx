@@ -29,7 +29,6 @@ import { signupGoogleForm } from "@/constants/signupGF";
 type LoginFormValues = { id: string; password: string };
 
 export default function LoginForm() {
-
   const { isPhone } = useMedia();
 
   const searchParams = useSearchParams();

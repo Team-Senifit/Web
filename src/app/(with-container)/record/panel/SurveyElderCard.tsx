@@ -35,6 +35,7 @@ export type Elder = {
   updatedAt?: string;
   memo?: string | null;
   isDeleted?: boolean;
+  memberId?: number | null;
 };
 
 type PresetTrouble = { hasDiscomfort: "none" | "yes"; parts: string[] };
@@ -113,9 +114,11 @@ export default function ElderSurveyCard({
   // 각 입력이 바뀔 때마다 상위에 변화를 올려줘서 "작성완료" 시 최신 상태를 보낼 수 있게 함
   const fieldName = `memo-${elder.surveyId}`;
 
+  const isDeleted = Boolean(elder.isDeleted) || elder.surveyId === null;
+
   const bubble = useCallback(
     (next?: Partial<ElderUpdatePayload>) => {
-      if (readOnly || elder.isDeleted) return;
+      if (readOnly || isDeleted) return;
       const currentMemo = getValues(fieldName) || "";
       onChange(elder.surveyId as number, {
         attitudeScore: scoreOf[att],
@@ -128,7 +131,7 @@ export default function ElderSurveyCard({
     },
     [
       readOnly,
-      elder.isDeleted,
+      isDeleted,
       getValues,
       fieldName,
       onChange,
@@ -186,10 +189,9 @@ export default function ElderSurveyCard({
         })}
       >
         {/* 상단 정보: 모바일 2줄, 그 외 1줄 */}
-        {elder.isDeleted ? (
+        {isDeleted ? (
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <ProfileIcon sx={{ fontSize: 24 }} />
-            <Typography variant={infoVariant} sx={{ color: "text.secondary" }}>
+            <Typography variant={infoVariant}>
               {"삭제된 어르신입니다."}
             </Typography>
           </Box>
@@ -232,7 +234,7 @@ export default function ElderSurveyCard({
             </Typography>
           </Box>
         )}
-        {!elder.isDeleted && (
+        {!isDeleted && (
           <>
             {/* 선택 카드: step이 주어지면 한 항목만 렌더 */}
             <SelectorCard
@@ -274,7 +276,8 @@ export default function ElderSurveyCard({
                         setTrouble(v);
                         bubble({
                           hadTrouble: v.hasDiscomfort === "yes",
-                          troubleParts: v.hasDiscomfort === "yes" ? v.parts : [],
+                          troubleParts:
+                            v.hasDiscomfort === "yes" ? v.parts : [],
                         });
                       }}
                       readOnly={readOnly}
@@ -288,7 +291,9 @@ export default function ElderSurveyCard({
               <SenifitTextField
                 name={`memo-${elder.surveyId}`}
                 control={control}
-                placeholder={"특이사항이 있다면 메모를 작성해주세요. (선택사항)"}
+                placeholder={
+                  "특이사항이 있다면 메모를 작성해주세요. (선택사항)"
+                }
                 onChange={(e) => {
                   bubble({ memo: e.target.value });
                 }}
