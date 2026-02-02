@@ -9,7 +9,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useTimer } from "@/hooks/useTimer";
 import { axiosClient } from "@/apis/axiosClient";
 import { isAuthError } from "@/apis/errors";
-import { useToastStore } from "@/states/useToastStore";
+// import { useToastStore } from "@/states/useToastStore";
 import SenifitDialog from "@/components/SenifitDialog";
 
 export interface IWorkoutVideo {
@@ -79,6 +79,7 @@ export default function WorkoutVideoPlaylist({
 
   const notifyDone = useCallback((): void => {
     if (!recordId) return;
+    shouldBypassUnload.current = true;
     // 단일 탭 흐름: 종료 시 완료 화면으로 이동
     router.replace(`/exercise/done/${recordId}?seconds=${seconds}`);
   }, [recordId, router, seconds]);
@@ -159,9 +160,13 @@ export default function WorkoutVideoPlaylist({
     };
   }, [recordId]);
 
+  // 이탈 방지 bypass 플래그 (앱 내부 이동 시 사용)
+  const shouldBypassUnload = useRef(false);
+
   // 이탈 방지 로직 (브라우저 종료/새로고침)
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (shouldBypassUnload.current) return;
       e.preventDefault();
       e.returnValue = "";
     };
@@ -380,15 +385,8 @@ export default function WorkoutVideoPlaylist({
         body={"변경사항이 저장되지 않을 수 있습니다"}
         primaryText={"나가기"}
         onPrimaryClick={() => {
-          // 실제로 나가는 처리 (이 경우 창을 닫거나 이전 페이지로 이동)
-          // 여기서는 window.close() 또는 history.go(-2) 등을 고려할 수 있으나
-          // 보통 이 페이지는 새로 띄워진 창이므로 window.close()가 적절할 수 있음
-          try {
-            window.close();
-          } catch {
-            // 창이 닫히지 않는 경우 (직접 URL 입력 등) 홈으로 이동
-            window.location.href = "/";
-          }
+          shouldBypassUnload.current = true;
+          notifyDone();
         }}
         secondaryText={"취소"}
         onSecondaryClick={() => setOpenExitDialog(false)}

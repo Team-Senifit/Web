@@ -1,6 +1,7 @@
 "use client";
 
-import { ButtonProps, Stack } from "@mui/material";
+// import { ButtonProps } from "@mui/material";
+import { Stack } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import GradationPageInfoCard from "../../../../../components/GradationPageInfoCard";
 import useProgramStore from "@/states/useProgramStore";
@@ -12,7 +13,7 @@ import { createBroadcastListener } from "@/utils/broadcast";
 import Members from "./panel/Members";
 import Routine from "./panel/Routine";
 import SenifitDialog from "@/components/SenifitDialog";
-import Link from "next/link";
+// import Link from "next/link";
 
 // broadcast handled via utils/broadcast
 
@@ -117,12 +118,10 @@ const Page = () => {
         dialogType={"success"}
         title={"이제 수업을 시작할까요?"}
         primaryText={"네, 시작할게요"}
-        primaryButtonProps={
-          {
-            component: Link,
-            href: "/exercise/start",
-          } as ButtonProps
-        }
+        onPrimaryClick={() => {
+          setOpenModal(false);
+          router.push("/exercise/start");
+        }}
         secondaryText={type === "customized" ? "수정하기" : "돌아가기"}
         onSecondaryClick={() => setOpenModal(false)}
       />
