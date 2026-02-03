@@ -54,12 +54,18 @@ async function axiosQueryFn({
       // 예: https://localhost:3000 + /api + /health
       endpoint = `${siteUrl}${apiBase}${path}`;
     } else {
-      // 3. 클라이언트일 때는 axiosClient의 baseURL(/api)이 있으므로 path만 전달
-      endpoint = path;
+      // 3. 클라이언트에서도 /api 프리픽스를 명시해 프록시를 강제
+      const base = apiBase.startsWith("/") ? apiBase : `/${apiBase}`;
+      endpoint = `${base}${path}`;
     }
   }
 
-  const res = await axiosClient.get(endpoint, { params, signal });
+  const res = await axiosClient.get(endpoint, {
+    params,
+    signal,
+    // endpoint에 /api를 포함했으므로 baseURL을 비활성화
+    baseURL: "",
+  });
   return res.data;
 }
 
