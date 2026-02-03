@@ -5,6 +5,7 @@ import { headers as nextHeaders } from "next/headers";
 import { AuthError } from "./errors";
 
 const API_PREFIX = normalizePrefix(process.env.NEXT_PUBLIC_API_BASE ?? "/api");
+const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "").trim().replace(/\/+$/, "");
 const ENV_SITE_URL = ensureOrigin(process.env.NEXT_PUBLIC_SITE_URL);
 
 const devHttpsAgent =
@@ -41,10 +42,12 @@ export async function createAxiosServer(opts?: {
 }): Promise<AxiosInstance> {
   // 쿠키 전달 (SSR 세션 유지용)
   const h = await nextHeaders();
-  // env 우선, 없으면 요청 헤더 기반 origin 사용
+  // API URL이 있으면 직접 사용, 없으면 요청 헤더 기반으로 /api 프록시 사용
   const siteOrigin =
     ENV_SITE_URL || originFromHeaders(h) || "https://localhost:3000";
-  const baseURL = new URL(API_PREFIX, siteOrigin).toString();
+  const baseURL = API_BASE_URL
+    ? API_BASE_URL
+    : new URL(API_PREFIX, siteOrigin).toString();
   const cookie = opts?.forwardCookies === false ? "" : (h.get("cookie") ?? "");
 
   const instance = axios.create({
