@@ -6,6 +6,20 @@ export const axiosClient = axios.create({
   withCredentials: true, // 쿠키 인증이면 필수
 });
 
+axiosClient.interceptors.request.use((config) => {
+  const url = config.url;
+  if (typeof url === "string" && !url.startsWith("http")) {
+    if (!url.startsWith("/api/")) {
+      const base = url.startsWith("/") ? "" : "/";
+      if (!config.baseURL) {
+        // baseURL이 비어있을 때만 /api를 강제로 붙임
+        config.url = `/api${base}${url}`;
+      }
+    }
+  }
+  return config;
+});
+
 axiosClient.interceptors.response.use(
   (res) => res,
   (error) => {
