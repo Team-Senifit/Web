@@ -21,4 +21,5 @@ const config = {
     lastmod: new Date().toISOString(),
   }),
 };
-export default config;
+
+module.exports = config;
