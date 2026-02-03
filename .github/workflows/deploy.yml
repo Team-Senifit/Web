@@ -61,7 +61,7 @@ jobs:
             --instance-ids "$SSM_INSTANCE_ID" \
             --document-name "AWS-RunShellScript" \
             --comment "Deploy web image $IMAGE_NAME:$IMAGE_TAG" \
-            --parameters 'commands=["cd /srv","export IMAGE_TAG='\"$IMAGE_TAG\"'","docker compose down","docker compose pull","docker compose up -d"]' \
+            --parameters "commands=cd /srv,export IMAGE_TAG=$IMAGE_TAG,docker compose down,docker compose pull,docker compose up -d" \
             --query "Command.CommandId" \
             --output text)
 
