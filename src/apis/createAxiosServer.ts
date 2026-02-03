@@ -5,7 +5,8 @@ import { headers as nextHeaders } from "next/headers";
 import { AuthError } from "./errors";
 
 const API_PREFIX = normalizePrefix(process.env.NEXT_PUBLIC_API_BASE ?? "/api");
-const SITE_URL = ensureOrigin(process.env.NEXT_PUBLIC_SITE_URL);
+const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "").trim().replace(/\/+$/, "");
+const ENV_SITE_URL = ensureOrigin(process.env.NEXT_PUBLIC_SITE_URL);
 
 const devHttpsAgent =
   process.env.NODE_ENV !== "production"
@@ -13,11 +14,7 @@ const devHttpsAgent =
     : undefined;
 
 function ensureOrigin(v?: string) {
-  if (!v) {
-    throw new Error(
-      "Missing NEXT_PUBLIC_SITE_URL. Set a valid origin like https://senifit.co.kr",
-    );
-  }
+  if (!v) return undefined;
   // 'localhost:3000' 처럼 스킴이 빠진 값이 와도 보정
   const normalized = /^https?:\/\//i.test(v) ? v : `https://${v}`;
   try {
@@ -25,10 +22,15 @@ function ensureOrigin(v?: string) {
     if (!url.hostname) throw new Error("Missing hostname");
     return url.origin;
   } catch {
-    throw new Error(
-      `Invalid NEXT_PUBLIC_SITE_URL: "${v}". Set a valid origin like https://senifit.co.kr`,
-    );
+    return undefined;
   }
+}
+
+function originFromHeaders(h: Headers) {
+  const proto = h.get("x-forwarded-proto") || "https";
+  const host = h.get("x-forwarded-host") || h.get("host");
+  if (!host) return undefined;
+  return `${proto}://${host}`;
 }
 function normalizePrefix(p: string) {
   return p.startsWith("/") ? p : `/${p}`;
@@ -38,11 +40,14 @@ export async function createAxiosServer(opts?: {
   forwardCookies?: boolean; // default: true
   extraHeaders?: Record<string, string | number | boolean | undefined>;
 }): Promise<AxiosInstance> {
-  // 헤더 의존 대신 env 기반으로 절대 baseURL 생성
-  const baseURL = new URL(API_PREFIX, SITE_URL).toString(); // e.g. https://localhost:3000/api
-
   // 쿠키 전달 (SSR 세션 유지용)
   const h = await nextHeaders();
+  // API URL이 있으면 직접 사용, 없으면 요청 헤더 기반으로 /api 프록시 사용
+  const siteOrigin =
+    ENV_SITE_URL || originFromHeaders(h) || "https://localhost:3000";
+  const baseURL = API_BASE_URL
+    ? API_BASE_URL
+    : new URL(API_PREFIX, siteOrigin).toString();
   const cookie = opts?.forwardCookies === false ? "" : (h.get("cookie") ?? "");
 
   const instance = axios.create({
