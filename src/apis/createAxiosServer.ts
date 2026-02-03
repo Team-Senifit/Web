@@ -5,19 +5,30 @@ import { headers as nextHeaders } from "next/headers";
 import { AuthError } from "./errors";
 
 const API_PREFIX = normalizePrefix(process.env.NEXT_PUBLIC_API_BASE ?? "/api");
-const SITE_URL = ensureOrigin(
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://localhost:3000",
-);
+const SITE_URL = ensureOrigin(process.env.NEXT_PUBLIC_SITE_URL);
 
 const devHttpsAgent =
   process.env.NODE_ENV !== "production"
     ? new https.Agent({ rejectUnauthorized: false })
     : undefined;
 
-function ensureOrigin(v: string) {
+function ensureOrigin(v?: string) {
+  if (!v) {
+    throw new Error(
+      "Missing NEXT_PUBLIC_SITE_URL. Set a valid origin like https://senifit.co.kr",
+    );
+  }
   // 'localhost:3000' 처럼 스킴이 빠진 값이 와도 보정
-  if (!/^https?:\/\//i.test(v)) return `https://${v}`;
-  return v;
+  const normalized = /^https?:\/\//i.test(v) ? v : `https://${v}`;
+  try {
+    const url = new URL(normalized);
+    if (!url.hostname) throw new Error("Missing hostname");
+    return url.origin;
+  } catch {
+    throw new Error(
+      `Invalid NEXT_PUBLIC_SITE_URL: "${v}". Set a valid origin like https://senifit.co.kr`,
+    );
+  }
 }
 function normalizePrefix(p: string) {
   return p.startsWith("/") ? p : `/${p}`;
