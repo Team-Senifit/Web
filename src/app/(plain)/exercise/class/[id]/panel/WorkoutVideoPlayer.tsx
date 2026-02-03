@@ -5,10 +5,12 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import VideoPlayer, { IVideoHandle } from "@/components/VideoPlayer";
 import useMedia from "@/hooks/useMedia";
 import Header from "./Header";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useTimer } from "@/hooks/useTimer";
-import { notifyClassDone } from "@/utils/broadcast";
-import { useToastStore } from "@/states/useToastStore";
+import { axiosClient } from "@/apis/axiosClient";
+import { isAuthError } from "@/apis/errors";
+// import { useToastStore } from "@/states/useToastStore";
+import SenifitDialog from "@/components/SenifitDialog";
 
 export interface IWorkoutVideo {
   id: number;
@@ -68,16 +70,126 @@ export default function WorkoutVideoPlaylist({
   duration,
 }: IWorkoutVideoPlaylistProps) {
   const { isPhone } = useMedia();
+  const router = useRouter();
 
   const { seconds } = useTimer();
 
-  const { id: programId } = useParams();
+  const { id } = useParams();
+  const recordId = useMemo(() => (Array.isArray(id) ? id[0] : id), [id]);
 
   const notifyDone = useCallback((): void => {
-    const pid = Array.isArray(programId) ? programId[0] : programId;
-    notifyClassDone({ programId: pid, seconds });
-    window.close();
-  }, [programId, seconds]);
+    if (!recordId) return;
+    shouldBypassUnload.current = true;
+    // 단일 탭 흐름: 종료 시 완료 화면으로 이동
+    router.replace(`/exercise/done/${recordId}?seconds=${seconds}`);
+  }, [recordId, router, seconds]);
+
+  useEffect(() => {
+    if (!recordId) return;
+
+    let cancelled = false;
+    let timeoutId: number | null = null;
+    let inFlight = false;
+    let redirected = false;
+
+    const pulse = async () => {
+      if (cancelled || inFlight) return;
+      inFlight = true;
+      try {
+        await axiosClient.put(`/records/${recordId}`);
+      } catch (err) {
+        // axios interceptor에서 401/403 -> AuthError로 throw 되지만
+        // 여기서 catch로 삼키면 전역 error boundary 리디렉션이 동작하지 않음.
+        // heartbeat에서는 즉시 로그인으로 전환한다.
+        if (!redirected && isAuthError(err)) {
+          redirected = true;
+          cancelled = true;
+          if (timeoutId != null) window.clearTimeout(timeoutId);
+          const currentPath = window.location.pathname + window.location.search;
+          const loginUrl = `/login?next=${encodeURIComponent(currentPath)}`;
+          window.location.href = loginUrl;
+          return;
+        }
+        console.error("Heartbeat failed:", err);
+      } finally {
+        inFlight = false;
+      }
+    };
+
+    const scheduleNext = (delayMs: number) => {
+      if (cancelled) return;
+      timeoutId = window.setTimeout(async () => {
+        await pulse();
+        scheduleNext(30000);
+      }, delayMs);
+    };
+
+    // 운동 시작 시 즉시 첫 하트비트 전송 + 이후 30초 루프
+    void pulse();
+    scheduleNext(30000);
+
+    // 백그라운드 타이머 throttling 대비: 다시 포커스/표시되면 즉시 1회 전송
+    const onVisible = () => {
+      if (document.visibilityState === "visible") void pulse();
+    };
+    window.addEventListener("focus", onVisible);
+    window.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("pageshow", onVisible);
+
+    // 페이지가 닫히거나 전환될 때 마지막 1회 시도(keepalive)
+    const onPageHide = () => {
+      try {
+        void fetch(`/api/records/${recordId}`, {
+          method: "PUT",
+          credentials: "include",
+          keepalive: true,
+        });
+      } catch {
+        // ignore
+      }
+    };
+    window.addEventListener("pagehide", onPageHide);
+
+    return () => {
+      cancelled = true;
+      if (timeoutId != null) window.clearTimeout(timeoutId);
+      window.removeEventListener("focus", onVisible);
+      window.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("pageshow", onVisible);
+      window.removeEventListener("pagehide", onPageHide);
+    };
+  }, [recordId]);
+
+  // 이탈 방지 bypass 플래그 (앱 내부 이동 시 사용)
+  const shouldBypassUnload = useRef(false);
+
+  // 이탈 방지 로직 (브라우저 종료/새로고침)
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (shouldBypassUnload.current) return;
+      e.preventDefault();
+      e.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, []);
+
+  // 이탈 방지 로직 (뒤로 가기)
+  useEffect(() => {
+    // 현재 상태를 push하여 뒤로 가기 시 popstate가 트리거되게 함
+    window.history.pushState(null, "", window.location.href);
+
+    const handlePopState = () => {
+      // 뒤로 가기 버튼을 눌렀을 때 다이얼로그를 띄움
+      setOpenExitDialog(true);
+      // 다시 pushState를 해서 현재 페이지를 유지 (사용자가 '나가기'를 누를 때까지)
+      window.history.pushState(null, "", window.location.href);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
 
   const initialIndex = useMemo(() => {
     if (initialId == null) return 0;
@@ -86,6 +198,7 @@ export default function WorkoutVideoPlaylist({
   }, [videos, initialId]);
 
   const [index, setIndex] = useState<number>(initialIndex);
+  const [openExitDialog, setOpenExitDialog] = useState(false);
   const handleRef = useRef<IVideoHandle>(null);
 
   const current = videos[index];
@@ -107,9 +220,7 @@ export default function WorkoutVideoPlaylist({
       if (next >= len) {
         if (!loop) {
           // 마지막 영상까지 끝나면 자동으로 완료 처리
-          const pid = Array.isArray(programId) ? programId[0] : programId;
-          notifyClassDone({ programId: pid, seconds });
-          window.close();
+          notifyDone();
           return;
         }
         target = 0;
@@ -120,14 +231,14 @@ export default function WorkoutVideoPlaylist({
       setIndex(target);
       onIndexChange?.(target, videos[target]);
     },
-    [videos, loop, onIndexChange, programId, seconds],
+    [videos, loop, onIndexChange, notifyDone],
   );
-  const { setToastOpen } = useToastStore();
+  // const { setToastOpen } = useToastStore();
 
   const prev = useCallback(() => {
-    setToastOpen({ message: "이전 영상을 재생합니다.", autoHide: "short" });
+    // setToastOpen({ message: "이전 영상을 재생합니다.", autoHide: "short" });
     go(index - 1);
-  }, [go, index, setToastOpen]);
+  }, [go, index]);
 
   const next = useCallback(() => {
     const isLast = index === videos.length - 1;
@@ -135,9 +246,9 @@ export default function WorkoutVideoPlaylist({
       notifyDone();
       return;
     }
-    setToastOpen({ message: "다음 영상을 재생합니다.", autoHide: "short" });
+    // setToastOpen({ message: "다음 영상을 재생합니다.", autoHide: "short" });
     go(index + 1);
-  }, [go, index, loop, notifyDone, setToastOpen, videos.length]);
+  }, [go, index, loop, notifyDone, videos.length]);
 
   // src 바뀌면 자동 재생 시도(사용자 제스처 이후 연속 재생 안정화)
   useEffect(() => {
@@ -264,6 +375,22 @@ export default function WorkoutVideoPlaylist({
           </Button>
         </Stack>
       </Stack>
+
+      {/* 이탈 확인 다이얼로그 */}
+      <SenifitDialog
+        isOpen={openExitDialog}
+        onClose={() => setOpenExitDialog(false)}
+        dialogType={"error"}
+        title={"사이트에서 나가시겠습니까?"}
+        body={"변경사항이 저장되지 않을 수 있습니다"}
+        primaryText={"나가기"}
+        onPrimaryClick={() => {
+          shouldBypassUnload.current = true;
+          notifyDone();
+        }}
+        secondaryText={"취소"}
+        onSecondaryClick={() => setOpenExitDialog(false)}
+      />
     </Box>
   );
 }

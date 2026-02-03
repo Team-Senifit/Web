@@ -9,136 +9,69 @@ concurrency:
   group: deploy-develop
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      APP_DIR: /srv/senifit-front
-      RELEASE_NAME: ${{ github.sha }}
-      NODE_ENV: production
-      NEXT_PUBLIC_API_BASE: ${{ secrets.NEXT_PUBLIC_API_BASE }}
-      NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
-      API_PREFIX: ${{ secrets.API_PREFIX }}
-      NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+      IMAGE_NAME: ghcr.io/team-senifit/web
+      IMAGE_TAG: ${{ github.sha }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
         with:
-          node-version: "22.x"
-          cache: "npm"
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install deps
-        run: npm ci
-
-      - name: Build
-        run: npm run build
-
-      # next는 dependencies에 있어야 함. devDeps는 제거해 산출물 슬림화
-      - name: Prune devDependencies
-        run: npm prune --omit=dev
-
-      - name: Create deploy package
-        run: |
-          set -euo pipefail
-          mkdir -p deploy
-          # 실행에 필요한 산출물만 포함 (.next, node_modules, 정적파일, 설정)
-          cp -r .next node_modules package.json package-lock.json public next.config.* deploy/ 2>/dev/null || true
-          tar -C deploy -czf release.tgz .
-
-      - name: Add SSH key
-        uses: webfactory/ssh-agent@v0.9.0
+      - name: Build and push image
+        uses: docker/build-push-action@v6
         with:
-          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+          context: .
+          file: Dockerfile
+          push: true
+          tags: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+          build-args: |
+            NEXT_PUBLIC_SITE_URL=${{ secrets.NEXT_PUBLIC_SITE_URL }}
+            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+            SITE_URL=${{ secrets.NEXT_PUBLIC_SITE_URL }}
 
-      - name: Known hosts
-        run: |
-          set -euo pipefail
-          mkdir -p ~/.ssh
-          ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Remote prep (cleanup & prepare)
+      - name: Deploy via SSM
         env:
-          EC2_USER: ${{ secrets.EC2_USER }}
-          EC2_HOST: ${{ secrets.EC2_HOST }}
-        run: |
-          ssh "$EC2_USER@$EC2_HOST" bash -se <<'PREP'
-          set -euo pipefail
-          
-          echo "==== System Health Check ===="
-          df -h /
-          free -m
-          
-          APP_DIR="/srv/senifit-front"
-          echo "==== Cleanup Old Releases ===="
-          # 폴더가 없으면 생성
-          if [ ! -d "$APP_DIR/releases" ]; then
-            sudo mkdir -p "$APP_DIR/releases" "$APP_DIR/shared"
-            sudo chown $USER:$USER "$APP_DIR" "$APP_DIR/releases" "$APP_DIR/shared"
-          fi
-          
-          cd "$APP_DIR/releases"
-          
-          # 최신 3개 제외 나머지 리스트업
-          OLD_RELEASES=$(ls -1t | tail -n +4)
-          
-          if [ -z "$OLD_RELEASES" ]; then
-            echo "No old releases to clean up."
-          else
-            for rel in $OLD_RELEASES; do
-              echo "Removing old release: $rel"
-              # current와 중복 여부 체크 (안전을 위해)
-              CURR="$(readlink -f "$APP_DIR/current" || true)"
-              REL_PATH="$(readlink -f "$rel")"
-              if [ "$REL_PATH" != "$CURR" ]; then
-                rm -rf "$rel" || echo "Warning: Failed to remove $rel"
-              else
-                echo "Skipping current release: $rel"
-              fi
-            done
-          fi
-          
-          # current가 아닌 릴리즈 내부의 캐시 정리
-          echo "==== Optimizing Passive Releases ===="
-          CURR="$(readlink -f "$APP_DIR/current" || true)"
-          for d in "$APP_DIR"/releases/*; do
-            [ -d "$d" ] || continue
-            if [ "$(readlink -f "$d")" != "$CURR" ]; then
-              echo "Cleaning cache/modules in inactive release: $(basename "$d")"
-              rm -rf "$d/.next/cache" "$d/node_modules" || true
-            fi
-          done
-          PREP
-
-      - name: Remote deploy (stream extract, swap, restart)
-        env:
-          EC2_USER: ${{ secrets.EC2_USER }}
-          EC2_HOST: ${{ secrets.EC2_HOST }}
-          RELEASE_NAME: ${{ env.RELEASE_NAME }}
-          SERVICE_USER: ${{ secrets.SERVICE_USER }}
+          SSM_INSTANCE_ID: ${{ secrets.SSM_INSTANCE_ID }}
+          IMAGE_TAG: ${{ env.IMAGE_TAG }}
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
         run: |
           set -euo pipefail
-          APP_DIR="/srv/senifit-front"
-          REL="${RELEASE_NAME}"
-          SVC="${SERVICE_USER:-ubuntu}"
+          PARAMS=$(jq -nc --arg tag "$IMAGE_TAG" \
+            '{commands:["cd /srv","export IMAGE_TAG="+$tag,"docker compose down","docker compose pull","docker compose up -d"]}')
 
-          cat release.tgz | ssh -o StrictHostKeyChecking=yes "$EC2_USER@$EC2_HOST" \
-            "set -euo pipefail; APP_DIR='$APP_DIR'; REL='$REL'; \
-             sudo mkdir -p \"\$APP_DIR/releases/\$REL\"; \
-             sudo chown \$USER:\$USER \"\$APP_DIR/releases/\$REL\"; \
-             tar -xzf - -C \"\$APP_DIR/releases/\$REL\""
+          COMMAND_ID=$(aws ssm send-command \
+            --instance-ids "$SSM_INSTANCE_ID" \
+            --document-name "AWS-RunShellScript" \
+            --comment "Deploy web image $IMAGE_NAME:$IMAGE_TAG" \
+            --parameters "$PARAMS" \
+            --query "Command.CommandId" \
+            --output text)
 
-          ssh -o StrictHostKeyChecking=yes "$EC2_USER@$EC2_HOST" \
-            "set -euo pipefail; APP_DIR='$APP_DIR'; REL='$REL'; SVC='$SVC'; \
-             echo '==== Finalizing Release ===='; \
-             ln -sfn \"\$APP_DIR/releases/\$REL\" \"\$APP_DIR/current\"; \
-             sudo systemctl daemon-reload; \
-             sudo systemctl restart senifit-front"
+          aws ssm wait command-executed \
+            --command-id "$COMMAND_ID" \
+            --instance-id "$SSM_INSTANCE_ID"
 
-      - name: Public healthcheck (non-blocking)
-        continue-on-error: true
-        run: |
-          curl -fsS -o /dev/null https://senifit.co.kr || echo "::warning::Public healthcheck failed"
+          aws ssm get-command-invocation \
+            --command-id "$COMMAND_ID" \
+            --instance-id "$SSM_INSTANCE_ID"

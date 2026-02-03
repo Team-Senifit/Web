@@ -23,17 +23,19 @@ const scoreOf: Record<Scale, number> = {
 };
 
 export type Elder = {
-  surveyId: number;
-  name: string;
-  birthDate: string;
-  gender: number; // 1: 남, 0: 여
-  memberRank: number; // 1~6, 0
-  troubleParts: string[];
+  surveyId: number | null;
+  name: string | null;
+  birthDate: string | null;
+  gender: number | null; // 1: 남, 0: 여
+  memberRank: number | null; // 1~6, 0
+  troubleParts: string[] | null;
   attitudeScore: number;
   abilityScore: number;
   hadTrouble: boolean;
   updatedAt?: string;
-  memo?: string;
+  memo?: string | null;
+  isDeleted?: boolean;
+  memberId?: number | null;
 };
 
 type PresetTrouble = { hasDiscomfort: "none" | "yes"; parts: string[] };
@@ -112,11 +114,13 @@ export default function ElderSurveyCard({
   // 각 입력이 바뀔 때마다 상위에 변화를 올려줘서 "작성완료" 시 최신 상태를 보낼 수 있게 함
   const fieldName = `memo-${elder.surveyId}`;
 
+  const isDeleted = Boolean(elder.isDeleted) || elder.surveyId === null;
+
   const bubble = useCallback(
     (next?: Partial<ElderUpdatePayload>) => {
-      if (readOnly) return;
+      if (readOnly || isDeleted) return;
       const currentMemo = getValues(fieldName) || "";
-      onChange(elder.surveyId, {
+      onChange(elder.surveyId as number, {
         attitudeScore: scoreOf[att],
         abilityScore: scoreOf[abl],
         hadTrouble: trouble.hasDiscomfort === "yes",
@@ -127,6 +131,7 @@ export default function ElderSurveyCard({
     },
     [
       readOnly,
+      isDeleted,
       getValues,
       fieldName,
       onChange,
@@ -184,7 +189,13 @@ export default function ElderSurveyCard({
         })}
       >
         {/* 상단 정보: 모바일 2줄, 그 외 1줄 */}
-        {isPhone ? (
+        {isDeleted ? (
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Typography variant={infoVariant}>
+              {"삭제된 어르신입니다."}
+            </Typography>
+          </Box>
+        ) : isPhone ? (
           <Box sx={{ mb: 2 }}>
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
               <ProfileIcon sx={{ fontSize: 24 }} />
@@ -192,17 +203,17 @@ export default function ElderSurveyCard({
             </Box>
             <Box sx={{ display: "flex", gap: 2, mt: 1 }}>
               <Typography variant={infoVariant}>
-                {isMounted
+                {isMounted && elder.birthDate
                   ? calculateAge(dayjs(elder.birthDate), {
                       format: "YYYY-MM-DD",
                     })
                   : ""}
               </Typography>
               <Typography variant={infoVariant}>
-                {genderLabel[elder.gender]}
+                {elder.gender !== null ? genderLabel[elder.gender] : ""}
               </Typography>
               <Typography variant={infoVariant}>
-                {gradeLabel[elder.memberRank]}
+                {elder.memberRank !== null ? gradeLabel[elder.memberRank] : ""}
               </Typography>
             </Box>
           </Box>
@@ -211,82 +222,89 @@ export default function ElderSurveyCard({
             <ProfileIcon sx={{ fontSize: 24 }} />
             <Typography variant={infoVariant}>{elder.name}</Typography>
             <Typography variant={infoVariant}>
-              {isMounted
+              {isMounted && elder.birthDate
                 ? calculateAge(dayjs(elder.birthDate), { format: "YYYY-MM-DD" })
                 : ""}
             </Typography>
             <Typography variant={infoVariant}>
-              {genderLabel[elder.gender]}
+              {elder.gender !== null ? genderLabel[elder.gender] : ""}
             </Typography>
             <Typography variant={infoVariant}>
-              {gradeLabel[elder.memberRank]}
+              {elder.memberRank !== null ? gradeLabel[elder.memberRank] : ""}
             </Typography>
           </Box>
         )}
-        {/* 선택 카드: step이 주어지면 한 항목만 렌더 */}
-        <SelectorCard
-          step={step}
-          items={[
-            {
-              title: "운동 참여 태도",
-              control: (
-                <SelectorRadio
-                  value={att}
-                  onChange={(v) => {
-                    setAtt(v as Scale);
-                    bubble({ attitudeScore: scoreOf[v as Scale] });
-                  }}
-                  readOnly={readOnly}
-                />
-              ),
-            },
-            {
-              title: "운동 수행 능력",
-              control: (
-                <SelectorRadio
-                  value={abl}
-                  onChange={(v) => {
-                    setAbl(v as Scale);
-                    bubble({ abilityScore: scoreOf[v as Scale] });
-                  }}
-                  readOnly={readOnly}
-                />
-              ),
-            },
-            {
-              title: "운동 중 불편함",
-              control: (
-                <SelectorTarget
-                  hasDiscomfort={trouble.hasDiscomfort}
-                  parts={trouble.parts}
-                  onChange={(v) => {
-                    setTrouble(v);
-                    bubble({
-                      hadTrouble: v.hasDiscomfort === "yes",
-                      troubleParts: v.hasDiscomfort === "yes" ? v.parts : [],
-                    });
-                  }}
-                  readOnly={readOnly}
-                />
-              ),
-            },
-          ]}
-        />
-        {/* 메모 */}
-        <Box sx={{ mt: 1, width: "100%" }}>
-          <SenifitTextField
-            name={`memo-${elder.surveyId}`}
-            control={control}
-            placeholder={"특이사항이 있다면 메모를 작성해주세요. (선택사항)"}
-            onChange={(e) => {
-              bubble({ memo: e.target.value });
-            }}
-            formControlProps={{
-              sx: { width: "100%" },
-            }}
-            readOnly={readOnly}
-          />
-        </Box>
+        {!isDeleted && (
+          <>
+            {/* 선택 카드: step이 주어지면 한 항목만 렌더 */}
+            <SelectorCard
+              step={step}
+              items={[
+                {
+                  title: "운동 참여 태도",
+                  control: (
+                    <SelectorRadio
+                      value={att}
+                      onChange={(v) => {
+                        setAtt(v as Scale);
+                        bubble({ attitudeScore: scoreOf[v as Scale] });
+                      }}
+                      readOnly={readOnly}
+                    />
+                  ),
+                },
+                {
+                  title: "운동 수행 능력",
+                  control: (
+                    <SelectorRadio
+                      value={abl}
+                      onChange={(v) => {
+                        setAbl(v as Scale);
+                        bubble({ abilityScore: scoreOf[v as Scale] });
+                      }}
+                      readOnly={readOnly}
+                    />
+                  ),
+                },
+                {
+                  title: "운동 중 불편함",
+                  control: (
+                    <SelectorTarget
+                      hasDiscomfort={trouble.hasDiscomfort}
+                      parts={trouble.parts}
+                      onChange={(v) => {
+                        setTrouble(v);
+                        bubble({
+                          hadTrouble: v.hasDiscomfort === "yes",
+                          troubleParts:
+                            v.hasDiscomfort === "yes" ? v.parts : [],
+                        });
+                      }}
+                      readOnly={readOnly}
+                    />
+                  ),
+                },
+              ]}
+            />
+            {/* 메모 */}
+            <Box sx={{ mt: 1, width: "100%" }}>
+              <SenifitTextField
+                name={`memo-${elder.surveyId}`}
+                control={control}
+                placeholder={
+                  "특이사항이 있다면 메모를 작성해주세요. (선택사항)"
+                }
+                onChange={(e) => {
+                  bubble({ memo: e.target.value });
+                }}
+                formControlProps={{
+                  sx: { width: "100%" },
+                }}
+                readOnly={readOnly}
+              />
+            </Box>
+          </>
+        )}
       </Box>
 
       <Divider sx={{ my: 1 }} />

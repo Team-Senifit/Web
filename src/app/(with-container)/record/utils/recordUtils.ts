@@ -47,12 +47,25 @@ export function dateString(startISO?: string, endISO?: string) {
   return `${s.format("YYYY년 M월 D일")}`;
 }
 
-// 시간을 반환
+// 시간을 반환 (소요 시간 포함)
 export function timeString(startISO?: string, endISO?: string) {
   if (!startISO || !endISO) return "";
   const s = dayjs(startISO);
   const e = dayjs(endISO);
-  return `${s.format("HH:mm")}~${e.format("HH:mm")}`;
+
+  const diffSec = e.diff(s, "second");
+  const hours = Math.floor(diffSec / 3600);
+  const minutes = Math.floor((diffSec % 3600) / 60);
+  const seconds = diffSec % 60;
+
+  let durationStr = "";
+  if (hours > 0) {
+    durationStr = `${hours}시간 ${minutes}분`;
+  } else {
+    durationStr = `${minutes}분 ${seconds}초`;
+  }
+
+  return `${s.format("HH:mm")}~${e.format("HH:mm")} (${durationStr})`;
 }
 
 // 참여인원을 숫자로 반환 (문자열로)

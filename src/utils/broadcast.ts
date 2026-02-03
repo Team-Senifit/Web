@@ -55,16 +55,17 @@ export function notifyClassDone(payload: {
     at: Date.now(),
   };
 
+  // storage 이벤트가 다른 탭(부모 페이지)에 안정적으로 전달되도록 먼저 기록
   try {
-    const bc = new BroadcastChannel(CHANNEL);
-    bc.postMessage(data);
-    bc.close();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   } catch {
     // ignore
   }
 
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    const bc = new BroadcastChannel(CHANNEL);
+    bc.postMessage(data);
+    bc.close();
   } catch {
     // ignore
   }

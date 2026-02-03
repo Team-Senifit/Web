@@ -4,4 +4,5 @@ export class AuthError extends Error {
   }
 }
 export const isAuthError = (e: unknown): e is AuthError =>
-  e instanceof AuthError;
+  e instanceof AuthError ||
+  (e instanceof Error && e.message === "AUTH_REQUIRED");
