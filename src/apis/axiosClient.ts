@@ -2,7 +2,7 @@ import axios from "axios";
 import { AuthError } from "./errors";
 
 export const axiosClient = axios.create({
-  baseURL: "/api",
+  baseURL: "",
   withCredentials: true, // 쿠키 인증이면 필수
 });
 
