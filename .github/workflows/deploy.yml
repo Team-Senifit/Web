@@ -57,11 +57,14 @@ jobs:
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
         run: |
           set -euo pipefail
+          PARAMS=$(jq -nc --arg tag "$IMAGE_TAG" \
+            '{commands:["cd /srv","export IMAGE_TAG="+$tag,"docker compose down","docker compose pull","docker compose up -d"]}')
+
           COMMAND_ID=$(aws ssm send-command \
             --instance-ids "$SSM_INSTANCE_ID" \
             --document-name "AWS-RunShellScript" \
             --comment "Deploy web image $IMAGE_NAME:$IMAGE_TAG" \
-            --parameters "commands=cd /srv,export IMAGE_TAG=$IMAGE_TAG,docker compose down,docker compose pull,docker compose up -d" \
+            --parameters "$PARAMS" \
             --query "Command.CommandId" \
             --output text)
 
