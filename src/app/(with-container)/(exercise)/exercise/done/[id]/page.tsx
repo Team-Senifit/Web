@@ -5,7 +5,7 @@ import Image from "next/image";
 import { axiosClient } from "@/apis/axiosClient";
 import { useMutation } from "@tanstack/react-query";
 import { useParams, useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import handclapImage from "@/assets/images/handclap.png";
 import useProgramStore from "@/states/useProgramStore";
 import { formatTime } from "@/stories/utils/formatTime";
@@ -13,6 +13,7 @@ import useMedia from "@/hooks/useMedia";
 import Link from "next/link";
 import { isAuthError } from "@/apis/errors";
 import { useRouter } from "next/navigation";
+import { pushGtmEvent } from "@/utils/gtm";
 
 const Page = () => {
   const { id } = useParams();
@@ -23,7 +24,15 @@ const Page = () => {
 
   const searchParams = useSearchParams();
   const seconds = Number(searchParams.get("seconds")) || 0;
-  const { selectedProgram } = useProgramStore();
+  const { selectedProgram, type } = useProgramStore();
+
+  const classType = React.useMemo(() => {
+    if (!type) return "알 수 없음";
+    if (type === "customized") return "맞춤형";
+    if (type === "popular") return "인기";
+    if (Array.isArray(type) && type[0] === "thematic") return "주제별";
+    return "알 수 없음";
+  }, [type]);
 
   const { mutate } = useMutation({
     mutationFn: async () => {
@@ -39,6 +48,15 @@ const Page = () => {
   useEffect(() => {
     mutate();
   }, [mutate]);
+
+  const hasSentFinish = useRef(false);
+  useEffect(() => {
+    if (hasSentFinish.current) return;
+    if (selectedProgram && seconds >= selectedProgram.duration * 60) {
+      pushGtmEvent("click_Finish", classType);
+      hasSentFinish.current = true;
+    }
+  }, [selectedProgram, seconds, classType]);
 
   return (
     <Stack

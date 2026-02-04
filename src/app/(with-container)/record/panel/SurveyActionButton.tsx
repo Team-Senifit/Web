@@ -9,6 +9,7 @@ import type { Elder, ElderUpdatePayload } from "./SurveyElderCard";
 import { axiosClient } from "@/apis/axiosClient";
 import { isAuthError } from "@/apis/errors";
 import SenifitDialog from "@/components/SenifitDialog";
+import { pushGtmEvent } from "@/utils/gtm";
 
 type Mode = "write" | "detail" | "update";
 type ConfirmKind = null | "editConfirm" | "saveConfirm";
@@ -30,6 +31,7 @@ type Props = {
   gap?: number;
   alignRight?: boolean;
   mobileStepper?: StepperProps;
+  classType: string;
 };
 
 export default function SurveyActionButton({
@@ -41,6 +43,7 @@ export default function SurveyActionButton({
   gap = 2,
   alignRight = true,
   mobileStepper,
+  classType,
 }: Props) {
   const router = useRouter();
   const qc = useQueryClient();
@@ -86,6 +89,10 @@ export default function SurveyActionButton({
         recordId,
         JSON.stringify(payload, null, 2),
       );
+
+      if (mode === "write") {
+        pushGtmEvent("record_Finish", classType);
+      }
 
       await axiosClient.put(`/records/${recordId}/surveys`, payload);
     },

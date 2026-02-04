@@ -94,6 +94,13 @@ const Page = () => {
 
     return () => {};
   }, [type, router, selectedRoutineRecord]);
+  const classType = React.useMemo(() => {
+    if (!type) return "알 수 없음";
+    if (type === "customized") return "맞춤형";
+    if (type === "popular") return "인기";
+    if (Array.isArray(type) && type[0] === "thematic") return "주제별";
+    return "알 수 없음";
+  }, [type]);
 
   return (
     <>
@@ -110,6 +117,7 @@ const Page = () => {
           routineDetail={routineDetail}
           setOpenModal={setOpenModal}
           routineUrl={routineUrl}
+          classType={classType}
         />
       </Stack>
       <SenifitDialog

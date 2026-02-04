@@ -14,17 +14,20 @@ import { IRoutineDetail } from "@/types/IRoutineDetail";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import React from "react";
+import { pushGtmEvent } from "@/utils/gtm";
 
 const Routine = ({
   type,
   routineDetail,
   setOpenModal,
   routineUrl,
+  classType,
 }: {
   type: "customized" | "popular" | ["thematic", WorkoutKind] | null;
   routineDetail: IRoutineDetail;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   routineUrl: string;
+  classType: string;
 }) => {
   const { isPhone, isDesktop } = useMedia();
 
@@ -116,7 +119,10 @@ const Routine = ({
           <Typography variant={"Heading1"}>{"이전"}</Typography>
         </Button>
         <Button
-          onClick={() => setOpenModal(true)}
+          onClick={() => {
+            pushGtmEvent("click_classStart", classType);
+            setOpenModal(true);
+          }}
           variant={"contained"}
           disableElevation
           sx={{

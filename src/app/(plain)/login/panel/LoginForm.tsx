@@ -25,6 +25,7 @@ import EyeOffIcon from "@/components/icons/EyeOffIcon";
 import InquiryButton from "@/components/InquiryButton";
 import BackgroundImage from "@/assets/images/login-background.png";
 import { signupGoogleForm } from "@/constants/signupGF";
+import { pushGtmEvent } from "@/utils/gtm";
 
 type LoginFormValues = { id: string; password: string };
 
@@ -57,6 +58,7 @@ export default function LoginForm() {
   const onSubmit = async (data: LoginFormValues) => {
     try {
       await login(data);
+      pushGtmEvent("login_Success");
       setToastOpen({
         message: "로그인 성공! 오늘도 즐거운 시니핏 하세요!",
       });

@@ -12,7 +12,15 @@ import { useClientReady } from "@/hooks/useClientReady";
 const Page = () => {
   const isClientReady = useClientReady();
   const router = useRouter();
-  const { selectedProgram } = useProgramStore();
+  const { selectedProgram, type } = useProgramStore();
+
+  const classType = React.useMemo(() => {
+    if (!type) return "알 수 없음";
+    if (type === "customized") return "맞춤형";
+    if (type === "popular") return "인기";
+    if (Array.isArray(type) && type[0] === "thematic") return "주제별";
+    return "알 수 없음";
+  }, [type]);
 
   // const { setToastOpen } = useToastStore();
 
@@ -40,6 +48,7 @@ const Page = () => {
       duration={selectedProgram?.duration}
       videos={selectedProgram?.videos}
       initialId={selectedProgram?.videos[0]?.id}
+      classType={classType}
     />
   );
 };

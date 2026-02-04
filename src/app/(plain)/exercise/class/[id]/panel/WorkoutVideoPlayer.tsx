@@ -11,6 +11,7 @@ import { axiosClient } from "@/apis/axiosClient";
 import { isAuthError } from "@/apis/errors";
 // import { useToastStore } from "@/states/useToastStore";
 import SenifitDialog from "@/components/SenifitDialog";
+import { pushGtmEvent } from "@/utils/gtm";
 
 export interface IWorkoutVideo {
   id: number;
@@ -34,6 +35,8 @@ export interface IWorkoutVideoPlaylistProps {
   /** 인덱스 변경 콜백(옵션) */
   onIndexChange?: (index: number, video: IWorkoutVideo) => void;
   duration: number;
+  /** GTM 이벤트를 위한 클래스 유형 */
+  classType?: string;
 }
 
 /** DOM 요소의 실시간 높이를 구하는 훅 */
@@ -68,6 +71,7 @@ export default function WorkoutVideoPlaylist({
   assetBaseUrl,
   onIndexChange,
   duration,
+  classType,
 }: IWorkoutVideoPlaylistProps) {
   const { isPhone } = useMedia();
   const router = useRouter();
@@ -79,6 +83,7 @@ export default function WorkoutVideoPlaylist({
 
   const notifyDone = useCallback((): void => {
     if (!recordId) return;
+
     shouldBypassUnload.current = true;
     // 단일 탭 흐름: 종료 시 완료 화면으로 이동
     router.replace(`/exercise/done/${recordId}?seconds=${seconds}`);
@@ -250,6 +255,25 @@ export default function WorkoutVideoPlaylist({
     go(index + 1);
   }, [go, index, loop, notifyDone, videos.length]);
 
+  // ====== GTM 이벤트 (Start / Progress) ======
+  useEffect(() => {
+    if (!classType) return;
+    pushGtmEvent("click_Start", classType);
+  }, [classType]);
+
+  const hasSentProgress = useRef(false);
+  useEffect(() => {
+    if (!classType || !duration) return;
+    if (hasSentProgress.current) return;
+
+    // 50% 이상 진행 시 click_Progress 전송
+    const progressThreshold = (duration * 60) / 2;
+    if (seconds >= progressThreshold) {
+      pushGtmEvent("click_Progress", classType);
+      hasSentProgress.current = true;
+    }
+  }, [seconds, duration, classType]);
+
   // src 바뀌면 자동 재생 시도(사용자 제스처 이후 연속 재생 안정화)
   useEffect(() => {
     handleRef.current?.play().catch(() => {});
@@ -281,6 +305,7 @@ export default function WorkoutVideoPlaylist({
           isEnd={index === videos.length - 1}
           onEnd={notifyDone}
           seconds={seconds}
+          classType={classType || "알 수 없음"}
         />
       </Box>
 

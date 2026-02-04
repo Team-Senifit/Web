@@ -5,17 +5,20 @@ import React, { useState } from "react";
 import Timer from "./Timer";
 import useMedia from "@/hooks/useMedia";
 import SenifitDialog from "@/components/SenifitDialog";
+import { pushGtmEvent } from "@/utils/gtm";
 
 const Header = ({
   seconds,
   duration,
   onEnd,
   isEnd,
+  classType,
 }: {
   duration: number;
   isEnd: boolean;
   onEnd: () => void;
   seconds: number;
+  classType: string;
 }) => {
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -25,6 +28,7 @@ const Header = ({
     if (isEnd) {
       onEnd();
     } else {
+      pushGtmEvent("click_classStop", classType);
       setOpenDialog(true);
     }
   };

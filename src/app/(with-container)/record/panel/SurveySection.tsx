@@ -15,6 +15,8 @@ import { useForm, FormProvider } from "react-hook-form";
 import { AuthError } from "@/apis/errors";
 import { useCallback } from "react";
 
+import useProgramStore from "@/states/useProgramStore";
+
 type Scale = "veryGood" | "good" | "neutral" | "bad" | "veryBad";
 type Mode = "write" | "detail" | "update";
 
@@ -24,6 +26,16 @@ type FormValues = { [key: string]: string };
 
 export default function SurveySection({ recordId, mode }: Props) {
   const { isPhone, isTablet } = useMedia();
+  const { type } = useProgramStore();
+
+  const classType = useCallback(() => {
+    if (!type) return "알 수 없음";
+    if (type === "customized") return "맞춤형";
+    if (type === "popular") return "인기";
+    if (Array.isArray(type) && type[0] === "thematic") return "주제별";
+    return "알 수 없음";
+  }, [type])();
+
   const readOnly = mode === "detail";
 
   const methods = useForm<FormValues>({ defaultValues: {} });
@@ -254,6 +266,7 @@ export default function SurveySection({ recordId, mode }: Props) {
         elders={elders}
         pending={pending}
         afterSaveHref={"/record"}
+        classType={classType}
         mobileStepper={
           isPhone
             ? {

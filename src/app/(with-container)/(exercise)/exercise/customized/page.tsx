@@ -23,6 +23,7 @@ import { IRoutineDetail } from "@/types/IRoutineDetail";
 import useProgramStore from "@/states/useProgramStore";
 import { useRouter } from "next/navigation";
 import SenifitDialog from "@/components/SenifitDialog";
+import { pushGtmEvent } from "@/utils/gtm";
 
 const Page = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -106,6 +107,7 @@ const Page = () => {
           <Stack
             component={"form"}
             onSubmit={handleSubmit(onSubmit, () => {
+              pushGtmEvent("customized_optionError");
               setOpenDialog(true);
             })}
             direction={"column"}
