@@ -14,6 +14,7 @@ import { IRoutineDetail } from "@/types/IRoutineDetail";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import React from "react";
+import { getGtmClassType, pushGtmEvent } from "@/utils/gtm";
 
 const Routine = ({
   type,
@@ -116,7 +117,10 @@ const Routine = ({
           <Typography variant={"Heading1"}>{"이전"}</Typography>
         </Button>
         <Button
-          onClick={() => setOpenModal(true)}
+          onClick={() => {
+            pushGtmEvent("click_classStart", getGtmClassType(type));
+            setOpenModal(true);
+          }}
           variant={"contained"}
           disableElevation
           sx={{

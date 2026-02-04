@@ -5,17 +5,21 @@ import React, { useState } from "react";
 import Timer from "./Timer";
 import useMedia from "@/hooks/useMedia";
 import SenifitDialog from "@/components/SenifitDialog";
+import { WorkoutKind } from "@/types/IRoutine";
+import { getGtmClassType, pushGtmEvent } from "@/utils/gtm";
 
 const Header = ({
   seconds,
   duration,
   onEnd,
   isEnd,
+  type,
 }: {
   duration: number;
   isEnd: boolean;
   onEnd: () => void;
   seconds: number;
+  type: "customized" | "popular" | ["thematic", WorkoutKind] | null;
 }) => {
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -25,6 +29,7 @@ const Header = ({
     if (isEnd) {
       onEnd();
     } else {
+      pushGtmEvent("click_classStop", getGtmClassType(type));
       setOpenDialog(true);
     }
   };

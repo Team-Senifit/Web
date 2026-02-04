@@ -11,6 +11,8 @@ import { axiosClient } from "@/apis/axiosClient";
 import { isAuthError } from "@/apis/errors";
 // import { useToastStore } from "@/states/useToastStore";
 import SenifitDialog from "@/components/SenifitDialog";
+import { getGtmClassType, pushGtmEvent } from "@/utils/gtm";
+import { WorkoutKind } from "@/types/IRoutine";
 
 export interface IWorkoutVideo {
   id: number;
@@ -34,6 +36,7 @@ export interface IWorkoutVideoPlaylistProps {
   /** 인덱스 변경 콜백(옵션) */
   onIndexChange?: (index: number, video: IWorkoutVideo) => void;
   duration: number;
+  type: "customized" | "popular" | ["thematic", WorkoutKind] | null;
 }
 
 /** DOM 요소의 실시간 높이를 구하는 훅 */
@@ -68,6 +71,7 @@ export default function WorkoutVideoPlaylist({
   assetBaseUrl,
   onIndexChange,
   duration,
+  type,
 }: IWorkoutVideoPlaylistProps) {
   const { isPhone } = useMedia();
   const router = useRouter();
@@ -159,6 +163,15 @@ export default function WorkoutVideoPlaylist({
       window.removeEventListener("pagehide", onPageHide);
     };
   }, [recordId]);
+
+  const progressFired = useRef(false);
+  useEffect(() => {
+    const halfDuration = Math.floor(duration * 30);
+    if (!progressFired.current && seconds >= halfDuration && halfDuration > 0) {
+      pushGtmEvent("click_Progress", getGtmClassType(type));
+      progressFired.current = true;
+    }
+  }, [seconds, duration, type]);
 
   // 이탈 방지 bypass 플래그 (앱 내부 이동 시 사용)
   const shouldBypassUnload = useRef(false);
@@ -281,6 +294,7 @@ export default function WorkoutVideoPlaylist({
           isEnd={index === videos.length - 1}
           onEnd={notifyDone}
           seconds={seconds}
+          type={type}
         />
       </Box>
 

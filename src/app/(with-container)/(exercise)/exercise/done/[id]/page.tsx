@@ -13,6 +13,7 @@ import useMedia from "@/hooks/useMedia";
 import Link from "next/link";
 import { isAuthError } from "@/apis/errors";
 import { useRouter } from "next/navigation";
+import { getGtmClassType, pushGtmEvent } from "@/utils/gtm";
 
 const Page = () => {
   const { id } = useParams();
@@ -23,7 +24,7 @@ const Page = () => {
 
   const searchParams = useSearchParams();
   const seconds = Number(searchParams.get("seconds")) || 0;
-  const { selectedProgram } = useProgramStore();
+  const { selectedProgram, type } = useProgramStore();
 
   const { mutate } = useMutation({
     mutationFn: async () => {
@@ -38,7 +39,10 @@ const Page = () => {
 
   useEffect(() => {
     mutate();
-  }, [mutate]);
+    if (selectedProgram && seconds >= selectedProgram.duration * 60) {
+      pushGtmEvent("click_Finish", getGtmClassType(type));
+    }
+  }, [mutate, selectedProgram, seconds, type]);
 
   return (
     <Stack
