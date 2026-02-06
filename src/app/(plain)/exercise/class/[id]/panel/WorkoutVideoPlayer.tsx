@@ -168,7 +168,7 @@ export default function WorkoutVideoPlaylist({
   useEffect(() => {
     const halfDuration = Math.floor(duration * 30);
     if (!progressFired.current && seconds >= halfDuration && halfDuration > 0) {
-      pushGtmEvent("click_Progress", getGtmClassType(type));
+      pushGtmEvent("class_Progress", getGtmClassType(type));
       progressFired.current = true;
     }
   }, [seconds, duration, type]);

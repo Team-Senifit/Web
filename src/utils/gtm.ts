@@ -1,9 +1,9 @@
 export type GTM_EVENT_TYPE =
   | "click_classStart"
-  | "click_Start"
-  | "click_Progress"
+  | "class_Start"
+  | "class_Progress"
   | "click_classStop"
-  | "click_Finish"
+  | "class_Finish"
   | "record_Finish"
   | "login_Success"
   | "customized_optionError";
@@ -42,4 +42,17 @@ export const getGtmClassType = (type: unknown) => {
   if (type === "popular") return "인기";
   if (Array.isArray(type) && type[0] === "thematic") return "주제별";
   return undefined;
+};
+
+export const getGtmClassTypeFromRoutineKind = (routineKind?: string) => {
+  switch (routineKind) {
+    case "workout_programs_selections_byPopular":
+      return "인기";
+    case "workout_programs_selections_byPersonal":
+      return "맞춤형";
+    case "workout_programs_selections_byTarget":
+      return "주제별";
+    default:
+      return undefined;
+  }
 };
