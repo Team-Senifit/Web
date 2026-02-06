@@ -22,6 +22,7 @@ const PopularRoutine = ({ authenticated }: { authenticated: boolean }) => {
 
   return (
     <Button
+      id={"popular_Click"}
       fullWidth
       component={Link}
       href={

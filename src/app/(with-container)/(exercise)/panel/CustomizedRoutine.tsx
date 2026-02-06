@@ -12,6 +12,7 @@ const CustomizedRoutine = ({ authenticated }: { authenticated: boolean }) => {
   const { isPhone } = useMedia();
   return (
     <Button
+      id={"click_Customized"}
       component={Link}
       href={
         authenticated

@@ -48,6 +48,7 @@ const Carousel = <T,>({
     <Box ref={containerRef} sx={{ position: "relative", overflow: "hidden" }}>
       {/* 이전 버튼 */}
       <IconButton
+        id={"click_click_Carousel"}
         sx={{
           ...iconButtonStyle,
           left: "1rem",
@@ -64,6 +65,7 @@ const Carousel = <T,>({
 
       {/* 다음 버튼 */}
       <IconButton
+        id={"click_click_Carousel"}
         sx={{
           ...iconButtonStyle,
           right: "1rem",

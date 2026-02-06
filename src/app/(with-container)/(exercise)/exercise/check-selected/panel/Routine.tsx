@@ -117,6 +117,7 @@ const Routine = ({
           <Typography variant={"Heading1"}>{"이전"}</Typography>
         </Button>
         <Button
+          id={"click_classStart"}
           onClick={() => {
             pushGtmEvent("click_classStart", getGtmClassType(type));
             setOpenModal(true);
