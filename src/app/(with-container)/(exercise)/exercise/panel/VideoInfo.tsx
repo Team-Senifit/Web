@@ -14,6 +14,7 @@ import SenifitDialog from "@/components/SenifitDialog";
 
 interface IVideoInfoProps extends IPopularRoutine {
   onButtonClick: () => void;
+  gtmId?: string;
 }
 
 const VideoInfo = ({
@@ -23,6 +24,7 @@ const VideoInfo = ({
   duration,
   description,
   onButtonClick,
+  gtmId,
 }: IVideoInfoProps) => {
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -111,6 +113,7 @@ const VideoInfo = ({
             )}
 
             <Button
+              id={gtmId}
               onClick={() => setOpenDialog(true)}
               fullWidth
               disableElevation

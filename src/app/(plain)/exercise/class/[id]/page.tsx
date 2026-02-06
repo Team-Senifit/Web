@@ -5,6 +5,7 @@ import useProgramStore from "@/states/useProgramStore";
 import WorkoutVideoPlaylist from "./panel/WorkoutVideoPlayer";
 import { useRouter } from "next/navigation";
 import { useClientReady } from "@/hooks/useClientReady";
+import { getGtmClassType, pushGtmEvent } from "@/utils/gtm";
 // import { useDeadlineTrigger } from "@/hooks/useDeadlineTrigger";
 // import dayjs from "dayjs";
 // import { useToastStore } from "@/states/useToastStore";
@@ -12,17 +13,21 @@ import { useClientReady } from "@/hooks/useClientReady";
 const Page = () => {
   const isClientReady = useClientReady();
   const router = useRouter();
-  const { selectedProgram } = useProgramStore();
+  const { selectedProgram, type } = useProgramStore();
 
   // const { setToastOpen } = useToastStore();
 
+  const startFired = React.useRef(false);
   useEffect(() => {
     if (!isClientReady) return;
     else if (!selectedProgram) {
       router.push("/");
+    } else if (!startFired.current) {
+      pushGtmEvent("click_Start", getGtmClassType(type));
+      startFired.current = true;
     }
     return () => {};
-  }, [selectedProgram, router, isClientReady]);
+  }, [selectedProgram, router, isClientReady, type]);
 
   if (!selectedProgram) return null;
 
@@ -40,6 +45,7 @@ const Page = () => {
       duration={selectedProgram?.duration}
       videos={selectedProgram?.videos}
       initialId={selectedProgram?.videos[0]?.id}
+      type={type}
     />
   );
 };
