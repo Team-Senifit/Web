@@ -57,6 +57,7 @@ const Page = () => {
             <VideoInfo
               key={routine.id}
               {...routine}
+              gtmId={`popular_Select${routine.duration}`}
               onButtonClick={() => {
                 setType("popular");
                 setSelectedRoutineRecord({

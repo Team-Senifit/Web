@@ -5,7 +5,9 @@ import { headers as nextHeaders } from "next/headers";
 import { AuthError } from "./errors";
 
 const API_PREFIX = normalizePrefix(process.env.NEXT_PUBLIC_API_BASE ?? "/api");
-const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "").trim().replace(/\/+$/, "");
+const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "")
+  .trim()
+  .replace(/\/+$/, "");
 const ENV_SITE_URL = ensureOrigin(process.env.NEXT_PUBLIC_SITE_URL);
 
 const devHttpsAgent =

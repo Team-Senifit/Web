@@ -10,6 +10,7 @@ const ThematicRoutine = ({ authenticated }: { authenticated: boolean }) => {
   const { isPhone } = useMedia();
   return (
     <Button
+      id={"Click_Topic"}
       fullWidth
       component={Link}
       href={
