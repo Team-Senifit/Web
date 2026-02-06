@@ -8,7 +8,7 @@ import timezone from "dayjs/plugin/timezone";
 import QueryProviders from "./panel/QueryClientProvider";
 import LoadingFallback from "./panel/LoadingFallback";
 import Toast from "@/components/Toast";
-import Script from "next/script";
+// import Script from "next/script";
 
 // dayjs locale 설정, time zone 설정
 dayjs.locale("ko");
@@ -58,9 +58,8 @@ export default function RootLayout({
     <html lang={"ko"}>
       <head>
         {/* Google Tag Manager */}
-        <Script
-          id={"google-tag-manager"}
-          strategy={"afterInteractive"}
+        {/* eslint-disable-next-line @next/next/next-script-for-ga */}
+        <script
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

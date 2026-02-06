@@ -40,7 +40,7 @@ const Page = () => {
   useEffect(() => {
     mutate();
     if (selectedProgram && seconds >= selectedProgram.duration * 60) {
-      pushGtmEvent("click_Finish", getGtmClassType(type));
+      pushGtmEvent("class_Finish", getGtmClassType(type));
     }
   }, [mutate, selectedProgram, seconds, type]);
 

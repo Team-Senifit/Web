@@ -23,7 +23,7 @@ const Page = () => {
     else if (!selectedProgram) {
       router.push("/");
     } else if (!startFired.current) {
-      pushGtmEvent("click_Start", getGtmClassType(type));
+      pushGtmEvent("class_Start", getGtmClassType(type));
       startFired.current = true;
     }
     return () => {};
