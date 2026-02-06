@@ -58,7 +58,9 @@ export default function SurveySection({ recordId, mode }: Props) {
   );
 
   // GET
-  const { data: elders = [] } = useSuspenseQuery<Elder[]>({
+  const {
+    data: { elders, routineKind } = { elders: [], routineKind: undefined },
+  } = useSuspenseQuery<{ elders: Elder[]; routineKind?: string }>({
     queryKey: ["surveys", recordId],
     queryFn: async () => {
       // 서버 환경(SSR)에서 상대 경로 fetch가 실패하는 문제를 해결하기 위해 BASE_URL 처리
@@ -77,6 +79,8 @@ export default function SurveySection({ recordId, mode }: Props) {
 
       console.log("GET /api/records/" + recordId + "/surveys response:", json);
 
+      const routineKind = json?.data?.record?.routineKind;
+
       const reverseTroublePartMap: Record<string, string> = {
         workout_kinds_calisthenic_targets_shoulders: "어깨",
         workout_kinds_calisthenic_targets_arms: "팔",
@@ -85,7 +89,7 @@ export default function SurveySection({ recordId, mode }: Props) {
         workout_kinds_calisthenic_targets_abs: "배",
       };
 
-      const surveys = (json?.data?.surveys ?? []).map((s: unknown) => {
+      const surveyList = (json?.data?.surveys ?? []).map((s: unknown) => {
         const raw = s as {
           troubleParts?: (string | { target: string })[];
           memo?: string;
@@ -106,7 +110,7 @@ export default function SurveySection({ recordId, mode }: Props) {
         };
       });
 
-      return surveys as Elder[];
+      return { elders: surveyList as Elder[], routineKind };
     },
   });
 
@@ -253,6 +257,7 @@ export default function SurveySection({ recordId, mode }: Props) {
         mode={mode}
         elders={elders}
         pending={pending}
+        routineKind={routineKind}
         afterSaveHref={"/record"}
         mobileStepper={
           isPhone
