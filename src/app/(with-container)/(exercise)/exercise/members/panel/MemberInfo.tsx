@@ -40,7 +40,7 @@ const MemberInfo = ({ name, birthDate, gender, memberRank }: IMember) => {
         </Typography>
         <Typography
           variant={isDesktop ? "Heading1" : "Headline1"}
-          sx={{ color: "label.neutral", width: "6rem" }}
+          sx={{ color: "label.neutral", width: "8rem" }}
         >
           {gradeLabel[memberRank]}
         </Typography>

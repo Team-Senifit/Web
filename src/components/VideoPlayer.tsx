@@ -19,6 +19,7 @@ export interface IVideoHandle {
   toggle: () => void;
   mute: (m?: boolean) => void;
   seek: (timeSec: number) => void;
+  toggleFullscreen: () => void;
   getEl: () => HTMLVideoElement | null;
 }
 
@@ -78,6 +79,8 @@ const VideoPlayer = forwardRef<IVideoHandle, IVideoPlayerProps>(
     ref,
   ) {
     const videoRef = useRef<HTMLVideoElement>(null);
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    const [isFullscreen, setIsFullscreen] = useState(false);
     // controlsRef removed; controls are separate component
 
     // 재생/일시정지 플래시 아이콘
@@ -99,6 +102,43 @@ const VideoPlayer = forwardRef<IVideoHandle, IVideoPlayerProps>(
         setFlashKind(null);
       }, 650);
     };
+
+    const handleToggleFullscreen = useCallback(() => {
+      if (!wrapperRef.current) return;
+
+      if (!document.fullscreenElement) {
+        wrapperRef.current.requestFullscreen().catch((err) => {
+          console.error(
+            `Error attempting to enable full-screen mode: ${err.message}`,
+          );
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }, []);
+
+    useEffect(() => {
+      const handleFullscreenChange = () => {
+        setIsFullscreen(!!document.fullscreenElement);
+      };
+
+      document.addEventListener("fullscreenchange", handleFullscreenChange);
+      document.addEventListener(
+        "webkitfullscreenchange",
+        handleFullscreenChange,
+      );
+
+      return () => {
+        document.removeEventListener(
+          "fullscreenchange",
+          handleFullscreenChange,
+        );
+        document.removeEventListener(
+          "webkitfullscreenchange",
+          handleFullscreenChange,
+        );
+      };
+    }, []);
 
     const {
       playing,
@@ -127,6 +167,7 @@ const VideoPlayer = forwardRef<IVideoHandle, IVideoPlayerProps>(
       toggle: () => toggle?.(),
       mute: (m?: boolean) => mute?.(m),
       seek: (t: number) => seek?.(t),
+      toggleFullscreen: handleToggleFullscreen,
       getEl: () => videoRef.current,
     }));
 
@@ -193,24 +234,42 @@ const VideoPlayer = forwardRef<IVideoHandle, IVideoPlayerProps>(
     const ratioNum = parseAspectRatioToNumber(aspectRatio);
     const aspectCss =
       typeof aspectRatio === "number" ? aspectRatio : (aspectRatio ?? "16 / 9");
-    const maxWFromHeightExpr = `calc((100dvh - ${viewportOffsetPx}px) * ${ratioNum})`;
+    const maxWFromHeightExpr = `calc((100dvh - ${isFullscreen ? 0 : viewportOffsetPx}px) * ${ratioNum})`;
     return (
-      <Stack spacing={1} sx={{ width: "100%", color: "common.white" }}>
+      <Stack
+        spacing={isFullscreen ? 0 : 1}
+        sx={{
+          width: "100%",
+          height: isFullscreen ? "100%" : "auto",
+          color: "common.white",
+        }}
+      >
         {/* 비디오 영역: 남은 높이를 꽉 채우되 16:9 유지 */}
         <Box
+          ref={wrapperRef}
           sx={{
-            width: fitViewport ? `min(100%, ${maxWFromHeightExpr})` : "100%",
+            width:
+              fitViewport && !isFullscreen
+                ? `min(100%, ${maxWFromHeightExpr})`
+                : "100%",
+            height: isFullscreen ? "100dvh" : "auto",
             mx: "auto",
             alignSelf: "center",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            bgcolor: "black",
           }}
         >
           <Box
             sx={{
               position: "relative",
               width: "100%",
+              height: isFullscreen ? "auto" : "100%",
+              maxHeight: isFullscreen ? "100dvh" : "unset",
               overflow: "hidden",
               bgcolor: "black",
-              aspectRatio: aspectCss,
+              aspectRatio: isFullscreen ? "unset" : aspectCss,
             }}
             onPointerEnter={() => showControls()}
             onPointerMove={() => showControls()}
@@ -316,6 +375,8 @@ const VideoPlayer = forwardRef<IVideoHandle, IVideoPlayerProps>(
                 v.currentTime = next;
                 setScrub(null);
               }}
+              isFullscreen={isFullscreen}
+              onToggleFullscreen={handleToggleFullscreen}
               visible={controlsVisible}
             />
 
