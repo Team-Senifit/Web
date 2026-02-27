@@ -4,6 +4,8 @@ import PlayArrowRounded from "@mui/icons-material/PlayArrowRounded";
 import PauseRounded from "@mui/icons-material/PauseRounded";
 import VolumeUpRounded from "@mui/icons-material/VolumeUpRounded";
 import VolumeOffRounded from "@mui/icons-material/VolumeOffRounded";
+import FullscreenRounded from "@mui/icons-material/FullscreenRounded";
+import FullscreenExitRounded from "@mui/icons-material/FullscreenExitRounded";
 
 const formatTime = (sec: number) =>
   Number.isFinite(sec)
@@ -25,6 +27,8 @@ interface Props {
   onToggleMute: () => void;
   setScrub: (v: number | null) => void;
   onSeek: (sec: number) => void;
+  isFullscreen: boolean;
+  onToggleFullscreen: () => void;
   visible?: boolean;
 }
 
@@ -43,6 +47,8 @@ export default function VideoControls({
   onToggleMute,
   setScrub,
   onSeek,
+  isFullscreen,
+  onToggleFullscreen,
   visible = true,
 }: Props) {
   return (
@@ -110,6 +116,14 @@ export default function VideoControls({
           },
         }}
       />
+
+      <IconButton
+        onClick={onToggleFullscreen}
+        aria-label={isFullscreen ? "전체화면 종료" : "전체화면"}
+        sx={{ color: "common.white" }}
+      >
+        {isFullscreen ? <FullscreenExitRounded /> : <FullscreenRounded />}
+      </IconButton>
     </Box>
   );
 }
