@@ -2,9 +2,9 @@ import { ILoginPayload } from "@/types/ILoginPayload";
 import axios from "axios";
 
 export const login = async ({ id, password }: ILoginPayload) => {
-  const params = `id=${id}&password=${password}`;
+  const params = new URLSearchParams({ id, password });
 
-  const response = await axios.post(`/api/auth/signin`, params, {
+  const response = await axios.post(`/api/auth/signin`, params.toString(), {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
